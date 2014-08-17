@@ -1,6 +1,5 @@
 (function Example(window, leaflet, FreeDraw) {
 
-
     /**
      * Invoked once DOM is ready, and then goodness knows what happens after that.
      *
