@@ -22,5 +22,15 @@
   "bugs": {
     "url": "https://github.com/Wildhoney/Leaflet.FreeDraw/issues"
   },
-  "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw"
+  "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-compress": "^0.10.0",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.5.1",
+    "grunt-karma": "^0.8.3",
+    "karma": "^0.12.21"
+  }
 }
