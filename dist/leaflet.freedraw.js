@@ -1,3 +1,53 @@
+(function($window) {
+
+    "use strict";
+
+    /**
+     * @module FreeDraw
+     * @submodule ConvexHull
+     * @author Adam Timberlake
+     * @link https://github.com/Wildhoney/Leaflet.FreeDraw
+     * @constructor
+     */
+    $window.FreeDraw.ConvexHull = function FreeDrawConvexHull() {};
+
+    /**
+     * @property prototype
+     * @type {Object}
+     */
+    $window.FreeDraw.ConvexHull.prototype = {
+
+        /**
+         * @method
+         * @param points {L.Point[]}
+         * @return {L.Point[]}
+         */
+        brian3kbGrahamScan: function brian3kbGrahamScan(points) {
+
+            var convexHull     = new ConvexHullGrahamScan(),
+                resolvedPoints = [];
+
+            points.forEach(function forEach(point) {
+                convexHull.addPoint(point.x, point.y);
+            }.bind(this));
+
+            var hullPoints = convexHull.getHull();
+
+            hullPoints.forEach(function forEach(hullPoint) {
+                resolvedPoints.push(L.point(hullPoint.x, hullPoint.y));
+            }.bind(this));
+
+            // Create an unbroken polygon.
+            resolvedPoints.push(resolvedPoints[0]);
+
+            return resolvedPoints;
+
+        }
+
+    }
+
+}(window));
+
 (function($window, L, d3) {
 
     "use strict";
@@ -33,8 +83,9 @@
         this.setMap(map);
         this.map.dragging.disable();
 
-        // Lazily hook up the options object.
-        this.options = new $window.FreeDraw.Options();
+        // Lazily hook up the options and convex hull objects.
+        this.options    = new $window.FreeDraw.Options();
+        this.convexHull = new $window.FreeDraw.ConvexHull();
 
         // Define the line function for drawing the polygon from the user's mouse pointer.
         this.lineFunction = d3.svg.line().x(function(d) { return d.x; }).y(function(d) { return d.y; })
@@ -99,6 +150,12 @@
          * @type {Object}
          */
         options: {},
+
+        /**
+         * @property convexHull
+         * @type {Object}
+         */
+        convexHull: {},
 
         /**
          * @property markers
@@ -180,8 +237,9 @@
 
             // Add the polyline to the map, and then find the edges of the polygon.
             polyline.addTo(this.map);
-            this.attachEdges(polyline);
-            return polyline;
+
+//            this.attachEdges(polyline);
+//            return polyline;
 
         },
 
@@ -304,12 +362,32 @@
 
                 }
 
+                if (this.options.convexHullAlgorithm) {
+
+                    var hullLatLngs = [],
+                        points      = [];
+
+                    this.latLngs.forEach(function forEach(latLng) {
+
+                        // Resolve each latitude/longitude to its respective container point.
+                        points.push(this.map.latLngToContainerPoint(latLng));
+
+                    }.bind(this));
+
+                    // Use the defined convex hull algorithm.
+                    var resolvedPoints = this.convexHull[this.options.convexHullAlgorithm](points);
+
+                    resolvedPoints.forEach(function forEach(point) {
+                        hullLatLngs.push(this.map.containerPointToLatLng(point));
+                    }.bind(this));
+
+                }
+
                 // Required for joining the two ends of the free-hand drawing to create a closed polygon.
                 this.latLngs.push(this.latLngs[0]);
 
                 // Physically draw the Leaflet generated polygon.
-                this.drawPolygon(this.latLngs);
-//                var polygon = this.drawPolygon(this.latLngs);
+                this.drawPolygon(hullLatLngs || this.latLngs);
 
             }.bind(this));
 
@@ -782,6 +860,20 @@
         multiplePolygons: true,
 
         /**
+         * @property convexHullAlgorithm
+         * @type {String}
+         */
+        convexHullAlgorithm: 'brian3kbGrahamScan',
+
+        /**
+         * @property convexHullAlgorithms
+         * @type {Object}
+         */
+        convexHullAlgorithms: {
+            'brian3kb/graham_scan_js': 'brian3kbGrahamScan'
+        },
+
+        /**
          * @property svgClassName
          * @type {String}
          */
@@ -833,6 +925,24 @@
          */
         setIconClassName: function setIconClassName(className) {
             this.iconClassName = className;
+        },
+
+        /**
+         * @method setConvexHullAlgorithm
+         * @param algorithm {String|Boolean}
+         * @return {void}
+         */
+        setConvexHullAlgorithm: function setConvexHullAlgorithm(algorithm) {
+
+            if (algorithm && !this.convexHullAlgorithms.hasOwnProperty(algorithm)) {
+
+                // Ensure the passed algorithm is valid.
+                return;
+
+            }
+
+            this.convexHullAlgorithm = this.convexHullAlgorithms[algorithm];
+
         }
 
     };

@@ -15,6 +15,7 @@
 
         var freeDraw = new FreeDraw(map);
         freeDraw.options.allowMultiplePolygons(true);
+        freeDraw.options.setConvexHullAlgorithm('brian3kb/graham_scan_js');
 
     };
 

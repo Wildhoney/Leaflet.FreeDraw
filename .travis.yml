@@ -16,7 +16,7 @@ script:
 deploy:
   provider: heroku
   api_key:
-    secure: Iu4lbJE6o6o+JGAhMgWL1EEKvhJ0sMvtd8toIAcaT0jOiTQANVxuABY1Kd11R6VKOCNumcKA10rgtJgRzBcge6UjjMFP7rVhLGCiWFiijuUDqUyN28Mhll2Tj1Tf1ybJKjb8TdefaWDqJhsJ6/5f4DWJM4Xoy2ItXywaCo8mVCk=
-  app: leaflet-freedraw
+    secure: dpIofJxARTkgAch2Ljo/+ITMxAairaFqAHEOcdrv0rxHeQZW1VUmW0KMzMuB0Tihxg173yK4Ogy1JeBvCt2PkzmEfkuN0/ELdt1uuLK+Rcup86VY8AOIzREBJHtuYxOpVjNcC8K99uswFmNerXNHbZmd0T3lA6kQdLRaf06eMKU=
+  app: freedraw
   on:
     repo: Wildhoney/Leaflet.FreeDraw

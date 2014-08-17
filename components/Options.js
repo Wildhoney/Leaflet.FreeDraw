@@ -24,6 +24,20 @@
         multiplePolygons: true,
 
         /**
+         * @property convexHullAlgorithm
+         * @type {String}
+         */
+        convexHullAlgorithm: 'brian3kbGrahamScan',
+
+        /**
+         * @property convexHullAlgorithms
+         * @type {Object}
+         */
+        convexHullAlgorithms: {
+            'brian3kb/graham_scan_js': 'brian3kbGrahamScan'
+        },
+
+        /**
          * @property svgClassName
          * @type {String}
          */
@@ -75,6 +89,24 @@
          */
         setIconClassName: function setIconClassName(className) {
             this.iconClassName = className;
+        },
+
+        /**
+         * @method setConvexHullAlgorithm
+         * @param algorithm {String|Boolean}
+         * @return {void}
+         */
+        setConvexHullAlgorithm: function setConvexHullAlgorithm(algorithm) {
+
+            if (algorithm && !this.convexHullAlgorithms.hasOwnProperty(algorithm)) {
+
+                // Ensure the passed algorithm is valid.
+                return;
+
+            }
+
+            this.convexHullAlgorithm = this.convexHullAlgorithms[algorithm];
+
         }
 
     };

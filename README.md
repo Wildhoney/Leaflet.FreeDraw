@@ -5,7 +5,7 @@ Leaflet.FreeDraw
 &nbsp;
 ![npm](https://badge.fury.io/js/leaflet.freedraw.png)
 
-* **Heroku**: [http://leaflet-freedraw.herokuapp.com/](http://leaflet-freedraw.herokuapp.com/)
+* **Heroku**: [http://freedraw.herokuapp.com/](http://freedraw.herokuapp.com/)
 * **Bower:** `bower install leaflet.freedraw`
 
 ---

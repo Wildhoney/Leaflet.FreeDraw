@@ -4,7 +4,8 @@
   "description": "Zoopla inspired freehand polygon creation using Leaflet.js.",
   "main": "dist/leaflet.freedraw.min.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "postinstall": "npm install; bower install; grunt build"
   },
   "repository": {
     "type": "git",

@@ -33,8 +33,9 @@
         this.setMap(map);
         this.map.dragging.disable();
 
-        // Lazily hook up the options object.
-        this.options = new $window.FreeDraw.Options();
+        // Lazily hook up the options and convex hull objects.
+        this.options    = new $window.FreeDraw.Options();
+        this.convexHull = new $window.FreeDraw.ConvexHull();
 
         // Define the line function for drawing the polygon from the user's mouse pointer.
         this.lineFunction = d3.svg.line().x(function(d) { return d.x; }).y(function(d) { return d.y; })
@@ -99,6 +100,12 @@
          * @type {Object}
          */
         options: {},
+
+        /**
+         * @property convexHull
+         * @type {Object}
+         */
+        convexHull: {},
 
         /**
          * @property markers
@@ -180,8 +187,9 @@
 
             // Add the polyline to the map, and then find the edges of the polygon.
             polyline.addTo(this.map);
-            this.attachEdges(polyline);
-            return polyline;
+
+//            this.attachEdges(polyline);
+//            return polyline;
 
         },
 
@@ -304,12 +312,32 @@
 
                 }
 
+                if (this.options.convexHullAlgorithm) {
+
+                    var hullLatLngs = [],
+                        points      = [];
+
+                    this.latLngs.forEach(function forEach(latLng) {
+
+                        // Resolve each latitude/longitude to its respective container point.
+                        points.push(this.map.latLngToContainerPoint(latLng));
+
+                    }.bind(this));
+
+                    // Use the defined convex hull algorithm.
+                    var resolvedPoints = this.convexHull[this.options.convexHullAlgorithm](points);
+
+                    resolvedPoints.forEach(function forEach(point) {
+                        hullLatLngs.push(this.map.containerPointToLatLng(point));
+                    }.bind(this));
+
+                }
+
                 // Required for joining the two ends of the free-hand drawing to create a closed polygon.
                 this.latLngs.push(this.latLngs[0]);
 
                 // Physically draw the Leaflet generated polygon.
-                this.drawPolygon(this.latLngs);
-//                var polygon = this.drawPolygon(this.latLngs);
+                this.drawPolygon(hullLatLngs || this.latLngs);
 
             }.bind(this));
 
