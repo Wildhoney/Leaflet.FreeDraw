@@ -21,5 +21,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "d3": "~3.4.11",
+    "leaflet": "~0.7.3"
+  }
 }
