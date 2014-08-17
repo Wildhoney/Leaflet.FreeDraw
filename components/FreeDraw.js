@@ -5,15 +5,15 @@
     /**
      * @method throwException
      * @param message {String}
-     * @param link {String}
+     * @param path {String}
      * @return {void}
      */
-    var throwException = function throwException(message, link) {
+    var throwException = function throwException(message, path) {
 
-        if (link) {
+        if (path) {
 
             // Output a link for a more informative message in the EXCEPTIONS.md.
-            console.error('See: https://github.com/Wildhoney/Leaflet.FreeDraw/' + link);
+            console.error('See: https://github.com/Wildhoney/Leaflet.FreeDraw/blob/master/EXCEPTIONS.md#' + path);
         }
 
         // ..And then output the thrown exception.
@@ -65,7 +65,7 @@
             if (!map || !(map instanceof L.Map)) {
 
                 // We didn't receive a valid `L.Map` instance during instantiation.
-                throwException('Upon instantiation an instance of L.Map must be passed', 'passing-an-l.map-instance');
+                throwException('Upon instantiation an instance of L.Map must be passed', 'passing-an-lmap-instance');
 
             }
 
