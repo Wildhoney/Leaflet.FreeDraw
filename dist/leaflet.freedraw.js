@@ -183,13 +183,10 @@
                 fillColor: '#ff0000',
                 fillOpacity: 0.45,
                 smoothFactor: this.options.smoothFactor
-            });
+            }).addTo(this.map);
 
-            // Add the polyline to the map, and then find the edges of the polygon.
-            polyline.addTo(this.map);
-
-//            this.attachEdges(polyline);
-//            return polyline;
+            this.attachEdges(polyline);
+            return polyline;
 
         },
 
