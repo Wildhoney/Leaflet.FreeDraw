@@ -174,7 +174,7 @@
                 color: 'red',
                 fill: true,
                 fillColor: '#ff0000',
-                fillOpacity: .45,
+                fillOpacity: 0.45,
                 smoothFactor: this.options.smoothFactor
             });
 
@@ -308,7 +308,8 @@
                 this.latLngs.push(this.latLngs[0]);
 
                 // Physically draw the Leaflet generated polygon.
-                var polygon = this.drawPolygon(this.latLngs);
+                this.drawPolygon(this.latLngs);
+//                var polygon = this.drawPolygon(this.latLngs);
 
             }.bind(this));
 
