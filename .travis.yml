@@ -15,6 +15,7 @@ script:
 
 deploy:
   provider: heroku
+  skip_cleanup: true
   api_key:
     secure: dpIofJxARTkgAch2Ljo/+ITMxAairaFqAHEOcdrv0rxHeQZW1VUmW0KMzMuB0Tihxg173yK4Ogy1JeBvCt2PkzmEfkuN0/ELdt1uuLK+Rcup86VY8AOIzREBJHtuYxOpVjNcC8K99uswFmNerXNHbZmd0T3lA6kQdLRaf06eMKU=
   app: freedraw
