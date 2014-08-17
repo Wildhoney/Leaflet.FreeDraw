@@ -11,6 +11,7 @@ before_script:
 script:
   - npm install
   - bower install
+  - grunt build
   - grunt test
 
 deploy:
