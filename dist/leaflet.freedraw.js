@@ -335,6 +335,7 @@
 
                 // Physically draw the Leaflet generated polygon.
                 this.drawPolygon(hullLatLngs || this.latLngs);
+                this.latLngs = [];
 
             }.bind(this));
 
