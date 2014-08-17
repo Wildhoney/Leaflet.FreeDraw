@@ -69,7 +69,7 @@ module.exports = function(grunt) {
                 separator: '\n\n'
             },
             dist: {
-                src: ['components/Service.js', 'components/*.js'],
+                src: ['components/FreeDraw.js', 'components/*.js'],
                 dest: 'dist/<%= pkg.name %>.js'
             }
         },
