@@ -1,0 +1,26 @@
+{
+  "name": "leaflet.freedraw",
+  "version": "0.1.0",
+  "description": "Zoopla inspired freehand polygon creation using Leaflet.js.",
+  "main": "dist/leaflet.freedraw.min.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wildhoney/Leaflet.FreeDraw.git"
+  },
+  "keywords": [
+    "leaflet",
+    "freedraw",
+    "polygon",
+    "drawing",
+    "freehand"
+  ],
+  "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wildhoney/Leaflet.FreeDraw/issues"
+  },
+  "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw"
+}
