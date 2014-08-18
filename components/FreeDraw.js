@@ -265,26 +265,7 @@
 
                 }
 
-                // Grab the cursor's position from the event object.
-                var pointerX = originalEvent.clientX,
-                    pointerY = originalEvent.clientY;
-
-                // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-                var point  = L.point(pointerX, pointerY),
-                    latLng = this.map.containerPointToLatLng(point);
-
-                // Line data that is fed into the D3 line function we defined earlier.
-                var lineData = [this.fromPoint, { x: pointerX, y: pointerY }];
-
-                // Draw SVG line based on the last movement of the mouse's position.
-                this.svg.append('path').attr('d', this.lineFunction(lineData))
-                                       .attr('stroke', 'blue').attr('stroke-width', 2).attr('fill', 'none');
-
-                // Take the pointer's position from the event for the next invocation of the mouse move event,
-                // and store the resolved latitudinal and longitudinal values.
-                this.fromPoint.x = pointerX;
-                this.fromPoint.y = pointerY;
-                this.latLngs.push(latLng);
+                this._createMouseMove(originalEvent);
 
             }.bind(this));
 
@@ -299,45 +280,87 @@
 
             this.map.on('mouseup mouseleave', function onMouseUpAndMouseLeave() {
 
-                // User has finished creating their polygon!
-                this.creating = false;
+                this._createMouseUp();
+                
+            });
 
-                if (this.latLngs.length === 0) {
+        },
 
-                    // User has failed to drag their cursor enough to create a valid polygon.
-                    return;
+        /**
+         * @method _createMouseMove
+         * @param event {Object}
+         * @return {void}
+         * @private
+         */
+        _createMouseMove: function _createMouseMove(event) {
 
-                }
+            // Grab the cursor's position from the event object.
+            var pointerX = event.clientX,
+                pointerY = event.clientY;
 
-                if (this.options.convexHullAlgorithm) {
+            // Resolve the pixel point to the latitudinal and longitudinal equivalent.
+            var point  = L.point(pointerX, pointerY),
+                latLng = this.map.containerPointToLatLng(point);
 
-                    var hullLatLngs = [],
-                        points      = [];
+            // Line data that is fed into the D3 line function we defined earlier.
+            var lineData = [this.fromPoint, { x: pointerX, y: pointerY }];
 
-                    this.latLngs.forEach(function forEach(latLng) {
+            // Draw SVG line based on the last movement of the mouse's position.
+            this.svg.append('path').attr('d', this.lineFunction(lineData))
+                .attr('stroke', 'blue').attr('stroke-width', 2).attr('fill', 'none');
 
-                        // Resolve each latitude/longitude to its respective container point.
-                        points.push(this.map.latLngToContainerPoint(latLng));
+            // Take the pointer's position from the event for the next invocation of the mouse move event,
+            // and store the resolved latitudinal and longitudinal values.
+            this.fromPoint.x = pointerX;
+            this.fromPoint.y = pointerY;
+            this.latLngs.push(latLng);
 
-                    }.bind(this));
+        },
 
-                    // Use the defined convex hull algorithm.
-                    var resolvedPoints = this.convexHull[this.options.convexHullAlgorithm](points);
+        /**
+         * @method _createMouseUp
+         * @return {void}
+         * @private
+         */
+        _createMouseUp: function _createMouseUp() {
 
-                    resolvedPoints.forEach(function forEach(point) {
-                        hullLatLngs.push(this.map.containerPointToLatLng(point));
-                    }.bind(this));
+            // User has finished creating their polygon!
+            this.creating = false;
 
-                }
+            if (this.latLngs.length === 0) {
 
-                // Required for joining the two ends of the free-hand drawing to create a closed polygon.
-                this.latLngs.push(this.latLngs[0]);
+                // User has failed to drag their cursor enough to create a valid polygon.
+                return;
 
-                // Physically draw the Leaflet generated polygon.
-                this.drawPolygon(hullLatLngs || this.latLngs);
-                this.latLngs = [];
+            }
 
-            }.bind(this));
+            if (this.options.convexHullAlgorithm) {
+
+                var hullLatLngs = [],
+                    points      = [];
+
+                this.latLngs.forEach(function forEach(latLng) {
+
+                    // Resolve each latitude/longitude to its respective container point.
+                    points.push(this.map.latLngToContainerPoint(latLng));
+
+                }.bind(this));
+
+                // Use the defined convex hull algorithm.
+                var resolvedPoints = this.convexHull[this.options.convexHullAlgorithm](points);
+
+                resolvedPoints.forEach(function forEach(point) {
+                    hullLatLngs.push(this.map.containerPointToLatLng(point));
+                }.bind(this));
+
+            }
+
+            // Required for joining the two ends of the free-hand drawing to create a closed polygon.
+            this.latLngs.push(this.latLngs[0]);
+
+            // Physically draw the Leaflet generated polygon.
+            this.drawPolygon(hullLatLngs || this.latLngs);
+            this.latLngs = [];
 
         }
 

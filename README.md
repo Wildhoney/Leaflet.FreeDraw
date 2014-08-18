@@ -1,14 +1,16 @@
 Leaflet.FreeDraw
 ================
 
-![Travis](https://api.travis-ci.org/Wildhoney/Leaflet.FreeDraw.png)
+![Travis](http://img.shields.io/travis/Wildhoney/Leaflet.FreeDraw.svg?style=flat)
 &nbsp;
-![npm](https://badge.fury.io/js/leaflet.freedraw.png)
+![npm](http://img.shields.io/npm/v/leaflet.freedraw.svg?style=flat)
 &nbsp;
 ![MIT License](http://img.shields.io/badge/license-MIT-orange.svg)
 
 * **Heroku**: [http://freedraw.herokuapp.com/](http://freedraw.herokuapp.com/)
 * **Bower:** `bower install leaflet.freedraw`
+
+![Leaflet.js Logo](http://leafletjs.com/docs/images/logo.png)
 
 ---
 
