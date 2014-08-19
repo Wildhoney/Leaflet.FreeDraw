@@ -114,6 +114,12 @@
         edges: [],
 
         /**
+         * @property allowEdit
+         * @type {Boolean}
+         */
+        allowEdit: true,
+
+        /**
          * Responsible for holding the coordinates of the user's last cursor position for drawing
          * the D3 polygon tracing the user's cursor.
          *
@@ -145,6 +151,24 @@
             // Everything is okay.
             this.map = map;
 
+        },
+
+        /**
+         * @method enableEdit
+         * @return {void}
+         */
+        enableEdit: function enableEdit() {
+            this.allowEdit = true;
+            this.map.dragging.disable();
+        },
+
+        /**
+         * @method disableEdit
+         * @return {void}
+         */
+        disableEdit: function disableEdit() {
+            this.allowEdit = false;
+            this.map.dragging.enable();
         },
 
         /**
@@ -255,6 +279,10 @@
         _attachMouseDown: function _attachMouseDown() {
 
             this.map.on('mousedown', function onMouseDown(event) {
+
+                if (!this.allowEdit) {
+                    return;
+                }
 
                 var originalEvent = event.originalEvent;
 

@@ -18,6 +18,8 @@
         freeDraw.options.setConvexHullAlgorithm(false);
 //        freeDraw.options.setConvexHullAlgorithm('brian3kb/graham_scan_js');
 
+        freeDraw.enableEdit();
+
     };
 
     // Hold onto your hats!
