@@ -25,7 +25,7 @@
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "dependencies": {
     "bower": "^1.3.9",
-    "express": "^4.8.4",
+    "express": "^4.8.5",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-compress": "^0.10.0",
