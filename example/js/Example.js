@@ -10,8 +10,8 @@
 
         // Setup Leaflet: http://leafletjs.com/examples/quick-start.html
         var mapContainer = window.document.querySelector('section.map'),
-            map          = L.map(mapContainer).setView([51.505, -0.09], 13);
-        L.tileLayer('http://c.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg').addTo(map);
+            map          = L.map(mapContainer).setView([51.505, -0.09], 14);
+        L.tileLayer('http://b.tile.stamen.com/toner/{z}/{x}/{y}.png').addTo(map);
 
         var freeDraw = new FreeDraw(map);
         freeDraw.options.allowMultiplePolygons(true);

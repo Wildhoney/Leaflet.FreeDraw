@@ -14,7 +14,8 @@ section.map {
 }
 
 section.map div.polygon-elbow {
-    background-color: white;
+    background-color: #D7217E;
+    border: 2px solid white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .35);
     cursor: move;

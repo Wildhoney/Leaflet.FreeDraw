@@ -108,10 +108,10 @@
         convexHull: {},
 
         /**
-         * @property markers
+         * @property edges
          * @type {Array}
          */
-        markers: [],
+        edges: [],
 
         /**
          * Responsible for holding the coordinates of the user's last cursor position for drawing
@@ -123,10 +123,10 @@
         fromPoint: { x: 0, y: 0 },
 
         /**
-         * @property pointerEdit
+         * @property movingEdge
          * @type {L.polyline|null}
          */
-        pointerEdit: null,
+        movingEdge: null,
 
         /**
          * @method setMap
@@ -178,10 +178,11 @@
             this.destroyD3().createD3();
 
             var polyline = L.polyline(latLngs, {
-                color: 'red',
+                color: '#D7217E',
+                weight: 0,
                 fill: true,
-                fillColor: '#ff0000',
-                fillOpacity: 0.45,
+                fillColor: '#D7217E',
+                fillOpacity: 0.75,
                 smoothFactor: this.options.smoothFactor
             }).addTo(this.map);
 
@@ -204,25 +205,46 @@
 
                 // Leaflet creates elbows in the polygon, which we need to utilise to add the
                 // points for modifying its shape.
-                var edgeMarker = L.divIcon({ className: this.options.iconClassName }),
+                var edge = L.divIcon({ className: this.options.iconClassName }),
                     latLng     = this.map.layerPointToLatLng(point);
 
-                var marker = L.marker(latLng, { icon: edgeMarker }).addTo(this.map);
+                edge = L.marker(latLng, { icon: edge }).addTo(this.map);
 
                 // Marker requires instances so that it can modify its shape.
-                marker._polygon = polygon;
-                marker._index   = index;
-                marker._length  = parts.length;
-                this.markers.push(marker);
+                edge._polygon = polygon;
+                edge._index   = index;
+                edge._length  = parts.length;
+                this.edges.push(edge);
 
-                marker.on('mousedown', function onMouseDown(event) {
+                edge.on('mousedown', function onMouseDown(event) {
                     event.originalEvent.preventDefault();
                     event.originalEvent.stopPropagation();
-                    this.pointerEdit = event.target;
+                    this.movingEdge = event.target;
                 }.bind(this));
 
             }.bind(this));
             
+        },
+
+        updatePolygonEdge: function updatePolygon(edge, posX, posY) {
+
+            var updatedLatLng = this.map.containerPointToLatLng(L.point(posX, posY));
+            edge.setLatLng(updatedLatLng);
+    
+            // Fetch all of the edges in the group based on the polygon.
+            var edges = this.edges.filter(function filter(marker) {
+                return marker._polygon === edge._polygon;
+            });
+    
+            var updatedLatLngs = [];
+            edges.forEach(function forEach(marker) {
+                updatedLatLngs.push(marker.getLatLng());
+            });
+    
+            // Update the latitude and longitude values.
+            edge._polygon.setLatLngs(updatedLatLngs);
+            edge._polygon.redraw();
+    
         },
 
         /**
@@ -257,6 +279,14 @@
 
                 var originalEvent = event.originalEvent;
 
+                if (this.movingEdge) {
+
+                    // User is in fact modifying the shape of the polygon.
+                    this._editMouseMove(originalEvent);
+                    return;
+
+                }
+
                 if (!this.creating) {
 
                     // We can't do anything else if the user is not in the process of creating a brand-new
@@ -272,6 +302,51 @@
         },
 
         /**
+         * @method _editMouseMove
+         * @param event {Object}
+         * @return {void}
+         * @private
+         */
+        _editMouseMove: function _editMouseMove(event) {
+
+            var pointModel = L.point(event.clientX, event.clientY);
+
+            // Modify the position of the marker on the map based on the user's mouse position.
+            var styleDeclaration = this.movingEdge._icon.style;
+            styleDeclaration[L.DomUtil.TRANSFORM] = pointModel;
+
+            // Update the polygon's shape in real-time as the user drags their cursor.
+            this.updatePolygonEdge(this.movingEdge, pointModel.x, pointModel.y);
+
+//            /**
+//             * Responsible for maintaining a closed polygon if the user selects the last marker in the
+//             * array of edges.
+//             *
+//             * @method maintainPolygon
+//             * @return {void}
+//             */
+//            (function maintainPolygon() {
+//
+//                // Determine if the selected polygon is indeed the last one in the array.
+//                var isLast = this.movingEdge._index === ((this.movingEdge._length) - 1);
+//
+//                if (isLast) {
+//
+//                    // Locate the first marker in the array.
+//                    var firstMarker = this.edges.filter(function filter(marker) {
+//                        return marker._polygon === this.movingEdge._polygon;
+//                    })[0];
+//
+//                    // ..And then update the polygon to maintain the closed polygon.
+//                    this.updatePolygonEdge(firstMarker, pointModel.x, pointModel.y);
+//
+//                }
+//
+//            })();
+            
+        },
+
+        /**
          * @method _attachMouseUpLeave
          * @return {void}
          * @private
@@ -280,9 +355,17 @@
 
             this.map.on('mouseup mouseleave', function onMouseUpAndMouseLeave() {
 
+                if (this.movingEdge) {
+
+//                    this.sharePolygonBoundaries(this.pointerEdit._polygon);
+                    this.movingEdge = null;
+                    return;
+                    
+                }
+                
                 this._createMouseUp();
                 
-            });
+            }.bind(this));
 
         },
 
@@ -307,7 +390,7 @@
 
             // Draw SVG line based on the last movement of the mouse's position.
             this.svg.append('path').attr('d', this.lineFunction(lineData))
-                .attr('stroke', 'blue').attr('stroke-width', 2).attr('fill', 'none');
+                .attr('stroke', '#D7217E').attr('stroke-width', 2).attr('fill', 'none');
 
             // Take the pointer's position from the event for the next invocation of the mouse move event,
             // and store the resolved latitudinal and longitudinal values.
