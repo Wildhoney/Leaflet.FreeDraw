@@ -10,7 +10,7 @@ section.map {
     top: 0;
     width: 100%;
     height: 100%;
-    cursor: crosshair;
+    cursor: crosshair !important;
 }
 
 section.map div.polygon-elbow {
