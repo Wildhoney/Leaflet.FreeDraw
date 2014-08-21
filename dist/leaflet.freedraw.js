@@ -504,7 +504,7 @@
          * @link https://github.com/brian3kb/graham_scan_js
          * @method brian3kbGrahamScan
          * @param latLngs {L.LatLng[]}
-         * @return {L.Point[]}
+         * @return {L.LatLng[]}
          */
         brian3kbGrahamScan: function brian3kbGrahamScan(latLngs) {
 
@@ -541,8 +541,15 @@
 
         },
 
-        wildhoneyConcaveHull: function wildhoneyConcaveHull(latLng) {
-
+        /**
+         * @link https://github.com/Wildhoney/ConcaveHull
+         * @method wildhoneyConcaveHull
+         * @param latLngs {L.LatLng[]}
+         * @return {L.LatLng[]}
+         */
+        wildhoneyConcaveHull: function wildhoneyConcaveHull(latLngs) {
+            latLngs.push(latLngs[0]);
+            return new ConcaveHull(latLngs).getLatLngs();
         }
 
     }

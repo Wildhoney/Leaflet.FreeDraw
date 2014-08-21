@@ -16,7 +16,7 @@
         var freeDraw = new FreeDraw(map);
         freeDraw.options.allowMultiplePolygons(true);
         freeDraw.options.setHullAlgorithm(false);
-        freeDraw.options.setHullAlgorithm('brian3kb/graham_scan_js');
+        freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
 
         freeDraw.enableEdit();
 
