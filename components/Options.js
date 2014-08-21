@@ -24,17 +24,18 @@
         multiplePolygons: true,
 
         /**
-         * @property convexHullAlgorithm
+         * @property hullAlgorithm
          * @type {String}
          */
-        convexHullAlgorithm: 'brian3kbGrahamScan',
+        hullAlgorithm: 'brian3kbGrahamScan',
 
         /**
-         * @property convexHullAlgorithms
+         * @property hullAlgorithms
          * @type {Object}
          */
-        convexHullAlgorithms: {
-            'brian3kb/graham_scan_js': 'brian3kbGrahamScan'
+        hullAlgorithms: {
+            'brian3kb/graham_scan_js': 'brian3kbGrahamScan',
+            'Wildhoney/ConcaveHull': 'wildhoneyConcaveHull'
         },
 
         /**
@@ -92,20 +93,20 @@
         },
 
         /**
-         * @method setConvexHullAlgorithm
+         * @method setHullAlgorithm
          * @param algorithm {String|Boolean}
          * @return {void}
          */
-        setConvexHullAlgorithm: function setConvexHullAlgorithm(algorithm) {
+        setHullAlgorithm: function setHullAlgorithm(algorithm) {
 
-            if (algorithm && !this.convexHullAlgorithms.hasOwnProperty(algorithm)) {
+            if (algorithm && !this.hullAlgorithms.hasOwnProperty(algorithm)) {
 
                 // Ensure the passed algorithm is valid.
                 return;
 
             }
 
-            this.convexHullAlgorithm = this.convexHullAlgorithms[algorithm];
+            this.hullAlgorithm = this.hullAlgorithms[algorithm];
 
         }
 

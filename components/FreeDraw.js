@@ -33,9 +33,9 @@
         this.setMap(map);
         this.map.dragging.disable();
 
-        // Lazily hook up the options and convex hull objects.
-        this.options    = new $window.FreeDraw.Options();
-        this.convexHull = new $window.FreeDraw.ConvexHull();
+        // Lazily hook up the options and  hull objects.
+        this.options = new $window.FreeDraw.Options();
+        this.hull    = new $window.FreeDraw.Hull();
 
         // Define the line function for drawing the polygon from the user's mouse pointer.
         this.lineFunction = d3.svg.line().x(function(d) { return d.x; }).y(function(d) { return d.y; })
@@ -102,10 +102,10 @@
         options: {},
 
         /**
-         * @property convexHull
+         * @property hull
          * @type {Object}
          */
-        convexHull: {},
+        hull: {},
 
         /**
          * @property edges
@@ -130,7 +130,7 @@
 
         /**
          * @property movingEdge
-         * @type {L.polyline|null}
+         * @type {L.polygon|null}
          */
         movingEdge: null,
 
@@ -194,14 +194,14 @@
         /**
          * @method drawPolygon
          * @param latLngs {L.latLng[]}
-         * @return {L.polyline}
+         * @return {L.polygon}
          */
         drawPolygon: function drawPolygon(latLngs) {
 
             // Begin to create a brand-new polygon.
             this.destroyD3().createD3();
 
-            var polyline = L.polyline(latLngs, {
+            var polygon = L.polygon(latLngs, {
                 color: '#D7217E',
                 weight: 0,
                 fill: true,
@@ -210,14 +210,14 @@
                 smoothFactor: this.options.smoothFactor
             }).addTo(this.map);
 
-            this.attachEdges(polyline);
-            return polyline;
+            this.attachEdges(polygon);
+            return polygon;
 
         },
 
         /**
          * @method attachEdges
-         * @param polygon {L.polyline}
+         * @param polygon {L.polygon}
          * @return {void}
          */
         attachEdges: function attachEdges(polygon) {
@@ -445,24 +445,11 @@
 
             }
 
-            if (this.options.convexHullAlgorithm) {
-
-                var hullLatLngs = [],
-                    points      = [];
-
-                this.latLngs.forEach(function forEach(latLng) {
-
-                    // Resolve each latitude/longitude to its respective container point.
-                    points.push(this.map.latLngToContainerPoint(latLng));
-
-                }.bind(this));
-
-                // Use the defined convex hull algorithm.
-                var resolvedPoints = this.convexHull[this.options.convexHullAlgorithm](points);
-
-                resolvedPoints.forEach(function forEach(point) {
-                    hullLatLngs.push(this.map.containerPointToLatLng(point));
-                }.bind(this));
+            if (this.options.hullAlgorithm) {
+                
+                // Use the defined hull algorithm.
+                this.hull.setMap(this.map);
+                var latLngs = this.hull[this.options.hullAlgorithm](this.latLngs);
 
             }
 
@@ -470,7 +457,7 @@
             this.latLngs.push(this.latLngs[0]);
 
             // Physically draw the Leaflet generated polygon.
-            this.drawPolygon(hullLatLngs || this.latLngs);
+            this.drawPolygon(latLngs || this.latLngs);
             this.latLngs = [];
 
         }
