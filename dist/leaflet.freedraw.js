@@ -280,7 +280,15 @@
 
             this.map.on('mousedown', function onMouseDown(event) {
 
-                if (!this.allowEdit) {
+                /**
+                 * Used for determining if the user clicked with the right mouse button.
+                 *
+                 * @constant RIGHT_CLICK
+                 * @type {Number}
+                 */
+                var RIGHT_CLICK = 2;
+
+                if (!this.allowEdit || event.originalEvent.button === RIGHT_CLICK) {
                     return;
                 }
 
@@ -345,32 +353,6 @@
 
             // Update the polygon's shape in real-time as the user drags their cursor.
             this.updatePolygonEdge(this.movingEdge, pointModel.x, pointModel.y);
-
-//            /**
-//             * Responsible for maintaining a closed polygon if the user selects the last marker in the
-//             * array of edges.
-//             *
-//             * @method maintainPolygon
-//             * @return {void}
-//             */
-//            (function maintainPolygon() {
-//
-//                // Determine if the selected polygon is indeed the last one in the array.
-//                var isLast = this.movingEdge._index === ((this.movingEdge._length) - 1);
-//
-//                if (isLast) {
-//
-//                    // Locate the first marker in the array.
-//                    var firstMarker = this.edges.filter(function filter(marker) {
-//                        return marker._polygon === this.movingEdge._polygon;
-//                    })[0];
-//
-//                    // ..And then update the polygon to maintain the closed polygon.
-//                    this.updatePolygonEdge(firstMarker, pointModel.x, pointModel.y);
-//
-//                }
-//
-//            })();
             
         },
 
@@ -438,7 +420,7 @@
             // User has finished creating their polygon!
             this.creating = false;
 
-            if (this.latLngs.length === 0) {
+            if (this.latLngs.length <= 2) {
 
                 // User has failed to drag their cursor enough to create a valid polygon.
                 return;
