@@ -21,6 +21,15 @@
 
     };
 
+    /**
+     * @method freeDraw
+     * @param options {Object}
+     * @returns {window.L.FreeDraw}
+     */
+    L.freeDraw = function freeDraw(options) {
+        return new L.FreeDraw(options);
+    };
+
     L.FreeDraw = L.FeatureGroup.extend({
 
         /**
@@ -290,21 +299,21 @@
 
             // Remove the shape.
             polygon._container.remove();
-    
+
             // ...And then remove all of its related edges to prevent memory leaks.
             this.edges = this.edges.filter(function filter(edge) {
-    
+
                 if (edge._polygon !== polygon) {
                     return true;
                 }
-    
+
                 // Physically remove the edge from the DOM.
                 edge._icon.remove();
-    
+
             });
-    
+
             this.notifyBoundaries();
-    
+
         },
 
         /**
@@ -354,7 +363,7 @@
 
             // Invoke the user passed method for specifying latitude/longitudes.
             this.options.markersFn(latLngs, this.setMarkers.bind(this));
-            
+
         },
 
         /**

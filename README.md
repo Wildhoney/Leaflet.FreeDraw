@@ -10,7 +10,7 @@ Leaflet.FreeDraw
 * **Heroku**: [http://freedraw.herokuapp.com/](http://freedraw.herokuapp.com/)
 * **Bower:** `bower install leaflet.freedraw`;
 
-Use [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw) for drawing pre-defined polygons and linear shapes &ndash; `Leaflet.FreeDraw`'s selling point is that it allows you to freely draw a polygon like [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map). Convex Hulls are also supported to normalise polygons when users draw an insane polygon &ndash; currently `Leaflet.FreeDraw` supports Brian Barnett's [Graham Scan module](https://github.com/brian3kb/graham_scan_js) and my adaptation of the [concave hull algorithm](https://github.com/Wildhoney/ConcaveHull).
+Use [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw) for drawing pre-defined polygons and linear shapes &ndash; `Leaflet.FreeDraw`'s selling point is that it allows you to freely draw a polygon like [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map). Hulls are also supported to normalise polygons when users draw an insane polygon &ndash; currently `Leaflet.FreeDraw` supports Brian Barnett's [Graham Scan module](https://github.com/brian3kb/graham_scan_js) and my adaptation of the [concave hull algorithm](https://github.com/Wildhoney/ConcaveHull).
 
 ![FreeDraw Screenshot](http://i.imgur.com/aCt4xCf.png)
 
@@ -26,7 +26,7 @@ var map = L.map('map').setView([51.505, -0.09], 14);
 map.addLayer(new L.FreeDraw());
 ```
 
-Upon instantiation `L.FreeDraw` you can immediately define the mode &ndash; with the default being `L.FreeDraw.MODES.VIEW` &ndash; please see [modes](#modes) for more information.
+Upon instantiation of `L.FreeDraw` you can immediately define the mode &ndash; with the default being `L.FreeDraw.MODES.VIEW` &ndash; please see [modes](#modes) for more information.
 
 ![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
 
