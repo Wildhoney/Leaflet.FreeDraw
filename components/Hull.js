@@ -1,4 +1,4 @@
-(function($window) {
+(function() {
 
     "use strict";
 
@@ -9,13 +9,13 @@
      * @link https://github.com/Wildhoney/Leaflet.FreeDraw
      * @constructor
      */
-    $window.FreeDraw.Hull = function FreeDrawHull() {};
+    L.FreeDraw.Hull = function FreeDrawHull() {};
 
     /**
      * @property prototype
      * @type {Object}
      */
-    $window.FreeDraw.Hull.prototype = {
+    L.FreeDraw.Hull.prototype = {
 
         /**
          * @property map
@@ -86,4 +86,4 @@
 
     }
 
-}(window));
+}());

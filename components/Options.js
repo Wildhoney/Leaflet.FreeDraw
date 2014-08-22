@@ -1,4 +1,4 @@
-(function($window) {
+(function() {
 
     "use strict";
 
@@ -9,13 +9,13 @@
      * @link https://github.com/Wildhoney/Leaflet.FreeDraw
      * @constructor
      */
-    $window.FreeDraw.Options = function FreeDrawOptions() {};
+    L.FreeDraw.Options = function FreeDrawOptions() {};
 
     /**
      * @property prototype
      * @type {Object}
      */
-    $window.FreeDraw.Options.prototype = {
+    L.FreeDraw.Options.prototype = {
 
         /**
          * @property multiplePolygons
@@ -25,9 +25,27 @@
 
         /**
          * @property hullAlgorithm
-         * @type {String}
+         * @type {String|Boolean}
          */
-        hullAlgorithm: 'brian3kbGrahamScan',
+        hullAlgorithm: false,
+
+        /**
+         * @property boundariesAfterEdit
+         * @type {Boolean}
+         */
+        boundariesAfterEdit: false,
+
+        /**
+         * @property createExitMode
+         * @type {Boolean}
+         */
+        createExitMode: true,
+
+        /**
+         * @method markersFn
+         * @type {Function}
+         */
+        markersFn: function() {},
 
         /**
          * @property hullAlgorithms
@@ -57,6 +75,15 @@
         iconClassName: 'polygon-elbow',
 
         /**
+         * @method exitModeAfterCreate
+         * @param value {Boolean}
+         * @return {void}
+         */
+        exitModeAfterCreate: function exitModeAfterCreate(value) {
+            this.createExitMode = !!value;
+        },
+
+        /**
          * @method allowMultiplePolygons
          * @param allow {Boolean}
          * @return {void}
@@ -75,6 +102,15 @@
         },
 
         /**
+         * @method setBoundariesAfterEdit
+         * @param value {Boolean}
+         * @return {void}
+         */
+        setBoundariesAfterEdit: function setBoundariesAfterEdit(value) {
+            this.boundariesAfterEdit = !!value;
+        },
+
+        /**
          * @method smoothFactor
          * @param factor {Number}
          * @return {void}
@@ -90,6 +126,15 @@
          */
         setIconClassName: function setIconClassName(className) {
             this.iconClassName = className;
+        },
+
+        /**
+         * @method getMarkers
+         * @param markersFn {Function}
+         * @return {void}
+         */
+        getMarkers: function getMarkers(markersFn) {
+            this.markersFn = markersFn;
         },
 
         /**
@@ -112,4 +157,4 @@
 
     };
 
-})(window);
+})();
