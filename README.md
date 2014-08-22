@@ -28,6 +28,14 @@ map.addLayer(new L.FreeDraw());
 
 Upon instantiation of `L.FreeDraw` you can immediately define the mode &ndash; with the default being `L.FreeDraw.MODES.VIEW` &ndash; please see [modes](#modes) for more information.
 
+```javascript
+// Allow the user to only create and edit polygons.
+
+map.addLayer(new L.FreeDraw({
+    mode: L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.EDIT
+}));
+```
+
 ![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
 
 ## Fetching Markers
