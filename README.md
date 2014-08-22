@@ -45,7 +45,7 @@ You may also use the second argument of the `setMarkers` resolution method to sp
 
 ## Options
 
-FreeDraw has quite a few options &ndash; all of which can be seen by taking a look at the `FreeDraw.Options` object. However, there are certain options that you are likely to use more than others.
+FreeDraw has quite a few options &ndash; all of which can be seen by taking a look at the `L.FreeDraw.Options` object. However, there are certain options that you are likely to use more than others.
 
 ```javascript
 // Allow the user to define multiple polygons on one map.
@@ -88,7 +88,7 @@ var freeDraw = window.freeDraw = new L.FreeDraw({
 In specifying the mode you are using [bitwise operators](http://en.wikipedia.org/wiki/Bitwise_operation) with the mapping being as follows:
 
 ```javascript
-MODES: {
+L.FreeDraw.MODES: {
     VIEW:   1,
     CREATE: 2,
     EDIT:   4,
