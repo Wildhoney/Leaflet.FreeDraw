@@ -26,7 +26,7 @@ var map = L.map('map').setView([51.505, -0.09], 14);
 map.addLayer(new L.FreeDraw());
 ```
 
-Upon instantiation `L.FreeDraw` you can immediately define the mode &ndash; with the default being `FreeDraw.MODES.VIEW` &ndash; please see [modes](#modes) for more information.
+Upon instantiation `L.FreeDraw` you can immediately define the mode &ndash; with the default being `L.FreeDraw.MODES.VIEW` &ndash; please see [modes](#modes) for more information.
 
 ## Fetching Markers
 
@@ -73,15 +73,15 @@ When a user is modifying a polygon the `getBoundaries` callback is invoked each 
 
 ### Exit Create Mode
 
-After drawing a polygon the `FreeDraw.MODES.CREATE` mode will automatically be exited &ndash; but this can be suppressed by specifying `freeDraw.options.exitModeAfterCreate(false)` in which case the create mode will be persisted until the user explicitly exits it.
+After drawing a polygon the `L.FreeDraw.MODES.CREATE` mode will automatically be exited &ndash; but this can be suppressed by specifying `freeDraw.options.exitModeAfterCreate(false)` in which case the create mode will be persisted until the user explicitly exits it.
 
 ## Modes
 
-FreeDraw by default uses the `FreeDraw.MODES.VIEW` mode which prevents the user from creating, editing, or deleting any polygons. When instantiating `L.FreeDraw` you may override the default mode &ndash; in the following case a user may **only** delete polygons:
+FreeDraw by default uses the `L.FreeDraw.MODES.VIEW` mode which prevents the user from creating, editing, or deleting any polygons. When instantiating `L.FreeDraw` you may override the default mode &ndash; in the following case a user may **only** delete polygons:
 
 ```javascript
 var freeDraw = window.freeDraw = new L.FreeDraw({
-    mode: FreeDraw.MODES.DELETE
+    mode: L.FreeDraw.MODES.DELETE
 });
 ```
 
@@ -97,11 +97,11 @@ MODES: {
 }
 ```
 
-Therefore you're able to combine the bitwise operators to specify multiple modes. For example, if you would like to allow the user to create and delete, then you would specify the options as `FreeDraw.MODES.CREATE | FreeDraw.MODES.DELETE`. By allowing a user to perform every action you would have to concatenate all of the modes via the pipe (`|`) character &ndash; therefore `L.FreeDraw` provides the convenient `FreeDraw.MODES.ALL` property which does that for you.
+Therefore you're able to combine the bitwise operators to specify multiple modes. For example, if you would like to allow the user to create and delete, then you would specify the options as `L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.DELETE`. By allowing a user to perform every action you would have to concatenate all of the modes via the pipe (`|`) character &ndash; therefore `L.FreeDraw` provides the convenient `L.FreeDraw.MODES.ALL` property which does that for you.
 
-Using the `FreeDraw.MODES.ALL` property you could easily enable all the modes **except** edit with the following: `FreeDraw.MODES.ALL ^ FreeDraw.MODES.EDIT`.
+Using the `L.FreeDraw.MODES.ALL` property you could easily enable all the modes **except** edit with the following: `L.FreeDraw.MODES.ALL ^ L.FreeDraw.MODES.EDIT`.
 
-All modes allow the user to zoom and drag **except** when you have the `FreeDraw.MODES.CREATE` enabled &ndash; even when used in conjunction with other modes.
+All modes allow the user to zoom and drag **except** when you have the `L.FreeDraw.MODES.CREATE` enabled &ndash; even when used in conjunction with other modes.
 
 ### Class Names
 
@@ -116,10 +116,10 @@ section.map.mode-edit div.polygon-elbow {
 
 Each mode maps to a different class which is conditionally applied to the `map` based on whether that mode is active:
 
- * `mode-view` maps to `FreeDraw.MODES.VIEW`;
- * `mode-create` maps to `FreeDraw.MODES.CREATE`;
- * `mode-edit` maps to `FreeDraw.MODES.EDIT`;
- * `mode-delete` maps to `FreeDraw.MODES.DELETE`;
+ * `mode-view` maps to `L.FreeDraw.MODES.VIEW`;
+ * `mode-create` maps to `L.FreeDraw.MODES.CREATE`;
+ * `mode-edit` maps to `L.FreeDraw.MODES.EDIT`;
+ * `mode-delete` maps to `L.FreeDraw.MODES.DELETE`;
  
 Another example would be changing the `cursor` type when the user is in polygon creation mode:
 

@@ -21,22 +21,6 @@
 
     };
 
-    $window.FreeDraw = {
-
-        /**
-         * @constant MODES
-         * @type {Object}
-         */
-        MODES: {
-            VIEW:   1,
-            CREATE: 2,
-            EDIT:   4,
-            DELETE: 8,
-            ALL:    1 | 2 | 4 | 8
-        }
-        
-    };
-
     L.FreeDraw = L.FeatureGroup.extend({
 
         /**
@@ -156,7 +140,7 @@
 
             // Lazily hook up the options and hull objects.
             this.map     = map;
-            this.mode    = this.mode || FreeDraw.MODES.VIEW;
+            this.mode    = this.mode || L.FreeDraw.MODES.VIEW;
 
             // Define the line function for drawing the polygon from the user's mouse pointer.
             this.lineFunction = d3.svg.line().x(function(d) { return d.x; }).y(function(d) { return d.y; })
@@ -182,7 +166,7 @@
          */
         setMode: function setMode(mode) {
 
-            var isCreate = !!(mode & FreeDraw.MODES.CREATE),
+            var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
             // Set the current mode.
@@ -192,7 +176,7 @@
                 return;
             }
 
-            if (this.boundaryUpdateRequired && !(this.mode & FreeDraw.MODES.EDIT)) {
+            if (this.boundaryUpdateRequired && !(this.mode & L.FreeDraw.MODES.EDIT)) {
 
                 // Share the boundaries if there's an update available and the user is changing the mode
                 // to anything else but the edit mode again.
@@ -237,7 +221,7 @@
                     classList.add('mode-view');
                 }
 
-            }(FreeDraw.MODES, this.map._container.classList));
+            }(L.FreeDraw.MODES, this.map._container.classList));
 
         },
 
@@ -507,7 +491,7 @@
                 this.latLngs   = [];
                 this.fromPoint = { x: originalEvent.clientX, y: originalEvent.clientY };
 
-                if (this.mode & FreeDraw.MODES.CREATE) {
+                if (this.mode & L.FreeDraw.MODES.CREATE) {
 
                     // Place the user in create polygon mode.
                     this.creating = true;
@@ -670,7 +654,7 @@
 
             polygon.on('click', function onClick() {
 
-                if (this.mode & FreeDraw.MODES.DELETE) {
+                if (this.mode & L.FreeDraw.MODES.DELETE) {
 
                     // Remove the polygon when the user clicks on it, and they're in delete mode.
                     this.destroyPolygon(polygon);
@@ -682,12 +666,24 @@
             if (this.options.createExitMode) {
 
                 // Automatically exit the user from the creation mode.
-                this.setMode(this.mode ^ FreeDraw.MODES.CREATE);
+                this.setMode(this.mode ^ L.FreeDraw.MODES.CREATE);
 
             }
 
         }
 
     });
+
+    /**
+     * @constant MODES
+     * @type {Object}
+     */
+    L.FreeDraw.MODES = {
+        VIEW:   1,
+        CREATE: 2,
+        EDIT:   4,
+        DELETE: 8,
+        ALL:    1 | 2 | 4 | 8
+    };
 
 })(window, window.L, window.d3);

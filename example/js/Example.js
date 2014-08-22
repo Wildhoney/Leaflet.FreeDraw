@@ -14,7 +14,7 @@
         L.tileLayer('https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=b86b18b0645848bea383827fdccb878e').addTo(map);
 
         var freeDraw = window.freeDraw = new L.FreeDraw({
-            mode: FreeDraw.MODES.DELETE | FreeDraw.MODES.CREATE
+            mode: L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.CREATE
         });
 
         freeDraw.options.setBoundariesAfterEdit(true);
