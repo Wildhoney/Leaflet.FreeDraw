@@ -492,6 +492,13 @@
                     return;
                 }
 
+                if (!this.options.multiplePolygons && this.edges.length) {
+
+                    // User is only allowed to create one polygon.
+                    return;
+
+                }
+
                 var originalEvent = event.originalEvent;
 
                 originalEvent.stopPropagation();
