@@ -21,45 +21,27 @@
 
     };
 
-    /**
-     * @module FreeDraw
-     * @author Adam Timberlake
-     * @link https://github.com/Wildhoney/Leaflet.FreeDraw
-     * @constructor
-     */
-    $window.FreeDraw = function FreeDraw(map) {
+    $window.FreeDraw = {
 
-        // FreeDraw requires access to the Leaflet map instance.
-        this.setMap(map);
-        this.map.dragging.disable();
-
-        // Lazily hook up the options and  hull objects.
-        this.options = new $window.FreeDraw.Options();
-        this.hull    = new $window.FreeDraw.Hull();
-
-        // Define the line function for drawing the polygon from the user's mouse pointer.
-        this.lineFunction = d3.svg.line().x(function(d) { return d.x; }).y(function(d) { return d.y; })
-                                         .interpolate('linear');
-
-        // Create a new instance of the D3 free-hand tracer.
-        this.createD3();
-
-        // Attach all of the events.
-        this._attachMouseDown();
-        this._attachMouseMove();
-        this._attachMouseUpLeave();
-
+        /**
+         * @constant MODES
+         * @type {Object}
+         */
+        MODES: {
+            VIEW:   1,
+            CREATE: 2,
+            EDIT:   4,
+            DELETE: 8,
+            ALL:    1 | 2 | 4 | 8
+        }
+        
     };
 
-    /**
-     * @property prototype
-     * @type {Object}
-     */
-    $window.FreeDraw.prototype = {
+    L.FreeDraw = L.FeatureGroup.extend({
 
         /**
          * @property map
-         * @type {L.map|null}
+         * @type {L.Map|null}
          */
         map: null,
 
@@ -84,7 +66,7 @@
          * @property lineFunction
          * @type {Function}
          */
-        lineFunction: function() {},
+        lineFunction: function () {},
 
         /**
          * Responsible for holding an array of latitudinal and longitudinal points for generating
@@ -102,6 +84,12 @@
         options: {},
 
         /**
+         * @property markers
+         * @type {L.LayerGroup|null}
+         */
+        markerLayer: L.layerGroup(),
+
+        /**
          * @property hull
          * @type {Object}
          */
@@ -114,10 +102,10 @@
         edges: [],
 
         /**
-         * @property allowEdit
-         * @type {Boolean}
+         * @property mode
+         * @type {Number}
          */
-        allowEdit: true,
+        mode: 1,
 
         /**
          * Responsible for holding the coordinates of the user's last cursor position for drawing
@@ -135,40 +123,122 @@
         movingEdge: null,
 
         /**
-         * @method setMap
-         * @param map {L.map}
+         * Responsible for knowing whether a boundary update should be propagated once the user exits
+         * the editing mode.
+         *
+         * @property boundaryUpdateRequired
+         * @type {Boolean}
+         */
+        boundaryUpdateRequired: false,
+
+        /**
+         * @method initialize
+         * @param options {Object}
          * @return {void}
          */
-        setMap: function setMap(map) {
+        initialize: function initialize(options) {
 
-            if (!map || !(map instanceof L.Map)) {
+            L.Util.setOptions(this, options);
 
-                // We didn't receive a valid `L.Map` instance during instantiation.
-                throwException('Upon instantiation an instance of L.Map must be passed', 'passing-an-lmap-instance');
+            this.options = new L.FreeDraw.Options();
+            this.hull    = new L.FreeDraw.Hull();
+
+            this.setMode(options.mode || this.mode);
+
+        },
+
+        /**
+         * @method onAdd
+         * @param map {L.Map}
+         * @return {void}
+         */
+        onAdd: function onAdd(map) {
+
+            // Lazily hook up the options and hull objects.
+            this.map     = map;
+            this.mode    = this.mode || FreeDraw.MODES.VIEW;
+
+            // Define the line function for drawing the polygon from the user's mouse pointer.
+            this.lineFunction = d3.svg.line().x(function(d) { return d.x; }).y(function(d) { return d.y; })
+                                  .interpolate('linear');
+
+            // Create a new instance of the D3 free-hand tracer.
+            this.createD3();
+
+            // Attach all of the events.
+            this._attachMouseDown();
+            this._attachMouseMove();
+            this._attachMouseUpLeave();
+
+            // Set the default mode.
+            this.setMode(this.mode);
+
+        },
+
+        /**
+         * @method setMode
+         * @param mode {Number}
+         * @return {void}
+         */
+        setMode: function setMode(mode) {
+
+            var isCreate = !!(mode & FreeDraw.MODES.CREATE),
+                method   = !isCreate ? 'enable' : 'disable';
+
+            // Set the current mode.
+            this.mode = mode;
+
+            if (!this.map) {
+                return;
+            }
+
+            if (this.boundaryUpdateRequired && !(this.mode & FreeDraw.MODES.EDIT)) {
+
+                // Share the boundaries if there's an update available and the user is changing the mode
+                // to anything else but the edit mode again.
+                this.notifyBoundaries();
+                this.boundaryUpdateRequired = false;
 
             }
 
-            // Everything is okay.
-            this.map = map;
+            // Update the permissions for what the user can do on the map.
+            this.map.dragging[method]();
+            this.map.touchZoom[method]();
+            this.map.doubleClickZoom[method]();
+            this.map.scrollWheelZoom[method]();
 
-        },
+            /**
+             * Responsible for applying the necessary classes to the map based on the
+             * current active modes.
+             *
+             * @method defineClasses
+             * @return {void}
+             */
+            (function defineClasses(modes, classList) {
 
-        /**
-         * @method enableEdit
-         * @return {void}
-         */
-        enableEdit: function enableEdit() {
-            this.allowEdit = true;
-            this.map.dragging.disable();
-        },
+                classList.remove('mode-create');
+                classList.remove('mode-edit');
+                classList.remove('mode-delete');
+                classList.remove('mode-view');
 
-        /**
-         * @method disableEdit
-         * @return {void}
-         */
-        disableEdit: function disableEdit() {
-            this.allowEdit = false;
-            this.map.dragging.enable();
+                if (mode & modes.CREATE) {
+                    classList.add('mode-create');
+                }
+
+                if (mode & modes.EDIT) {
+                    classList.add('mode-edit');
+                }
+
+                if (mode & modes.DELETE) {
+                    classList.add('mode-delete');
+                }
+
+                if (mode & modes.VIEW) {
+                    classList.add('mode-view');
+                }
+
+            }(FreeDraw.MODES, this.map._container.classList));
+
         },
 
         /**
@@ -177,12 +247,12 @@
          */
         createD3: function createD3() {
             this.svg = d3.select('body').append('svg').attr('class', this.options.svgClassName)
-                                    .attr('width', 200).attr('height', 200);
+                         .attr('width', 200).attr('height', 200);
         },
 
         /**
          * @method destroyD3
-         * @return {$window.FreeDraw}
+         * @return {L.FreeDraw}
          * @chainable
          */
         destroyD3: function destroyD3() {
@@ -192,11 +262,11 @@
         },
 
         /**
-         * @method drawPolygon
+         * @method createPolygon
          * @param latLngs {L.latLng[]}
          * @return {L.polygon}
          */
-        drawPolygon: function drawPolygon(latLngs) {
+        createPolygon: function createPolygon(latLngs) {
 
             // Begin to create a brand-new polygon.
             this.destroyD3().createD3();
@@ -208,10 +278,139 @@
                 fillColor: '#D7217E',
                 fillOpacity: 0.75,
                 smoothFactor: this.options.smoothFactor
-            }).addTo(this.map);
+            });
 
+            // Add the polyline to the map, and then find the edges of the polygon.
+            polygon.addTo(this.map);
+            polygon._latlngs = [];
             this.attachEdges(polygon);
+
+            polygon._parts[0].forEach(function forEach(edge) {
+
+                // Iterate over all of the parts to update the latLngs to clobber the redrawing upon zooming.
+                polygon._latlngs.push(this.map.containerPointToLatLng(edge));
+
+            }.bind(this));
+
+            this.notifyBoundaries();
             return polygon;
+
+        },
+
+        /**
+         * @method destroyPolygon
+         * @param polygon {Object}
+         * @return {void}
+         */
+        destroyPolygon: function destroyPolygon(polygon) {
+
+            // Remove the shape.
+            polygon._container.remove();
+    
+            // ...And then remove all of its related edges to prevent memory leaks.
+            this.edges = this.edges.filter(function filter(edge) {
+    
+                if (edge._polygon !== polygon) {
+                    return true;
+                }
+    
+                // Physically remove the edge from the DOM.
+                edge._icon.remove();
+    
+            });
+    
+            this.notifyBoundaries();
+    
+        },
+
+        /**
+         * @method clearPolygons
+         * @return {void}
+         */
+        clearPolygons: function clearPolygons() {
+
+            this.edges.forEach(function forEach(edge) {
+
+                // Iteratively remove each polygon in the DOM.
+                this.destroyPolygon(edge._polygon);
+
+            }.bind(this));
+
+            this.notifyBoundaries();
+
+        },
+
+        /**
+         * @method notifyBoundaries
+         * @return {void}
+         */
+        notifyBoundaries: function notifyBoundaries() {
+
+            var latLngs = [],
+                last    = null,
+                index   = -1;
+
+            this.edges.forEach(function forEach(edge) {
+
+                if (edge._polygonId !== last) {
+                    index++;
+                }
+
+                if (typeof latLngs[index] === 'undefined') {
+
+                    // Create the array entry point if it hasn't yet been defined.
+                    latLngs[index] = [];
+
+                }
+
+                last = edge._polygonId;
+                latLngs[index].push(edge['_latlng']);
+
+            }.bind(this));
+
+            // Invoke the user passed method for specifying latitude/longitudes.
+            this.options.markersFn(latLngs, this.setMarkers.bind(this));
+            
+        },
+
+        /**
+         * @method setMarkers
+         * @param markers {L.Marker[]}
+         * @param divIcon {L.DivIcon}
+         * @return {void}
+         */
+        setMarkers: function setMarkers(markers, divIcon) {
+
+            if (typeof divIcon !== 'undefined' && !(divIcon instanceof L.DivIcon)) {
+
+                // Ensure if the user has passed a second argument that it is a valid DIV icon.
+                throwException('Second argument must be an instance of L.DivIcon');
+
+            }
+
+            // Reset the markers collection.
+            this.map.removeLayer(this.markerLayer);
+            this.markerLayer = L.layerGroup();
+            this.markerLayer.addTo(this.map);
+
+            if (!markers || markers.length === 0) {
+                return;
+            }
+
+            var options = divIcon ? { icon: divIcon } : {};
+
+            // Iterate over each marker to plot it on the map.
+            for (var addIndex = 0, addLength = markers.length; addIndex < addLength; addIndex++) {
+
+                if (!(markers[addIndex] instanceof L.LatLng)) {
+                    throwException('Supplied markers must be instances of L.LatLng');
+                }
+
+                // Add the marker using the custom DIV icon if it has been specified.
+                var marker = L.marker(markers[addIndex], options);
+                this.markerLayer.addLayer(marker);
+
+            }
 
         },
 
@@ -229,15 +428,16 @@
 
                 // Leaflet creates elbows in the polygon, which we need to utilise to add the
                 // points for modifying its shape.
-                var edge = L.divIcon({ className: this.options.iconClassName }),
-                    latLng     = this.map.layerPointToLatLng(point);
+                var edge   = L.divIcon({ className: this.options.iconClassName }),
+                    latLng = this.map.layerPointToLatLng(point);
 
                 edge = L.marker(latLng, { icon: edge }).addTo(this.map);
 
                 // Marker requires instances so that it can modify its shape.
-                edge._polygon = polygon;
-                edge._index   = index;
-                edge._length  = parts.length;
+                edge._polygon   = polygon;
+                edge._polygonId = polygon['_leaflet_id'];
+                edge._index     = index;
+                edge._length    = parts.length;
                 this.edges.push(edge);
 
                 edge.on('mousedown', function onMouseDown(event) {
@@ -247,28 +447,28 @@
                 }.bind(this));
 
             }.bind(this));
-            
+
         },
 
         updatePolygonEdge: function updatePolygon(edge, posX, posY) {
 
             var updatedLatLng = this.map.containerPointToLatLng(L.point(posX, posY));
             edge.setLatLng(updatedLatLng);
-    
+
             // Fetch all of the edges in the group based on the polygon.
             var edges = this.edges.filter(function filter(marker) {
                 return marker._polygon === edge._polygon;
             });
-    
+
             var updatedLatLngs = [];
             edges.forEach(function forEach(marker) {
                 updatedLatLngs.push(marker.getLatLng());
             });
-    
+
             // Update the latitude and longitude values.
             edge._polygon.setLatLngs(updatedLatLngs);
             edge._polygon.redraw();
-    
+
         },
 
         /**
@@ -288,7 +488,7 @@
                  */
                 var RIGHT_CLICK = 2;
 
-                if (!this.allowEdit || event.originalEvent.button === RIGHT_CLICK) {
+                if (event.originalEvent.button === RIGHT_CLICK) {
                     return;
                 }
 
@@ -298,8 +498,14 @@
                 originalEvent.preventDefault();
 
                 this.latLngs   = [];
-                this.creating  = true;
                 this.fromPoint = { x: originalEvent.clientX, y: originalEvent.clientY };
+
+                if (this.mode & FreeDraw.MODES.CREATE) {
+
+                    // Place the user in create polygon mode.
+                    this.creating = true;
+
+                }
 
             }.bind(this));
 
@@ -307,6 +513,7 @@
 
         /**
          * @method _attachMouseMove
+         * @return {void}
          * @private
          */
         _attachMouseMove: function _attachMouseMove() {
@@ -353,7 +560,7 @@
 
             // Update the polygon's shape in real-time as the user drags their cursor.
             this.updatePolygonEdge(this.movingEdge, pointModel.x, pointModel.y);
-            
+
         },
 
         /**
@@ -363,18 +570,30 @@
          */
         _attachMouseUpLeave: function _attachMouseUpLeave() {
 
-            this.map.on('mouseup mouseleave', function onMouseUpAndMouseLeave() {
+            this.map.on('mouseup mouseout mouseleave', function onMouseUpAndMouseLeave() {
 
                 if (this.movingEdge) {
 
-//                    this.sharePolygonBoundaries(this.pointerEdit._polygon);
+                    if (!this.options.boundariesAfterEdit) {
+
+                        // Notify of a boundary update immediately after editing one edge.
+                        this.notifyBoundaries();
+
+                    } else {
+
+                        // Change the option so that the boundaries will be invoked once the edit mode
+                        // has been exited.
+                        this.boundaryUpdateRequired = true;
+
+                    }
+
                     this.movingEdge = null;
                     return;
-                    
+
                 }
-                
+
                 this._createMouseUp();
-                
+
             }.bind(this));
 
         },
@@ -392,7 +611,7 @@
                 pointerY = event.clientY;
 
             // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-            var point  = L.point(pointerX, pointerY),
+            var point = L.point(pointerX, pointerY),
                 latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.
@@ -428,7 +647,7 @@
             }
 
             if (this.options.hullAlgorithm) {
-                
+
                 // Use the defined hull algorithm.
                 this.hull.setMap(this.map);
                 var latLngs = this.hull[this.options.hullAlgorithm](this.latLngs);
@@ -439,11 +658,29 @@
             this.latLngs.push(this.latLngs[0]);
 
             // Physically draw the Leaflet generated polygon.
-            this.drawPolygon(latLngs || this.latLngs);
+            var polygon  = this.createPolygon(latLngs || this.latLngs);
             this.latLngs = [];
+
+            polygon.on('click', function onClick() {
+
+                if (this.mode & FreeDraw.MODES.DELETE) {
+
+                    // Remove the polygon when the user clicks on it, and they're in delete mode.
+                    this.destroyPolygon(polygon);
+
+                }
+
+            }.bind(this));
+
+            if (this.options.createExitMode) {
+
+                // Automatically exit the user from the creation mode.
+                this.setMode(this.mode ^ FreeDraw.MODES.CREATE);
+
+            }
 
         }
 
-    };
+    });
 
 })(window, window.L, window.d3);
