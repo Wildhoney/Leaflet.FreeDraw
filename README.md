@@ -28,6 +28,8 @@ map.addLayer(new L.FreeDraw());
 
 Upon instantiation `L.FreeDraw` you can immediately define the mode &ndash; with the default being `L.FreeDraw.MODES.VIEW` &ndash; please see [modes](#modes) for more information.
 
+![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
+
 ## Fetching Markers
 
 Once the user has created, deleted, or edited a polygon, you'll likely wish to load in markers based on the polygons visible &ndash; with `L.FreeDraw` you can specify a callback, which passes a second argument that should be invoked with an array of `L.LatLng` objects:
@@ -38,8 +40,6 @@ freeDraw.options.getMarkers(function getMarkers(boundaries, setMarkers) {
     setMarkers([latLng]);
 });
 ```
-
-![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
 
 You may also use the second argument of the `setMarkers` resolution method to specify a custom `L.DivIcon`.
 
