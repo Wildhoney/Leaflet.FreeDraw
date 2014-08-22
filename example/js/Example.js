@@ -11,14 +11,28 @@
         // Setup Leaflet: http://leafletjs.com/examples/quick-start.html
         var mapContainer = window.document.querySelector('section.map'),
             map          = L.map(mapContainer).setView([51.505, -0.09], 14);
-        L.tileLayer('http://b.tile.stamen.com/toner/{z}/{x}/{y}.png').addTo(map);
+        L.tileLayer('https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=b86b18b0645848bea383827fdccb878e').addTo(map);
 
-        var freeDraw = new FreeDraw(map);
+        var freeDraw = window.freeDraw = new L.FreeDraw({
+            mode: FreeDraw.MODES.DELETE | FreeDraw.MODES.CREATE
+        });
+
+        freeDraw.options.setBoundariesAfterEdit(true);
         freeDraw.options.allowMultiplePolygons(true);
-        freeDraw.options.setHullAlgorithm(false);
+        freeDraw.options.exitModeAfterCreate(true);
         freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
+        freeDraw.options.getMarkers(function getMarkers(boundaries, setMarkers) {
 
-        freeDraw.enableEdit();
+            if (boundaries.length) {
+                setMarkers([boundaries[boundaries.length - 1][0]]);
+                return;
+            }
+
+            setMarkers();
+
+        });
+
+        map.addLayer(freeDraw);
 
     };
 
