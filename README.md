@@ -10,7 +10,7 @@ Leaflet.FreeDraw
 * **Heroku**: [http://freedraw.herokuapp.com/](http://freedraw.herokuapp.com/)
 * **Bower:** `bower install leaflet.freedraw`;
 
-Use [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw) for drawing pre-defined polygons and linear shapes &ndash; `Leaflet.FreeDraw`'s selling point is that it allows you to freely draw a polygon like [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map). Convex Hulls are also supported to normalise polygons when users draw an insane polygon &ndash; currently `Leaflet.FreeDraw` supports Brian Barnett's [Graham Scan module](https://github.com/brian3kb/graham_scan_js).
+Use [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw) for drawing pre-defined polygons and linear shapes &ndash; `Leaflet.FreeDraw`'s selling point is that it allows you to freely draw a polygon like [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map). Convex Hulls are also supported to normalise polygons when users draw an insane polygon &ndash; currently `Leaflet.FreeDraw` supports Brian Barnett's [Graham Scan module](https://github.com/brian3kb/graham_scan_js) and my adaptation of the [concave hull algorithm](https://github.com/Wildhoney/ConcaveHull).
 
 ![FreeDraw Screenshot](http://i.imgur.com/aCt4xCf.png)
 
@@ -23,8 +23,25 @@ By instantiating `FreeDraw` you are required to pass in your map instance so tha
 ```javascript
 // Create Leaflet.js instance and then add FreeDraw on top.
 var map = L.map('map').setView([51.505, -0.09], 14);
-    freeDraw = new FreeDraw(map);
+map.addLayer(new L.FreeDraw());
 ```
+
+Upon instantiation `L.FreeDraw` you can immediately define the mode &ndash; with the default being `FreeDraw.MODES.VIEW` &ndash; see [modes](#modes) for more information.
+
+## Fetching Markers
+
+Once the user has created, deleted, or edited a polygon, you'll likely wish to load in markers based on the polygons visible &ndash; with `L.FreeDraw` you can specify a callback, which passes a second argument which should be invoked with an array of `L.LatLng` objects:
+
+```javascript
+freeDraw.options.getMarkers(function getMarkers(boundaries, setMarkers) {
+    var latLng = L.latLng(51.505, -0.09);
+    setMarkers([latLng]);
+});
+```
+
+![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
+
+## Options
 
 FreeDraw has quite a few options &ndash; all of which can be seen by taking a look at the `FreeDraw.Options` object. However, there are certain options that you are likely to use quite often.
 
@@ -49,3 +66,65 @@ You may also toggle the mode for allowing users to drag the map instead of creat
 All of the polygons drawn with FreeDraw can be modified using the options and [standard CSS](http://tutorials.jenkov.com/svg/svg-and-css.html).
 
 Once the user has drawn their free-hand drawing, it is converted into a polygon by Leaflet.js &ndash; you can define how smooth the rendered polygon is by using the `setSmoothFactor` method &ndash; by default the `smoothFactor` is **5**.
+
+### Polygon Mutation
+
+When a user is modifying a polygon the `getBoundaries` callback is invoked each and every time &ndash; which may be overkill. In this case `L.FreeDraw` allows you to defer the fetching of markers for when the edit mode has been exited with `freeDraw.options.setBoundariesAfterEdit(true)`.
+
+### Exit Create Mode
+
+After drawing a polygon the `FreeDraw.MODES.CREATE` mode will automatically be disabled &ndash; but this can be suppressed by specifying `freeDraw.options.exitModeAfterCreate(false)`.
+
+## Modes
+
+FreeDraw by default uses the `FreeDraw.MODES.VIEW` which prevents the user from creating, editing, or deleting any polygons. When instantiating `L.FreeDraw` you can override the default mode &ndash; in the following case a user can **only** delete polygons:
+
+```javascript
+var freeDraw = window.freeDraw = new L.FreeDraw({
+    mode: FreeDraw.MODES.DELETE
+});
+```
+
+In specifying the mode you are using [bitwise operators](http://en.wikipedia.org/wiki/Bitwise_operation) with the mapping being as follows:
+
+```javascript
+MODES: {
+    VIEW:   1,
+    CREATE: 2,
+    EDIT:   4,
+    DELETE: 8,
+    ALL:    1 | 2 | 4 | 8
+}
+```
+
+Therefore you can combine the bitwise operators to specify multiple modes. For example, if you would like to allow the user to create and delete, then you would specify the options as `FreeDraw.MODES.CREATE | FreeDraw.MODES.DELETE`. By allowing a user to perform every action you would have to concatenate all of the modes by the pipe (`|`) &ndash; therefore `L.FreeDraw` provides the convenient `FreeDraw.MODES.ALL` property.
+
+Likewise you could enable all the modes **except** edit with the following: `FreeDraw.MODES.ALL ^ FreeDraw.MODES.EDIT`.
+
+**NOTE**: All modes allow the user to zoom and drag **except** when you have the `FreeDraw.MODES.CREATE` enabled &ndash; even when used in conjunction with other modes.
+
+### Class Names
+
+Depending on the mode you can apply different CSS styles &ndash; for example when the user is not in edit mode you probably wish to hide the edges &ndash; by default all edges would be hidden, and only enabled when the `mode-edit` class has been applied to the `map` node:
+
+```css
+section.map.mode-edit div.polygon-elbow {
+    opacity: 1;
+    pointer-events: all;
+}
+```
+
+Each mode maps to a different class which is conditionally applied to the `map` based on whether that mode is active:
+
+ * `mode-view` maps to `FreeDraw.MODES.VIEW`;
+ * `mode-create` maps to `FreeDraw.MODES.CREATE`;
+ * `mode-edit` maps to `FreeDraw.MODES.EDIT`;
+ * `mode-delete` maps to `FreeDraw.MODES.DELETE`;
+ 
+Another example would be changing the `cursor` type when the user is in polygon creation mode:
+
+```css
+section.map.mode-create {
+    cursor: crosshair;
+}
+```
