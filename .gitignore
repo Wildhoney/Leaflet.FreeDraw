@@ -2,4 +2,3 @@
 /node_modules
 /example/js/vendor/*
 !/example/js/vendor/.gitignore
-/components/Map.js
