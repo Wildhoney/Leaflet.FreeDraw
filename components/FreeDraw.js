@@ -148,8 +148,8 @@
         onAdd: function onAdd(map) {
 
             // Lazily hook up the options and hull objects.
-            this.map     = map;
-            this.mode    = this.mode || L.FreeDraw.MODES.VIEW;
+            this.map  = map;
+            this.mode = this.mode || L.FreeDraw.MODES.VIEW;
 
             // Define the line function for drawing the polygon from the user's mouse pointer.
             this.lineFunction = d3.svg.line().x(function(d) { return d.x; }).y(function(d) { return d.y; })
@@ -166,6 +166,14 @@
             // Set the default mode.
             this.setMode(this.mode);
 
+        },
+
+        /**
+         * @method onRemove
+         * @return {void}
+         */
+        onRemove: function onRemove() {
+            this.clearPolygons();
         },
 
         /**
