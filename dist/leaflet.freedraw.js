@@ -1,4 +1,4 @@
-(function($window, L, d3) {
+(function($window, L, d3, ClipperLib) {
 
     "use strict";
 
@@ -741,7 +741,7 @@
         ALL:    1 | 2 | 4 | 8
     };
 
-})(window, window.L, window.d3);
+})(window, window.L, window.d3, window.ClipperLib);
 
 (function() {
 
