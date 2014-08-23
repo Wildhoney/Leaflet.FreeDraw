@@ -24,6 +24,12 @@
         multiplePolygons: true,
 
         /**
+         * @property simplifyPolygon
+         * @type {Boolean}
+         */
+        simplifyPolygon: false,
+
+        /**
          * @property hullAlgorithm
          * @type {String|Boolean}
          */
@@ -117,6 +123,15 @@
          */
         setSmoothFactor: function setSmoothFactor(factor) {
             this.smoothFactor = +factor;
+        },
+
+        /**
+         * @method setPolygonSimplification
+         * @param value {Boolean}
+         * @return {void}
+         */
+        setPolygonSimplification: function setPolygonSimplification(value) {
+            this.simplifyPolygon = !!value;
         },
 
         /**

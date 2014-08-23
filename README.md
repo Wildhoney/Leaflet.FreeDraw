@@ -61,6 +61,9 @@ freeDraw.options.allowMultiplePolygons(true);
 // Prevent the rendering of the polygon via a convex/concave hull.
 freeDraw.options.setHullAlgorithm(false);
 
+// Use ClipperJS to simplify and clean the polygon.
+freeDraw.options.setPolygonSimplification(true);
+
 // Utilise Brian Barnett's convex hull.
 freeDraw.options.setHullAlgorithm('brian3kb/graham_scan_js');
 
