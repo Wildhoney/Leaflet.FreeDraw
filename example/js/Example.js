@@ -1,4 +1,4 @@
-(function Example(window, leaflet, FreeDraw) {
+(function Example(window) {
 
     /**
      * Invoked once DOM is ready, and then goodness knows what happens after that.
@@ -14,7 +14,7 @@
         L.tileLayer('https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=b86b18b0645848bea383827fdccb878e').addTo(map);
 
         var freeDraw = window.freeDraw = new L.FreeDraw({
-            mode: L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.CREATE
+            mode: L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.EDIT
         });
 
         freeDraw.options.setBoundariesAfterEdit(true);
@@ -39,4 +39,4 @@
     // Hold onto your hats!
     window.document.addEventListener('DOMContentLoaded', beginExample);
 
-})(window, window.L, window.FreeDraw);
+})(window);

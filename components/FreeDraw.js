@@ -274,7 +274,43 @@
             // Begin to create a brand-new polygon.
             this.destroyD3().createD3();
 
-            var polygon = L.polygon(latLngs, {
+            var simplifiedLatLngs = function simplifyPolygons() {
+
+                var points = [];
+
+                latLngs.forEach(function forEach(latLng) {
+
+                    var point = this.map.latLngToContainerPoint(latLng);
+                    points.push({ X: point.x, Y: point.y });
+
+                }.bind(this));
+
+                var clipper               = new ClipperLib.Clipper();
+                clipper.PreserveCollinear = true;
+                clipper.StrictlySimple    = true;
+
+                points = ClipperLib.Clipper.CleanPolygon(points, 1.1);
+
+                var simplifiedLatLngs = [],
+                    polygons          = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
+
+                polygons.forEach(function forEach(polygon) {
+
+                    polygon.forEach(function polygons(point) {
+
+                        point = L.point(point.X, point.Y);
+                        var latLng = this.map.containerPointToLatLng(point);
+                        simplifiedLatLngs.push(latLng);
+
+                    }.bind(this));
+
+                }.bind(this));
+
+                return simplifiedLatLngs;
+
+            }.apply(this);
+
+            var polygon = L.polygon(simplifiedLatLngs, {
                 color: '#D7217E',
                 weight: 0,
                 fill: true,
