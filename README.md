@@ -12,7 +12,7 @@ Leaflet.FreeDraw
 
 Use [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw) for drawing pre-defined polygons and linear shapes &ndash; `Leaflet.FreeDraw`'s selling point is that it allows you to freely draw a polygon like [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map). Hulls are also supported to normalise polygons when users draw an insane polygon &ndash; currently `Leaflet.FreeDraw` supports Brian Barnett's [Graham Scan module](https://github.com/brian3kb/graham_scan_js) and my adaptation of the [concave hull algorithm](https://github.com/Wildhoney/ConcaveHull).
 
-![FreeDraw Screenshot](http://i.imgur.com/aCt4xCf.png)
+![FreeDraw Screenshot](http://i.imgur.com/5ab3P4j.png)
 
 ---
 
@@ -30,7 +30,6 @@ Upon instantiation of `L.FreeDraw` you can immediately define the mode &ndash; w
 
 ```javascript
 // Allow the user to only create and edit polygons.
-
 map.addLayer(new L.FreeDraw({
     mode: L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.EDIT
 }));
