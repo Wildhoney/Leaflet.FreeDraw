@@ -135,3 +135,5 @@ section.map.mode-create {
     cursor: crosshair;
 }
 ```
+
+You may change the class name of the polygon edges with the `setIconClassName` method, and the SVG class name with `setSVGClassName`.

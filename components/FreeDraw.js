@@ -152,7 +152,9 @@
             this.mode = this.mode || L.FreeDraw.MODES.VIEW;
 
             // Define the line function for drawing the polygon from the user's mouse pointer.
-            this.lineFunction = d3.svg.line().x(function(d) { return d.x; }).y(function(d) { return d.y; })
+            this.lineFunction = d3.svg.line()
+                                  .x(function pointX(d) { return d.x; })
+                                  .y(function pointY(d) { return d.y; })
                                   .interpolate('linear');
 
             // Create a new instance of the D3 free-hand tracer.
