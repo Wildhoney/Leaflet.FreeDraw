@@ -479,7 +479,7 @@
                 edge._length    = parts.length;
                 this.edges.push(edge);
 
-                edge.on('mousedown', function onMouseDown(event) {
+                edge.on('mousedown touchstart', function onMouseDown(event) {
                     event.originalEvent.preventDefault();
                     event.originalEvent.stopPropagation();
                     this.movingEdge = event.target;
@@ -517,7 +517,7 @@
          */
         _attachMouseDown: function _attachMouseDown() {
 
-            this.map.on('mousedown', function onMouseDown(event) {
+            this.map.on('mousedown touchstart', function onMouseDown(event) {
 
                 /**
                  * Used for determining if the user clicked with the right mouse button.
@@ -564,7 +564,7 @@
          */
         _attachMouseMove: function _attachMouseMove() {
 
-            this.map.on('mousemove', function onMouseMove(event) {
+            this.map.on('mousemove touchmove', function onMouseMove(event) {
 
                 var originalEvent = event.originalEvent;
 
@@ -616,7 +616,7 @@
          */
         _attachMouseUpLeave: function _attachMouseUpLeave() {
 
-            this.map.on('mouseup mouseout mouseleave', function onMouseUpAndMouseLeave() {
+            this.map.on('mouseup touchend mouseout mouseleave', function onMouseUpAndMouseLeave() {
 
                 if (this.movingEdge) {
 
