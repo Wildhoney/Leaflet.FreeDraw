@@ -35,6 +35,8 @@ map.addLayer(new L.FreeDraw({
 }));
 ```
 
+Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; such as `L.map` for `new L.Map` &mdash; [read why here](http://37.media.tumblr.com/6a9fcffde2da977266b0ea99b15d5803/tumblr_n42cjjsriB1smcbm7o1_400.gif) &mdash; `L.FreeDraw` follows the same convention and provides a convenient `L.freeDraw` method for invoking `L.FreeDraw` for you whilst passing through the options for you.
+
 ![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
 
 ## Fetching Markers
@@ -112,6 +114,14 @@ Therefore you're able to combine the bitwise operators to specify multiple modes
 Using the `L.FreeDraw.MODES.ALL` property you could easily enable all the modes **except** edit with the following: `L.FreeDraw.MODES.ALL ^ L.FreeDraw.MODES.EDIT`.
 
 All modes allow the user to zoom and drag **except** when you have the `L.FreeDraw.MODES.CREATE` enabled &ndash; even when used in conjunction with other modes.
+
+It's quite likely that you'll want to change the mode as the user interacts with your application &ndash; for this you have the `setMode` method which accepts an aforementioned bitwise operator for determining what actions the user is able to perform.
+
+```javascript
+// Change the mode to allow the user to only edit and delete polygons.
+var freeDraw = new L.FreeDraw();
+freeDraw.setMode(L.FreeDraw.MODES.EDIT | L.FreeDraw.MODES.DELETE);
+```
 
 ### Class Names
 
