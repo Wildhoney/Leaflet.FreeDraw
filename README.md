@@ -41,16 +41,18 @@ Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; s
 
 ## Fetching Markers
 
-Once the user has created, deleted, or edited a polygon, you'll likely wish to load in markers based on the polygons visible &ndash; with `L.FreeDraw` you can specify a callback, which passes a second argument that should be invoked with an array of `L.LatLng` objects:
+Once the user has created, deleted, or edited a polygon, you'll likely wish to load in markers based on the polygons visible &ndash; with `L.FreeDraw` the event `freedraw/markers` is emitted with an array of `L.LatLng` objects in the first argument as `eventData.latLngs`:
 
 ```javascript
-freeDraw.options.getMarkers(function getMarkers(boundaries, setMarkers) {
+freeDraw.on('freedraw/markers', function getMarkers(eventData) {
+    var latLngs = eventData.latLngs;
+    // ...
     var latLng = L.latLng(51.505, -0.09);
-    setMarkers([latLng]);
+    freeDraw.setMarkers([latLng]);
 });
 ```
 
-You may also use the second argument of the `setMarkers` resolution method to specify a custom `L.DivIcon`.
+By invoking the `freeDraw.setMarkers` method with an array of `latLngs` your markers will appear on the map. You may also use the second argument of the `setMarkers` resolution method to specify a custom `L.DivIcon`.
 
 ## Options
 
@@ -82,6 +84,10 @@ Once the user has drawn their free-hand drawing, it is converted into a polygon 
 ### Polygon Mutation
 
 When a user is modifying a polygon the `getBoundaries` callback is invoked each and every time &ndash; which may be overkill, especially if your requests are somewhat time consuming. In this case `L.FreeDraw` allows you to defer the fetching of markers for when the edit mode has been exited with `freeDraw.options.setBoundariesAfterEdit(true)`.
+
+### Polygon Intersection
+
+By invoking the `freeDraw.allowPolygonMerging(true)` method, `L.FreeDraw` will attempt to join up any polygons that intersect.
 
 ### Exit Create Mode
 
@@ -122,6 +128,8 @@ It's quite likely that you'll want to change the mode as the user interacts with
 var freeDraw = new L.FreeDraw();
 freeDraw.setMode(L.FreeDraw.MODES.EDIT | L.FreeDraw.MODES.DELETE);
 ```
+
+You may also listen to updates of the mode using the `freeDraw.on('freedraw/mode')` event.
 
 ### Class Names
 
