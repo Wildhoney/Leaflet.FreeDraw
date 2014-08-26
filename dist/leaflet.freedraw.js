@@ -131,6 +131,12 @@
         boundaryUpdateRequired: false,
 
         /**
+         * @property silenced
+         * @type {Boolean}
+         */
+        silenced: false,
+
+        /**
          * @method initialize
          * @param options {Object}
          * @return {void}
@@ -183,6 +189,19 @@
          */
         onRemove: function onRemove() {
             this.clearPolygons();
+        },
+
+        /**
+         * Responsible for polygon mutation without emitting the markers event.
+         *
+         * @method silently
+         * @param callbackFn {Function}
+         * @return {void}
+         */
+        silently: function silently(callbackFn) {
+            this.silenced = true;
+            callbackFn.apply(this);
+            this.silenced = false;
         },
 
         /**
@@ -322,16 +341,6 @@
             }.bind(this));
 
             return simplifiedLatLngs;
-
-        },
-
-        silenced: false,
-
-        silently: function silently(callbackFn) {
-
-            this.silenced = true;
-            callbackFn.apply(this);
-            this.silenced = false;
 
         },
 

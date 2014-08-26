@@ -166,9 +166,9 @@
 
             // Define the line function for drawing the polygon from the user's mouse pointer.
             this.lineFunction = d3.svg.line()
-                                  .x(function pointX(d) { return d.x; })
-                                  .y(function pointY(d) { return d.y; })
-                                  .interpolate('linear');
+                                      .x(function pointX(d) { return d.x; })
+                                      .y(function pointY(d) { return d.y; })
+                                      .interpolate('linear');
 
             // Create a new instance of the D3 free-hand tracer.
             this.createD3();
@@ -289,7 +289,7 @@
          */
         createD3: function createD3() {
             this.svg = d3.select('body').append('svg').attr('class', this.options.svgClassName)
-                         .attr('width', 200).attr('height', 200);
+                                        .attr('width', 200).attr('height', 200);
         },
 
         /**
@@ -362,6 +362,10 @@
                 return this.clipperPolygonsToLatLngs(polygons);
 
             }.apply(this);
+
+            if (simplifiedLatLngs.length === 0) {
+                return false;
+            }
 
             var polygon = L.polygon(simplifiedLatLngs, {
                 color: '#D7217E',
@@ -831,6 +835,11 @@
 
             // Physically draw the Leaflet generated polygon.
             var polygon  = this.createPolygon(latLngs || this.latLngs);
+
+            if (!polygon) {
+                return;
+            }
+
             this.latLngs = [];
 
             polygon.on('click', function onClick() {
