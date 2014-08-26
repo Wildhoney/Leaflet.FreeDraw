@@ -57,6 +57,12 @@
         },
 
         /**
+         * @property attemptMerge
+         * @type {Boolean}
+         */
+        attemptMerge: false,
+
+        /**
          * @property svgClassName
          * @type {String}
          */
@@ -73,6 +79,15 @@
          * @type {String}
          */
         iconClassName: 'polygon-elbow',
+
+        /**
+         * @method allowPolygonMerging
+         * @param value {Boolean}
+         * @return {void}
+         */
+        allowPolygonMerging: function allowPolygonMerging(value) {
+            this.attemptMerge = !!value;
+        },
 
         /**
          * @method exitModeAfterCreate

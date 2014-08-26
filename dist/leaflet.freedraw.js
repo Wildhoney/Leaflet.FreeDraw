@@ -285,6 +285,57 @@
         },
 
         /**
+         * @method latLngsToClipperPoints
+         * @param latLngs {L.LatLng[]}
+         * @return {Object}
+         */
+        latLngsToClipperPoints: function latLngsToClipperPoints(latLngs) {
+
+            return latLngs.map(function forEach(latLng) {
+
+                var point = this.map.latLngToContainerPoint(latLng);
+                return { X: point.x, Y: point.y };
+
+            }.bind(this));
+
+        },
+
+        /**
+         * @method clipperPolygonsToLatLngs
+         * @param polygons {Array}
+         * @returns {Array}
+         */
+        clipperPolygonsToLatLngs: function clipperPolygonsToLatLngs(polygons) {
+
+            var simplifiedLatLngs = [];
+
+            polygons.forEach(function forEach(polygon) {
+
+                polygon.forEach(function polygons(point) {
+
+                    point = L.point(point.X, point.Y);
+                    var latLng = this.map.containerPointToLatLng(point);
+                    simplifiedLatLngs.push(latLng);
+
+                }.bind(this));
+
+            }.bind(this));
+
+            return simplifiedLatLngs;
+
+        },
+
+        silenced: false,
+
+        silently: function silently(callbackFn) {
+
+            this.silenced = true;
+            callbackFn.apply(this);
+            this.silenced = false;
+
+        },
+
+        /**
          * @method createPolygon
          * @param latLngs {L.latLng[]}
          * @return {L.polygon}
@@ -296,37 +347,10 @@
 
             var simplifiedLatLngs = function simplifyPolygons() {
 
-                var points = [];
+                var points   = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
+                    polygons = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
 
-                latLngs.forEach(function forEach(latLng) {
-
-                    var point = this.map.latLngToContainerPoint(latLng);
-                    points.push({ X: point.x, Y: point.y });
-
-                }.bind(this));
-
-                var clipper               = new ClipperLib.Clipper();
-                clipper.PreserveCollinear = true;
-                clipper.StrictlySimple    = true;
-
-                points = ClipperLib.Clipper.CleanPolygon(points, 1.1);
-
-                var simplifiedLatLngs = [],
-                    polygons          = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
-
-                polygons.forEach(function forEach(polygon) {
-
-                    polygon.forEach(function polygons(point) {
-
-                        point = L.point(point.X, point.Y);
-                        var latLng = this.map.containerPointToLatLng(point);
-                        simplifiedLatLngs.push(latLng);
-
-                    }.bind(this));
-
-                }.bind(this));
-
-                return simplifiedLatLngs;
+                return this.clipperPolygonsToLatLngs(polygons);
 
             }.apply(this);
 
@@ -351,8 +375,72 @@
 
             }.bind(this));
 
-            this.notifyBoundaries();
+            if (this.options.attemptMerge) {
+
+                // Merge the polygons if the developer wants to, which at the moment is very experimental!
+                this.mergePolygons();
+
+            }
+
+            if (!this.silenced) {
+                this.notifyBoundaries();
+            }
+
             return polygon;
+
+        },
+
+        /**
+         * @method mergePolygons
+         * @return {void}
+         */
+        mergePolygons: function mergePolygons() {
+
+            var allPolygons = [],
+                allPoints   = [];
+
+            this.edges.forEach(function forEach(edge) {
+
+                if (allPolygons.indexOf(edge._polygon) === -1) {
+                    allPolygons.push(edge._polygon);
+                }
+
+            }.bind(this));
+
+            allPolygons.forEach(function forEach(polygon) {
+                allPoints.push(this.latLngsToClipperPoints(polygon._latlngs));
+            }.bind(this));
+
+            var polygons = ClipperLib.Clipper.SimplifyPolygons(allPoints, ClipperLib.PolyFillType.pftNonZero);
+
+            if (polygons.length !== allPolygons.length) {
+
+                this.silently(function() {
+
+                    this.clearPolygons();
+
+                    polygons.forEach(function forEach(polygon) {
+
+                        var latLngs = [];
+
+                        polygon.forEach(function forEach(point) {
+
+                            point = L.point(point.X, point.Y);
+                            latLngs.push(this.map.containerPointToLatLng(point));
+
+                        }.bind(this));
+
+                        polygon = this.createPolygon(latLngs);
+
+                        polygon.on('click', function onClick() {
+                            this.destroyPolygon(polygon);
+                        }.bind(this));
+
+                    }.bind(this));
+
+                });
+
+            }
 
         },
 
@@ -378,7 +466,9 @@
 
             });
 
-            this.notifyBoundaries();
+            if (!this.silenced) {
+                this.notifyBoundaries();
+            }
 
         },
 
@@ -395,7 +485,9 @@
 
             }.bind(this));
 
-            this.notifyBoundaries();
+            if (!this.silenced) {
+                this.notifyBoundaries();
+            }
 
         },
 
@@ -404,6 +496,8 @@
          * @return {void}
          */
         notifyBoundaries: function notifyBoundaries() {
+
+            console.log('Here');
 
             var latLngs = [],
                 last    = null,
@@ -915,6 +1009,12 @@
         },
 
         /**
+         * @property attemptMerge
+         * @type {Boolean}
+         */
+        attemptMerge: false,
+
+        /**
          * @property svgClassName
          * @type {String}
          */
@@ -931,6 +1031,15 @@
          * @type {String}
          */
         iconClassName: 'polygon-elbow',
+
+        /**
+         * @method allowPolygonMerging
+         * @param value {Boolean}
+         * @return {void}
+         */
+        allowPolygonMerging: function allowPolygonMerging(value) {
+            this.attemptMerge = !!value;
+        },
 
         /**
          * @method exitModeAfterCreate
