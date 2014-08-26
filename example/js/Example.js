@@ -24,7 +24,7 @@
         freeDraw.options.setPolygonSimplification(true);
         freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
 
-        freeDraw.on('freedraw/markers', function getMarkers(eventData) {
+        freeDraw.on('markers', function getMarkers(eventData) {
 
 //            var latLngs = [];
 //

@@ -35,16 +35,16 @@ map.addLayer(new L.FreeDraw({
 }));
 ```
 
-Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; such as `L.map` for `new L.Map` &mdash; [read why here](http://37.media.tumblr.com/6a9fcffde2da977266b0ea99b15d5803/tumblr_n42cjjsriB1smcbm7o1_400.gif) &mdash; `L.FreeDraw` follows the same convention and provides a convenient `L.freeDraw` method for invoking `L.FreeDraw` for you whilst passing through the options for you.
+Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; such as `L.map` for `new L.Map` &mdash; [read why here](http://37.media.tumblr.com/6a9fcffde2da977266b0ea99b15d5803/tumblr_n42cjjsriB1smcbm7o1_400.gif) &mdash; `L.FreeDraw` follows the same convention and provides a convenient `L.freeDraw` method for instantiating `L.FreeDraw` for you whilst passing through the options.
 
 ![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
 
 ## Fetching Markers
 
-Once the user has created, deleted, or edited a polygon, you'll likely wish to load in markers based on the polygons visible &ndash; with `L.FreeDraw` the event `freedraw/markers` is emitted with an array of `L.LatLng` objects in the first argument as `eventData.latLngs`:
+Once the user has created, deleted, or edited a polygon, you'll likely wish to load in markers based on the polygons visible &ndash; with `L.FreeDraw` the event `markers` is emitted with an array of `L.LatLng` objects in the first argument as `eventData.latLngs`:
 
 ```javascript
-freeDraw.on('freedraw/markers', function getMarkers(eventData) {
+freeDraw.on('markers', function getMarkers(eventData) {
     var latLngs = eventData.latLngs;
     // ...
     var latLng = L.latLng(51.505, -0.09);
@@ -83,7 +83,7 @@ Once the user has drawn their free-hand drawing, it is converted into a polygon 
 
 ### Polygon Mutation
 
-When a user is modifying a polygon the `getBoundaries` callback is invoked each and every time &ndash; which may be overkill, especially if your requests are somewhat time consuming. In this case `L.FreeDraw` allows you to defer the fetching of markers for when the edit mode has been exited with `freeDraw.options.setBoundariesAfterEdit(true)`.
+When a user is modifying a polygon the `markers` event is emitted each and every time &ndash; which may be overkill, especially if your requests are somewhat time consuming. In this case `L.FreeDraw` allows you to defer the fetching of markers for when the edit mode has been exited with `freeDraw.options.setBoundariesAfterEdit(true)`.
 
 ### Polygon Intersection
 
@@ -131,7 +131,7 @@ freeDraw.setMode(L.FreeDraw.MODES.EDIT | L.FreeDraw.MODES.DELETE);
 
 `L.FreeDraw` also ships with the `freeDraw.unsetMode` for unsetting a mode based on the current mode.
 
-You may also listen to updates of the mode using the `freeDraw.on('freedraw/mode')` event.
+You may also listen to updates of the mode using the `freeDraw.on('mode')` event.
 
 ### Class Names
 

@@ -219,7 +219,7 @@
 
             // Set the current mode and emit the event.
             this.mode = mode;
-            this.fire('freedraw/mode', { mode: mode });
+            this.fire('mode', { mode: mode });
 
             if (!this.map) {
                 return;
@@ -539,7 +539,7 @@
             this.polygonCount = latLngs.length;
 
             // Invoke the user passed method for specifying latitude/longitudes.
-            this.fire('freedraw/markers', { latLngs: latLngs });
+            this.fire('markers', { latLngs: latLngs });
 
         },
 
