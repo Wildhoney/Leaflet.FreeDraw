@@ -129,6 +129,8 @@ var freeDraw = new L.FreeDraw();
 freeDraw.setMode(L.FreeDraw.MODES.EDIT | L.FreeDraw.MODES.DELETE);
 ```
 
+`L.FreeDraw` also ships with the `freeDraw.unsetMode` for unsetting a mode based on the current mode.
+
 You may also listen to updates of the mode using the `freeDraw.on('freedraw/mode')` event.
 
 ### Class Names
