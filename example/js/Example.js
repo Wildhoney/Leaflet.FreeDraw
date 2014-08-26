@@ -26,13 +26,13 @@
 
         freeDraw.on('freedraw/markers', function getMarkers(eventData) {
 
-            var latLngs = [];
-
-            eventData.latLngs.forEach(function forEach(latLngGroup) {
-                latLngs = latLngs.concat(latLngGroup);
-            });
-
-            freeDraw.setMarkers(latLngs);
+//            var latLngs = [];
+//
+//            eventData.latLngs.forEach(function forEach(latLngGroup) {
+//                latLngs = latLngs.concat(latLngGroup);
+//            });
+//
+//            freeDraw.setMarkers(latLngs);
 
         });
 
