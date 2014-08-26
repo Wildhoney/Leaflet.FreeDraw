@@ -188,8 +188,9 @@
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
-            // Set the current mode.
+            // Set the current mode and emit the event.
             this.mode = mode;
+            this.fire('freedraw/mode', { mode: mode });
 
             if (!this.map) {
                 return;
