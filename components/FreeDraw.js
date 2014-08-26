@@ -249,6 +249,15 @@
         },
 
         /**
+         * @method unsetMode
+         * @param mode {Number}
+         * @return {void}
+         */
+        unsetMode: function unsetMode(mode) {
+            this.setMode(this.mode ^ mode);
+        },
+
+        /**
          * @method createD3
          * @return {void}
          */
