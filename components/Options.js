@@ -48,12 +48,6 @@
         createExitMode: true,
 
         /**
-         * @method markersFn
-         * @type {Function}
-         */
-        markersFn: function() {},
-
-        /**
          * @property hullAlgorithms
          * @type {Object}
          */
@@ -141,15 +135,6 @@
          */
         setIconClassName: function setIconClassName(className) {
             this.iconClassName = className;
-        },
-
-        /**
-         * @method getMarkers
-         * @param markersFn {Function}
-         * @return {void}
-         */
-        getMarkers: function getMarkers(markersFn) {
-            this.markersFn = markersFn;
         },
 
         /**

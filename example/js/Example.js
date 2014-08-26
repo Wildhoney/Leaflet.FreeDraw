@@ -22,14 +22,16 @@
         freeDraw.options.exitModeAfterCreate(false);
         freeDraw.options.setPolygonSimplification(true);
         freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
-        freeDraw.options.getMarkers(function getMarkers(boundaries, setMarkers) {
 
-            if (boundaries.length) {
-                setMarkers([boundaries[boundaries.length - 1][0]]);
-                return;
-            }
+        freeDraw.on('freedraw/markers', function getMarkers(eventData) {
 
-            setMarkers();
+            var latLngs = [];
+
+            eventData.latLngs.forEach(function forEach(latLngGroup) {
+                latLngs = latLngs.concat(latLngGroup);
+            });
+
+            freeDraw.setMarkers(latLngs);
 
         });
 

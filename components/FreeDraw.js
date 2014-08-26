@@ -408,7 +408,7 @@
             }.bind(this));
 
             // Invoke the user passed method for specifying latitude/longitudes.
-            this.options.markersFn(latLngs, this.setMarkers.bind(this));
+            this.fire('freedraw/markers', { latLngs: latLngs });
 
         },
 
