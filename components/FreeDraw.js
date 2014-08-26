@@ -446,7 +446,14 @@
                         polygon = this.createPolygon(latLngs);
 
                         polygon.on('click', function onClick() {
-                            this.destroyPolygon(polygon);
+
+                            if (this.mode & L.FreeDraw.MODES.DELETE) {
+
+                                // Remove the polygon when the user clicks on it, and they're in delete mode.
+                                this.destroyPolygon(polygon);
+
+                            }
+
                         }.bind(this));
 
                     }.bind(this));
