@@ -185,6 +185,9 @@
          */
         setMode: function setMode(mode) {
 
+            // Prevent the mode from ever being defined as zero.
+            mode = (mode === 0) ? L.FreeDraw.MODES.VIEW : mode;
+
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
