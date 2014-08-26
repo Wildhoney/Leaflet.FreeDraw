@@ -131,6 +131,7 @@
          */
         initialize: function initialize(options) {
 
+            options = options || {};
             L.Util.setOptions(this, options);
 
             this.options = new L.FreeDraw.Options();
@@ -185,11 +186,15 @@
          */
         setMode: function setMode(mode) {
 
+            // Prevent the mode from ever being defined as zero.
+            mode = (mode === 0) ? L.FreeDraw.MODES.VIEW : mode;
+
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
-            // Set the current mode.
+            // Set the current mode and emit the event.
             this.mode = mode;
+            this.fire('freedraw/mode', { mode: mode });
 
             if (!this.map) {
                 return;
@@ -242,6 +247,15 @@
 
             }(L.FreeDraw.MODES, this.map._container.classList));
 
+        },
+
+        /**
+         * @method unsetMode
+         * @param mode {Number}
+         * @return {void}
+         */
+        unsetMode: function unsetMode(mode) {
+            this.setMode(this.mode ^ mode);
         },
 
         /**
