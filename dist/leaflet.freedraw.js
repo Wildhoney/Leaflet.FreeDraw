@@ -101,6 +101,12 @@
         mode: 1,
 
         /**
+         * @property polygonCount
+         * @type {Number}
+         */
+        polygonCount: 0,
+
+        /**
          * Responsible for holding the coordinates of the user's last cursor position for drawing
          * the D3 polygon tracing the user's cursor.
          *
@@ -420,6 +426,9 @@
                 latLngs[index].push(edge['_latlng']);
 
             }.bind(this));
+
+            // Update the polygon count variable.
+            this.polygonCount = latLngs.length;
 
             // Invoke the user passed method for specifying latitude/longitudes.
             this.fire('freedraw/markers', { latLngs: latLngs });
