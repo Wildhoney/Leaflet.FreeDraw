@@ -166,9 +166,9 @@
 
             // Define the line function for drawing the polygon from the user's mouse pointer.
             this.lineFunction = d3.svg.line()
-                                      .x(function pointX(d) { return d.x; })
-                                      .y(function pointY(d) { return d.y; })
-                                      .interpolate('linear');
+                                  .x(function pointX(d) { return d.x; })
+                                  .y(function pointY(d) { return d.y; })
+                                  .interpolate('linear');
 
             // Create a new instance of the D3 free-hand tracer.
             this.createD3();
@@ -289,7 +289,7 @@
          */
         createD3: function createD3() {
             this.svg = d3.select('body').append('svg').attr('class', this.options.svgClassName)
-                                        .attr('width', 200).attr('height', 200);
+                .attr('width', 200).attr('height', 200);
         },
 
         /**
@@ -388,7 +388,7 @@
 
             }.bind(this));
 
-            if (this.options.attemptMerge) {
+            if (this.options.attemptMerge && !this.silenced) {
 
                 // Merge the polygons if the developer wants to, which at the moment is very experimental!
                 this.mergePolygons();
@@ -409,24 +409,24 @@
          */
         mergePolygons: function mergePolygons() {
 
-            var allPolygons = [],
-                allPoints   = [];
+            var mergePass = function mergePass() {
 
-            this.edges.forEach(function forEach(edge) {
+                var allPolygons = [],
+                    allPoints   = [];
 
-                if (allPolygons.indexOf(edge._polygon) === -1) {
-                    allPolygons.push(edge._polygon);
-                }
+                this.edges.forEach(function forEach(edge) {
 
-            }.bind(this));
+                    if (allPolygons.indexOf(edge._polygon) === -1) {
+                        allPolygons.push(edge._polygon);
+                    }
 
-            allPolygons.forEach(function forEach(polygon) {
-                allPoints.push(this.latLngsToClipperPoints(polygon._latlngs));
-            }.bind(this));
+                }.bind(this));
 
-            var polygons = ClipperLib.Clipper.SimplifyPolygons(allPoints, ClipperLib.PolyFillType.pftNonZero);
+                allPolygons.forEach(function forEach(polygon) {
+                    allPoints.push(this.latLngsToClipperPoints(polygon._latlngs));
+                }.bind(this));
 
-            if (polygons.length !== allPolygons.length) {
+                var polygons = ClipperLib.Clipper.SimplifyPolygons(allPoints, ClipperLib.PolyFillType.pftNonZero);
 
                 this.silently(function() {
 
@@ -453,7 +453,10 @@
 
                 });
 
-            }
+            }.bind(this);
+
+            // Perform two merge passes to simplify the polygons.
+            mergePass(); mergePass();
 
         },
 
@@ -509,8 +512,6 @@
          * @return {void}
          */
         notifyBoundaries: function notifyBoundaries() {
-
-            console.log('Here');
 
             var latLngs = [],
                 last    = null,
@@ -795,7 +796,7 @@
 
             // Draw SVG line based on the last movement of the mouse's position.
             this.svg.append('path').attr('d', this.lineFunction(lineData))
-                .attr('stroke', '#D7217E').attr('stroke-width', 2).attr('fill', 'none');
+                    .attr('stroke', '#D7217E').attr('stroke-width', 2).attr('fill', 'none');
 
             // Take the pointer's position from the event for the next invocation of the mouse move event,
             // and store the resolved latitudinal and longitudinal values.

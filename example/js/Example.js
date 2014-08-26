@@ -19,6 +19,7 @@
 
         freeDraw.options.setBoundariesAfterEdit(true);
         freeDraw.options.allowMultiplePolygons(true);
+        freeDraw.options.allowPolygonMerging(true);
         freeDraw.options.exitModeAfterCreate(false);
         freeDraw.options.setPolygonSimplification(true);
         freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
