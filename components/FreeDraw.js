@@ -347,7 +347,7 @@
         /**
          * @method createPolygon
          * @param latLngs {L.latLng[]}
-         * @return {L.polygon}
+         * @return {L.polygon|Boolean}
          */
         createPolygon: function createPolygon(latLngs) {
 
