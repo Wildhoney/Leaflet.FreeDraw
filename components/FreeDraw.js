@@ -131,6 +131,7 @@
          */
         initialize: function initialize(options) {
 
+            options = options || {};
             L.Util.setOptions(this, options);
 
             this.options = new L.FreeDraw.Options();
