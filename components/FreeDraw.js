@@ -783,7 +783,6 @@
             this.map.on('mouseup touchend', completeAction);
 
             var element = $window.document.getElementsByTagName('body')[0];
-            element.onmouseout   = completeAction;
             element.onmouseleave = completeAction;
 
         },
