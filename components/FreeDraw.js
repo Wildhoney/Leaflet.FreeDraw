@@ -251,11 +251,11 @@
                 }
 
                 if (mode & modes.DELETE) {
-                    addClass(map, 'mode-delete');
+                    addClass(map, 'mode-create');
                 }
 
                 if (mode & modes.VIEW) {
-                    addClass(map, 'mode-view');
+                    classList.add('mode-view');
                 }
 
             }(L.FreeDraw.MODES, this.map._container, L.DomUtil.addClass, L.DomUtil.removeClass));
@@ -605,9 +605,17 @@
                 this.edges.push(edge);
 
                 edge.on('mousedown touchstart', function onMouseDown(event) {
+
                     event.originalEvent.preventDefault();
                     event.originalEvent.stopPropagation();
                     this.movingEdge = event.target;
+
+                }.bind(this));
+
+                edge.on('mouseup', function onMouseDown(event) {
+
+                    console.log('Here');
+
                 }.bind(this));
 
             }.bind(this));
@@ -741,7 +749,7 @@
          */
         _attachMouseUpLeave: function _attachMouseUpLeave() {
 
-            this.map.on('mouseup touchend mouseout mouseleave', function onMouseUpAndMouseLeave() {
+            this.map.on('mouseup touchend', function onMouseUpAndMouseLeave() {
 
                 if (this.movingEdge) {
 

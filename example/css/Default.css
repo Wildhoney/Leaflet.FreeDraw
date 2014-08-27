@@ -29,23 +29,21 @@ section.map.mode-delete path:hover {
 }
 
 section.map div.polygon-elbow {
-    background-color: #D7217E;
-    border: 2px solid white;
+    box-shadow: 0 0 0 2px white, 0 0 10px rgba(0, 0, 0, .35);
+    border: 5px solid #D7217E;
     border-radius: 10px;
     transition: opacity 0.25s;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .35);
     cursor: move;
     opacity: 0;
     pointer-events: none;
+    box-sizing: border-box;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 section.map.mode-edit div.polygon-elbow {
     opacity: 1;
     pointer-events: all;
-}
-
-section.map div.polygon-elbow:first-of-type {
-    box-shadow: none;
 }
 
 svg.tracer {
