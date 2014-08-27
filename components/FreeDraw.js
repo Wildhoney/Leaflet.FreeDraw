@@ -200,6 +200,20 @@
         },
 
         /**
+         * @method cancelAction
+         * @return {void}
+         */
+        cancelAction: function cancelAction() {
+
+            this.creating = false;
+            this.movingEdge = null;
+
+            // Begin to create a brand-new polygon.
+            this.destroyD3().createD3();
+
+        },
+
+        /**
          * @method setMode
          * @param mode {Number}
          * @return {void}
@@ -284,7 +298,7 @@
          */
         createD3: function createD3() {
             this.svg = d3.select(this.element).append('svg').attr('class', this.options.svgClassName)
-                .attr('width', 200).attr('height', 200);
+                          .attr('width', 200).attr('height', 200);
         },
 
         /**
