@@ -41,6 +41,8 @@ Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; s
 
 ![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
 
+Furthermore by invoking the `cancelAction` method you can cancel the current action &ndash; such as drawing a polygon &ndash; this method is especially useful for allowing the user to cancel their action by pressing the escape key.
+
 ## Fetching Markers
 
 Once the user has created, deleted, or edited a polygon, you'll likely wish to load in markers based on the polygons visible &ndash; with `L.FreeDraw` the event `markers` is emitted with an array of `L.LatLng` objects in the first argument as `eventData.latLngs`:
