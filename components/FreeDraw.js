@@ -26,6 +26,12 @@
         svg: {},
 
         /**
+         * @property element
+         * @type {Object}
+         */
+        element: {},
+
+        /**
          * Determines whether the user is currently creating a polygon.
          *
          * @property creating
@@ -149,7 +155,8 @@
         onAdd: function onAdd(map) {
 
             // Lazily hook up the options and hull objects.
-            this.map  = map;
+            this.map     = map;
+            this.element = map._container;
             this.mode = this.mode || L.FreeDraw.MODES.VIEW;
 
             // Define the line function for drawing the polygon from the user's mouse pointer.
@@ -276,7 +283,7 @@
          * @return {void}
          */
         createD3: function createD3() {
-            this.svg = d3.select('body').append('svg').attr('class', this.options.svgClassName)
+            this.svg = d3.select(this.element).append('svg').attr('class', this.options.svgClassName)
                 .attr('width', 200).attr('height', 200);
         },
 
@@ -743,7 +750,11 @@
          */
         _attachMouseUpLeave: function _attachMouseUpLeave() {
 
-            this.map.on('mouseup touchend', function onMouseUpAndMouseLeave() {
+            /**
+             * @method completeAction
+             * @return {void}
+             */
+            var completeAction = function completeAction() {
 
                 if (this.movingEdge) {
 
@@ -767,7 +778,13 @@
 
                 this._createMouseUp();
 
-            }.bind(this));
+            }.bind(this);
+
+            this.map.on('mouseup touchend', completeAction);
+
+            var element = $window.document.getElementsByTagName('body')[0];
+            element.onmouseout   = completeAction;
+            element.onmouseleave = completeAction;
 
         },
 
