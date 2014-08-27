@@ -251,11 +251,11 @@
                 }
 
                 if (mode & modes.DELETE) {
-                    addClass(map, 'mode-create');
+                    addClass(map, 'mode-delete');
                 }
 
                 if (mode & modes.VIEW) {
-                    classList.add('mode-view');
+                    addClass(map, 'mode-view');
                 }
 
             }(L.FreeDraw.MODES, this.map._container, L.DomUtil.addClass, L.DomUtil.removeClass));
