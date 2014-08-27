@@ -235,30 +235,30 @@
              * @method defineClasses
              * @return {void}
              */
-            (function defineClasses(modes, classList) {
+            (function defineClasses(modes, map, addClass, removeClass) {
 
-                classList.remove('mode-create');
-                classList.remove('mode-edit');
-                classList.remove('mode-delete');
-                classList.remove('mode-view');
+                removeClass(map, 'mode-create');
+                removeClass(map, 'mode-edit');
+                removeClass(map, 'mode-delete');
+                removeClass(map, 'mode-view');
 
                 if (mode & modes.CREATE) {
-                    classList.add('mode-create');
+                    addClass(map, 'mode-create');
                 }
 
                 if (mode & modes.EDIT) {
-                    classList.add('mode-edit');
+                    addClass(map, 'mode-edit');
                 }
 
                 if (mode & modes.DELETE) {
-                    classList.add('mode-delete');
+                    addClass(map, 'mode-delete');
                 }
 
                 if (mode & modes.VIEW) {
-                    classList.add('mode-view');
+                    addClass(map, 'mode-view');
                 }
 
-            }(L.FreeDraw.MODES, this.map._container.classList));
+            }(L.FreeDraw.MODES, this.map._container, L.DomUtil.addClass, L.DomUtil.removeClass));
 
         },
 
@@ -462,8 +462,7 @@
          */
         destroyPolygon: function destroyPolygon(polygon) {
 
-            // Remove the shape.
-            polygon._container.remove();
+            this.map.removeLayer(polygon);
 
             // ...And then remove all of its related edges to prevent memory leaks.
             this.edges = this.edges.filter(function filter(edge) {
@@ -473,9 +472,9 @@
                 }
 
                 // Physically remove the edge from the DOM.
-                edge._icon.remove();
+                this.map.removeLayer(edge);
 
-            });
+            }.bind(this));
 
             if (!this.silenced) {
                 this.notifyBoundaries();
