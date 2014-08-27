@@ -1,6 +1,23 @@
-(function() {
+(function($window, L, d3, ClipperLib) {
 
     "use strict";
+
+    /**
+     * @method assertClipperJS
+     */
+    var assertClipperJS = function assertClipperJS() {
+
+        if (typeof ClipperLib === 'undefined') {
+
+            // Ensure JSClipper has been included.
+            L.FreeDraw.Throw(
+                'JSClipper is a required library for polygon merging and/or simplification',
+                'http://sourceforge.net/p/jsclipper/wiki/Home%206/'
+            );
+
+        }
+
+    };
 
     /**
      * @module FreeDraw
@@ -52,8 +69,29 @@
          * @type {Object}
          */
         hullAlgorithms: {
-            'brian3kb/graham_scan_js': 'brian3kbGrahamScan',
-            'Wildhoney/ConcaveHull': 'wildhoneyConcaveHull'
+
+            /**
+             * @property brian3kb/graham_scan_js
+             * @type {Object}
+             */
+            'brian3kb/graham_scan_js': {
+                method: 'brian3kbGrahamScan',
+                name: 'Graham Scan JS',
+                global: 'ConvexHullGrahamScan',
+                link: 'https://github.com/brian3kb/graham_scan_js'
+            },
+
+            /**
+             * @property Wildhoney/ConcaveHull
+             * @type {Object}
+             */
+            'Wildhoney/ConcaveHull': {
+                method: 'wildhoneyConcaveHull',
+                name: 'Concave Hull',
+                global: 'ConcaveHull',
+                link: 'https://github.com/Wildhoney/ConcaveHull'
+            }
+
         },
 
         /**
@@ -86,7 +124,10 @@
          * @return {void}
          */
         allowPolygonMerging: function allowPolygonMerging(value) {
+
+            assertClipperJS();
             this.attemptMerge = !!value;
+
         },
 
         /**
@@ -140,7 +181,10 @@
          * @return {void}
          */
         setPolygonSimplification: function setPolygonSimplification(value) {
+
+            assertClipperJS();
             this.simplifyPolygon = !!value;
+
         },
 
         /**
@@ -166,10 +210,20 @@
 
             }
 
-            this.hullAlgorithm = this.hullAlgorithms[algorithm];
+            // Resolve the hull algorithm.
+            algorithm = this.hullAlgorithms[algorithm];
+
+            if (typeof $window[algorithm.global] === 'undefined') {
+
+                // Ensure hull algorithm module has been included.
+                L.FreeDraw.Throw(algorithm.name + ' is a required library for concave/convex hulls', algorithm.link);
+
+            }
+
+            this.hullAlgorithm = algorithm.method;
 
         }
 
     };
 
-})();
+})(window, window.L, window.d3, window.ClipperLib);

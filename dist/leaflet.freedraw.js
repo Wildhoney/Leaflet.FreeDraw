@@ -3,25 +3,6 @@
     "use strict";
 
     /**
-     * @method throwException
-     * @param message {String}
-     * @param path {String}
-     * @return {void}
-     */
-    var throwException = function throwException(message, path) {
-
-        if (path) {
-
-            // Output a link for a more informative message in the EXCEPTIONS.md.
-            console.error('See: https://github.com/Wildhoney/Leaflet.FreeDraw/blob/master/EXCEPTIONS.md#' + path);
-        }
-
-        // ..And then output the thrown exception.
-        throw "Leaflet.FreeDraw: " + message + ".";
-
-    };
-
-    /**
      * @method freeDraw
      * @param options {Object}
      * @returns {window.L.FreeDraw}
@@ -142,6 +123,13 @@
          * @return {void}
          */
         initialize: function initialize(options) {
+
+            if (typeof d3 === 'undefined') {
+
+                // Ensure D3 has been included.
+                L.FreeDraw.Throw('D3 is a required library', 'http://d3js.org/');
+
+            }
 
             options = options || {};
             L.Util.setOptions(this, options);
@@ -561,7 +549,7 @@
             if (typeof divIcon !== 'undefined' && !(divIcon instanceof L.DivIcon)) {
 
                 // Ensure if the user has passed a second argument that it is a valid DIV icon.
-                throwException('Second argument must be an instance of L.DivIcon');
+                L.FreeDraw.Throw('Second argument must be an instance of L.DivIcon');
 
             }
 
@@ -580,7 +568,7 @@
             for (var addIndex = 0, addLength = markers.length; addIndex < addLength; addIndex++) {
 
                 if (!(markers[addIndex] instanceof L.LatLng)) {
-                    throwException('Supplied markers must be instances of L.LatLng');
+                    L.FreeDraw.Throw('Supplied markers must be instances of L.LatLng');
                 }
 
                 // Add the marker using the custom DIV icon if it has been specified.
@@ -884,6 +872,34 @@
         ALL:    1 | 2 | 4 | 8
     };
 
+    /**
+     * @method Throw
+     * @param message {String}
+     * @param [path=''] {String}
+     * @return {void}
+     */
+    L.FreeDraw.Throw = function ThrowException(message, path) {
+
+        if (path) {
+
+            if (path.substr(0, 7) === 'http://' || path.substr(0, 8) === 'https://') {
+
+                // Use developer supplied full URL since we've received a FQDN.
+                $window.console.error(path);
+
+            } else {
+
+                // Output a link for a more informative message in the EXCEPTIONS.md.
+                $window.console.error('See: https://github.com/Wildhoney/Leaflet.FreeDraw/blob/master/EXCEPTIONS.md#' + path);
+
+            }
+        }
+
+        // ..And then output the thrown exception.
+        throw "Leaflet.FreeDraw: " + message + ".";
+
+    };
+
 })(window, window.L, window.d3, window.ClipperLib);
 
 (function() {
@@ -976,9 +992,26 @@
 
 }());
 
-(function() {
+(function($window, L, d3, ClipperLib) {
 
     "use strict";
+
+    /**
+     * @method assertClipperJS
+     */
+    var assertClipperJS = function assertClipperJS() {
+
+        if (typeof ClipperLib === 'undefined') {
+
+            // Ensure JSClipper has been included.
+            L.FreeDraw.Throw(
+                'JSClipper is a required library for polygon merging and/or simplification',
+                'http://sourceforge.net/p/jsclipper/wiki/Home%206/'
+            );
+
+        }
+
+    };
 
     /**
      * @module FreeDraw
@@ -1030,8 +1063,29 @@
          * @type {Object}
          */
         hullAlgorithms: {
-            'brian3kb/graham_scan_js': 'brian3kbGrahamScan',
-            'Wildhoney/ConcaveHull': 'wildhoneyConcaveHull'
+
+            /**
+             * @property brian3kb/graham_scan_js
+             * @type {Object}
+             */
+            'brian3kb/graham_scan_js': {
+                method: 'brian3kbGrahamScan',
+                name: 'Graham Scan JS',
+                global: 'ConvexHullGrahamScan',
+                link: 'https://github.com/brian3kb/graham_scan_js'
+            },
+
+            /**
+             * @property Wildhoney/ConcaveHull
+             * @type {Object}
+             */
+            'Wildhoney/ConcaveHull': {
+                method: 'wildhoneyConcaveHull',
+                name: 'Concave Hull',
+                global: 'ConcaveHull',
+                link: 'https://github.com/Wildhoney/ConcaveHull'
+            }
+
         },
 
         /**
@@ -1064,7 +1118,10 @@
          * @return {void}
          */
         allowPolygonMerging: function allowPolygonMerging(value) {
+
+            assertClipperJS();
             this.attemptMerge = !!value;
+
         },
 
         /**
@@ -1118,7 +1175,10 @@
          * @return {void}
          */
         setPolygonSimplification: function setPolygonSimplification(value) {
+
+            assertClipperJS();
             this.simplifyPolygon = !!value;
+
         },
 
         /**
@@ -1144,10 +1204,20 @@
 
             }
 
-            this.hullAlgorithm = this.hullAlgorithms[algorithm];
+            // Resolve the hull algorithm.
+            algorithm = this.hullAlgorithms[algorithm];
+
+            if (typeof $window[algorithm.global] === 'undefined') {
+
+                // Ensure hull algorithm module has been included.
+                L.FreeDraw.Throw(algorithm.name + ' is a required library for concave/convex hulls', algorithm.link);
+
+            }
+
+            this.hullAlgorithm = algorithm.method;
 
         }
 
     };
 
-})();
+})(window, window.L, window.d3, window.ClipperLib);

@@ -3,25 +3,6 @@
     "use strict";
 
     /**
-     * @method throwException
-     * @param message {String}
-     * @param path {String}
-     * @return {void}
-     */
-    var throwException = function throwException(message, path) {
-
-        if (path) {
-
-            // Output a link for a more informative message in the EXCEPTIONS.md.
-            console.error('See: https://github.com/Wildhoney/Leaflet.FreeDraw/blob/master/EXCEPTIONS.md#' + path);
-        }
-
-        // ..And then output the thrown exception.
-        throw "Leaflet.FreeDraw: " + message + ".";
-
-    };
-
-    /**
      * @method freeDraw
      * @param options {Object}
      * @returns {window.L.FreeDraw}
@@ -142,6 +123,13 @@
          * @return {void}
          */
         initialize: function initialize(options) {
+
+            if (typeof d3 === 'undefined') {
+
+                // Ensure D3 has been included.
+                L.FreeDraw.Throw('D3 is a required library', 'http://d3js.org/');
+
+            }
 
             options = options || {};
             L.Util.setOptions(this, options);
@@ -561,7 +549,7 @@
             if (typeof divIcon !== 'undefined' && !(divIcon instanceof L.DivIcon)) {
 
                 // Ensure if the user has passed a second argument that it is a valid DIV icon.
-                throwException('Second argument must be an instance of L.DivIcon');
+                L.FreeDraw.Throw('Second argument must be an instance of L.DivIcon');
 
             }
 
@@ -580,7 +568,7 @@
             for (var addIndex = 0, addLength = markers.length; addIndex < addLength; addIndex++) {
 
                 if (!(markers[addIndex] instanceof L.LatLng)) {
-                    throwException('Supplied markers must be instances of L.LatLng');
+                    L.FreeDraw.Throw('Supplied markers must be instances of L.LatLng');
                 }
 
                 // Add the marker using the custom DIV icon if it has been specified.
@@ -882,6 +870,34 @@
         EDIT:   4,
         DELETE: 8,
         ALL:    1 | 2 | 4 | 8
+    };
+
+    /**
+     * @method Throw
+     * @param message {String}
+     * @param [path=''] {String}
+     * @return {void}
+     */
+    L.FreeDraw.Throw = function ThrowException(message, path) {
+
+        if (path) {
+
+            if (path.substr(0, 7) === 'http://' || path.substr(0, 8) === 'https://') {
+
+                // Use developer supplied full URL since we've received a FQDN.
+                $window.console.error(path);
+
+            } else {
+
+                // Output a link for a more informative message in the EXCEPTIONS.md.
+                $window.console.error('See: https://github.com/Wildhoney/Leaflet.FreeDraw/blob/master/EXCEPTIONS.md#' + path);
+
+            }
+        }
+
+        // ..And then output the thrown exception.
+        throw "Leaflet.FreeDraw: " + message + ".";
+
     };
 
 })(window, window.L, window.d3, window.ClipperLib);
