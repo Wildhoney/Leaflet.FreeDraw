@@ -384,7 +384,7 @@
             polygon._parts[0].forEach(function forEach(edge) {
 
                 // Iterate over all of the parts to update the latLngs to clobber the redrawing upon zooming.
-                polygon._latlngs.push(this.map.containerPointToLatLng(edge));
+                polygon._latlngs.push(this.map.layerPointToLatLng(edge));
 
             }.bind(this));
 
