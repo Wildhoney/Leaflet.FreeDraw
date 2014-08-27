@@ -612,12 +612,6 @@
 
                 }.bind(this));
 
-                edge.on('mouseup', function onMouseDown(event) {
-
-                    console.log('Here');
-
-                }.bind(this));
-
             }.bind(this));
 
         },
