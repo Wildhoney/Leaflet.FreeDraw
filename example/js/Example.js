@@ -17,12 +17,12 @@
             mode: L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.EDIT
         });
 
-        freeDraw.preferences.setBoundariesAfterEdit(true);
-        freeDraw.preferences.allowMultiplePolygons(true);
-        freeDraw.preferences.allowPolygonMerging(true);
-        freeDraw.preferences.exitModeAfterCreate(false);
-        freeDraw.preferences.setPolygonSimplification(true);
-        freeDraw.preferences.setHullAlgorithm('Wildhoney/ConcaveHull');
+        freeDraw.options.setBoundariesAfterEdit(true);
+        freeDraw.options.allowMultiplePolygons(true);
+        freeDraw.options.allowPolygonMerging(true);
+        freeDraw.options.exitModeAfterCreate(false);
+        freeDraw.options.setPolygonSimplification(true);
+        freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
 
         freeDraw.on('markers', function getMarkers(eventData) {
 

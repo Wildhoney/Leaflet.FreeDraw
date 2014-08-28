@@ -58,12 +58,6 @@
         latLngs: [],
 
         /**
-         * @property preferences
-         * @type {Object}
-         */
-        preferences: {},
-
-        /**
          * @property options
          * @type {Object}
          */
@@ -143,13 +137,13 @@
 
             }
 
-            this.preferences = new L.FreeDraw.Preferences();
-            this.hull        = new L.FreeDraw.Hull();
+            options = options || {};
 
-            // Merge the options.
-            L.Util.setOptions(this, options);
+            this.options = new L.FreeDraw.Options();
+            this.hull    = new L.FreeDraw.Hull();
+            this.element = options.element || null;
 
-            this.setMode(this.options.mode || this.mode);
+            this.setMode(options.mode || this.mode);
 
         },
 
@@ -162,8 +156,14 @@
 
             // Lazily hook up the options and hull objects.
             this.map     = map;
-            this.element = map._container;
             this.mode = this.mode || L.FreeDraw.MODES.VIEW;
+
+            if (!this.element) {
+
+                // Define the element D3 will bind to if the user hasn't specified a custom node.
+                this.element = map._container;
+
+            }
 
             // Define the line function for drawing the polygon from the user's mouse pointer.
             this.lineFunction = d3.svg.line()
@@ -305,7 +305,7 @@
         createD3: function createD3() {
 
             this.svg = d3.select(this.options.element || this.element).append('svg')
-                         .attr('class', this.preferences.svgClassName)
+                         .attr('class', this.options.svgClassName)
                          .attr('width', 200).attr('height', 200);
         },
 
@@ -390,7 +390,7 @@
                 fill: true,
                 fillColor: '#D7217E',
                 fillOpacity: 0.75,
-                smoothFactor: this.preferences.smoothFactor
+                smoothFactor: this.options.smoothFactor
             });
 
             // Add the polyline to the map, and then find the edges of the polygon.
@@ -405,7 +405,7 @@
 
             }.bind(this));
 
-            if (this.preferences.attemptMerge && !this.silenced) {
+            if (this.options.attemptMerge && !this.silenced) {
 
                 // Merge the polygons if the developer wants to, which at the moment is very experimental!
                 this.mergePolygons();
@@ -621,7 +621,7 @@
 
                 // Leaflet creates elbows in the polygon, which we need to utilise to add the
                 // points for modifying its shape.
-                var edge   = L.divIcon({ className: this.preferences.iconClassName }),
+                var edge   = L.divIcon({ className: this.options.iconClassName }),
                     latLng = this.map.layerPointToLatLng(point);
 
                 edge = L.marker(latLng, { icon: edge }).addTo(this.map);
@@ -687,7 +687,7 @@
                     return;
                 }
 
-                if (!this.preferences.multiplePolygons && this.edges.length) {
+                if (!this.options.multiplePolygons && this.edges.length) {
 
                     // User is only allowed to create one polygon.
                     return;
@@ -780,7 +780,7 @@
 
                 if (this.movingEdge) {
 
-                    if (!this.preferences.boundariesAfterEdit) {
+                    if (!this.options.boundariesAfterEdit) {
 
                         // Notify of a boundary update immediately after editing one edge.
                         this.notifyBoundaries();
@@ -857,11 +857,11 @@
 
             }
 
-            if (this.preferences.hullAlgorithm) {
+            if (this.options.hullAlgorithm) {
 
                 // Use the defined hull algorithm.
                 this.hull.setMap(this.map);
-                var latLngs = this.hull[this.preferences.hullAlgorithm](this.latLngs);
+                var latLngs = this.hull[this.options.hullAlgorithm](this.latLngs);
 
             }
 
@@ -888,7 +888,7 @@
 
             }.bind(this));
 
-            if (this.preferences.createExitMode) {
+            if (this.options.createExitMode) {
 
                 // Automatically exit the user from the creation mode.
                 this.setMode(this.mode ^ L.FreeDraw.MODES.CREATE);
