@@ -58,6 +58,12 @@
         latLngs: [],
 
         /**
+         * @property preferences
+         * @type {Object}
+         */
+        preferences: {},
+
+        /**
          * @property options
          * @type {Object}
          */
@@ -137,13 +143,13 @@
 
             }
 
-            options = options || {};
+            this.preferences = new L.FreeDraw.Preferences();
+            this.hull        = new L.FreeDraw.Hull();
+
+            // Merge the options.
             L.Util.setOptions(this, options);
 
-            this.options = new L.FreeDraw.Options();
-            this.hull    = new L.FreeDraw.Hull();
-
-            this.setMode(options.mode || this.mode);
+            this.setMode(this.options.mode || this.mode);
 
         },
 
@@ -297,8 +303,10 @@
          * @return {void}
          */
         createD3: function createD3() {
-            this.svg = d3.select(this.element).append('svg').attr('class', this.options.svgClassName)
-                          .attr('width', 200).attr('height', 200);
+
+            this.svg = d3.select(this.options.element || this.element).append('svg')
+                         .attr('class', this.preferences.svgClassName)
+                         .attr('width', 200).attr('height', 200);
         },
 
         /**
@@ -382,7 +390,7 @@
                 fill: true,
                 fillColor: '#D7217E',
                 fillOpacity: 0.75,
-                smoothFactor: this.options.smoothFactor
+                smoothFactor: this.preferences.smoothFactor
             });
 
             // Add the polyline to the map, and then find the edges of the polygon.
@@ -397,7 +405,7 @@
 
             }.bind(this));
 
-            if (this.options.attemptMerge && !this.silenced) {
+            if (this.preferences.attemptMerge && !this.silenced) {
 
                 // Merge the polygons if the developer wants to, which at the moment is very experimental!
                 this.mergePolygons();
@@ -613,7 +621,7 @@
 
                 // Leaflet creates elbows in the polygon, which we need to utilise to add the
                 // points for modifying its shape.
-                var edge   = L.divIcon({ className: this.options.iconClassName }),
+                var edge   = L.divIcon({ className: this.preferences.iconClassName }),
                     latLng = this.map.layerPointToLatLng(point);
 
                 edge = L.marker(latLng, { icon: edge }).addTo(this.map);
@@ -679,7 +687,7 @@
                     return;
                 }
 
-                if (!this.options.multiplePolygons && this.edges.length) {
+                if (!this.preferences.multiplePolygons && this.edges.length) {
 
                     // User is only allowed to create one polygon.
                     return;
@@ -772,7 +780,7 @@
 
                 if (this.movingEdge) {
 
-                    if (!this.options.boundariesAfterEdit) {
+                    if (!this.preferences.boundariesAfterEdit) {
 
                         // Notify of a boundary update immediately after editing one edge.
                         this.notifyBoundaries();
@@ -849,11 +857,11 @@
 
             }
 
-            if (this.options.hullAlgorithm) {
+            if (this.preferences.hullAlgorithm) {
 
                 // Use the defined hull algorithm.
                 this.hull.setMap(this.map);
-                var latLngs = this.hull[this.options.hullAlgorithm](this.latLngs);
+                var latLngs = this.hull[this.preferences.hullAlgorithm](this.latLngs);
 
             }
 
@@ -880,7 +888,7 @@
 
             }.bind(this));
 
-            if (this.options.createExitMode) {
+            if (this.preferences.createExitMode) {
 
                 // Automatically exit the user from the creation mode.
                 this.setMode(this.mode ^ L.FreeDraw.MODES.CREATE);
@@ -1046,18 +1054,18 @@
 
     /**
      * @module FreeDraw
-     * @submodule Options
+     * @submodule Preferences
      * @author Adam Timberlake
      * @link https://github.com/Wildhoney/Leaflet.FreeDraw
      * @constructor
      */
-    L.FreeDraw.Options = function FreeDrawOptions() {};
+    L.FreeDraw.Preferences = function FreeDrawPreferences() {};
 
     /**
      * @property prototype
      * @type {Object}
      */
-    L.FreeDraw.Options.prototype = {
+    L.FreeDraw.Preferences.prototype = {
 
         /**
          * @property multiplePolygons

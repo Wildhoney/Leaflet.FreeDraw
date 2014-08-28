@@ -37,7 +37,7 @@ map.addLayer(new L.FreeDraw({
 }));
 ```
 
-Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; such as `L.map` for `new L.Map` &mdash; [read why here](http://37.media.tumblr.com/6a9fcffde2da977266b0ea99b15d5803/tumblr_n42cjjsriB1smcbm7o1_400.gif) &mdash; `L.FreeDraw` follows the same convention and provides a convenient `L.freeDraw` method for instantiating `L.FreeDraw` for you whilst passing through the options.
+Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; such as `L.map` for `new L.Map` &mdash; [read why here](http://37.media.tumblr.com/6a9fcffde2da977266b0ea99b15d5803/tumblr_n42cjjsriB1smcbm7o1_400.gif) &mdash; `L.FreeDraw` follows the same convention and provides a convenient `L.freeDraw` method for instantiating `L.FreeDraw` for you whilst passing through the preferences.
 
 ![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
 
@@ -58,36 +58,36 @@ freeDraw.on('markers', function getMarkers(eventData) {
 
 By invoking the `freeDraw.setMarkers` method with an array of `latLngs` your markers will appear on the map. You may also use the second argument of the `setMarkers` resolution method to specify a custom `L.DivIcon`.
 
-## Options
+## Preferences
 
-FreeDraw has quite a few options &ndash; all of which can be seen by taking a look at the `L.FreeDraw.Options` object. However, there are certain options that you are likely to use more than others.
+FreeDraw has quite a few preferences &ndash; all of which can be seen by taking a look at the `L.FreeDraw.Preferences` object. However, there are certain preferences that you are likely to use more than others.
 
 ```javascript
 // Allow the user to define multiple polygons on one map.
-freeDraw.options.allowMultiplePolygons(true);
+freeDraw.preferences.allowMultiplePolygons(true);
 
 // Prevent the rendering of the polygon via a convex/concave hull.
-freeDraw.options.setHullAlgorithm(false);
+freeDraw.preferences.setHullAlgorithm(false);
 
 // Use ClipperJS to simplify and clean the polygon.
-freeDraw.options.setPolygonSimplification(true);
+freeDraw.preferences.setPolygonSimplification(true);
 
 // Utilise Brian Barnett's convex hull.
-freeDraw.options.setHullAlgorithm('brian3kb/graham_scan_js');
+freeDraw.preferences.setHullAlgorithm('brian3kb/graham_scan_js');
 
 // ...Or my adaptation of the concave hull.
-freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
+freeDraw.preferences.setHullAlgorithm('Wildhoney/ConcaveHull');
 ```
 
 For the hull algorithm implementations, take a look at the [following paper](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) on convex hulls and concave hulls.
 
-All of the polygons drawn with `L.FreeDraw` can be modified using the options and [standard CSS](http://tutorials.jenkov.com/svg/svg-and-css.html).
+All of the polygons drawn with `L.FreeDraw` can be modified using the preferences and [standard CSS](http://tutorials.jenkov.com/svg/svg-and-css.html).
 
 Once the user has drawn their free-hand drawing, it is converted into a polygon by Leaflet.js &ndash; you can define how smooth the rendered polygon is by using the `setSmoothFactor` method &ndash; by default the `smoothFactor` is **5**.
 
 ### Polygon Mutation
 
-When a user is modifying a polygon the `markers` event is emitted each and every time &ndash; which may be overkill, especially if your requests are somewhat time consuming. In this case `L.FreeDraw` allows you to defer the fetching of markers for when the edit mode has been exited with `freeDraw.options.setBoundariesAfterEdit(true)`.
+When a user is modifying a polygon the `markers` event is emitted each and every time &ndash; which may be overkill, especially if your requests are somewhat time consuming. In this case `L.FreeDraw` allows you to defer the fetching of markers for when the edit mode has been exited with `freeDraw.preferences.setBoundariesAfterEdit(true)`.
 
 ### Polygon Intersection
 
@@ -95,7 +95,7 @@ By invoking the `freeDraw.allowPolygonMerging(true)` method, `L.FreeDraw` will a
 
 ### Exit Create Mode
 
-After drawing a polygon the `L.FreeDraw.MODES.CREATE` mode will automatically be exited &ndash; but this can be suppressed by specifying `freeDraw.options.exitModeAfterCreate(false)` in which case the create mode will be persisted until the user explicitly exits it.
+After drawing a polygon the `L.FreeDraw.MODES.CREATE` mode will automatically be exited &ndash; but this can be suppressed by specifying `freeDraw.preferences.exitModeAfterCreate(false)` in which case the create mode will be persisted until the user explicitly exits it.
 
 ## Modes
 
@@ -119,7 +119,7 @@ L.FreeDraw.MODES: {
 }
 ```
 
-Therefore you're able to combine the bitwise operators to specify multiple modes. For example, if you would like to allow the user to create and delete, then you would specify the options as `L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.DELETE`. By allowing a user to perform every action you would have to concatenate all of the modes via the pipe (`|`) character &ndash; therefore `L.FreeDraw` provides the convenient `L.FreeDraw.MODES.ALL` property which does that for you.
+Therefore you're able to combine the bitwise operators to specify multiple modes. For example, if you would like to allow the user to create and delete, then you would specify the preferences as `L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.DELETE`. By allowing a user to perform every action you would have to concatenate all of the modes via the pipe (`|`) character &ndash; therefore `L.FreeDraw` provides the convenient `L.FreeDraw.MODES.ALL` property which does that for you.
 
 Using the `L.FreeDraw.MODES.ALL` property you could easily enable all the modes **except** edit with the following: `L.FreeDraw.MODES.ALL ^ L.FreeDraw.MODES.EDIT`.
 

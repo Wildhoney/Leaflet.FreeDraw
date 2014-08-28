@@ -21,18 +21,18 @@
 
     /**
      * @module FreeDraw
-     * @submodule Options
+     * @submodule Preferences
      * @author Adam Timberlake
      * @link https://github.com/Wildhoney/Leaflet.FreeDraw
      * @constructor
      */
-    L.FreeDraw.Options = function FreeDrawOptions() {};
+    L.FreeDraw.Preferences = function FreeDrawPreferences() {};
 
     /**
      * @property prototype
      * @type {Object}
      */
-    L.FreeDraw.Options.prototype = {
+    L.FreeDraw.Preferences.prototype = {
 
         /**
          * @property multiplePolygons
