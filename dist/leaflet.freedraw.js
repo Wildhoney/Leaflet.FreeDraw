@@ -847,6 +847,10 @@
          */
         _createMouseUp: function _createMouseUp() {
 
+            if (!this.creating) {
+                return;
+            }
+
             // User has finished creating their polygon!
             this.creating = false;
 
