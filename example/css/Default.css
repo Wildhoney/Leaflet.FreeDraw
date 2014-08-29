@@ -51,8 +51,9 @@ section.map div.polygon-elbow {
 }
 
 section.map div.polygon-elbow.non-polygon {
-    opacity: 0 !important;
-    pointer-events: none;
+    /*opacity: 0 !important;*/
+    pointer-events: none !important;
+    border: 5px solid darkgray;
 }
 
 section.map.mode-edit div.polygon-elbow {

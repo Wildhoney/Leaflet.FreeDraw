@@ -5,7 +5,7 @@
     /**
      * @method freeDraw
      * @param options {Object}
-     * @returns {window.L.FreeDraw}
+     * @return {window.L.FreeDraw}
      */
     L.freeDraw = function freeDraw(options) {
         return new L.FreeDraw(options);
@@ -80,7 +80,7 @@
          * @type {Array}
          */
         polygons: [],
-        
+
         /**
          * @property edges
          * @type {Array}
@@ -167,6 +167,32 @@
              */
             var GROUP_TAG = 'G';
 
+            /**
+             * @method filterEdge
+             * @param edge {Object}
+             * @return {Boolean}
+             */
+            var filterEdges = function filterEdges(edge) {
+                return edge._freedraw.polygon._container === polygon._container;
+            };
+
+            /**
+             * @method recreate
+             * @param polygon {Object}
+             * @return {void}
+             */
+            var recreate = function recreate(polygon) {
+
+                this.silently(function silently() {
+
+                    // We've found a polygon without edges and therefore need to attach them again!
+                    this.destroyPolygon(polygon);
+                    this.createPolygon(polygon._latlngs, true);
+
+                }.bind(this));
+
+            };
+
             for (var layerIndex in this.map._layers) {
 
                 if (this.map._layers.hasOwnProperty(layerIndex)) {
@@ -175,21 +201,8 @@
 
                     if (polygon._container && polygon._container.tagName.toUpperCase() === GROUP_TAG) {
 
-                        var edges = this.edges.filter(function filter(edge) {
-                            return edge._freedraw.polygon._container === polygon._container;
-                        });
-
-                        if (edges.length === 0 && polygon._parts[0]) {
-
-                            this.silently(function silently() {
-
-                                // We've found a polygon without edges and therefore need to attach them again!
-                                this.destroyPolygon(polygon);
-                                this.createPolygon(polygon._latlngs);
-                                
-                            });
-
-
+                        if (polygon._parts[0]) {
+                            recreate.call(this, polygon);
                         }
 
                     }
@@ -396,7 +409,7 @@
         /**
          * @method clipperPolygonsToLatLngs
          * @param polygons {Array}
-         * @returns {Array}
+         * @return {Array}
          */
         clipperPolygonsToLatLngs: function clipperPolygonsToLatLngs(polygons) {
 
@@ -474,22 +487,35 @@
             this.polygons.push(polygon);
 
             // Attach all of the edges to the polygon.
-            var edgeCount  = this.attachEdges(polygon),
-                nonPolygon = (edgeCount <= 2);
+            var edgeCount = this.attachEdges(polygon);
 
-            if (nonPolygon) {
+            /**
+             * @method determineNonPolygons
+             * @return {void}
+             */
+            (function determineNonPolygons() {
+
+                // Determines whether to add or remove the class.
+                var nonPolygon = Number.isFinite(edgeCount) && (edgeCount <= 2),
+                    method     = (nonPolygon) ? 'addClass' : 'removeClass';
+
+                console.log(method);
 
                 // "Polygon" is actually not a polygon because it consists of less than 3 edges.
-                L.DomUtil.addClass(polygon._container, 'non-polygon');
+                L.DomUtil[method](polygon._container, 'non-polygon');
 
                 this.edges.forEach(function forEach(edge) {
 
+                    if (edge._freedraw.polygon !== polygon) {
+                        return;
+                    }
+
                     // Add the "non-polygon" class to all of the polygon's related edges as well.
-                    L.DomUtil.addClass(edge._icon, 'non-polygon');
+                    L.DomUtil[method](edge._icon, 'non-polygon');
 
                 }.bind(this));
 
-            }
+            }.bind(this))();
 
             if (this.options.attemptMerge && !this.silenced) {
 
