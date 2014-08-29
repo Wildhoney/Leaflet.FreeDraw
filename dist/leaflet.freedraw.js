@@ -201,8 +201,6 @@
 
             }.bind(this))();
 
-            this.notifyBoundaries();
-
         },
 
         /**
@@ -226,9 +224,9 @@
              */
             var recreate = function recreate(polygon) {
 
-                this.silently(function silently() {
+                setTimeout(function() {
 
-                    setTimeout(function() {
+                    this.silently(function silently() {
 
                         // Reattach the polygon's edges.
                         this.reattachEdges(polygon);
@@ -259,6 +257,17 @@
                     }
 
                 }
+
+            }
+
+            if (this.options.refineLatLngs) {
+
+                setTimeout(function setTimeout() {
+
+                    // Notify everybody of the update if we're using the edges to read the lat/longs.
+                    this.notifyBoundaries();
+
+                }.bind(this));
 
             }
 
@@ -1356,7 +1365,7 @@
          * @property refineLatLngs
          * @type {Boolean}
          */
-        refineLatLngs: true,
+        refineLatLngs: false,
 
         /**
          * @property svgClassName

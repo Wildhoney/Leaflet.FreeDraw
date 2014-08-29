@@ -260,12 +260,16 @@
 
             }
 
-            setTimeout(function setTimeout() {
+            if (this.options.refineLatLngs) {
 
-                // Notify everybody of the update.
-                this.notifyBoundaries();
+                setTimeout(function setTimeout() {
 
-            }.bind(this));
+                    // Notify everybody of the update if we're using the edges to read the lat/longs.
+                    this.notifyBoundaries();
+
+                }.bind(this));
+
+            }
 
         },
 
