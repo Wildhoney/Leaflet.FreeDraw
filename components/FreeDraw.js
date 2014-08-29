@@ -201,8 +201,6 @@
 
             }.bind(this))();
 
-            this.notifyBoundaries();
-
         },
 
         /**
@@ -226,9 +224,9 @@
              */
             var recreate = function recreate(polygon) {
 
-                this.silently(function silently() {
+                setTimeout(function() {
 
-                    setTimeout(function() {
+                    this.silently(function silently() {
 
                         // Reattach the polygon's edges.
                         this.reattachEdges(polygon);
@@ -261,6 +259,13 @@
                 }
 
             }
+
+            setTimeout(function setTimeout() {
+
+                // Notify everybody of the update.
+                this.notifyBoundaries();
+
+            }.bind(this));
 
         },
 
