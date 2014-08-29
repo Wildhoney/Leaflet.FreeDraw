@@ -509,6 +509,13 @@
                 this.notifyBoundaries();
             }
 
+            if (this.options.deleteExitMode) {
+
+                // Automatically exit the user from the deletion mode.
+                this.setMode(this.mode ^ L.FreeDraw.MODES.DELETE);
+
+            }
+
         },
 
         /**
@@ -1102,6 +1109,12 @@
         createExitMode: true,
 
         /**
+         * @property deleteExitMode
+         * @type {Boolean}
+         */
+        deleteExitMode: false,
+
+        /**
          * @property hullAlgorithms
          * @type {Object}
          */
@@ -1174,6 +1187,15 @@
          */
         exitModeAfterCreate: function exitModeAfterCreate(value) {
             this.createExitMode = !!value;
+        },
+
+        /**
+         * @method exitModeAfterDelete
+         * @param value {Boolean}
+         * @return {void}
+         */
+        exitModeAfterDelete: function exitModeAfterDelete(value) {
+            this.deleteExitMode = !!value;
         },
 
         /**
