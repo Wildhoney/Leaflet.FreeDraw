@@ -110,7 +110,7 @@
          * @property refineLatLngs
          * @type {Boolean}
          */
-        refineLatLngs: true,
+        refineLatLngs: false,
 
         /**
          * @property svgClassName
