@@ -189,7 +189,7 @@
          * @return {void}
          */
         onRemove: function onRemove() {
-            this.clearPolygons();
+            this._clearPolygons();
         },
 
         /**
@@ -447,7 +447,7 @@
 
                 this.silently(function() {
 
-                    this.clearPolygons();
+                    this._clearPolygons();
 
                     polygons.forEach(function forEach(polygon) {
 
@@ -523,6 +523,16 @@
          * @return {void}
          */
         clearPolygons: function clearPolygons() {
+            this.silently(this._clearPolygons);
+            this.notifyBoundaries();
+        },
+
+        /**
+         * @method _clearPolygons
+         * @return {void}
+         * @private
+         */
+        _clearPolygons: function _clearPolygons() {
 
             this.edges.forEach(function forEach(edge) {
 
