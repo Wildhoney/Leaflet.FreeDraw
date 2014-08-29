@@ -26,6 +26,8 @@
 
         freeDraw.on('markers', function getMarkers(eventData) {
 
+            console.log(JSON.stringify(eventData.latLngs));
+
 //            var latLngs = [];
 //
 //            eventData.latLngs.forEach(function forEach(latLngGroup) {

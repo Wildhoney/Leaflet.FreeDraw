@@ -201,6 +201,8 @@
 
             }.bind(this))();
 
+            this.notifyBoundaries();
+
         },
 
         /**
@@ -696,29 +698,41 @@
          */
         notifyBoundaries: function notifyBoundaries() {
 
-            var latLngs = [],
-                last    = null,
-                index   = -1;
+            var latLngs = [];
 
-            this.edges.forEach(function forEach(edge) {
+            if (!this.options.refineLatLngs) {
 
-                if (edge._freedraw.polygonId !== last) {
-                    index++;
-                }
+                // Use the lat/long values from the polygon itself which don't change when zooming.
+                this.getPolygons().forEach(function(polygon) {
+                    latLngs.push(polygon._latlngs);
+                });
 
-                if (typeof latLngs[index] === 'undefined') {
+            } else {
 
-                    // Create the array entry point if it hasn't yet been defined.
-                    latLngs[index] = [];
+                var last  = null,
+                    index = -1;
 
-                }
+                // Otherwise we'll use the lat/longs directly from the polygon's edges which do change
+                // according to the current zoom level.
+                this.edges.forEach(function forEach(edge) {
 
-                last = edge._freedraw.polygonId;
-                latLngs[index].push(edge._freedraw.latLng);
+                    if (edge._freedraw.polygonId !== last) {
+                        index++;
+                    }
 
-            }.bind(this));
+                    if (typeof latLngs[index] === 'undefined') {
 
-//            console.log(JSON.stringify(latLngs));
+                        // Create the array entry point if it hasn't yet been defined.
+                        latLngs[index] = [];
+
+                    }
+
+                    last = edge._freedraw.polygonId;
+                    latLngs[index].push(edge._freedraw.latLng);
+
+                }.bind(this));
+
+            }
 
             // Update the polygon count variable.
             this.polygonCount = latLngs.length;
@@ -1339,6 +1353,12 @@
         attemptMerge: false,
 
         /**
+         * @property refineLatLngs
+         * @type {Boolean}
+         */
+        refineLatLngs: true,
+
+        /**
          * @property svgClassName
          * @type {String}
          */
@@ -1375,6 +1395,15 @@
          */
         exitModeAfterCreate: function exitModeAfterCreate(value) {
             this.createExitMode = !!value;
+        },
+
+        /**
+         * @method refineLatLngsOnZoom
+         * @param value {Boolean}
+         * @return {void}
+         */
+        refineLatLngsOnZoom: function refineLatLngsOnZoom(value) {
+            this.refineLatLngs = !!value;
         },
 
         /**
