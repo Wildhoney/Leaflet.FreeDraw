@@ -76,6 +76,12 @@
         hull: {},
 
         /**
+         * @property polygons
+         * @type {Array}
+         */
+        polygons: [],
+        
+        /**
          * @property edges
          * @type {Array}
          */
@@ -148,11 +154,60 @@
         },
 
         /**
+         * @method resurrectOrphans
+         * @return {void}
+         */
+        resurrectOrphans: function resurrectOrphans() {
+
+            /**
+             * Used to identify a node that is a <g> element.
+             *
+             * @constant GROUP_TAG
+             * @type {String}
+             */
+            var GROUP_TAG = 'G';
+
+            for (var layerIndex in this.map._layers) {
+
+                if (this.map._layers.hasOwnProperty(layerIndex)) {
+
+                    var polygon = this.map._layers[layerIndex];
+
+                    if (polygon._container && polygon._container.tagName.toUpperCase() === GROUP_TAG) {
+
+                        var edges = this.edges.filter(function filter(edge) {
+                            return edge._freedraw.polygon._container === polygon._container;
+                        });
+
+                        if (edges.length === 0 && polygon._parts[0]) {
+
+                            this.silently(function silently() {
+
+                                // We've found a polygon without edges and therefore need to attach them again!
+                                this.destroyPolygon(polygon);
+                                this.createPolygon(polygon._latlngs);
+                                
+                            });
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        },
+
+        /**
          * @method onAdd
          * @param map {L.Map}
          * @return {void}
          */
         onAdd: function onAdd(map) {
+
+            map.on('zoomend', this.resurrectOrphans.bind(this));
 
             // Lazily hook up the options and hull objects.
             this.map     = map;
@@ -232,6 +287,8 @@
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
+            method = 'enable';
+
             // Set the current mode and emit the event.
             this.mode = mode;
             this.fire('mode', { mode: mode });
@@ -250,7 +307,7 @@
             }
 
             // Update the permissions for what the user can do on the map.
-            this.map.dragging[method]();
+            this.map.dragging['disable']();
             this.map.touchZoom[method]();
             this.map.doubleClickZoom[method]();
             this.map.scrollWheelZoom[method]();
@@ -364,9 +421,10 @@
         /**
          * @method createPolygon
          * @param latLngs {L.latLng[]}
+         * @param [forceCreation=false] {Boolean}
          * @return {L.polygon|Boolean}
          */
-        createPolygon: function createPolygon(latLngs) {
+        createPolygon: function createPolygon(latLngs, forceCreation) {
 
             // Begin to create a brand-new polygon.
             this.destroyD3().createD3();
@@ -380,8 +438,15 @@
 
             }.apply(this);
 
-            if (simplifiedLatLngs.length === 0) {
-                return false;
+            if (simplifiedLatLngs.length <= 3) {
+
+                if (!forceCreation) {
+                    return false;
+                }
+
+                // Force the polygon creation with the supplied lat/longs.
+                simplifiedLatLngs = latLngs;
+
             }
 
             var polygon = L.polygon(simplifiedLatLngs, {
@@ -393,17 +458,38 @@
                 smoothFactor: this.options.smoothFactor
             });
 
-            // Add the polyline to the map, and then find the edges of the polygon.
-            polygon.addTo(this.map);
-            polygon._latlngs = [];
-            this.attachEdges(polygon);
+            polygon.on('click', function onClick() {
 
-            polygon._parts[0].forEach(function forEach(edge) {
+                if (this.mode & L.FreeDraw.MODES.DELETE) {
 
-                // Iterate over all of the parts to update the latLngs to clobber the redrawing upon zooming.
-                polygon._latlngs.push(this.map.layerPointToLatLng(edge));
+                    // Remove the polygon when the user clicks on it, and they're in delete mode.
+                    this.destroyPolygon(polygon);
+
+                }
 
             }.bind(this));
+
+            // Add the polyline to the map, and then find the edges of the polygon.
+            polygon.addTo(this.map);
+            this.polygons.push(polygon);
+
+            // Attach all of the edges to the polygon.
+            var edgeCount  = this.attachEdges(polygon),
+                nonPolygon = (edgeCount <= 2);
+
+            if (nonPolygon) {
+
+                // "Polygon" is actually not a polygon because it consists of less than 3 edges.
+                L.DomUtil.addClass(polygon._container, 'non-polygon');
+
+                this.edges.forEach(function forEach(edge) {
+
+                    // Add the "non-polygon" class to all of the polygon's related edges as well.
+                    L.DomUtil.addClass(edge._icon, 'non-polygon');
+
+                }.bind(this));
+
+            }
 
             if (this.options.attemptMerge && !this.silenced) {
 
@@ -421,23 +507,39 @@
         },
 
         /**
+         * @method getPolygons
+         * @return {Array}
+         */
+        getPolygons: function getPolygons() {
+
+            var polygons = [];
+
+            this.edges.forEach(function forEach(edge) {
+
+                if (polygons.indexOf(edge._freedraw.polygon) === -1) {
+                    polygons.push(edge._freedraw.polygon);
+                }
+
+            }.bind(this));
+
+            return polygons;
+
+        },
+
+        /**
          * @method mergePolygons
          * @return {void}
          */
         mergePolygons: function mergePolygons() {
 
+            /**
+             * @method mergePass
+             * @return {void}
+             */
             var mergePass = function mergePass() {
 
-                var allPolygons = [],
+                var allPolygons = this.getPolygons(),
                     allPoints   = [];
-
-                this.edges.forEach(function forEach(edge) {
-
-                    if (allPolygons.indexOf(edge._freedraw.polygon) === -1) {
-                        allPolygons.push(edge._freedraw.polygon);
-                    }
-
-                }.bind(this));
 
                 allPolygons.forEach(function forEach(polygon) {
                     allPoints.push(this.latLngsToClipperPoints(polygon._latlngs));
@@ -460,25 +562,15 @@
 
                         }.bind(this));
 
-                        polygon = this.createPolygon(latLngs);
-
-                        polygon.on('click', function onClick() {
-
-                            if (this.mode & L.FreeDraw.MODES.DELETE) {
-
-                                // Remove the polygon when the user clicks on it, and they're in delete mode.
-                                this.destroyPolygon(polygon);
-
-                            }
-
-                        }.bind(this));
+                        // Create the polygon!
+                        this.createPolygon(latLngs, true);
 
                     }.bind(this));
 
                 });
 
             }.bind(this);
-
+            
             // Perform two merge passes to simplify the polygons.
             mergePass(); mergePass();
 
@@ -492,6 +584,10 @@
         destroyPolygon: function destroyPolygon(polygon) {
 
             this.map.removeLayer(polygon);
+
+            // Remove from the polygons array.
+            var index = this.polygons.indexOf(polygon);
+            this.polygons.splice(index, 1);
 
             // ...And then remove all of its related edges to prevent memory leaks.
             this.edges = this.edges.filter(function filter(edge) {
@@ -571,9 +667,11 @@
                 }
 
                 last = edge._freedraw.polygonId;
-                latLngs[index].push(edge['_latlng']);
+                latLngs[index].push(edge._freedraw.latLng);
 
             }.bind(this));
+
+//            console.log(JSON.stringify(latLngs));
 
             // Update the polygon count variable.
             this.polygonCount = latLngs.length;
@@ -654,12 +752,17 @@
         /**
          * @method attachEdges
          * @param polygon {L.polygon}
-         * @return {void}
+         * @return {Number|Boolean}
          */
         attachEdges: function attachEdges(polygon) {
 
             // Extract the parts from the polygon.
-            var parts = polygon._parts[0];
+            var parts     = polygon._parts[0],
+                edgeCount = 0;
+
+            if (!parts) {
+                return false;
+            }
 
             parts.forEach(function forEach(point) {
 
@@ -674,10 +777,11 @@
                 edge._freedraw = {
                     polygon:   polygon,
                     polygonId: polygon['_leaflet_id'],
-                    latLngs:   []
+                    latLng:    edge._latlng
                 };
 
                 this.edges.push(edge);
+                edgeCount++;
 
                 edge.on('mousedown touchstart', function onMouseDown(event) {
 
@@ -689,8 +793,17 @@
 
             }.bind(this));
 
+            return edgeCount;
+
         },
 
+        /**
+         * @method updatePolygonEdge
+         * @param edge {Object}
+         * @param posX {Number}
+         * @param posY {Number}
+         * @return {void}
+         */
         updatePolygonEdge: function updatePolygon(edge, posX, posY) {
 
             var updatedLatLng = this.map.containerPointToLatLng(L.point(posX, posY));
@@ -919,24 +1032,13 @@
             this.latLngs.push(this.latLngs[0]);
 
             // Physically draw the Leaflet generated polygon.
-            var polygon  = this.createPolygon(latLngs || this.latLngs);
+            var polygon = this.createPolygon(latLngs || this.latLngs);
 
             if (!polygon) {
                 return;
             }
 
             this.latLngs = [];
-
-            polygon.on('click', function onClick() {
-
-                if (this.mode & L.FreeDraw.MODES.DELETE) {
-
-                    // Remove the polygon when the user clicks on it, and they're in delete mode.
-                    this.destroyPolygon(polygon);
-
-                }
-
-            }.bind(this));
 
             if (this.options.createExitMode) {
 

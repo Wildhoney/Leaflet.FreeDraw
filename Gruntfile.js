@@ -100,6 +100,6 @@ module.exports = function(grunt) {
     grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
 //    grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('test', ['jshint']);
-    grunt.registerTask('default', ['build', 'test']);
+    grunt.registerTask('default', ['build']);
 
 };
