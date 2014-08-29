@@ -604,9 +604,7 @@
                 });
 
             })();
-
-            console.log(latLngs);
-
+            
             // Invoke the user passed method for specifying latitude/longitudes.
             this.fire('markers', { latLngs: latLngs });
 
