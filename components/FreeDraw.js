@@ -168,15 +168,6 @@
             var GROUP_TAG = 'G';
 
             /**
-             * @method filterEdge
-             * @param edge {Object}
-             * @return {Boolean}
-             */
-            var filterEdges = function filterEdges(edge) {
-                return edge._freedraw.polygon._container === polygon._container;
-            };
-
-            /**
              * @method recreate
              * @param polygon {Object}
              * @return {void}
