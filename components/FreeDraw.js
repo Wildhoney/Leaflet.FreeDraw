@@ -433,8 +433,8 @@
 
                 this.edges.forEach(function forEach(edge) {
 
-                    if (allPolygons.indexOf(edge._polygon) === -1) {
-                        allPolygons.push(edge._polygon);
+                    if (allPolygons.indexOf(edge._freedraw.polygon) === -1) {
+                        allPolygons.push(edge._freedraw.polygon);
                     }
 
                 }.bind(this));
@@ -496,7 +496,7 @@
             // ...And then remove all of its related edges to prevent memory leaks.
             this.edges = this.edges.filter(function filter(edge) {
 
-                if (edge._polygon !== polygon) {
+                if (edge._freedraw.polygon !== polygon) {
                     return true;
                 }
 
@@ -537,7 +537,7 @@
             this.edges.forEach(function forEach(edge) {
 
                 // Iteratively remove each polygon in the DOM.
-                this.destroyPolygon(edge._polygon);
+                this.destroyPolygon(edge._freedraw.polygon);
 
             }.bind(this));
 
@@ -559,7 +559,7 @@
 
             this.edges.forEach(function forEach(edge) {
 
-                if (edge._polygonId !== last) {
+                if (edge._freedraw.polygonId !== last) {
                     index++;
                 }
 
@@ -570,7 +570,7 @@
 
                 }
 
-                last = edge._polygonId;
+                last = edge._freedraw.polygonId;
                 latLngs[index].push(edge['_latlng']);
 
             }.bind(this));
@@ -604,7 +604,7 @@
                 });
 
             })();
-            
+
             // Invoke the user passed method for specifying latitude/longitudes.
             this.fire('markers', { latLngs: latLngs });
 
@@ -661,7 +661,7 @@
             // Extract the parts from the polygon.
             var parts = polygon._parts[0];
 
-            parts.forEach(function forEach(point, index) {
+            parts.forEach(function forEach(point) {
 
                 // Leaflet creates elbows in the polygon, which we need to utilise to add the
                 // points for modifying its shape.
@@ -670,11 +670,13 @@
 
                 edge = L.marker(latLng, { icon: edge }).addTo(this.map);
 
-                // Marker requires instances so that it can modify its shape.
-                edge._polygon   = polygon;
-                edge._polygonId = polygon['_leaflet_id'];
-                edge._index     = index;
-                edge._length    = parts.length;
+                // Setup the freedraw object with the meta data.
+                edge._freedraw = {
+                    polygon:   polygon,
+                    polygonId: polygon['_leaflet_id'],
+                    latLngs:   []
+                };
+
                 this.edges.push(edge);
 
                 edge.on('mousedown touchstart', function onMouseDown(event) {
@@ -696,7 +698,7 @@
 
             // Fetch all of the edges in the group based on the polygon.
             var edges = this.edges.filter(function filter(marker) {
-                return marker._polygon === edge._polygon;
+                return marker._freedraw.polygon === edge._freedraw.polygon;
             });
 
             var updatedLatLngs = [];
@@ -705,8 +707,8 @@
             });
 
             // Update the latitude and longitude values.
-            edge._polygon.setLatLngs(updatedLatLngs);
-            edge._polygon.redraw();
+            edge._freedraw.polygon.setLatLngs(updatedLatLngs);
+            edge._freedraw.polygon.redraw();
 
         },
 
