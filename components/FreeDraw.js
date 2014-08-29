@@ -154,6 +154,56 @@
         },
 
         /**
+         * @method reattachEdges
+         * @param polygon {Object}
+         * @return {void}
+         */
+        reattachEdges: function reattachEdges(polygon) {
+
+            // Remove all of the current edges associated with the polygon.
+            this.edges = this.edges.filter(function filter(edge) {
+
+                if (edge._freedraw.polygon !== polygon) {
+                    return true;
+                }
+
+                // Physically remove the edge from the DOM.
+                this.map.removeLayer(edge);
+
+            }.bind(this));
+
+            // We can then re-attach the edges based on the current zoom level.
+            var edgeCount = this.attachEdges(polygon);
+
+            /**
+             * @method determineNonPolygons
+             * @return {void}
+             */
+            (function determineNonPolygons() {
+
+                // Determines whether to add or remove the class.
+                var nonPolygon = Number.isFinite(edgeCount) && (edgeCount <= 2),
+                    method     = (nonPolygon) ? 'addClass' : 'removeClass';
+
+                // "Polygon" is actually not a polygon because it consists of less than 3 edges.
+                L.DomUtil[method](polygon._container, 'non-polygon');
+
+                this.edges.forEach(function forEach(edge) {
+
+                    if (edge._freedraw.polygon !== polygon) {
+                        return;
+                    }
+
+                    // Add the "non-polygon" class to all of the polygon's related edges as well.
+                    L.DomUtil[method](edge._icon, 'non-polygon');
+
+                }.bind(this));
+
+            }.bind(this))();
+
+        },
+
+        /**
          * @method resurrectOrphans
          * @return {void}
          */
@@ -176,9 +226,12 @@
 
                 this.silently(function silently() {
 
-                    // We've found a polygon without edges and therefore need to attach them again!
-                    this.destroyPolygon(polygon);
-                    this.createPolygon(polygon._latlngs, true);
+                    setTimeout(function() {
+
+                        // Reattach the polygon's edges.
+                        this.reattachEdges(polygon);
+
+                    }.bind(this));
 
                 }.bind(this));
 
@@ -190,10 +243,15 @@
 
                     var polygon = this.map._layers[layerIndex];
 
+                    // Ensure we're dealing with a <g> node (...an SVG group element).
                     if (polygon._container && polygon._container.tagName.toUpperCase() === GROUP_TAG) {
 
                         if (polygon._parts[0]) {
+
+                            // If the polygon is currently visible then we'll re-attach its edges for the current
+                            // zoom level.
                             recreate.call(this, polygon);
+
                         }
 
                     }
@@ -478,35 +536,7 @@
             this.polygons.push(polygon);
 
             // Attach all of the edges to the polygon.
-            var edgeCount = this.attachEdges(polygon);
-
-            /**
-             * @method determineNonPolygons
-             * @return {void}
-             */
-            (function determineNonPolygons() {
-
-                // Determines whether to add or remove the class.
-                var nonPolygon = Number.isFinite(edgeCount) && (edgeCount <= 2),
-                    method     = (nonPolygon) ? 'addClass' : 'removeClass';
-
-                console.log(method);
-
-                // "Polygon" is actually not a polygon because it consists of less than 3 edges.
-                L.DomUtil[method](polygon._container, 'non-polygon');
-
-                this.edges.forEach(function forEach(edge) {
-
-                    if (edge._freedraw.polygon !== polygon) {
-                        return;
-                    }
-
-                    // Add the "non-polygon" class to all of the polygon's related edges as well.
-                    L.DomUtil[method](edge._icon, 'non-polygon');
-
-                }.bind(this));
-
-            }.bind(this))();
+            this.attachEdges(polygon);
 
             if (this.options.attemptMerge && !this.silenced) {
 
