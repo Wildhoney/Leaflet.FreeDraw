@@ -578,6 +578,35 @@
             // Update the polygon count variable.
             this.polygonCount = latLngs.length;
 
+            /**
+             * Convert the open path into a closed polygon.
+             *
+             * @method closePolygon
+             * @return {void}
+             */
+            (function closePolygon() {
+
+                latLngs.forEach(function forEach(latLngGroup) {
+
+                    var firstLatLng = latLngGroup[0],
+                        lastLatLng  = latLngGroup[latLngGroup.length - 1];
+
+                    if (firstLatLng.lat === lastLatLng.lat && lastLatLng.lng === lastLatLng.lng) {
+
+                        // Path is already joined and therefore no action is required.
+                        return;
+
+                    }
+
+                    // Otherwise we need to complete the polygon!
+                    latLngGroup.push(firstLatLng);
+
+                });
+
+            })();
+
+            console.log(latLngs);
+
             // Invoke the user passed method for specifying latitude/longitudes.
             this.fire('markers', { latLngs: latLngs });
 
