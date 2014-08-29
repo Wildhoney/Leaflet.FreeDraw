@@ -22,3 +22,4 @@ deploy:
   app: freedraw
   on:
     repo: Wildhoney/Leaflet.FreeDraw
+    all_branches: true
