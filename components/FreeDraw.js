@@ -509,6 +509,13 @@
                 this.notifyBoundaries();
             }
 
+            if (this.options.deleteExitMode) {
+
+                // Automatically exit the user from the deletion mode.
+                this.setMode(this.mode ^ L.FreeDraw.MODES.DELETE);
+
+            }
+
         },
 
         /**
