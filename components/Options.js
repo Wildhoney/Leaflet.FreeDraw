@@ -4,6 +4,7 @@
 
     /**
      * @method assertClipperJS
+     * @return {void}
      */
     var assertClipperJS = function assertClipperJS() {
 

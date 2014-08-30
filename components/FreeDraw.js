@@ -549,6 +549,24 @@
             // Attach all of the edges to the polygon.
             this.attachEdges(polygon);
 
+            /**
+             * Responsible for preventing the re-rendering of the polygon.
+             *
+             * @return {void}
+             */
+            (function clobberLatLngs() {
+
+                polygon._latlngs = [];
+
+                polygon._parts[0].forEach(function forEach(edge) {
+
+                    // Iterate over all of the parts to update the latLngs to clobber the redrawing upon zooming.
+                    polygon._latlngs.push(this.map.layerPointToLatLng(edge));
+
+                }.bind(this));
+
+            }.bind(this))();
+
             if (this.options.attemptMerge && !this.silenced) {
 
                 // Merge the polygons if the developer wants to, which at the moment is very experimental!
@@ -826,8 +844,25 @@
          */
         attachEdges: function attachEdges(polygon) {
 
-            // Extract the parts from the polygon.
-            var parts     = polygon._parts[0],
+            /**
+             * Responsible for getting the parts based on the original lat/longs.
+             *
+             * @method originalLatLngs
+             * @param polygon {Object}
+             * @return {Array}
+             */
+            var originalLatLngs = function originalLatLngs(polygon) {
+
+                return polygon._latlngs.map(function map(latLng) {
+                    return this.map.latLngToLayerPoint(latLng);
+                }.bind(this));
+
+            }.bind(this);
+
+            // Extract the parts from the polygon if we wish to refine the lat/lngs, or compute the
+            // points from the original lat/lngs if we wish to maintain the same lat/longs based on the
+            // current zoom level.
+            var parts     = !this.options.refineLatLngs ? originalLatLngs(polygon) : polygon._parts[0],
                 edgeCount = 0;
 
             if (!parts) {
