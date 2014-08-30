@@ -260,7 +260,7 @@
 
             }
 
-            if (this.options.refineLatLngs) {
+//            if (this.options.refineLatLngs) {
 
                 setTimeout(function setTimeout() {
 
@@ -269,7 +269,7 @@
 
                 }.bind(this));
 
-            }
+//            }
 
         },
 
