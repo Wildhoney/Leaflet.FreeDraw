@@ -556,6 +556,10 @@
              */
             (function clobberLatLngs() {
 
+                if (!polygon._parts[0]) {
+                    return;
+                }
+
                 polygon._latlngs = [];
 
                 polygon._parts[0].forEach(function forEach(edge) {
@@ -852,6 +856,13 @@
              * @return {Array}
              */
             var originalLatLngs = function originalLatLngs(polygon) {
+
+                if (!polygon._parts[0]) {
+
+                    // We don't care for polygons that are not in the viewport.
+                    return [];
+
+                }
 
                 return polygon._latlngs.map(function map(latLng) {
                     return this.map.latLngToLayerPoint(latLng);

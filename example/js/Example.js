@@ -20,22 +20,15 @@
         freeDraw.options.setBoundariesAfterEdit(true);
         freeDraw.options.allowMultiplePolygons(true);
         freeDraw.options.allowPolygonMerging(true);
-        freeDraw.options.refineLatLngsOnZoom(true);
+        freeDraw.options.refineLatLngsOnZoom(false);
         freeDraw.options.exitModeAfterCreate(false);
         freeDraw.options.setPolygonSimplification(true);
         freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
 
         freeDraw.on('markers', function getMarkers(eventData) {
 
-            console.log(JSON.stringify(eventData.latLngs));
-
-//            var latLngs = [];
-//
-//            eventData.latLngs.forEach(function forEach(latLngGroup) {
-//                latLngs = latLngs.concat(latLngGroup);
-//            });
-//
-//            freeDraw.setMarkers(latLngs);
+            // Output the lat/lngs in the MySQL multi-polygon format.
+            console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
 
         });
 
