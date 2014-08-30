@@ -64,6 +64,12 @@
         options: {},
 
         /**
+         * @property lastNotification
+         * @type {String}
+         */
+        lastNotification: '',
+
+        /**
          * @property markers
          * @type {L.LayerGroup|null}
          */
@@ -259,17 +265,12 @@
                 }
 
             }
+            setTimeout(function setTimeout() {
 
-//            if (this.options.refineLatLngs) {
+                // Notify everybody of the update if we're using the edges to read the lat/longs.
+                this.notifyBoundaries();
 
-                setTimeout(function setTimeout() {
-
-                    // Notify everybody of the update if we're using the edges to read the lat/longs.
-                    this.notifyBoundaries();
-
-                }.bind(this));
-
-//            }
+            }.bind(this));
 
         },
 
@@ -794,6 +795,15 @@
                 });
 
             })();
+
+            // Ensure the last shared notification differs from the current.
+            var notificationFingerprint = JSON.stringify(latLngs);
+            if (this.lastNotification === notificationFingerprint) {
+                return;
+            }
+
+            // Save the notification for the next time.
+            this.lastNotification = notificationFingerprint;
 
             // Invoke the user passed method for specifying latitude/longitudes.
             this.fire('markers', { latLngs: latLngs });
