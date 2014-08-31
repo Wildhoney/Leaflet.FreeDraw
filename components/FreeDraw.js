@@ -265,6 +265,7 @@
                 }
 
             }
+
             setTimeout(function setTimeout() {
 
                 // Notify everybody of the update if we're using the edges to read the lat/longs.
@@ -281,10 +282,14 @@
          */
         onAdd: function onAdd(map) {
 
-            map.on('zoomend', this.resurrectOrphans.bind(this));
+            map.on('zoomend', function onZoomEnd() {
+
+                setTimeout(this.resurrectOrphans.bind(this));
+
+            }.bind(this));
 
             // Lazily hook up the options and hull objects.
-            this.map     = map;
+            this.map  = map;
             this.mode = this.mode || L.FreeDraw.MODES.VIEW;
 
             if (!this.element) {
@@ -557,7 +562,7 @@
              */
             (function clobberLatLngs() {
 
-                if (!polygon._parts[0]) {
+                if (this.silenced || !polygon._parts[0]) {
                     return;
                 }
 
@@ -735,9 +740,18 @@
             if (!this.options.refineLatLngs) {
 
                 // Use the lat/long values from the polygon itself which don't change when zooming.
-                this.getPolygons().forEach(function(polygon) {
-                    latLngs.push(polygon._latlngs);
-                });
+                var polygons = this.getPolygons();
+
+                polygons.forEach(function forEach(polygon) {
+
+                    if (polygon._parts[0]) {
+
+                        // Ensure the polygon is visible.
+                        latLngs.push(polygon._latlngs);
+
+                    }
+
+                }.bind(this));
 
             } else {
 
