@@ -386,7 +386,7 @@
             }
 
             // Update the permissions for what the user can do on the map.
-            this.map.dragging['disable']();
+            this.map.dragging[method]();
             this.map.touchZoom[method]();
             this.map.doubleClickZoom[method]();
             this.map.scrollWheelZoom[method]();

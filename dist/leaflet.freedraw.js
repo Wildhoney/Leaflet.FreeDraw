@@ -386,7 +386,7 @@
             }
 
             // Update the permissions for what the user can do on the map.
-            this.map.dragging['disable']();
+            this.map.dragging[method]();
             this.map.touchZoom[method]();
             this.map.doubleClickZoom[method]();
             this.map.scrollWheelZoom[method]();
@@ -1621,6 +1621,33 @@
             });
 
             return 'MULTIPOLYGON(' + groups.join(',') + ')';
+
+        },
+
+        /**
+         * Responsible to generating disparate MySQL polygons from the lat/long boundaries.
+         *
+         * @method getMySQLPolygons
+         * @param latLngGroups {L.LatLng[]}
+         * @returns {Array}
+         */
+        getMySQLPolygons: function getMySQLPolygons(latLngGroups) {
+
+            var groups = [];
+
+            latLngGroups.forEach(function forEach(latLngs) {
+
+                var group = [];
+
+                latLngs.forEach(function forEach(latLng) {
+                    group.push(latLng.lat + ' ' + latLng.lng);
+                });
+
+                groups.push('POLYGON((' + group.join(',') + '))');
+
+            });
+
+            return groups;
 
         }
 

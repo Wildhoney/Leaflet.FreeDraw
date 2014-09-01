@@ -36,6 +36,33 @@
 
             return 'MULTIPOLYGON(' + groups.join(',') + ')';
 
+        },
+
+        /**
+         * Responsible to generating disparate MySQL polygons from the lat/long boundaries.
+         *
+         * @method getMySQLPolygons
+         * @param latLngGroups {L.LatLng[]}
+         * @returns {Array}
+         */
+        getMySQLPolygons: function getMySQLPolygons(latLngGroups) {
+
+            var groups = [];
+
+            latLngGroups.forEach(function forEach(latLngs) {
+
+                var group = [];
+
+                latLngs.forEach(function forEach(latLng) {
+                    group.push(latLng.lat + ' ' + latLng.lng);
+                });
+
+                groups.push('POLYGON((' + group.join(',') + '))');
+
+            });
+
+            return groups;
+
         }
 
     };
