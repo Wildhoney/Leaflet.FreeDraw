@@ -216,14 +216,6 @@
         resurrectOrphans: function resurrectOrphans() {
 
             /**
-             * Used to identify a node that is a <g> element.
-             *
-             * @constant GROUP_TAG
-             * @type {String}
-             */
-            var GROUP_TAG = 'G';
-
-            /**
              * @method recreate
              * @param polygon {Object}
              * @return {void}
@@ -243,28 +235,19 @@
 
             };
 
-            for (var layerIndex in this.map._layers) {
+            var polygons = this.getPolygons(true);
 
-                if (this.map._layers.hasOwnProperty(layerIndex)) {
+            polygons.forEach(function forEach(polygon) {
 
-                    var polygon = this.map._layers[layerIndex];
+                if (polygon._parts[0]) {
 
-                    // Ensure we're dealing with a <g> node (...an SVG group element).
-                    if (polygon._container && polygon._container.tagName.toUpperCase() === GROUP_TAG) {
-
-                        if (polygon._parts[0]) {
-
-                            // If the polygon is currently visible then we'll re-attach its edges for the current
-                            // zoom level.
-                            recreate.call(this, polygon);
-
-                        }
-
-                    }
+                    // If the polygon is currently visible then we'll re-attach its edges for the current
+                    // zoom level.
+                    recreate.call(this, polygon);
 
                 }
 
-            }
+            }.bind(this));
 
             setTimeout(function setTimeout() {
 
@@ -366,6 +349,8 @@
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
+            method = 'enable';
+
             // Set the current mode and emit the event.
             this.mode = mode;
             this.fire('mode', { mode: mode });
@@ -384,7 +369,7 @@
             }
 
             // Update the permissions for what the user can do on the map.
-            this.map.dragging[method]();
+            this.map.dragging['disable']();
             this.map.touchZoom[method]();
             this.map.doubleClickZoom[method]();
             this.map.scrollWheelZoom[method]();
@@ -592,19 +577,49 @@
 
         /**
          * @method getPolygons
+         * @param [all=false] {Boolean}
          * @return {Array}
          */
-        getPolygons: function getPolygons() {
+        getPolygons: function getPolygons(all) {
 
             var polygons = [];
 
-            this.edges.forEach(function forEach(edge) {
+            if (all) {
 
-                if (polygons.indexOf(edge._freedraw.polygon) === -1) {
-                    polygons.push(edge._freedraw.polygon);
+                /**
+                 * Used to identify a node that is a <g> element.
+                 *
+                 * @constant GROUP_TAG
+                 * @type {String}
+                 */
+                var GROUP_TAG = 'G';
+
+                for (var layerIndex in this.map._layers) {
+
+                    if (this.map._layers.hasOwnProperty(layerIndex)) {
+
+                        var polygon = this.map._layers[layerIndex];
+
+                        // Ensure we're dealing with a <g> node (...an SVG group element).
+                        if (polygon._container && polygon._container.tagName.toUpperCase() === GROUP_TAG) {
+                            polygons.push(polygon);
+                        }
+
+                    }
+
                 }
 
-            }.bind(this));
+            } else {
+
+                this.edges.forEach(function forEach(edge) {
+
+                    if (polygons.indexOf(edge._freedraw.polygon) === -1) {
+                        polygons.push(edge._freedraw.polygon);
+                    }
+
+                }.bind(this));
+
+            }
 
             return polygons;
 
@@ -631,7 +646,7 @@
 
                 var polygons = ClipperLib.Clipper.SimplifyPolygons(allPoints, ClipperLib.PolyFillType.pftNonZero);
 
-                this.silently(function() {
+                this.silently(function silently() {
 
                     this._clearPolygons();
 
@@ -738,16 +753,16 @@
             if (!this.options.refineLatLngs) {
 
                 // Use the lat/long values from the polygon itself which don't change when zooming.
-                var polygons = this.getPolygons();
+                var polygons = this.getPolygons(true);
 
                 polygons.forEach(function forEach(polygon) {
 
-                    if (polygon._parts[0]) {
+//                    if (polygon._parts[0]) {
 
                         // Ensure the polygon is visible.
                         latLngs.push(polygon._latlngs);
 
-                    }
+//                    }
 
                 }.bind(this));
 
