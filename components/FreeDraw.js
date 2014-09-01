@@ -349,8 +349,6 @@
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
-            method = 'enable';
-
             // Set the current mode and emit the event.
             this.mode = mode;
             this.fire('mode', { mode: mode });
@@ -369,7 +367,7 @@
             }
 
             // Update the permissions for what the user can do on the map.
-            this.map.dragging['disable']();
+            this.map.dragging[method]();
             this.map.touchZoom[method]();
             this.map.doubleClickZoom[method]();
             this.map.scrollWheelZoom[method]();
