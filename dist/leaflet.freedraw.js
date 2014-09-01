@@ -586,6 +586,10 @@
 
             if (all) {
 
+                if (!this.map) {
+                    return [];
+                }
+
                 /**
                  * Used to identify a node that is a <g> element.
                  *
