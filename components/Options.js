@@ -1,4 +1,4 @@
-(function($window, L, d3, ClipperLib) {
+(function($window, L) {
 
     "use strict";
 
