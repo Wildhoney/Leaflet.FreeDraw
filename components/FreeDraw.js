@@ -149,6 +149,13 @@
 
             }
 
+            if (typeof ClipperLib === 'undefined') {
+
+                // Ensure JSClipper has been included.
+                L.FreeDraw.Throw('JSClipper is a required library', 'http://sourceforge.net/p/jsclipper/wiki/Home%206/');
+
+            }
+
             options = options || {};
 
             this.options = new L.FreeDraw.Options();

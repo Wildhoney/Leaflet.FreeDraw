@@ -18,11 +18,7 @@
         });
 
         freeDraw.options.setBoundariesAfterEdit(false);
-        freeDraw.options.allowMultiplePolygons(true);
-        freeDraw.options.allowPolygonMerging(true);
         freeDraw.options.exitModeAfterCreate(false);
-        freeDraw.options.setPolygonSimplification(true);
-        freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');
 
         freeDraw.on('markers', function getMarkers(eventData) {
 

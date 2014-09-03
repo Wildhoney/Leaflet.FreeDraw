@@ -3,24 +3,6 @@
     "use strict";
 
     /**
-     * @method assertClipperJS
-     * @return {void}
-     */
-    var assertClipperJS = function assertClipperJS() {
-
-        if (typeof ClipperLib === 'undefined') {
-
-            // Ensure JSClipper has been included.
-            L.FreeDraw.Throw(
-                'JSClipper is a required library for polygon merging and/or simplification',
-                'http://sourceforge.net/p/jsclipper/wiki/Home%206/'
-            );
-
-        }
-
-    };
-
-    /**
      * @module FreeDraw
      * @submodule Options
      * @author Adam Timberlake
@@ -45,13 +27,13 @@
          * @property simplifyPolygon
          * @type {Boolean}
          */
-        simplifyPolygon: false,
+        simplifyPolygon: true,
 
         /**
          * @property hullAlgorithm
          * @type {String|Boolean}
          */
-        hullAlgorithm: false,
+        hullAlgorithm: 'wildhoneyConcaveHull',
 
         /**
          * @property boundariesAfterEdit
@@ -105,7 +87,7 @@
          * @property attemptMerge
          * @type {Boolean}
          */
-        attemptMerge: false,
+        attemptMerge: true,
 
         /**
          * @property svgClassName
@@ -124,18 +106,6 @@
          * @type {String}
          */
         iconClassName: 'polygon-elbow',
-
-        /**
-         * @method allowPolygonMerging
-         * @param value {Boolean}
-         * @return {void}
-         */
-        allowPolygonMerging: function allowPolygonMerging(value) {
-
-            assertClipperJS();
-            this.attemptMerge = !!value;
-
-        },
 
         /**
          * @method exitModeAfterCreate
@@ -189,18 +159,6 @@
          */
         setSmoothFactor: function setSmoothFactor(factor) {
             this.smoothFactor = +factor;
-        },
-
-        /**
-         * @method setPolygonSimplification
-         * @param value {Boolean}
-         * @return {void}
-         */
-        setPolygonSimplification: function setPolygonSimplification(value) {
-
-            assertClipperJS();
-            this.simplifyPolygon = !!value;
-
         },
 
         /**
