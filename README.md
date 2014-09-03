@@ -109,7 +109,8 @@ L.FreeDraw.MODES: {
     CREATE: 2,
     EDIT:   4,
     DELETE: 8,
-    ALL:    1 | 2 | 4 | 8
+    APPEND: 16,
+    ALL:    1 | 2 | 4 | 8 | 16
 }
 ```
 
@@ -131,6 +132,8 @@ freeDraw.setMode(L.FreeDraw.MODES.EDIT | L.FreeDraw.MODES.DELETE);
 
 You may also listen to updates of the mode using the `freeDraw.on('mode')` event.
 
+Using the `L.FreeDraw.MODES.APPEND` mode that can allow users to create new edges on the polygon. If both the `L.FreeDraw.MODES.APPEND` and `L.FreeDraw.MODES.DELETE` are active at the same time then some logic is applied to decide whether the user wishes to delete or create a new edge.
+
 ### Class Names
 
 Depending on the mode you can apply different CSS styles &ndash; for example when the user is not in edit mode you probably wish to hide the edges &ndash; by default all edges would be hidden, and only enabled when the `mode-edit` class has been applied to the `map` node:
@@ -148,6 +151,7 @@ Each mode maps to a different class which is conditionally applied to the `map` 
  * `mode-create` maps to `L.FreeDraw.MODES.CREATE`;
  * `mode-edit` maps to `L.FreeDraw.MODES.EDIT`;
  * `mode-delete` maps to `L.FreeDraw.MODES.DELETE`;
+ * `mode-append` maps to `L.FreeDraw.MODES.APPEND`;
  
 Another example would be changing the `cursor` type when the user is in polygon creation mode:
 
