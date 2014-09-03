@@ -571,6 +571,11 @@
                 // Redraw the polygon based on the newly added lat/long boundaries.
                 polygon.setLatLngs(latLngs);
 
+                if (lowestDistance > 5 && this.mode & L.FreeDraw.MODES.DELETE) {
+                    this.destroyPolygon(polygon);
+                    return;
+                }
+
                 // Recreate the edges for the polygon.
                 this.destroyEdges(polygon);
                 this.createEdges(polygon);
