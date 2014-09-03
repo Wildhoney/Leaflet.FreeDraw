@@ -97,18 +97,6 @@ By invoking the `freeDraw.allowPolygonMerging(true)` method, `L.FreeDraw` will a
 
 After drawing a polygon the `L.FreeDraw.MODES.CREATE` mode will automatically be exited &ndash; but this can be suppressed by specifying `freeDraw.options.exitModeAfterCreate(false)` in which case the create mode will be persisted until the user explicitly exits it.
 
-### Refining Lat/Lngs
-
-`L.FreeDraw` comes bundled with two quite distinct behaviours. The problem with polygons is that by default they are re-drawn based on the current zoom level, which could effectively update the lat/lng boundaries as they become more or less defined. Edges will also be updated &ndash; for example when you zoom out the edges will become fewer and fewer, to a point where the *polygon* will consist of only two edges.
-
-Therefore with `L.FreeDraw` you can determine which behaviour you prefer.
-
-When you've enabled `refineLatLngsOnZoom` then the latitude and longitude values are updated on each zoom level, and a request is made each time for new markers. Also the edges are updated. However, when only two edges exist on the polygon, the `non-polygon` class is added to the polygon and all of its associated edges for you to control the behavior with CSS &ndash; `L.FreeDraw` **highly** recommends you prevent users from modifying *polygons* with the `non-polygon` class since they are **not** polygons any more, but open paths.
-
-The other behaviour, and the current default of `L.FreeDraw` is that polygons and latitude/longitude values are untouched during the zooming process, and therefore no requests are made for new markers when the user zooms &ndash; this is also the default behaviour of Zoopla. However you'll notice that as you zoom out, polygons that were drawn when zoomed in further now have all their edges overlapping, which makes it rather difficult to modify them.
-
-Neither method is perfect, but `L.FreeDraw` supports both so you can decide which to use!
-
 ## Modes
 
 FreeDraw by default uses the `L.FreeDraw.MODES.VIEW` mode which prevents the user from creating, editing, or deleting any polygons. When instantiating `L.FreeDraw` you may override the default mode &ndash; in the following case a user may **only** delete polygons:
