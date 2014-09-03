@@ -1102,6 +1102,7 @@
 
                     // Recreate the polygon boundaries because we may have straight edges now.
                     this.trimPolygonEdges(this.movingEdge._freedraw.polygon);
+                    this.mergePolygons();
 
                     this.movingEdge = null;
                     return;
