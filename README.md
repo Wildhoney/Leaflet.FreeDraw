@@ -63,14 +63,8 @@ By invoking the `freeDraw.setMarkers` method with an array of `latLngs` your mar
 FreeDraw has quite a few options &ndash; all of which can be seen by taking a look at the `L.FreeDraw.Options` object. However, there are certain options that you are likely to use more than others.
 
 ```javascript
-// Allow the user to define multiple polygons on one map.
-freeDraw.options.allowMultiplePolygons(true);
-
 // Prevent the rendering of the polygon via a convex/concave hull.
 freeDraw.options.setHullAlgorithm(false);
-
-// Use ClipperJS to simplify and clean the polygon.
-freeDraw.options.setPolygonSimplification(true);
 
 // Utilise Brian Barnett's convex hull.
 freeDraw.options.setHullAlgorithm('brian3kb/graham_scan_js');
