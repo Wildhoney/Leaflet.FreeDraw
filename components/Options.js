@@ -54,6 +54,12 @@
         deleteExitMode: false,
 
         /**
+         * @property elbowDistance
+         * @type {Number}
+         */
+        elbowDistance: 10,
+
+        /**
          * @property hullAlgorithms
          * @type {Object}
          */
@@ -81,6 +87,15 @@
                 link: 'https://github.com/Wildhoney/ConcaveHull'
             }
 
+        },
+
+        /**
+         * @method setMaximumDistanceForElbow
+         * @param maxDistance {Number}
+         * @return {void}
+         */
+        setMaximumDistanceForElbow: function setMaximumDistanceForElbow(maxDistance) {
+            this.elbowDistance = +maxDistance;
         },
 
         /**

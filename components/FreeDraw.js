@@ -574,7 +574,7 @@
                  * @constant INNER_DISTANCE
                  * @type {Number}
                  */
-                var INNER_DISTANCE = 5;
+                var INNER_DISTANCE = this.options.elbowDistance;
 
                 /**
                  * @method updatePolygon
@@ -593,13 +593,13 @@
 
                 // If the user hasn't enabled delete mode but has the append mode active, then we'll
                 // assume they're always wanting to add an edge.
-                if (this.mode & L.FreeDraw.MODES.APPEND && this.mode ^ L.FreeDraw.MODES.DELETE) {
+                if (this.mode & L.FreeDraw.MODES.APPEND && !(this.mode ^ L.FreeDraw.MODES.DELETE)) {
                     updatePolygon();
                     return;
                 }
 
                 // If the inverse of the aforementioned is true then we'll always delete the polygon.
-                if (this.mode & L.FreeDraw.MODES.DELETE && this.mode ^ L.FreeDraw.MODES.APPEND) {
+                if (this.mode & L.FreeDraw.MODES.DELETE && !(this.mode & L.FreeDraw.MODES.APPEND)) {
                     this.destroyPolygon(polygon);
                     return;
                 }
