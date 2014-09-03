@@ -22,6 +22,9 @@ section.map.mode-create {
 
 section.map g path {
     transition: all 0.25s;
+    stroke-width: 4px;
+    stroke-opacity: 1;
+    stroke: #D7217E;
 }
 
 /*section.map g.non-polygon {*/

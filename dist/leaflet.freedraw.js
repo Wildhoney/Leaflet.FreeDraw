@@ -160,11 +160,11 @@
         },
 
         /**
-         * @method reattachEdges
+         * @method recreateEdges
          * @param polygon {Object}
          * @return {void}
          */
-        reattachEdges: function reattachEdges(polygon) {
+        recreateEdges: function recreateEdges(polygon) {
 
             // Remove all of the current edges associated with the polygon.
             this.edges = this.edges.filter(function filter(edge) {
@@ -179,7 +179,7 @@
             }.bind(this));
 
             // We can then re-attach the edges based on the current zoom level.
-            var edgeCount = this.attachEdges(polygon);
+            var edgeCount = this.createEdges(polygon);
 
             /**
              * @method determineNonPolygons
@@ -227,7 +227,7 @@
                     this.silently(function silently() {
 
                         // Reattach the polygon's edges.
-                        this.reattachEdges(polygon);
+                        this.recreateEdges(polygon);
 
                     }.bind(this));
 
@@ -349,6 +349,8 @@
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
+            method = 'enable';
+
             // Set the current mode and emit the event.
             this.mode = mode;
             this.fire('mode', { mode: mode });
@@ -367,7 +369,7 @@
             }
 
             // Update the permissions for what the user can do on the map.
-            this.map.dragging[method]();
+            this.map.dragging['disable']();
             this.map.touchZoom[method]();
             this.map.doubleClickZoom[method]();
             this.map.scrollWheelZoom[method]();
@@ -518,14 +520,55 @@
                 smoothFactor: this.options.smoothFactor
             });
 
-            polygon.on('click', function onClick() {
+            polygon.on('click', function onClick(event) {
 
-                if (this.mode & L.FreeDraw.MODES.DELETE) {
+                var pointerX       = event.originalEvent.clientX,
+                    pointerY       = event.originalEvent.clientY,
+                    latLngs        = [],
+                    newPoint       = new L.Point(pointerX, pointerY),
+                    lowestDistance = Infinity,
+                    startPoint     = new L.Point(),
+                    endPoint       = new L.Point();
 
-                    // Remove the polygon when the user clicks on it, and they're in delete mode.
-                    this.destroyPolygon(polygon);
+                polygon._parts[0].forEach(function forEach(point, index) {
 
-                }
+                    var firstPoint  = point,
+                        secondPoint = polygon._parts[0][index + 1] || polygon._parts[0][0],
+                        distance    = L.LineUtil.pointToSegmentDistance(newPoint, firstPoint, secondPoint);
+
+                    if (distance < lowestDistance) {
+
+                        // We discovered a distance that possibly should contain the new point!
+                        lowestDistance = distance;
+                        startPoint     = firstPoint;
+                        endPoint       = secondPoint;
+
+                    }
+
+                }.bind(this));
+
+                polygon._parts[0].forEach(function forEach(point, index) {
+
+                    var nextPoint = polygon._parts[0][index + 1] || polygon._parts[0][0];
+
+                    if (point === startPoint && nextPoint === endPoint) {
+
+                        latLngs.push(this.map.containerPointToLatLng(point));
+                        latLngs.push(this.map.containerPointToLatLng(newPoint));
+                        return;
+
+                    }
+
+                    latLngs.push(this.map.containerPointToLatLng(point));
+
+                }.bind(this));
+
+                // Redraw the polygon based on the newly added lat/long boundaries.
+                polygon.setLatLngs(latLngs);
+
+                // Recreate the edges for the polygon.
+                this.destroyEdges(polygon);
+                this.createEdges(polygon);
 
             }.bind(this));
 
@@ -534,7 +577,7 @@
             this.polygons.push(polygon);
 
             // Attach all of the edges to the polygon.
-            this.attachEdges(polygon);
+            this.createEdges(polygon);
 
             /**
              * Responsible for preventing the re-rendering of the polygon.
@@ -675,6 +718,11 @@
             // Perform two merge passes to simplify the polygons.
             mergePass(); mergePass();
 
+            // Trim polygon edges after being modified.
+            this.getPolygons(true).forEach(function forEach(polygon) {
+                this.trimPolygonEdges(polygon);
+            }.bind(this));
+
         },
 
         /**
@@ -690,17 +738,7 @@
             var index = this.polygons.indexOf(polygon);
             this.polygons.splice(index, 1);
 
-            // ...And then remove all of its related edges to prevent memory leaks.
-            this.edges = this.edges.filter(function filter(edge) {
-
-                if (edge._freedraw.polygon !== polygon) {
-                    return true;
-                }
-
-                // Physically remove the edge from the DOM.
-                this.map.removeLayer(edge);
-
-            }.bind(this));
+            this.destroyEdges(polygon);
 
             if (!this.silenced) {
                 this.notifyBoundaries();
@@ -713,6 +751,27 @@
 
             }
 
+        },
+
+        /**
+         * @method destroyEdges
+         * @param polygon {Object}
+         * @return {void}
+         */
+        destroyEdges: function destroyEdges(polygon) {
+
+            // ...And then remove all of its related edges to prevent memory leaks.
+            this.edges = this.edges.filter(function filter(edge) {
+
+                if (edge._freedraw.polygon !== polygon) {
+                    return true;
+                }
+
+                // Physically remove the edge from the DOM.
+                this.map.removeLayer(edge);
+
+            }.bind(this));
+            
         },
 
         /**
@@ -761,33 +820,6 @@
 
             // Update the polygon count variable.
             this.polygonCount = latLngs.length;
-
-            /**
-             * Convert the open path into a closed polygon.
-             *
-             * @method closePolygon
-             * @return {void}
-             */
-            (function closePolygon() {
-
-                latLngs.forEach(function forEach(latLngGroup) {
-
-                    var firstLatLng = latLngGroup[0],
-                        lastLatLng  = latLngGroup[latLngGroup.length - 1];
-
-                    if (firstLatLng.lat === lastLatLng.lat && lastLatLng.lng === lastLatLng.lng) {
-
-                        // Path is already joined and therefore no action is required.
-                        return;
-
-                    }
-
-                    // Otherwise we need to complete the polygon!
-                    latLngGroup.push(firstLatLng);
-
-                });
-
-            })();
 
             // Ensure the last shared notification differs from the current.
             var notificationFingerprint = JSON.stringify(latLngs);
@@ -845,11 +877,11 @@
         },
 
         /**
-         * @method attachEdges
+         * @method createEdges
          * @param polygon {L.polygon}
          * @return {Number|Boolean}
          */
-        attachEdges: function attachEdges(polygon) {
+        createEdges: function createEdges(polygon) {
 
             /**
              * Responsible for getting the parts based on the original lat/longs.
@@ -1068,6 +1100,9 @@
 
                     }
 
+                    // Recreate the polygon boundaries because we may have straight edges now.
+                    this.trimPolygonEdges(this.movingEdge._freedraw.polygon);
+
                     this.movingEdge = null;
                     return;
 
@@ -1081,6 +1116,27 @@
 
             var element = $window.document.getElementsByTagName('body')[0];
             element.onmouseleave = completeAction;
+
+        },
+
+        /**
+         * @method trimPolygonEdges
+         * @param polygon {Object}
+         * @return {void}
+         */
+        trimPolygonEdges: function trimPolygonEdges(polygon) {
+
+            var latLngs = [];
+
+            polygon._parts[0].forEach(function forEach(point) {
+                latLngs.push(this.map.containerPointToLatLng(point));
+            }.bind(this));
+
+            polygon.setLatLngs(latLngs);
+            polygon.redraw();
+
+            this.destroyEdges(polygon);
+            this.createEdges(polygon);
 
         },
 
