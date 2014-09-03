@@ -752,48 +752,12 @@
 
             var latLngs = [];
 
-            if (!this.options.refineLatLngs) {
+            this.getPolygons(true).forEach(function forEach(polygon) {
 
-                // Use the lat/long values from the polygon itself which don't change when zooming.
-                var polygons = this.getPolygons(true);
+                // Ensure the polygon is visible.
+                latLngs.push(polygon._latlngs);
 
-                polygons.forEach(function forEach(polygon) {
-
-//                    if (polygon._parts[0]) {
-
-                        // Ensure the polygon is visible.
-                        latLngs.push(polygon._latlngs);
-
-//                    }
-
-                }.bind(this));
-
-            } else {
-
-                var last  = null,
-                    index = -1;
-
-                // Otherwise we'll use the lat/longs directly from the polygon's edges which do change
-                // according to the current zoom level.
-                this.edges.forEach(function forEach(edge) {
-
-                    if (edge._freedraw.polygonId !== last) {
-                        index++;
-                    }
-
-                    if (typeof latLngs[index] === 'undefined') {
-
-                        // Create the array entry point if it hasn't yet been defined.
-                        latLngs[index] = [];
-
-                    }
-
-                    last = edge._freedraw.polygonId;
-                    latLngs[index].push(edge._freedraw.latLng);
-
-                }.bind(this));
-
-            }
+            }.bind(this));
 
             // Update the polygon count variable.
             this.polygonCount = latLngs.length;
@@ -909,10 +873,7 @@
 
             }.bind(this);
 
-            // Extract the parts from the polygon if we wish to refine the lat/lngs, or compute the
-            // points from the original lat/lngs if we wish to maintain the same lat/longs based on the
-            // current zoom level.
-            var parts     = !this.options.refineLatLngs ? originalLatLngs(polygon) : polygon._parts[0],
+            var parts     = originalLatLngs(polygon),
                 edgeCount = 0;
 
             if (!parts) {
@@ -1448,12 +1409,6 @@
         attemptMerge: false,
 
         /**
-         * @property refineLatLngs
-         * @type {Boolean}
-         */
-        refineLatLngs: false,
-
-        /**
          * @property svgClassName
          * @type {String}
          */
@@ -1490,15 +1445,6 @@
          */
         exitModeAfterCreate: function exitModeAfterCreate(value) {
             this.createExitMode = !!value;
-        },
-
-        /**
-         * @method refineLatLngsOnZoom
-         * @param value {Boolean}
-         * @return {void}
-         */
-        refineLatLngsOnZoom: function refineLatLngsOnZoom(value) {
-            this.refineLatLngs = !!value;
         },
 
         /**

@@ -17,10 +17,9 @@
             mode: L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.EDIT
         });
 
-        freeDraw.options.setBoundariesAfterEdit(true);
+        freeDraw.options.setBoundariesAfterEdit(false);
         freeDraw.options.allowMultiplePolygons(true);
         freeDraw.options.allowPolygonMerging(true);
-        freeDraw.options.refineLatLngsOnZoom(false);
         freeDraw.options.exitModeAfterCreate(false);
         freeDraw.options.setPolygonSimplification(true);
         freeDraw.options.setHullAlgorithm('Wildhoney/ConcaveHull');

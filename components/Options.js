@@ -108,12 +108,6 @@
         attemptMerge: false,
 
         /**
-         * @property refineLatLngs
-         * @type {Boolean}
-         */
-        refineLatLngs: false,
-
-        /**
          * @property svgClassName
          * @type {String}
          */
@@ -150,15 +144,6 @@
          */
         exitModeAfterCreate: function exitModeAfterCreate(value) {
             this.createExitMode = !!value;
-        },
-
-        /**
-         * @method refineLatLngsOnZoom
-         * @param value {Boolean}
-         * @return {void}
-         */
-        refineLatLngsOnZoom: function refineLatLngsOnZoom(value) {
-            this.refineLatLngs = !!value;
         },
 
         /**
