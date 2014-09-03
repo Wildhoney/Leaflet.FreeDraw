@@ -356,7 +356,7 @@
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
-            method = 'enable';
+//            method = 'enable';
 
             // Set the current mode and emit the event.
             this.mode = mode;
@@ -376,7 +376,7 @@
             }
 
             // Update the permissions for what the user can do on the map.
-            this.map.dragging['disable']();
+            this.map.dragging[method]();
             this.map.touchZoom[method]();
             this.map.doubleClickZoom[method]();
             this.map.scrollWheelZoom[method]();
@@ -529,10 +529,8 @@
 
             polygon.on('click', function onClick(event) {
 
-                var pointerX       = event.originalEvent.clientX,
-                    pointerY       = event.originalEvent.clientY,
-                    latLngs        = [],
-                    newPoint       = new L.Point(pointerX, pointerY),
+                var latLngs        = [],
+                    newPoint       = this.map.mouseEventToLayerPoint(event.originalEvent),
                     lowestDistance = Infinity,
                     startPoint     = new L.Point(),
                     endPoint       = new L.Point();
@@ -961,7 +959,7 @@
          */
         updatePolygonEdge: function updatePolygon(edge, posX, posY) {
 
-            var updatedLatLng = this.map.layerPointToLatLng(L.point(posX, posY));
+            var updatedLatLng = this.map.containerPointToLatLng(L.point(posX, posY));
             edge.setLatLng(updatedLatLng);
 
             // Fetch all of the edges in the group based on the polygon.
@@ -1162,7 +1160,7 @@
 
             // Resolve the pixel point to the latitudinal and longitudinal equivalent.
             var point = L.point(pointerX, pointerY),
-                latLng = this.map.layerPointToLatLng(point);
+                latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.
             var lineData = [this.fromPoint, { x: pointerX, y: pointerY }];

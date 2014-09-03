@@ -48,7 +48,7 @@
             latLngs.forEach(function forEach(latLng) {
 
                 // Resolve each latitude/longitude to its respective container point.
-                points.push(this.map.latLngToContainerPoint(latLng));
+                points.push(this.map.latLngToLayerPoint(latLng));
 
             }.bind(this));
 
@@ -66,7 +66,7 @@
             resolvedPoints.push(resolvedPoints[0]);
 
             resolvedPoints.forEach(function forEach(point) {
-                hullLatLngs.push(this.map.containerPointToLatLng(point));
+                hullLatLngs.push(this.map.layerPointToLatLng(point));
             }.bind(this));
 
             return hullLatLngs;
