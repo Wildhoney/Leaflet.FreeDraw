@@ -14,7 +14,8 @@
         L.tileLayer('https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=b86b18b0645848bea383827fdccb878e').addTo(map);
 
         var freeDraw = window.freeDraw = new L.FreeDraw({
-            mode: L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.EDIT
+//            mode: L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.EDIT
+            mode: L.FreeDraw.MODES.ALL
         });
 
         freeDraw.options.setBoundariesAfterEdit(false);
@@ -23,7 +24,7 @@
         freeDraw.on('markers', function getMarkers(eventData) {
 
             // Output the lat/lngs in the MySQL multi-polygon format.
-//            console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
+            console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
 
         });
 

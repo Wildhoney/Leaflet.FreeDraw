@@ -356,8 +356,6 @@
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
                 method   = !isCreate ? 'enable' : 'disable';
 
-//            method = 'enable';
-
             // Set the current mode and emit the event.
             this.mode = mode;
             this.fire('mode', { mode: mode });
@@ -409,6 +407,10 @@
 
                 if (mode & modes.VIEW) {
                     addClass(map, 'mode-view');
+                }
+
+                if (mode & modes.APPEND) {
+                    addClass(map, 'mode-append');
                 }
 
             }(L.FreeDraw.MODES, this.map._container, L.DomUtil.addClass, L.DomUtil.removeClass));
@@ -568,17 +570,51 @@
 
                 }.bind(this));
 
-                // Redraw the polygon based on the newly added lat/long boundaries.
-                polygon.setLatLngs(latLngs);
+                /**
+                 * @constant INNER_DISTANCE
+                 * @type {Number}
+                 */
+                var INNER_DISTANCE = 5;
 
-                if (lowestDistance > 5 && this.mode & L.FreeDraw.MODES.DELETE) {
+                /**
+                 * @method updatePolygon
+                 * @return {void}
+                 */
+                var updatePolygon = function updatePolygon() {
+
+                    // Redraw the polygon based on the newly added lat/long boundaries.
+                    polygon.setLatLngs(latLngs);
+
+                    // Recreate the edges for the polygon.
+                    this.destroyEdges(polygon);
+                    this.createEdges(polygon);
+
+                }.bind(this);
+
+                // If the user hasn't enabled delete mode but has the append mode active, then we'll
+                // assume they're always wanting to add an edge.
+                if (this.mode & L.FreeDraw.MODES.APPEND && this.mode ^ L.FreeDraw.MODES.DELETE) {
+                    updatePolygon();
+                    return;
+                }
+
+                // If the inverse of the aforementioned is true then we'll always delete the polygon.
+                if (this.mode & L.FreeDraw.MODES.DELETE && this.mode ^ L.FreeDraw.MODES.APPEND) {
                     this.destroyPolygon(polygon);
                     return;
                 }
 
-                // Recreate the edges for the polygon.
-                this.destroyEdges(polygon);
-                this.createEdges(polygon);
+                // Otherwise we'll use some logic to detect whether we should delete or add a new elbow.
+                if (lowestDistance > INNER_DISTANCE && this.mode & L.FreeDraw.MODES.DELETE) {
+
+                    // Delete the polygon!
+                    this.destroyPolygon(polygon);
+                    return;
+
+                }
+
+                // Otherwise create a new elbow.
+                updatePolygon();
 
             }.bind(this));
 
@@ -1243,7 +1279,8 @@
         CREATE: 2,
         EDIT:   4,
         DELETE: 8,
-        ALL:    1 | 2 | 4 | 8
+        APPEND: 16,
+        ALL:    1 | 2 | 4 | 8 | 16
     };
 
     /**
