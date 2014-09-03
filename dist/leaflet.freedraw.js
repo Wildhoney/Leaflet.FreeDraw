@@ -455,7 +455,7 @@
 
             return latLngs.map(function forEach(latLng) {
 
-                var point = this.map.latLngToContainerPoint(latLng);
+                var point = this.map.latLngToLayerPoint(latLng);
                 return { X: point.x, Y: point.y };
 
             }.bind(this));
@@ -476,7 +476,7 @@
                 polygon.forEach(function polygons(point) {
 
                     point = L.point(point.X, point.Y);
-                    var latLng = this.map.containerPointToLatLng(point);
+                    var latLng = this.map.layerPointToLatLng(point);
                     simplifiedLatLngs.push(latLng);
 
                 }.bind(this));
@@ -560,13 +560,13 @@
 
                     if (point === startPoint && nextPoint === endPoint) {
 
-                        latLngs.push(this.map.containerPointToLatLng(point));
-                        latLngs.push(this.map.containerPointToLatLng(newPoint));
+                        latLngs.push(this.map.layerPointToLatLng(point));
+                        latLngs.push(this.map.layerPointToLatLng(newPoint));
                         return;
 
                     }
 
-                    latLngs.push(this.map.containerPointToLatLng(point));
+                    latLngs.push(this.map.layerPointToLatLng(point));
 
                 }.bind(this));
 
@@ -709,7 +709,7 @@
                         polygon.forEach(function forEach(point) {
 
                             point = L.point(point.X, point.Y);
-                            latLngs.push(this.map.containerPointToLatLng(point));
+                            latLngs.push(this.map.layerPointToLatLng(point));
 
                         }.bind(this));
 
@@ -721,7 +721,7 @@
                 });
 
             }.bind(this);
-            
+
             // Perform two merge passes to simplify the polygons.
             mergePass(); mergePass();
 
@@ -778,7 +778,7 @@
                 this.map.removeLayer(edge);
 
             }.bind(this));
-            
+
         },
 
         /**
@@ -961,7 +961,7 @@
          */
         updatePolygonEdge: function updatePolygon(edge, posX, posY) {
 
-            var updatedLatLng = this.map.containerPointToLatLng(L.point(posX, posY));
+            var updatedLatLng = this.map.layerPointToLatLng(L.point(posX, posY));
             edge.setLatLng(updatedLatLng);
 
             // Fetch all of the edges in the group based on the polygon.
@@ -1137,7 +1137,7 @@
             var latLngs = [];
 
             polygon._parts[0].forEach(function forEach(point) {
-                latLngs.push(this.map.containerPointToLatLng(point));
+                latLngs.push(this.map.layerPointToLatLng(point));
             }.bind(this));
 
             polygon.setLatLngs(latLngs);
@@ -1162,7 +1162,7 @@
 
             // Resolve the pixel point to the latitudinal and longitudinal equivalent.
             var point = L.point(pointerX, pointerY),
-                latLng = this.map.containerPointToLatLng(point);
+                latLng = this.map.layerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.
             var lineData = [this.fromPoint, { x: pointerX, y: pointerY }];
