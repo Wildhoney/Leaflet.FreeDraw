@@ -7,7 +7,7 @@ Leaflet.FreeDraw
 &nbsp;
 ![MIT License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)
 &nbsp;
-![IE9+](http://img.shields.io/badge/Support-%3E=%20IE9-blue.svg)
+![IE9+](http://img.shields.io/badge/Support-%3E=%20IE9-blue.svg?style=flat)
 
 * **Heroku**: [http://freedraw.herokuapp.com/](http://freedraw.herokuapp.com/)
 * **Bower:** `bower install leaflet.freedraw`;
