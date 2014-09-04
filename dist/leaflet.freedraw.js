@@ -535,12 +535,21 @@
                     newPoint       = this.map.mouseEventToLayerPoint(event.originalEvent),
                     lowestDistance = Infinity,
                     startPoint     = new L.Point(),
-                    endPoint       = new L.Point();
+                    endPoint       = new L.Point(),
+                    parts          = [];
 
-                polygon._parts[0].forEach(function forEach(point, index) {
+                polygon._latlngs.forEach(function forEach(latLng, index) {
+
+                    // Push each part into the array, because relying on the polygon's "_parts" array
+                    // isn't safe since they are removed when parts of the polygon aren't visible.
+                    parts.push(this.map.latLngToContainerPoint(latLng));
+
+                }.bind(this));
+
+                parts.forEach(function forEach(point, index) {
 
                     var firstPoint  = point,
-                        secondPoint = polygon._parts[0][index + 1] || polygon._parts[0][0],
+                        secondPoint = parts[index + 1] || parts[0],
                         distance    = L.LineUtil.pointToSegmentDistance(newPoint, firstPoint, secondPoint);
 
                     if (distance < lowestDistance) {
@@ -554,9 +563,9 @@
 
                 }.bind(this));
 
-                polygon._parts[0].forEach(function forEach(point, index) {
+                parts.forEach(function forEach(point, index) {
 
-                    var nextPoint = polygon._parts[0][index + 1] || polygon._parts[0][0];
+                    var nextPoint = parts[index + 1] || parts[0];
 
                     if (point === startPoint && nextPoint === endPoint) {
 
@@ -1203,6 +1212,8 @@
          * @return {void}
          */
         trimPolygonEdges: function trimPolygonEdges(polygon) {
+
+            return;
 
             var latLngs = [];
 
