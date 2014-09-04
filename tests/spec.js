@@ -2,6 +2,22 @@ describe('Leaflet FreeDraw', function() {
 
     var freeDraw = {};
 
+    /**
+     * @method createMockPolygon
+     * @return {L.Polygon}
+     */
+    var createMockPolygon = function createMockPolygon() {
+
+        var latLngs = [new L.LatLng(10, 15), new L.LatLng(15, 18), new L.LatLng(18, 9), new L.LatLng(9, 14)],
+            polygon = freeDraw.createPolygon(latLngs);
+
+        // Define some make-believe edges.
+        polygon._parts[0] = [new L.Point(100, 100), new L.Point(200, 200)];
+
+        return polygon;
+
+    };
+
     beforeEach(function() {
 
         var element = document.createElement('div'),
@@ -102,9 +118,11 @@ describe('Leaflet FreeDraw', function() {
         expect(polygon instanceof L.Polygon).toBeTruthy();
         expect(polygon._latlngs).toBeDefined();
         expect(freeDraw.getPolygons(true).length).toEqual(1);
+        expect(freeDraw.polygonCount).toEqual(1);
 
         freeDraw.destroyPolygon(polygon);
         expect(freeDraw.getPolygons(true).length).toEqual(0);
+        expect(freeDraw.polygonCount).toEqual(0);
 
     });
 
@@ -167,6 +185,69 @@ describe('Leaflet FreeDraw', function() {
 
         // Force the notification.
         freeDraw.notifyBoundaries();
+
+    });
+
+    it('Should be able to re-create edges for a given polygon', function() {
+
+        var polygon = createMockPolygon();
+
+        // Add some manual edges, and then attempt to re-create them.
+        freeDraw.createEdges(polygon);
+
+        spyOn(freeDraw, 'createEdges').and.callThrough();
+        var edgeCount = freeDraw.recreateEdges(polygon);
+        expect(edgeCount).toEqual(4);
+        expect(freeDraw.createEdges).toHaveBeenCalled();
+
+    });
+
+    it('Should be able to resurrect any possible orphans', function(done) {
+
+        var polygon = createMockPolygon();
+        freeDraw.resurrectOrphans();
+
+        spyOn(freeDraw, 'recreateEdges').and.callThrough();
+
+        setTimeout(function setTimeout() {
+
+            expect(freeDraw.recreateEdges).toHaveBeenCalled();
+            done();
+
+        }, 1);
+
+    });
+
+    it('Should be able to handle the clicking of a polygon', function() {
+
+        var polygon   = createMockPolygon(),
+            fakeEvent = { originalEvent: { clientX: 12, clientY: 17 } };
+
+        spyOn(freeDraw, 'destroyPolygon').and.callThrough();
+        spyOn(freeDraw.map, 'latLngToContainerPoint').and.callThrough();
+        spyOn(L.LineUtil, 'pointToSegmentDistance').and.callThrough();
+
+        // Simulate the click on the polygon.
+        freeDraw.handlePolygonClick(polygon, fakeEvent);
+
+        // Ensure the necessary methods were invoked
+        expect(freeDraw.map.latLngToContainerPoint).toHaveBeenCalled();
+        expect(L.LineUtil.pointToSegmentDistance).toHaveBeenCalled();
+        expect(freeDraw.destroyPolygon).toHaveBeenCalled();
+
+        // ...And now let's try to add a polygon elbow instead of deleting.
+        polygon   = createMockPolygon();
+        fakeEvent = { originalEvent: { clientX: 12, clientY: 17 } };
+
+        expect(polygon._latlngs.length).toEqual(5);
+        spyOn(freeDraw, 'createEdges').and.callThrough();
+        spyOn(freeDraw, 'destroyEdges').and.callThrough();
+
+        freeDraw.setMode(L.FreeDraw.MODES.APPEND);
+        freeDraw.handlePolygonClick(polygon, fakeEvent);
+        expect(freeDraw.createEdges).toHaveBeenCalled();
+        expect(freeDraw.destroyEdges).toHaveBeenCalled();
+        expect(polygon._latlngs.length).toEqual(6);
 
     });
 

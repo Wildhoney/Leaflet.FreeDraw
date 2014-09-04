@@ -156,6 +156,13 @@
 
             }
 
+            // Reset all of the properties.
+            this.fromPoint = { x: 0, y: 0 };
+            this.polygons  = [];
+            this.edges     = [];
+            this.hull      = {};
+            this.latLngs   = [];
+
             options = options || {};
 
             this.options = new L.FreeDraw.Options();
@@ -170,7 +177,7 @@
         /**
          * @method recreateEdges
          * @param polygon {Object}
-         * @return {void}
+         * @return {Number|Boolean}
          */
         recreateEdges: function recreateEdges(polygon) {
 
@@ -187,7 +194,7 @@
             }.bind(this));
 
             // We can then re-attach the edges based on the current zoom level.
-            this.createEdges(polygon);
+            return this.createEdges(polygon);
 
         },
 
@@ -492,6 +499,125 @@
         },
 
         /**
+         * @method handlePolygonClick
+         * @param polygon {L.Polygon}
+         * @param event {Object}
+         * @return {void}
+         */
+        handlePolygonClick: function handlePolygonClick(polygon, event) {
+
+            var latLngs        = [],
+                newPoint       = this.map.mouseEventToContainerPoint(event.originalEvent),
+                lowestDistance = Infinity,
+                startPoint     = new L.Point(),
+                endPoint       = new L.Point(),
+                parts          = [];
+
+            polygon._latlngs.forEach(function forEach(latLng) {
+
+                // Push each part into the array, because relying on the polygon's "_parts" array
+                // isn't safe since they are removed when parts of the polygon aren't visible.
+                parts.push(this.map.latLngToContainerPoint(latLng));
+
+            }.bind(this));
+
+            parts.forEach(function forEach(point, index) {
+
+                var firstPoint  = point,
+                    secondPoint = parts[index + 1] || parts[0],
+                    distance    = L.LineUtil.pointToSegmentDistance(newPoint, firstPoint, secondPoint);
+
+                if (distance < lowestDistance) {
+
+                    // We discovered a distance that possibly should contain the new point!
+                    lowestDistance = distance;
+                    startPoint     = firstPoint;
+                    endPoint       = secondPoint;
+
+                }
+
+            }.bind(this));
+
+            parts.forEach(function forEach(point, index) {
+
+                var nextPoint = parts[index + 1] || parts[0];
+
+                if (point === startPoint && nextPoint === endPoint) {
+
+                    latLngs.push(this.map.containerPointToLatLng(point));
+                    latLngs.push(this.map.containerPointToLatLng(newPoint));
+                    return;
+
+                }
+
+                latLngs.push(this.map.containerPointToLatLng(point));
+
+            }.bind(this));
+
+            /**
+             * @constant INNER_DISTANCE
+             * @type {Number}
+             */
+            var INNER_DISTANCE = this.options.elbowDistance;
+
+            /**
+             * @method updatePolygon
+             * @return {void}
+             */
+            var updatePolygon = function updatePolygon() {
+
+                if (!(this.mode & L.FreeDraw.MODES.APPEND)) {
+
+                    // User hasn't enabled the append mode.
+                    return;
+
+                }
+
+                // Redraw the polygon based on the newly added lat/long boundaries.
+                polygon.setLatLngs(latLngs);
+
+                // Recreate the edges for the polygon.
+                this.destroyEdges(polygon);
+                this.createEdges(polygon);
+
+            }.bind(this);
+
+            // If the user hasn't enabled delete mode but has the append mode active, then we'll
+            // assume they're always wanting to add an edge.
+            if (this.mode & L.FreeDraw.MODES.APPEND && !(this.mode & L.FreeDraw.MODES.DELETE)) {
+
+                // Mode has been set to only add new elbows when the user clicks the polygon close
+                // to the boundaries as defined by the `setMaximumDistanceForElbow` method.
+                if (this.options.onlyInDistance && lowestDistance > INNER_DISTANCE) {
+                    return;
+                }
+
+                updatePolygon();
+                return;
+
+            }
+
+            // If the inverse of the aforementioned is true then we'll always delete the polygon.
+            if (this.mode & L.FreeDraw.MODES.DELETE && !(this.mode & L.FreeDraw.MODES.APPEND)) {
+                this.destroyPolygon(polygon);
+                return;
+            }
+
+            // Otherwise we'll use some logic to detect whether we should delete or add a new elbow.
+            if (lowestDistance > INNER_DISTANCE && this.mode & L.FreeDraw.MODES.DELETE) {
+
+                // Delete the polygon!
+                this.destroyPolygon(polygon);
+                return;
+
+            }
+
+            // Otherwise create a new elbow.
+            updatePolygon();
+
+        },
+
+        /**
          * @method createPolygon
          * @param latLngs {L.LatLng[]}
          * @param [forceCreation=false] {Boolean}
@@ -522,7 +648,7 @@
 
             }
 
-            var polygon = L.polygon(simplifiedLatLngs, {
+            var polygon = new L.Polygon(simplifiedLatLngs, {
                 color: '#D7217E',
                 weight: 0,
                 fill: true,
@@ -531,117 +657,9 @@
                 smoothFactor: this.options.smoothFactor
             });
 
+            // Handle the click event on a polygon.
             polygon.on('click', function onClick(event) {
-
-                var latLngs        = [],
-                    newPoint       = this.map.mouseEventToContainerPoint(event.originalEvent),
-                    lowestDistance = Infinity,
-                    startPoint     = new L.Point(),
-                    endPoint       = new L.Point(),
-                    parts          = [];
-
-                polygon._latlngs.forEach(function forEach(latLng) {
-
-                    // Push each part into the array, because relying on the polygon's "_parts" array
-                    // isn't safe since they are removed when parts of the polygon aren't visible.
-                    parts.push(this.map.latLngToContainerPoint(latLng));
-
-                }.bind(this));
-
-                parts.forEach(function forEach(point, index) {
-
-                    var firstPoint  = point,
-                        secondPoint = parts[index + 1] || parts[0],
-                        distance    = L.LineUtil.pointToSegmentDistance(newPoint, firstPoint, secondPoint);
-
-                    if (distance < lowestDistance) {
-
-                        // We discovered a distance that possibly should contain the new point!
-                        lowestDistance = distance;
-                        startPoint     = firstPoint;
-                        endPoint       = secondPoint;
-
-                    }
-
-                }.bind(this));
-
-                parts.forEach(function forEach(point, index) {
-
-                    var nextPoint = parts[index + 1] || parts[0];
-
-                    if (point === startPoint && nextPoint === endPoint) {
-
-                        latLngs.push(this.map.containerPointToLatLng(point));
-                        latLngs.push(this.map.containerPointToLatLng(newPoint));
-                        return;
-
-                    }
-
-                    latLngs.push(this.map.containerPointToLatLng(point));
-
-                }.bind(this));
-
-                /**
-                 * @constant INNER_DISTANCE
-                 * @type {Number}
-                 */
-                var INNER_DISTANCE = this.options.elbowDistance;
-
-                /**
-                 * @method updatePolygon
-                 * @return {void}
-                 */
-                var updatePolygon = function updatePolygon() {
-
-                    if (!(this.mode & L.FreeDraw.MODES.APPEND)) {
-
-                        // User hasn't enabled the append mode.
-                        return;
-
-                    }
-
-                    // Redraw the polygon based on the newly added lat/long boundaries.
-                    polygon.setLatLngs(latLngs);
-
-                    // Recreate the edges for the polygon.
-                    this.destroyEdges(polygon);
-                    this.createEdges(polygon);
-
-                }.bind(this);
-
-                // If the user hasn't enabled delete mode but has the append mode active, then we'll
-                // assume they're always wanting to add an edge.
-                if (this.mode & L.FreeDraw.MODES.APPEND && !(this.mode & L.FreeDraw.MODES.DELETE)) {
-
-                    // Mode has been set to only add new elbows when the user clicks the polygon close
-                    // to the boundaries as defined by the `setMaximumDistanceForElbow` method.
-                    if (this.options.onlyInDistance && lowestDistance > INNER_DISTANCE) {
-                        return;
-                    }
-
-                    updatePolygon();
-                    return;
-
-                }
-
-                // If the inverse of the aforementioned is true then we'll always delete the polygon.
-                if (this.mode & L.FreeDraw.MODES.DELETE && !(this.mode & L.FreeDraw.MODES.APPEND)) {
-                    this.destroyPolygon(polygon);
-                    return;
-                }
-
-                // Otherwise we'll use some logic to detect whether we should delete or add a new elbow.
-                if (lowestDistance > INNER_DISTANCE && this.mode & L.FreeDraw.MODES.DELETE) {
-
-                    // Delete the polygon!
-                    this.destroyPolygon(polygon);
-                    return;
-
-                }
-
-                // Otherwise create a new elbow.
-                updatePolygon();
-
+                this.handlePolygonClick(polygon, event);
             }.bind(this));
 
             // Add the polyline to the map, and then find the edges of the polygon.
