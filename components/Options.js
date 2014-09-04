@@ -104,6 +104,18 @@
         },
 
         /**
+         * @method setPathClipperPadding
+         * @param value {Number}
+         * @return {void}
+         */
+        setPathClipperPadding: function setPathClipperPadding(value) {
+
+            // Prevent polygons outside of the viewport from being clipped.
+            L.Path.CLIP_PADDING = value;
+
+        },
+
+        /**
          * @method setMaximumDistanceForElbow
          * @param maxDistance {Number}
          * @return {void}

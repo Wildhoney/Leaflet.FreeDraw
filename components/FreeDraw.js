@@ -142,9 +142,6 @@
          */
         initialize: function initialize(options) {
 
-            // Prevent polygons outside of the viewport from being clipped.
-            L.Path.CLIP_PADDING = 10;
-
             if (typeof d3 === 'undefined') {
 
                 // Ensure D3 has been included.
@@ -166,6 +163,7 @@
             this.element = options.element || null;
 
             this.setMode(options.mode || this.mode);
+            this.options.setPathClipperPadding(100);
 
         },
 
@@ -1318,12 +1316,13 @@
      * @type {Object}
      */
     L.FreeDraw.MODES = {
-        VIEW:   1,
-        CREATE: 2,
-        EDIT:   4,
-        DELETE: 8,
-        APPEND: 16,
-        ALL:    1 | 2 | 4 | 8 | 16
+        VIEW:        1,
+        CREATE:      2,
+        EDIT:        4,
+        DELETE:      8,
+        APPEND:      16,
+        EDIT_APPEND: 4 | 16,
+        ALL:         1 | 2 | 4 | 8 | 16
     };
 
     /**

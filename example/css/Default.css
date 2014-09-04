@@ -25,6 +25,8 @@ section.map g path {
     stroke-width: 4px;
     stroke-opacity: 1;
     stroke: #D7217E;
+    position: absolute;
+    z-index: 1001;
 }
 
 /*section.map g.non-polygon {*/
