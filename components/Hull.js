@@ -19,9 +19,9 @@
 
         /**
          * @property map
-         * @type {L.Map|Object}
+         * @type {L.Map|null}
          */
-        map: {},
+        map: null,
 
         /**
          * @method setMap

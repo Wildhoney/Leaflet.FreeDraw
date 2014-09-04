@@ -49,6 +49,22 @@ module.exports = function(grunt) {
         },
 
         /**
+         * @property jasmine
+         * @type {Object}
+         */
+        jasmine: {
+            pivotal: {
+                src: ['components/FreeDraw.js', 'components/*.js'],
+                options: {
+                    specs: 'tests/spec.js',
+                    helpers: ['example/js/vendor/leaflet/dist/leaflet-src.js',
+                              'example/js/vendor/d3/d3.js',
+                              'example/js/vendor/evispa-timo-jsclipper/clipper_unminified.js']
+                }
+            }
+        },
+
+        /**
          * @property karma
          * @type {Object}
          */
@@ -96,10 +112,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
     grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
-//    grunt.registerTask('test', ['jshint', 'jasmine']);
-    grunt.registerTask('test', ['jshint']);
+    grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('default', ['build']);
 
 };
