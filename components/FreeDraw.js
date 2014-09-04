@@ -187,33 +187,7 @@
             }.bind(this));
 
             // We can then re-attach the edges based on the current zoom level.
-            var edgeCount = this.createEdges(polygon);
-
-            /**
-             * @method determineNonPolygons
-             * @return {void}
-             */
-            (function determineNonPolygons() {
-
-                // Determines whether to add or remove the class.
-                var nonPolygon = Number.isFinite(edgeCount) && (edgeCount <= 2),
-                    method     = (nonPolygon) ? 'addClass' : 'removeClass';
-
-                // "Polygon" is actually not a polygon because it consists of less than 3 edges.
-                L.DomUtil[method](polygon._container, 'non-polygon');
-
-                this.edges.forEach(function forEach(edge) {
-
-                    if (edge._freedraw.polygon !== polygon) {
-                        return;
-                    }
-
-                    // Add the "non-polygon" class to all of the polygon's related edges as well.
-                    L.DomUtil[method](edge._icon, 'non-polygon');
-
-                }.bind(this));
-
-            }.bind(this))();
+            this.createEdges(polygon);
 
         },
 

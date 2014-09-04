@@ -104,13 +104,14 @@ var freeDraw = window.freeDraw = new L.FreeDraw({
 In specifying the mode you are using [bitwise operators](http://en.wikipedia.org/wiki/Bitwise_operation) with the mapping being as follows:
 
 ```javascript
-L.FreeDraw.MODES: {
-    VIEW:   1,
-    CREATE: 2,
-    EDIT:   4,
-    DELETE: 8,
-    APPEND: 16,
-    ALL:    1 | 2 | 4 | 8 | 16
+L.FreeDraw.MODES = {
+    VIEW:        1,
+    CREATE:      2,
+    EDIT:        4,
+    DELETE:      8,
+    APPEND:      16,
+    EDIT_APPEND: 4 | 16,
+    ALL:         1 | 2 | 4 | 8 | 16
 }
 ```
 
@@ -134,9 +135,9 @@ You may also listen to updates of the mode using the `freeDraw.on('mode')` event
 
 ### Elbow Creation
 
-Using the `L.FreeDraw.MODES.APPEND` mode that can allow users to create new edges on the polygon. If both the `L.FreeDraw.MODES.APPEND` and `L.FreeDraw.MODES.DELETE` are active at the same time then some logic is applied to decide whether the user wishes to delete or create a new edge. However if `L.FreeDraw.MODES.APPEND` is active and `L.FreeDraw.MODES.DELETE` is not then any click on the polygon will create a new edge
+Using the `L.FreeDraw.MODES.APPEND` mode you can allow users to create new edges on the polygon. If both the `L.FreeDraw.MODES.APPEND` and `L.FreeDraw.MODES.DELETE` modes are active at the same time then some logic is applied to decide whether the user wishes to delete or create a new edge. However if `L.FreeDraw.MODES.APPEND` is active and `L.FreeDraw.MODES.DELETE` is not then any click on the polygon will create a new edge &ndash; and vice-versa for the inverse.
 
-If you would like to control the edge in which a new polygon will be created when both aforementioned modes are active, you can do so using the `setMaximumDistanceForElbow` method where the default is currently set to **10**.
+If you would like to control the edge size in which a new polygon will be created when both aforementioned modes are active, you can do so using the `setMaximumDistanceForElbow` method where the default is currently set to **10**.
 
 Even when the `L.FreeDraw.MODES.APPEND` mode is active exclusively, you still may not wish for **any** click to add a new elbow, and therefore by enabling the `addElbowOnlyWithinDistance` mode a click on the polygon will stay pay attention to the `setMaximumDistanceForElbow` value.
 
