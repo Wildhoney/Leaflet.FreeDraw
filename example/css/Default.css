@@ -13,7 +13,7 @@ section.map {
 }
 
 section.map div.leaflet-tile-pane {
-    -webkit-filter: grayscale(100%);
+    /*-webkit-filter: grayscale(100%);*/
 }
 
 section.map.mode-create {
