@@ -498,7 +498,7 @@
         uniqueLatLngs: function uniqueLatLngs(latLngs) {
 
             var previousLatLngs = [],
-                uniqueLatLngs   = [];
+                uniqueValues    = [];
 
             latLngs.forEach(function forEach(latLng) {
 
@@ -509,11 +509,11 @@
                 }
 
                 previousLatLngs.push(model);
-                uniqueLatLngs.push(latLng);
+                uniqueValues.push(latLng);
 
             });
 
-            return uniqueLatLngs;
+            return uniqueValues;
 
         },
 
