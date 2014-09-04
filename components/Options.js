@@ -60,6 +60,12 @@
         elbowDistance: 10,
 
         /**
+         * @property onlyInDistance
+         * @type {Boolean}
+         */
+        onlyInDistance: false,
+
+        /**
          * @property hullAlgorithms
          * @type {Object}
          */
@@ -87,6 +93,14 @@
                 link: 'https://github.com/Wildhoney/ConcaveHull'
             }
 
+        },
+
+        /**
+         * @method addElbowOnlyWithinDistance
+         * @param value {Boolean}
+         */
+        addElbowOnlyWithinDistance: function addElbowOnlyWithinDistance(value) {
+            this.onlyInDistance = !!value;
         },
 
         /**

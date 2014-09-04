@@ -14,11 +14,12 @@
         L.tileLayer('https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=b86b18b0645848bea383827fdccb878e').addTo(map);
 
         var freeDraw = window.freeDraw = new L.FreeDraw({
-            mode: L.FreeDraw.MODES.ALL
+            mode: L.FreeDraw.MODES.EDIT | L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.CREATE
         });
 
         freeDraw.options.setBoundariesAfterEdit(false);
         freeDraw.options.exitModeAfterCreate(false);
+        freeDraw.options.addElbowOnlyWithinDistance(true);
 
         freeDraw.on('markers', function getMarkers(eventData) {
 

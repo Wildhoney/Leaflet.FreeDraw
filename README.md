@@ -132,7 +132,13 @@ freeDraw.setMode(L.FreeDraw.MODES.EDIT | L.FreeDraw.MODES.DELETE);
 
 You may also listen to updates of the mode using the `freeDraw.on('mode')` event.
 
-Using the `L.FreeDraw.MODES.APPEND` mode that can allow users to create new edges on the polygon. If both the `L.FreeDraw.MODES.APPEND` and `L.FreeDraw.MODES.DELETE` are active at the same time then some logic is applied to decide whether the user wishes to delete or create a new edge.
+### Elbow Creation
+
+Using the `L.FreeDraw.MODES.APPEND` mode that can allow users to create new edges on the polygon. If both the `L.FreeDraw.MODES.APPEND` and `L.FreeDraw.MODES.DELETE` are active at the same time then some logic is applied to decide whether the user wishes to delete or create a new edge. However if `L.FreeDraw.MODES.APPEND` is active and `L.FreeDraw.MODES.DELETE` is not then any click on the polygon will create a new edge
+
+If you would like to control the edge in which a new polygon will be created when both aforementioned modes are active, you can do so using the `setMaximumDistanceForElbow` method where the default is currently set to **10**.
+
+Even when the `L.FreeDraw.MODES.APPEND` mode is active exclusively, you still may not wish for **any** click to add a new elbow, and therefore by enabling the `addElbowOnlyWithinDistance` mode a click on the polygon will stay pay attention to the `setMaximumDistanceForElbow` value.
 
 ### Class Names
 

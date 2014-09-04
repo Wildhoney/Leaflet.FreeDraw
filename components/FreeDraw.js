@@ -593,9 +593,17 @@
 
                 // If the user hasn't enabled delete mode but has the append mode active, then we'll
                 // assume they're always wanting to add an edge.
-                if (this.mode & L.FreeDraw.MODES.APPEND && !(this.mode ^ L.FreeDraw.MODES.DELETE)) {
+                if (this.mode & L.FreeDraw.MODES.APPEND && !(this.mode & L.FreeDraw.MODES.DELETE)) {
+
+                    // Mode has been set to only add new elbows when the user clicks the polygon close
+                    // to the boundaries as defined by the `setMaximumDistanceForElbow` method.
+                    if (this.options.onlyInDistance && lowestDistance > INNER_DISTANCE) {
+                        return;
+                    }
+
                     updatePolygon();
                     return;
+
                 }
 
                 // If the inverse of the aforementioned is true then we'll always delete the polygon.
