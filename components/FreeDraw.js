@@ -491,6 +491,33 @@
         },
 
         /**
+         * @method uniqueLatLngs
+         * @param latLngs {L.LatLng[]}
+         * @return {L.LatLng[]}
+         */
+        uniqueLatLngs: function uniqueLatLngs(latLngs) {
+
+            var previousLatLngs = [],
+                uniqueLatLngs   = [];
+
+            latLngs.forEach(function forEach(latLng) {
+
+                var model = JSON.stringify(latLng);
+
+                if (previousLatLngs.indexOf(model) !== -1) {
+                    return;
+                }
+
+                previousLatLngs.push(model);
+                uniqueLatLngs.push(latLng);
+
+            });
+
+            return uniqueLatLngs;
+
+        },
+
+        /**
          * @method createPolygon
          * @param latLngs {L.LatLng[]}
          * @param forceCreation {Boolean}
@@ -999,7 +1026,7 @@
 
             }.bind(this);
 
-            var parts     = originalLatLngs(polygon),
+            var parts     = this.uniqueLatLngs(originalLatLngs(polygon)),
                 edgeCount = 0;
 
             if (!parts) {
