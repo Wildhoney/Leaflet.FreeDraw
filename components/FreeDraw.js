@@ -538,7 +538,7 @@
                     endPoint       = new L.Point(),
                     parts          = [];
 
-                polygon._latlngs.forEach(function forEach(latLng, index) {
+                polygon._latlngs.forEach(function forEach(latLng) {
 
                     // Push each part into the array, because relying on the polygon's "_parts" array
                     // isn't safe since they are removed when parts of the polygon aren't visible.
@@ -1211,21 +1211,21 @@
          * @param polygon {Object}
          * @return {void}
          */
-        trimPolygonEdges: function trimPolygonEdges(polygon) {
+        trimPolygonEdges: function trimPolygonEdges() {
 
-            return;
-
-            var latLngs = [];
-
-            polygon._parts[0].forEach(function forEach(point) {
-                latLngs.push(this.map.layerPointToLatLng(point));
-            }.bind(this));
-
-            polygon.setLatLngs(latLngs);
-            polygon.redraw();
-
-            this.destroyEdges(polygon);
-            this.createEdges(polygon);
+//            return;
+//
+//            var latLngs = [];
+//
+//            polygon._parts[0].forEach(function forEach(point) {
+//                latLngs.push(this.map.layerPointToLatLng(point));
+//            }.bind(this));
+//
+//            polygon.setLatLngs(latLngs);
+//            polygon.redraw();
+//
+//            this.destroyEdges(polygon);
+//            this.createEdges(polygon);
 
         },
 
