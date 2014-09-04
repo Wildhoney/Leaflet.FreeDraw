@@ -336,7 +336,7 @@
          */
         cancelAction: function cancelAction() {
 
-            this.creating = false;
+            this.creating   = false;
             this.movingEdge = null;
 
             // Begin to create a brand-new polygon.
@@ -520,7 +520,7 @@
         /**
          * @method createPolygon
          * @param latLngs {L.LatLng[]}
-         * @param forceCreation {Boolean}
+         * @param [forceCreation=false] {Boolean}
          * @return {L.Polygon}
          */
         createPolygon: function createPolygon(latLngs, forceCreation) {
@@ -888,10 +888,10 @@
          */
         _clearPolygons: function _clearPolygons() {
 
-            this.edges.forEach(function forEach(edge) {
+            this.getPolygons().forEach(function forEach(polygon) {
 
                 // Iteratively remove each polygon in the DOM.
-                this.destroyPolygon(edge._freedraw.polygon);
+                this.destroyPolygon(polygon);
 
             }.bind(this));
 
@@ -1250,6 +1250,10 @@
 
             var latLngs = [];
 
+            if (!polygon._parts[0]) {
+                return;
+            }
+
             polygon._parts[0].forEach(function forEach(point) {
                 latLngs.push(this.map.layerPointToLatLng(point));
             }.bind(this));
@@ -1410,9 +1414,9 @@
 
         /**
          * @property map
-         * @type {L.Map|Object}
+         * @type {L.Map|null}
          */
-        map: {},
+        map: null,
 
         /**
          * @method setMap
