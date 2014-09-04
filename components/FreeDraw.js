@@ -494,9 +494,9 @@
 
         /**
          * @method createPolygon
-         * @param latLngs {L.latLng[]}
-         * @param [forceCreation=false] {Boolean}
-         * @return {L.polygon|Boolean}
+         * @param latLngs {L.LatLng[]}
+         * @param forceCreation {Boolean}
+         * @return {void}
          */
         createPolygon: function createPolygon(latLngs, forceCreation) {
 
@@ -535,7 +535,7 @@
             polygon.on('click', function onClick(event) {
 
                 var latLngs        = [],
-                    newPoint       = this.map.mouseEventToLayerPoint(event.originalEvent),
+                    newPoint       = this.map.mouseEventToContainerPoint(event.originalEvent),
                     lowestDistance = Infinity,
                     startPoint     = new L.Point(),
                     endPoint       = new L.Point(),
@@ -572,13 +572,13 @@
 
                     if (point === startPoint && nextPoint === endPoint) {
 
-                        latLngs.push(this.map.layerPointToLatLng(point));
-                        latLngs.push(this.map.layerPointToLatLng(newPoint));
+                        latLngs.push(this.map.containerPointToLatLng(point));
+                        latLngs.push(this.map.containerPointToLatLng(newPoint));
                         return;
 
                     }
 
-                    latLngs.push(this.map.layerPointToLatLng(point));
+                    latLngs.push(this.map.containerPointToLatLng(point));
 
                 }.bind(this));
 

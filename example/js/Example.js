@@ -19,7 +19,7 @@
 
         freeDraw.options.setBoundariesAfterEdit(false);
         freeDraw.options.exitModeAfterCreate(false);
-        freeDraw.options.addElbowOnlyWithinDistance(true);
+//        freeDraw.options.addElbowOnlyWithinDistance(true);
 
         freeDraw.on('markers', function getMarkers(eventData) {
 
