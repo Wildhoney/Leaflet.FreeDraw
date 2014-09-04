@@ -142,6 +142,9 @@
          */
         initialize: function initialize(options) {
 
+            // Prevent polygons outside of the viewport from being clipped.
+            L.Path.CLIP_PADDING = 10;
+
             if (typeof d3 === 'undefined') {
 
                 // Ensure D3 has been included.
@@ -1189,8 +1192,8 @@
                     // Recreate the polygon boundaries because we may have straight edges now.
                     this.trimPolygonEdges(this.movingEdge._freedraw.polygon);
                     this.mergePolygons();
-
                     this.movingEdge = null;
+
                     return;
 
                 }
@@ -1208,24 +1211,22 @@
 
         /**
          * @method trimPolygonEdges
-         * @param polygon {Object}
+         * @param polygon {L.Polygon}
          * @return {void}
          */
-        trimPolygonEdges: function trimPolygonEdges() {
+        trimPolygonEdges: function trimPolygonEdges(polygon) {
 
-//            return;
-//
-//            var latLngs = [];
-//
-//            polygon._parts[0].forEach(function forEach(point) {
-//                latLngs.push(this.map.layerPointToLatLng(point));
-//            }.bind(this));
-//
-//            polygon.setLatLngs(latLngs);
-//            polygon.redraw();
-//
-//            this.destroyEdges(polygon);
-//            this.createEdges(polygon);
+            var latLngs = [];
+
+            polygon._parts[0].forEach(function forEach(point) {
+                latLngs.push(this.map.layerPointToLatLng(point));
+            }.bind(this));
+
+            polygon.setLatLngs(latLngs);
+            polygon.redraw();
+
+            this.destroyEdges(polygon);
+            this.createEdges(polygon);
 
         },
 
