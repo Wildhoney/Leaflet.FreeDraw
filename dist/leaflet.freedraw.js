@@ -494,7 +494,7 @@
          * @method createPolygon
          * @param latLngs {L.LatLng[]}
          * @param forceCreation {Boolean}
-         * @return {void}
+         * @return {L.Polygon}
          */
         createPolygon: function createPolygon(latLngs, forceCreation) {
 
@@ -591,6 +591,13 @@
                  * @return {void}
                  */
                 var updatePolygon = function updatePolygon() {
+
+                    if (!(this.mode & L.FreeDraw.MODES.APPEND)) {
+
+                        // User hasn't enabled the append mode.
+                        return;
+
+                    }
 
                     // Redraw the polygon based on the newly added lat/long boundaries.
                     polygon.setLatLngs(latLngs);
