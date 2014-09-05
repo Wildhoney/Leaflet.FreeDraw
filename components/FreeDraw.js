@@ -938,15 +938,20 @@
 
                     // Determine if the latitude/longitude values differ for the first and last
                     // lat/long objects.
-                    var lastIndex  = latLngGroup.length - 1,
-                        latDiffers = latLngGroup[0].lat !== latLngGroup[lastIndex].lat,
-                        lngDiffers = latLngGroup[0].lng !== latLngGroup[lastIndex].lng;
+                    var lastIndex  = latLngGroup.length - 1;
 
-                    if (latDiffers && lngDiffers) {
+                    if (lastIndex) {
 
-                        // It's not currently a closed polygon for the query, so we'll create the closed
-                        // polygon for the geospatial query.
-                        latLngGroup.push(latLngGroup[0]);
+                        var latDiffers = latLngGroup[0].lat !== latLngGroup[lastIndex].lat,
+                            lngDiffers = latLngGroup[0].lng !== latLngGroup[lastIndex].lng;
+
+                        if (latDiffers && lngDiffers) {
+
+                            // It's not currently a closed polygon for the query, so we'll create the closed
+                            // polygon for the geospatial query.
+                            latLngGroup.push(latLngGroup[0]);
+
+                        }
 
                     }
 
