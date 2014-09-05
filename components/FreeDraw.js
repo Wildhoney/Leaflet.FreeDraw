@@ -326,6 +326,22 @@
         },
 
         /**
+         * Update the permissions for what the user can do on the map.
+         *
+         * @method setMapPermissions
+         * @param method {String}
+         * @return {void}
+         */
+        setMapPermissions: function setMapPermissions(method) {
+
+            this.map.dragging[method]();
+            this.map.touchZoom[method]();
+            this.map.doubleClickZoom[method]();
+            this.map.scrollWheelZoom[method]();
+
+        },
+
+        /**
          * @method setMode
          * @param mode {Number}
          * @return {void}
@@ -335,9 +351,6 @@
             // Prevent the mode from ever being defined as zero.
             mode = (mode === 0) ? L.FreeDraw.MODES.VIEW : mode;
 
-            var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
-                method   = !isCreate ? 'enable' : 'disable';
-
             // Set the current mode and emit the event.
             this.mode = mode;
             this.fire('mode', { mode: mode });
@@ -345,6 +358,11 @@
             if (!this.map) {
                 return;
             }
+
+            // Enable or disable dragging according to the current mode.
+            var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
+                method   = !isCreate ? 'enable' : 'disable';
+            this.map.dragging[method]();
 
             if (this.boundaryUpdateRequired && !(this.mode & L.FreeDraw.MODES.EDIT)) {
 
@@ -354,12 +372,6 @@
                 this.boundaryUpdateRequired = false;
 
             }
-
-            // Update the permissions for what the user can do on the map.
-            this.map.dragging[method]();
-            this.map.touchZoom[method]();
-            this.map.doubleClickZoom[method]();
-            this.map.scrollWheelZoom[method]();
 
             /**
              * Responsible for applying the necessary classes to the map based on the
@@ -1097,6 +1109,7 @@
 
                     // Place the user in create polygon mode.
                     this.creating = true;
+                    this.setMapPermissions('disable');
 
                 }
 
@@ -1273,6 +1286,7 @@
 
             // User has finished creating their polygon!
             this.creating = false;
+            this.setMapPermissions('enable');
 
             if (this.latLngs.length <= 2) {
 

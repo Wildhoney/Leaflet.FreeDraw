@@ -326,6 +326,22 @@
         },
 
         /**
+         * Update the permissions for what the user can do on the map.
+         *
+         * @method setMapPermissions
+         * @param method {String}
+         * @return {void}
+         */
+        setMapPermissions: function setMapPermissions(method) {
+
+            this.map.dragging[method]();
+            this.map.touchZoom[method]();
+            this.map.doubleClickZoom[method]();
+            this.map.scrollWheelZoom[method]();
+
+        },
+
+        /**
          * @method setMode
          * @param mode {Number}
          * @return {void}
@@ -335,9 +351,6 @@
             // Prevent the mode from ever being defined as zero.
             mode = (mode === 0) ? L.FreeDraw.MODES.VIEW : mode;
 
-            var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
-                method   = !isCreate ? 'enable' : 'disable';
-
             // Set the current mode and emit the event.
             this.mode = mode;
             this.fire('mode', { mode: mode });
@@ -345,6 +358,11 @@
             if (!this.map) {
                 return;
             }
+
+            // Enable or disable dragging according to the current mode.
+            var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
+                method   = !isCreate ? 'enable' : 'disable';
+            this.map.dragging[method]();
 
             if (this.boundaryUpdateRequired && !(this.mode & L.FreeDraw.MODES.EDIT)) {
 
@@ -354,12 +372,6 @@
                 this.boundaryUpdateRequired = false;
 
             }
-
-            // Update the permissions for what the user can do on the map.
-            this.map.dragging[method]();
-            this.map.touchZoom[method]();
-            this.map.doubleClickZoom[method]();
-            this.map.scrollWheelZoom[method]();
 
             /**
              * Responsible for applying the necessary classes to the map based on the
@@ -374,6 +386,7 @@
                 removeClass(map, 'mode-edit');
                 removeClass(map, 'mode-delete');
                 removeClass(map, 'mode-view');
+                removeClass(map, 'mode-append');
 
                 if (mode & modes.CREATE) {
                     addClass(map, 'mode-create');
@@ -626,6 +639,13 @@
          */
         createPolygon: function createPolygon(latLngs, forceCreation) {
 
+            if (!this.options.multiplePolygons && this.getPolygons(true).length >= 1) {
+
+                // User is only allowed to create one polygon.
+                return false;
+
+            }
+
             // Begin to create a brand-new polygon.
             this.destroyD3().createD3();
 
@@ -674,6 +694,7 @@
             /**
              * Responsible for preventing the re-rendering of the polygon.
              *
+             * @method clobberLatLngs
              * @return {void}
              */
             (function clobberLatLngs() {
@@ -710,14 +731,14 @@
 
         /**
          * @method getPolygons
-         * @param [all=false] {Boolean}
+         * @param [includingOrphans=false] {Boolean}
          * @return {Array}
          */
-        getPolygons: function getPolygons(all) {
+        getPolygons: function getPolygons(includingOrphans) {
 
             var polygons = [];
 
-            if (all) {
+            if (includingOrphans) {
 
                 if (!this.map) {
                     return [];
@@ -951,47 +972,6 @@
         },
 
         /**
-         * @method setMarkers
-         * @param markers {L.Marker[]}
-         * @param divIcon {L.DivIcon}
-         * @return {void}
-         */
-        setMarkers: function setMarkers(markers, divIcon) {
-
-            if (typeof divIcon !== 'undefined' && !(divIcon instanceof L.DivIcon)) {
-
-                // Ensure if the user has passed a second argument that it is a valid DIV icon.
-                L.FreeDraw.Throw('Second argument must be an instance of L.DivIcon');
-
-            }
-
-            // Reset the markers collection.
-            this.map.removeLayer(this.markerLayer);
-            this.markerLayer = L.layerGroup();
-            this.markerLayer.addTo(this.map);
-
-            if (!markers || markers.length === 0) {
-                return;
-            }
-
-            var options = divIcon ? { icon: divIcon } : {};
-
-            // Iterate over each marker to plot it on the map.
-            for (var addIndex = 0, addLength = markers.length; addIndex < addLength; addIndex++) {
-
-                if (!(markers[addIndex] instanceof L.LatLng)) {
-                    L.FreeDraw.Throw('Supplied markers must be instances of L.LatLng');
-                }
-
-                // Add the marker using the custom DIV icon if it has been specified.
-                var marker = L.marker(markers[addIndex], options);
-                this.markerLayer.addLayer(marker);
-
-            }
-
-        },
-
-        /**
          * @method createEdges
          * @param polygon {L.polygon}
          * @return {Number|Boolean}
@@ -1063,19 +1043,28 @@
         /**
          * @method updatePolygonEdge
          * @param edge {Object}
-         * @param posX {Number}
-         * @param posY {Number}
+         * @param positionX {Number}
+         * @param positionY {Number}
          * @return {void}
          */
-        updatePolygonEdge: function updatePolygon(edge, posX, posY) {
+        updatePolygonEdge: function updatePolygon(edge, positionX, positionY) {
 
-            var updatedLatLng = this.map.containerPointToLatLng(L.point(posX, posY));
+            var updatedLatLng = this.map.containerPointToLatLng(new L.Point(positionX, positionY));
+
+            // Update the latitude and longitude for both the Leaflet.js model, and the FreeDraw model.
             edge.setLatLng(updatedLatLng);
+            edge._freedraw.latLng = updatedLatLng;
+
+            var allEdges = [];
 
             // Fetch all of the edges in the group based on the polygon.
-            var edges = this.edges.filter(function filter(marker) {
-                return marker._freedraw.polygon === edge._freedraw.polygon;
+            var edges = this.edges.filter(function filter(currentEdge) {
+                allEdges.push(currentEdge);
+                return currentEdge._freedraw.polygon === edge._freedraw.polygon;
             });
+
+            // Update the edge object.
+            this.edges = allEdges;
 
             var updatedLatLngs = [];
             edges.forEach(function forEach(marker) {
@@ -1109,15 +1098,7 @@
                     return;
                 }
 
-                if (!this.options.multiplePolygons && this.edges.length) {
-
-                    // User is only allowed to create one polygon.
-                    return;
-
-                }
-
                 var originalEvent = event.originalEvent;
-
                 originalEvent.stopPropagation();
                 originalEvent.preventDefault();
 
@@ -1128,6 +1109,7 @@
 
                     // Place the user in create polygon mode.
                     this.creating = true;
+                    this.setMapPermissions('disable');
 
                 }
 
@@ -1176,7 +1158,7 @@
          */
         _editMouseMove: function _editMouseMove(event) {
 
-            var pointModel = L.point(event.clientX, event.clientY);
+            var pointModel = new L.Point(event.clientX, event.clientY);
 
             // Modify the position of the marker on the map based on the user's mouse position.
             var styleDeclaration = this.movingEdge._icon.style;
@@ -1273,7 +1255,7 @@
                 pointerY = event.clientY;
 
             // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-            var point = L.point(pointerX, pointerY),
+            var point  = new L.Point(pointerX, pointerY),
                 latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.
@@ -1304,6 +1286,7 @@
 
             // User has finished creating their polygon!
             this.creating = false;
+            this.setMapPermissions('enable');
 
             if (this.latLngs.length <= 2) {
 
@@ -1527,6 +1510,30 @@
         createExitMode: true,
 
         /**
+         * @property attemptMerge
+         * @type {Boolean}
+         */
+        attemptMerge: true,
+
+        /**
+         * @property svgClassName
+         * @type {String}
+         */
+        svgClassName: 'tracer',
+
+        /**
+         * @property smoothFactor
+         * @type {Number}
+         */
+        smoothFactor: 5,
+
+        /**
+         * @property iconClassName
+         * @type {String}
+         */
+        iconClassName: 'polygon-elbow',
+
+        /**
          * @property deleteExitMode
          * @type {Boolean}
          */
@@ -1602,30 +1609,6 @@
         setMaximumDistanceForElbow: function setMaximumDistanceForElbow(maxDistance) {
             this.elbowDistance = +maxDistance;
         },
-
-        /**
-         * @property attemptMerge
-         * @type {Boolean}
-         */
-        attemptMerge: true,
-
-        /**
-         * @property svgClassName
-         * @type {String}
-         */
-        svgClassName: 'tracer',
-
-        /**
-         * @property smoothFactor
-         * @type {Number}
-         */
-        smoothFactor: 5,
-
-        /**
-         * @property iconClassName
-         * @type {String}
-         */
-        iconClassName: 'polygon-elbow',
 
         /**
          * @method exitModeAfterCreate
