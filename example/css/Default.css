@@ -29,10 +29,6 @@ section.map g path {
     z-index: 1001;
 }
 
-/*section.map g.non-polygon {*/
-    /*display: none;*/
-/*}*/
-
 section.map.mode-delete path {
     cursor: no-drop !important;
 }
@@ -74,4 +70,37 @@ svg.tracer {
     height: 100%;
     z-index: 2001;
     pointer-events: none;
+}
+
+/* Controls */
+ul.controls {
+    position: absolute;
+    z-index: 2001;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100%;
+    background: white;
+    border-right: 1px solid rgba(0, 0, 0, .15);
+}
+
+ul.controls li {
+    width: 60px;
+    height: 60px;
+    padding-top: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    text-align: center;
+    cursor: pointer;
+}
+
+ul.controls li img {
+    transition: all .25s;
+    -o-transition: all .25s;
+    -moz-transition: all .25s;
+    -webkit-transition: all .25s;
+}
+
+ul.controls li.disabled img {
+    opacity: .25;
+    transform: rotate(25deg) scale(.9);
 }

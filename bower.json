@@ -1,6 +1,6 @@
 {
   "name": "leaflet.freedraw",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "authors": [
     "Adam Timberlake <adam.timberlake@gmail.com>"
@@ -29,6 +29,7 @@
     "underscore": "~1.6.0",
     "concavehull": "~0.1.2",
     "evispa-timo-jsclipper": "*",
-    "hammerjs": "~2.0.2"
+    "hammerjs": "~2.0.2",
+    "angular": "~1.2.23"
   }
 }
