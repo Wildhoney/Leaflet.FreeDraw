@@ -56,8 +56,9 @@ module.exports = function(grunt) {
             pivotal: {
                 src: ['components/FreeDraw.js', 'components/*.js'],
                 options: {
-                    specs: 'tests/spec.js',
+                    specs: 'tests/JasmineTests.js',
                     helpers: ['example/js/vendor/leaflet/dist/leaflet-src.js',
+                              'example/js/vendor/concavehull/dist/concavehull.js',
                               'example/js/vendor/d3/d3.js',
                               'example/js/vendor/evispa-timo-jsclipper/clipper_unminified.js']
                 }
@@ -70,7 +71,7 @@ module.exports = function(grunt) {
          */
         karma: {
             unit: {
-                configFile: 'KarmaUnit.js',
+                configFile: 'karma.conf.js',
                 background: false,
                 browsers: ['Firefox']
             }
@@ -115,7 +116,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
 
     grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
-    grunt.registerTask('test', ['jshint', 'jasmine']);
-    grunt.registerTask('default', ['build']);
+    grunt.registerTask('test', ['jshint', 'jasmine', 'karma']);
+    grunt.registerTask('default', ['test', 'build']);
 
 };

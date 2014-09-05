@@ -218,6 +218,86 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
+    it('Should be able to place the map in create mode and make a polygon', function() {
+
+        // Disable the simplification of polygons for this example otherwise we're at the mercy of the
+        // JSClipper algorithm.
+        freeDraw.options.simplifyPolygon = false;
+        expect(freeDraw.getPolygons(true).length).toEqual(0);
+
+        var event  = document.createEvent('MouseEvents'),
+            mouseX = 0,
+            mouseY = 0;
+
+        // Begin the creation of a polygon.
+        expect(freeDraw.creating).toBeFalsy();
+        event.initMouseEvent('mousedown', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
+        freeDraw.map._container.dispatchEvent(event);
+        expect(freeDraw.creating).toBeTruthy();
+        expect(freeDraw.fromPoint.x).toEqual(mouseX);
+        expect(freeDraw.fromPoint.y).toEqual(mouseY);
+        expect(freeDraw.latLngs.length).toEqual(0);
+
+        // Create three more points for the polygon.
+        mouseX = 100;
+        mouseY = 0;
+        event  = document.createEvent('MouseEvents');
+        event.initMouseEvent('mousemove', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
+        freeDraw.map._container.dispatchEvent(event);
+        expect(freeDraw.latLngs.length).toEqual(1);
+
+        mouseX = 100;
+        mouseY = 100;
+        event  = document.createEvent('MouseEvents');
+        event.initMouseEvent('mousemove', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
+        freeDraw.map._container.dispatchEvent(event);
+        expect(freeDraw.latLngs.length).toEqual(2);
+
+        mouseX = 0;
+        mouseY = 100;
+        event  = document.createEvent('MouseEvents');
+        event.initMouseEvent('mousemove', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
+        freeDraw.map._container.dispatchEvent(event);
+        expect(freeDraw.latLngs.length).toEqual(3);
+
+        // And finish the polygon creation!
+        mouseX = 0;
+        mouseY = 50;
+        spyOn(freeDraw, '_createMouseUp').and.callThrough();
+        event  = document.createEvent('MouseEvents');
+        event.initMouseEvent('mouseup', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
+        freeDraw.map._container.dispatchEvent(event);
+        expect(freeDraw._createMouseUp).toHaveBeenCalled();
+        expect(freeDraw.creating).toBeFalsy();
+        expect(freeDraw.getPolygons(true).length).toEqual(1);
+
+    });
+
+    it('Should be able to report the current mode', function() {
+
+        freeDraw.on('mode', function modeReceived(eventData) {
+            expect(eventData.mode).toEqual(L.FreeDraw.MODES.DELETE);
+        });
+
+        freeDraw.setMode(L.FreeDraw.MODES.DELETE);
+        freeDraw.off('mode');
+
+        freeDraw.on('mode', function modeReceived(eventData) {
+            expect(eventData.mode).toEqual(L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.APPEND);
+        });
+
+        freeDraw.setMode(L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.APPEND);
+        freeDraw.off('mode');
+
+        freeDraw.on('mode', function modeReceived(eventData) {
+            expect(eventData.mode).toEqual(L.FreeDraw.MODES.VIEW);
+        });
+
+        freeDraw.unsetMode(L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.APPEND);
+        freeDraw.off('mode');
+
+    });
+
     it('Should be able to handle the clicking of a polygon', function() {
 
         var polygon   = createMockPolygon(),

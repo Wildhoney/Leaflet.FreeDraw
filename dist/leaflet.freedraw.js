@@ -417,6 +417,7 @@
             this.svg = d3.select(this.options.element || this.element).append('svg')
                          .attr('class', this.options.svgClassName)
                          .attr('width', 200).attr('height', 200);
+
         },
 
         /**
@@ -453,7 +454,7 @@
          */
         clipperPolygonsToLatLngs: function clipperPolygonsToLatLngs(polygons) {
 
-            var simplifiedLatLngs = [];
+            var latLngs = [];
 
             polygons.forEach(function forEach(polygon) {
 
@@ -461,13 +462,13 @@
 
                     point = L.point(point.X, point.Y);
                     var latLng = this.map.layerPointToLatLng(point);
-                    simplifiedLatLngs.push(latLng);
+                    latLngs.push(latLng);
 
                 }.bind(this));
 
             }.bind(this));
 
-            return simplifiedLatLngs;
+            return latLngs;
 
         },
 
@@ -621,34 +622,35 @@
          * @method createPolygon
          * @param latLngs {L.LatLng[]}
          * @param [forceCreation=false] {Boolean}
-         * @return {L.Polygon}
+         * @return {L.Polygon|Boolean}
          */
         createPolygon: function createPolygon(latLngs, forceCreation) {
 
             // Begin to create a brand-new polygon.
             this.destroyD3().createD3();
 
-            var simplifiedLatLngs = function simplifyPolygons() {
+            if (this.options.simplifyPolygon) {
 
-                var points   = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
-                    polygons = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
+                latLngs = function simplifyPolygons() {
 
-                return this.clipperPolygonsToLatLngs(polygons);
+                    var points   = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
+                        polygons = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
 
-            }.apply(this);
+                    return this.clipperPolygonsToLatLngs(polygons);
 
-            if (simplifiedLatLngs.length <= 3) {
+                }.apply(this);
+
+            }
+
+            if (latLngs.length <= 3) {
 
                 if (!forceCreation) {
                     return false;
                 }
 
-                // Force the polygon creation with the supplied lat/longs.
-                simplifiedLatLngs = latLngs;
-
             }
 
-            var polygon = new L.Polygon(simplifiedLatLngs, {
+            var polygon = new L.Polygon(latLngs, {
                 color: '#D7217E',
                 weight: 0,
                 fill: true,
