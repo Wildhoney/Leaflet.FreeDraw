@@ -374,6 +374,7 @@
                 removeClass(map, 'mode-edit');
                 removeClass(map, 'mode-delete');
                 removeClass(map, 'mode-view');
+                removeClass(map, 'mode-append');
 
                 if (mode & modes.CREATE) {
                     addClass(map, 'mode-create');
@@ -626,6 +627,13 @@
          */
         createPolygon: function createPolygon(latLngs, forceCreation) {
 
+            if (!this.options.multiplePolygons && this.getPolygons(true).length >= 1) {
+
+                // User is only allowed to create one polygon.
+                return false;
+
+            }
+
             // Begin to create a brand-new polygon.
             this.destroyD3().createD3();
 
@@ -674,6 +682,7 @@
             /**
              * Responsible for preventing the re-rendering of the polygon.
              *
+             * @method clobberLatLngs
              * @return {void}
              */
             (function clobberLatLngs() {
@@ -710,14 +719,14 @@
 
         /**
          * @method getPolygons
-         * @param [all=false] {Boolean}
+         * @param [includingOrphans=false] {Boolean}
          * @return {Array}
          */
-        getPolygons: function getPolygons(all) {
+        getPolygons: function getPolygons(includingOrphans) {
 
             var polygons = [];
 
-            if (all) {
+            if (includingOrphans) {
 
                 if (!this.map) {
                     return [];
@@ -951,47 +960,6 @@
         },
 
         /**
-         * @method setMarkers
-         * @param markers {L.Marker[]}
-         * @param divIcon {L.DivIcon}
-         * @return {void}
-         */
-        setMarkers: function setMarkers(markers, divIcon) {
-
-            if (typeof divIcon !== 'undefined' && !(divIcon instanceof L.DivIcon)) {
-
-                // Ensure if the user has passed a second argument that it is a valid DIV icon.
-                L.FreeDraw.Throw('Second argument must be an instance of L.DivIcon');
-
-            }
-
-            // Reset the markers collection.
-            this.map.removeLayer(this.markerLayer);
-            this.markerLayer = L.layerGroup();
-            this.markerLayer.addTo(this.map);
-
-            if (!markers || markers.length === 0) {
-                return;
-            }
-
-            var options = divIcon ? { icon: divIcon } : {};
-
-            // Iterate over each marker to plot it on the map.
-            for (var addIndex = 0, addLength = markers.length; addIndex < addLength; addIndex++) {
-
-                if (!(markers[addIndex] instanceof L.LatLng)) {
-                    L.FreeDraw.Throw('Supplied markers must be instances of L.LatLng');
-                }
-
-                // Add the marker using the custom DIV icon if it has been specified.
-                var marker = L.marker(markers[addIndex], options);
-                this.markerLayer.addLayer(marker);
-
-            }
-
-        },
-
-        /**
          * @method createEdges
          * @param polygon {L.polygon}
          * @return {Number|Boolean}
@@ -1063,19 +1031,28 @@
         /**
          * @method updatePolygonEdge
          * @param edge {Object}
-         * @param posX {Number}
-         * @param posY {Number}
+         * @param positionX {Number}
+         * @param positionY {Number}
          * @return {void}
          */
-        updatePolygonEdge: function updatePolygon(edge, posX, posY) {
+        updatePolygonEdge: function updatePolygon(edge, positionX, positionY) {
 
-            var updatedLatLng = this.map.containerPointToLatLng(L.point(posX, posY));
+            var updatedLatLng = this.map.containerPointToLatLng(new L.Point(positionX, positionY));
+
+            // Update the latitude and longitude for both the Leaflet.js model, and the FreeDraw model.
             edge.setLatLng(updatedLatLng);
+            edge._freedraw.latLng = updatedLatLng;
+
+            var allEdges = [];
 
             // Fetch all of the edges in the group based on the polygon.
-            var edges = this.edges.filter(function filter(marker) {
-                return marker._freedraw.polygon === edge._freedraw.polygon;
+            var edges = this.edges.filter(function filter(currentEdge) {
+                allEdges.push(currentEdge);
+                return currentEdge._freedraw.polygon === edge._freedraw.polygon;
             });
+
+            // Update the edge object.
+            this.edges = allEdges;
 
             var updatedLatLngs = [];
             edges.forEach(function forEach(marker) {
@@ -1109,15 +1086,7 @@
                     return;
                 }
 
-                if (!this.options.multiplePolygons && this.edges.length) {
-
-                    // User is only allowed to create one polygon.
-                    return;
-
-                }
-
                 var originalEvent = event.originalEvent;
-
                 originalEvent.stopPropagation();
                 originalEvent.preventDefault();
 
@@ -1176,7 +1145,7 @@
          */
         _editMouseMove: function _editMouseMove(event) {
 
-            var pointModel = L.point(event.clientX, event.clientY);
+            var pointModel = new L.Point(event.clientX, event.clientY);
 
             // Modify the position of the marker on the map based on the user's mouse position.
             var styleDeclaration = this.movingEdge._icon.style;
@@ -1273,7 +1242,7 @@
                 pointerY = event.clientY;
 
             // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-            var point = L.point(pointerX, pointerY),
+            var point  = new L.Point(pointerX, pointerY),
                 latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.

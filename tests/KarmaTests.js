@@ -108,4 +108,48 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
+    it('Should be able to zoom without removing the edges', function() {
+
+        freeDraw.createPolygon(getPolygon('Rotherhithe'));
+        var rotherhithePolygon = freeDraw.getPolygons()[0];
+        expect(freeDraw.edges.length).toEqual(11);
+
+        // Zoom in fully.
+        freeDraw.map.setZoom(1);
+        expect(freeDraw.map.getZoom()).toEqual(1);
+        expect(freeDraw.edges.length).toEqual(11);
+
+        // ...And then zoom out.
+        freeDraw.map.setZoom(14);
+        expect(freeDraw.map.getZoom()).toEqual(14);
+        expect(freeDraw.edges.length).toEqual(11);
+
+    });
+
+    it('Should be able to update a polygon edge with a new position', function() {
+
+        freeDraw.createPolygon(getPolygon('Bermondsey'));
+        var polygon       = freeDraw.getPolygons()[0],
+            edge          = freeDraw.edges[0],
+            previousEdges = freeDraw.edges.map(function(edge) {
+                return edge._latlng;
+            });
+
+        spyOn(polygon, 'redraw').andCallThrough();
+        spyOn(polygon, 'setLatLngs').andCallThrough();
+        expect(freeDraw.edges.length).toEqual(10);
+
+        freeDraw.updatePolygonEdge(edge, 200, 1000);
+        var currentEdges = freeDraw.edges.map(function(edge) {
+            return edge._latlng;
+        });
+
+        // Ensure they differ because we've updated the lat/lng values.
+        expect(JSON.stringify(previousEdges)).not.toEqual(JSON.stringify(currentEdges));
+        expect(previousEdges.length).toEqual(currentEdges.length);
+        expect(polygon.setLatLngs).toHaveBeenCalled();
+        expect(polygon.redraw).toHaveBeenCalled();
+
+    });
+
 });

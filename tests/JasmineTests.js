@@ -4,12 +4,16 @@ describe('Leaflet FreeDraw', function() {
 
     /**
      * @method createMockPolygon
-     * @return {L.Polygon}
+     * @return {L.Polygon|Boolean}
      */
     var createMockPolygon = function createMockPolygon() {
 
         var latLngs = [new L.LatLng(10, 15), new L.LatLng(15, 18), new L.LatLng(18, 9), new L.LatLng(9, 14)],
             polygon = freeDraw.createPolygon(latLngs);
+
+        if (!polygon) {
+            return false;
+        }
 
         // Define some make-believe edges.
         polygon._parts[0] = [new L.Point(100, 100), new L.Point(200, 200)];
@@ -36,10 +40,57 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
+    it('Should be able to configure the various modes correctly', function() {
+
+        expect(L.FreeDraw.MODES.VIEW).toEqual(2 >> 1);
+        expect(L.FreeDraw.MODES.CREATE).toEqual(4 >> 1);
+        expect(L.FreeDraw.MODES.EDIT).toEqual(8 >> 1);
+        expect(L.FreeDraw.MODES.DELETE).toEqual(16 >> 1);
+        expect(L.FreeDraw.MODES.APPEND).toEqual(32 >> 1);
+
+        expect(L.FreeDraw.MODES.EDIT_APPEND).toEqual(L.FreeDraw.MODES.EDIT | L.FreeDraw.MODES.APPEND);
+        expect(L.FreeDraw.MODES.ALL).toEqual
+        (
+            L.FreeDraw.MODES.CREATE | L.FreeDraw.MODES.EDIT |
+            L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.APPEND | L.FreeDraw.MODES.VIEW
+        );
+
+    });
+
+    it('Should be able to throw an exception', function() {
+
+        expect(function throwException() {
+            L.FreeDraw.Throw('We threw an exception!');
+        }).toThrow('Leaflet.FreeDraw: We threw an exception!.');
+
+    });
+
     it('Should be able to provide a unique list of latitude/longitude values;', function() {
 
         var latLngs = [new L.LatLng(100, 100), new L.LatLng(120, 120), new L.LatLng(100, 100)];
         expect(freeDraw.uniqueLatLngs(latLngs).length).toEqual(2);
+
+    });
+
+    it('Should be able to prevent the drawing of multiple polygons', function() {
+
+        var firstPolygon = createMockPolygon(),
+            secondPolygon = createMockPolygon(),
+            thirdPolygon = createMockPolygon();
+
+        expect(freeDraw.getPolygons(true).length).toEqual(3);
+        freeDraw.clearPolygons();
+        freeDraw.destroyPolygon(firstPolygon);
+        freeDraw.destroyPolygon(secondPolygon);
+        freeDraw.destroyPolygon(thirdPolygon);
+        expect(freeDraw.getPolygons(true).length).toEqual(0);
+
+        // Prevent the user from drawing multiple polygons!
+        freeDraw.options.allowMultiplePolygons(false);
+
+        // Attempt to create two polygons.
+        createMockPolygon(); createMockPolygon();
+        expect(freeDraw.getPolygons(true).length).toEqual(1);
 
     });
 
@@ -218,6 +269,23 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
+    it('Should be able to decline creating a polygon using the right mouse button', function() {
+
+        var event       = document.createEvent('MouseEvents'),
+            mouseX      = 100,
+            mouseY      = 200,
+            RIGHT_CLICK = 2;
+        event.initMouseEvent('mousedown', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, RIGHT_CLICK, null);
+        spyOn(event, 'stopPropagation');
+        spyOn(event, 'preventDefault');
+        freeDraw.map._container.dispatchEvent(event);
+        expect(freeDraw.fromPoint.x).not.toEqual(mouseX);
+        expect(freeDraw.fromPoint.y).not.toEqual(mouseY);
+        expect(event.stopPropagation).not.toHaveBeenCalled();
+        expect(event.preventDefault).not.toHaveBeenCalled();
+
+    });
+
     it('Should be able to place the map in create mode and make a polygon', function() {
 
         // Disable the simplification of polygons for this example otherwise we're at the mercy of the
@@ -295,6 +363,65 @@ describe('Leaflet FreeDraw', function() {
 
         freeDraw.unsetMode(L.FreeDraw.MODES.DELETE | L.FreeDraw.MODES.APPEND);
         freeDraw.off('mode');
+
+    });
+
+    it('Should be able to create and destroy the D3 layer', function() {
+
+        freeDraw.destroyD3();
+        expect(typeof freeDraw.svg).toEqual('object');
+        expect(freeDraw.svg.toString()).toEqual('[object Object]');
+        freeDraw.createD3();
+        expect(freeDraw.svg.toString()).toEqual('[object SVGSVGElement]');
+
+    });
+
+    it('Should be able to define the necessary classes on the map element', function() {
+
+        var element = freeDraw.map._container;
+
+        // Every class should be added to the map element.
+        freeDraw.setMode(L.FreeDraw.MODES.ALL);
+        expect(element.classList.contains('mode-create')).toBeTruthy();
+        expect(element.classList.contains('mode-edit')).toBeTruthy();
+        expect(element.classList.contains('mode-view')).toBeTruthy();
+        expect(element.classList.contains('mode-delete')).toBeTruthy();
+        expect(element.classList.contains('mode-append')).toBeTruthy();
+
+        freeDraw.unsetMode(L.FreeDraw.MODES.CREATE);
+        expect(element.classList.contains('mode-create')).toBeFalsy();
+        expect(element.classList.contains('mode-edit')).toBeTruthy();
+        expect(element.classList.contains('mode-view')).toBeTruthy();
+        expect(element.classList.contains('mode-delete')).toBeTruthy();
+        expect(element.classList.contains('mode-append')).toBeTruthy();
+
+        freeDraw.unsetMode(L.FreeDraw.MODES.EDIT);
+        expect(element.classList.contains('mode-create')).toBeFalsy();
+        expect(element.classList.contains('mode-edit')).toBeFalsy();
+        expect(element.classList.contains('mode-view')).toBeTruthy();
+        expect(element.classList.contains('mode-delete')).toBeTruthy();
+        expect(element.classList.contains('mode-append')).toBeTruthy();
+
+        freeDraw.unsetMode(L.FreeDraw.MODES.VIEW);
+        expect(element.classList.contains('mode-create')).toBeFalsy();
+        expect(element.classList.contains('mode-edit')).toBeFalsy();
+        expect(element.classList.contains('mode-view')).toBeFalsy();
+        expect(element.classList.contains('mode-delete')).toBeTruthy();
+        expect(element.classList.contains('mode-append')).toBeTruthy();
+
+        freeDraw.setMode(L.FreeDraw.MODES.APPEND);
+        expect(element.classList.contains('mode-create')).toBeFalsy();
+        expect(element.classList.contains('mode-edit')).toBeFalsy();
+        expect(element.classList.contains('mode-view')).toBeFalsy();
+        expect(element.classList.contains('mode-delete')).toBeFalsy();
+        expect(element.classList.contains('mode-append')).toBeTruthy();
+
+        freeDraw.setMode(0);
+        expect(element.classList.contains('mode-create')).toBeFalsy();
+        expect(element.classList.contains('mode-edit')).toBeFalsy();
+        expect(element.classList.contains('mode-view')).toBeTruthy();
+        expect(element.classList.contains('mode-delete')).toBeFalsy();
+        expect(element.classList.contains('mode-append')).toBeFalsy();
 
     });
 

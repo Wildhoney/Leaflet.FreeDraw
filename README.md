@@ -53,12 +53,10 @@ Once the user has created, deleted, or edited a polygon, you'll likely wish to l
 freeDraw.on('markers', function getMarkers(eventData) {
     var latLngs = eventData.latLngs;
     // ...
-    var latLng = L.latLng(51.505, -0.09);
-    freeDraw.setMarkers([latLng]);
 });
 ```
 
-By invoking the `freeDraw.setMarkers` method with an array of `latLngs` your markers will appear on the map. You may also use the second argument of the `setMarkers` resolution method to specify a custom `L.DivIcon`.
+Once you have your markers it's entirely up to you to add them to your Leaflet.js map using the [marker methods](http://leafletjs.com/reference.html#marker).
 
 ## Options
 

@@ -48,6 +48,30 @@
         createExitMode: true,
 
         /**
+         * @property attemptMerge
+         * @type {Boolean}
+         */
+        attemptMerge: true,
+
+        /**
+         * @property svgClassName
+         * @type {String}
+         */
+        svgClassName: 'tracer',
+
+        /**
+         * @property smoothFactor
+         * @type {Number}
+         */
+        smoothFactor: 5,
+
+        /**
+         * @property iconClassName
+         * @type {String}
+         */
+        iconClassName: 'polygon-elbow',
+
+        /**
          * @property deleteExitMode
          * @type {Boolean}
          */
@@ -123,30 +147,6 @@
         setMaximumDistanceForElbow: function setMaximumDistanceForElbow(maxDistance) {
             this.elbowDistance = +maxDistance;
         },
-
-        /**
-         * @property attemptMerge
-         * @type {Boolean}
-         */
-        attemptMerge: true,
-
-        /**
-         * @property svgClassName
-         * @type {String}
-         */
-        svgClassName: 'tracer',
-
-        /**
-         * @property smoothFactor
-         * @type {Number}
-         */
-        smoothFactor: 5,
-
-        /**
-         * @property iconClassName
-         * @type {String}
-         */
-        iconClassName: 'polygon-elbow',
 
         /**
          * @method exitModeAfterCreate
