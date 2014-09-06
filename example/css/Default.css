@@ -13,7 +13,10 @@ section.map {
 }
 
 section.map div.leaflet-tile-pane {
-    /*-webkit-filter: grayscale(100%);*/
+    /*filter: grayscale(100%);*/
+    /*-o-filter: grayscale(100%);*/
+    /*-moz-filter: grayscale(100%);*/
+    /*-webkit-filter: grayscale(50%);*/
 }
 
 section.map.mode-create {
@@ -76,21 +79,27 @@ svg.tracer {
 ul.controls {
     position: absolute;
     z-index: 2001;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 100%;
+    top: 10px;
+    left: 34px;
+    list-style-type: none;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, .55);
     background: white;
-    border-right: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 0 4px 4px 0;
+    border-left: 1px solid rgba(0, 0, 0, .15);
 }
 
 ul.controls li {
-    width: 60px;
-    height: 60px;
-    padding-top: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    float: left;
+    width: 52px;
+    height: 52px;
+    padding-top: 11px;
+    border-right: 1px solid rgba(0, 0, 0, .15);
     text-align: center;
     cursor: pointer;
+}
+
+ul.controls li:last-of-type {
+    border-right: 0;
 }
 
 ul.controls li img {

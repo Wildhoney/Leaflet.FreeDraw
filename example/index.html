@@ -25,17 +25,28 @@
     <script type="text/javascript" src="js/Example.js"></script>
 
 </head>
-<body>
+<body ng-app="leafletApp" ng-controller="MapController">
 
-    <section class="map">
+    <section class="map" data-mode="mode">
 
-        <!--<ul class="controls">-->
-            <!--<li><img src="images/plus32.png" /></li>-->
-            <!--<li><img src="images/minus25.png" /></li>-->
-            <!--<li><img src="images/drawing10.png" /></li>-->
-            <!--<li><img src="images/map81.png" /></li>-->
-            <!--<li><img src="images/close3.png" /></li>-->
-        <!--</ul>-->
+        <ul class="controls">
+
+            <li ng-class="{ disabled: isDisabled(MODES.CREATE) }"
+                ng-click="toggleMode(MODES.CREATE)">
+                <img src="images/drawing10.png" />
+            </li>
+
+            <li ng-class="{ disabled: isDisabled(MODES.EDIT_APPEND) }"
+                ng-click="toggleMode(MODES.EDIT_APPEND)">
+                <img src="images/map81.png" />
+            </li>
+
+            <li ng-class="{ disabled: isDisabled(MODES.DELETE) }"
+                ng-click="toggleMode(MODES.DELETE)">
+                <img src="images/close3.png" />
+            </li>
+
+        </ul>
 
     </section>
 

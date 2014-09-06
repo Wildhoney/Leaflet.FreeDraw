@@ -1,38 +1,120 @@
-(function Example(window) {
+(function Example($angular) {
 
-    /**
-     * Invoked once DOM is ready, and then goodness knows what happens after that.
-     *
-     * @method beginExample
-     * @return {void}
-     */
-    var beginExample = function beginExample() {
+    $angular.module('leafletApp', []).controller('MapController', function MapController($scope) {
 
-        // Setup Leaflet: http://leafletjs.com/examples/quick-start.html
-        var mapContainer = window.document.querySelector('section.map'),
-            map          = L.map(mapContainer).setView([51.505, -0.09], 14);
-        L.tileLayer('https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=b86b18b0645848bea383827fdccb878e').addTo(map);
+        /**
+         * @constant MODES
+         * @type {Object}
+         */
+        $scope.MODES = L.FreeDraw.MODES;
 
-        var freeDraw = window.freeDraw = new L.FreeDraw({
-            mode: L.FreeDraw.MODES.ALL
-        });
+        /**
+         * @property mode
+         * @type {Number}
+         */
+        $scope.mode = L.FreeDraw.MODES.ALL;
 
-        freeDraw.options.setBoundariesAfterEdit(false);
-        freeDraw.options.exitModeAfterCreate(false);
-//        freeDraw.options.addElbowOnlyWithinDistance(true);
+        /**
+         * @method isDisabled
+         * @param mode {Number}
+         * @returns {Boolean}
+         */
+        $scope.isDisabled = function isDisabled(mode) {
+            return !(mode & $scope.mode);
+        };
 
-        freeDraw.on('markers', function getMarkers(eventData) {
+        /**
+         * @method toggleMode
+         * @param mode {Number}
+         * @return {void}
+         */
+        $scope.toggleMode = function toggleMode(mode) {
 
-            // Output the lat/lngs in the MySQL multi-polygon format.
+            if ($scope.isDisabled(mode)) {
+
+                // Enabled the mode.
+                $scope.mode = $scope.mode | mode;
+                return;
+
+            }
+
+            // Otherwise disable it.
+            $scope.mode = $scope.mode ^ mode;
+
+        };
+
+    }).directive('map', function mapDirective() {
+
+        return {
+
+            /**
+             * @property restrict
+             * @type {String}
+             */
+            restrict: 'C',
+
+            /**
+             * @property scope
+             * @type {Object}
+             */
+            scope: {
+                mode: '='
+            },
+
+            /**
+             * @method controller
+             * @param $scope {Object}
+             * @return {void}
+             */
+            controller: function controller($scope) {
+
+                /**
+                 * @constant TILE_URL
+                 * @type {String}
+                 */
+                $scope.TILE_URL = 'https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=b86b18b0645848bea383827fdccb878e';
+
+            },
+
+            /**
+             * @method link
+             * @param scope {Object}
+             * @param element {Object}
+             * @return {void}
+             */
+            link: function link(scope, element) {
+
+                // Setup Leaflet: http://leafletjs.com/examples/quick-start.html
+                var map = new L.Map(element[0]).setView([51.505, -0.09], 14);
+                L.tileLayer(scope.TILE_URL).addTo(map);
+
+                var freeDraw = window.freeDraw = new L.FreeDraw({
+                    mode: scope.mode
+                });
+
+                freeDraw.options.setBoundariesAfterEdit(false);
+                freeDraw.options.exitModeAfterCreate(false);
+
+                freeDraw.on('mode', function modeReceived(eventData) {
+                    scope.mode = eventData.mode;
+                });
+
+                scope.$watch('mode', function modeReceived(mode) {
+                    freeDraw.setMode(mode);
+                });
+
+                freeDraw.on('markers', function getMarkers(eventData) {
+
+                    // Output the lat/lngs in the MySQL multi-polygon format.
 //            console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
 
-        });
+                });
 
-        map.addLayer(freeDraw);
+                map.addLayer(freeDraw);
 
-    };
+            }
 
-    // Hold onto your hats!
-    window.document.addEventListener('DOMContentLoaded', beginExample);
+        }
+    });
 
-})(window);
+})(window.angular);
