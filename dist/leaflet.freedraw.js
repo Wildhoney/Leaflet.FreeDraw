@@ -20,6 +20,12 @@
         map: null,
 
         /**
+         * @property state
+         * @type {Array}
+         */
+        state: [],
+
+        /**
          * @property svg
          * @type {Object}
          */
@@ -80,6 +86,12 @@
          * @type {Object}
          */
         hull: {},
+
+        /**
+         * @property memory
+         * @type {Object}
+         */
+        memory: {},
 
         /**
          * @property polygons
@@ -165,6 +177,7 @@
 
             options = options || {};
 
+            this.memory  = new L.FreeDraw.Memory();
             this.options = new L.FreeDraw.Options();
             this.hull    = new L.FreeDraw.Hull();
             this.element = options.element || null;
@@ -723,9 +736,47 @@
 
             if (!this.silenced) {
                 this.notifyBoundaries();
+                this.memory.save(this.getPolygons(true));
             }
 
             return polygon;
+
+        },
+
+        /**
+         * @method modifyState
+         * @param method {String}
+         * @return {void}
+         */
+        modifyState: function modifyState(method) {
+
+            var allowedStates = ['redo', 'undo'];
+
+            if (allowedStates.indexOf(method) === -1) {
+
+                // User attempted to apply a state method that is not permitted.
+                L.FreeDraw.Throw('Must supply either "redo" or "undo"');
+
+            }
+
+            // Silently remove all of the polygons, and then obtain the new polygons to be inserted
+            // into the Leaflet map.
+            this.silently(this.clearPolygons.bind(this));
+
+            var polygons = this.memory[method]();
+
+            // Iteratively create each polygon for the new state.
+            polygons.forEach(function forEach(polygon) {
+
+                this.silently(function silently() {
+
+                    this.createPolygon(polygon);
+
+                }.bind(this));
+
+            }.bind(this));
+
+            this.notifyBoundaries();
 
         },
 
@@ -832,9 +883,7 @@
             mergePass(); mergePass();
 
             // Trim polygon edges after being modified.
-            this.getPolygons(true).forEach(function forEach(polygon) {
-                this.trimPolygonEdges(polygon);
-            }.bind(this));
+            this.getPolygons(true).forEach(this.trimPolygonEdges.bind(this));
 
         },
 
@@ -855,6 +904,7 @@
 
             if (!this.silenced) {
                 this.notifyBoundaries();
+                this.memory.save(this.getPolygons(true));
             }
 
             if (this.options.deleteExitMode && !this.silenced) {
@@ -903,12 +953,8 @@
          */
         _clearPolygons: function _clearPolygons() {
 
-            this.getPolygons().forEach(function forEach(polygon) {
-
-                // Iteratively remove each polygon in the DOM.
-                this.destroyPolygon(polygon);
-
-            }.bind(this));
+            // Iteratively remove each polygon in the DOM.
+            this.getPolygons().forEach(this.destroyPolygon.bind(this));
 
             if (!this.silenced) {
                 this.notifyBoundaries();
@@ -1465,6 +1511,128 @@
 
 }());
 
+(function() {
+
+    "use strict";
+
+    /**
+     * @module FreeDraw
+     * @submodule Memory
+     * @author Adam Timberlake
+     * @link https://github.com/Wildhoney/Leaflet.FreeDraw
+     * @constructor
+     */
+    L.FreeDraw.Memory = function FreeDrawMemory() {};
+
+    /**
+     * @property prototype
+     * @type {Object}
+     */
+    L.FreeDraw.Memory.prototype = {
+
+        /**
+         * @property states
+         * @type {Array}
+         */
+        states: [[]],
+
+        /**
+         * @property current
+         * @type {Number}
+         */
+        current: 0,
+
+        /**
+         * @method save
+         * @param polygons {Array}
+         * @return {void}
+         */
+        save: function save(polygons) {
+
+            this.current++;
+
+            if (this.states[this.current]) {
+
+                // If the current state exists then the user has started to overwrite their
+                // redo history, which is expected behaviour. With that in mind, let's remove
+                // the states before the current!
+                this.clearFrom(this.current);
+
+            }
+
+            if (!this.states[this.current]) {
+
+                // Otherwise the index is currently empty and therefore we should initialise it
+                // to an empty array.
+                this.states[this.current] = [];
+
+            }
+
+            polygons.forEach(function forEach(polygon) {
+
+                // Each polygon is represented as a separate entry in the array.
+                this.states[this.current].push(polygon._latlngs);
+
+            }.bind(this));
+
+        },
+
+        /**
+         * Responsible for rewinding the state and returning the current state.
+         *
+         * @method previous
+         * @return {Array}
+         */
+        undo: function undo() {
+
+            this.current--;
+
+            if (!this.states[this.current]) {
+
+                // Index doesn't exist in the state array.
+                this.current++;
+
+            }
+            return this.states[this.current];
+
+        },
+
+        /**
+         * Responsible for fast-forwarding the state and returning the current state.
+         *
+         * @method previous
+         * @return {Array}
+         */
+        redo: function redo() {
+
+            this.current++;
+
+            if (!this.states[this.current]) {
+
+                // Index doesn't exist in the state array.
+                this.current--;
+
+            }
+
+            return this.states[this.current];
+
+        },
+
+        /**
+         * Responsible for clearing the history from a given index, including the index supplied.
+         *
+         * @method clearFrom
+         * @param index {Number}
+         * @return {void}
+         */
+        clearFrom: function clearFrom(index) {
+            this.states.splice(index);
+        }
+
+    };
+
+})();
+
 (function($window, L) {
 
     "use strict";
@@ -1708,7 +1876,7 @@
 
     };
 
-})(window, window.L, window.d3, window.ClipperLib);
+})(window, window.L);
 
 (function() {
 

@@ -1,4 +1,4 @@
-(function($window) {
+(function() {
 
     "use strict";
 
@@ -62,8 +62,6 @@
 
             }.bind(this));
 
-            console.log(this.states);
-
         },
 
         /**
@@ -120,4 +118,4 @@
 
     };
 
-})(window);
+})();

@@ -904,6 +904,7 @@
 
             if (!this.silenced) {
                 this.notifyBoundaries();
+                this.memory.save(this.getPolygons(true));
             }
 
             if (this.options.deleteExitMode && !this.silenced) {
