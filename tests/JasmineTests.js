@@ -496,4 +496,67 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
+    describe('State Memorisation', function() {
+
+        it('Should be able to define the first state as an empty array', function() {
+
+            expect(freeDraw.memory instanceof L.FreeDraw.Memory).toBeTruthy();
+            expect(Array.isArray(freeDraw.memory.states[0])).toBeTruthy();
+            expect(freeDraw.memory.states[0].length).toEqual(0);
+
+        });
+
+        it('Should be able to add a state to the state array', function() {
+
+            var latLngs = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)];
+            freeDraw.memory.save([latLngs]);
+            expect(freeDraw.memory.states.length).toEqual(2);
+
+        });
+
+        it('Should be able to undo and redo the state', function() {
+
+            var latLngs = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)];
+            freeDraw.memory.save([latLngs]);
+
+            expect(freeDraw.memory.current).toEqual(1);
+            freeDraw.memory.undo();
+            expect(freeDraw.memory.current).toEqual(0);
+            freeDraw.memory.redo();
+            expect(freeDraw.memory.current).toEqual(1);
+
+        });
+
+        it('Should be able to overwrite the redo state if the user desires', function() {
+
+            var latLngs = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)];
+            freeDraw.memory.save([latLngs]);
+
+            expect(freeDraw.memory.current).toEqual(1);
+
+            freeDraw.memory.undo();
+            freeDraw.memory.save([latLngs]);
+
+            expect(freeDraw.memory.current).toEqual(1);
+            expect(freeDraw.memory.states.length).toEqual(2);
+
+        });
+
+        it('Should not be able to undo/redo more than is available', function() {
+
+            var latLngs = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)];
+            freeDraw.memory.save([latLngs]);
+
+            freeDraw.memory.undo();
+            expect(freeDraw.memory.current).toEqual(0);
+            freeDraw.memory.undo(); freeDraw.memory.undo(); freeDraw.memory.undo(); freeDraw.memory.undo();
+            expect(freeDraw.memory.current).toEqual(0);
+
+            freeDraw.memory.redo();freeDraw.memory.redo(); freeDraw.memory.redo();
+            expect(freeDraw.memory.current).toEqual(1);
+
+        });
+
+    });
+
 });

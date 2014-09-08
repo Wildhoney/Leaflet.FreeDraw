@@ -909,7 +909,6 @@
             this.destroyEdges(polygon);
 
             if (!this.silenced) {
-                console.log('Blah');
                 this.notifyBoundaries();
                 this.memory.save(this.getPolygons(true));
             }
