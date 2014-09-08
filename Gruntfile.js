@@ -28,8 +28,8 @@ module.exports = function(grunt) {
                 banner: '/*! <%= pkg.name %> by <%= pkg.author %> created on <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
             build: {
-                src: ['dist/<%= pkg.name %>.js'],
-                dest: 'dist/<%= pkg.name %>.min.js'
+                src: ['dist/<%= pkg.name %>-src.js'],
+                dest: 'dist/<%= pkg.name %>.js'
             }
         },
 
@@ -87,7 +87,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 src: ['components/FreeDraw.js', 'components/*.js'],
-                dest: 'dist/<%= pkg.name %>.js'
+                dest: 'dist/<%= pkg.name %>-src.js'
             }
         },
 
