@@ -9,7 +9,6 @@ module.exports = function(config) {
                             'example/js/vendor/leaflet/dist/leaflet-src.js',
                             'example/js/vendor/evispa-timo-jsclipper/clipper_unminified.js',
                             'example/js/vendor/d3/d3.js',
-                            { pattern: 'components/*' },
                             { pattern: 'tests/fixtures/*' }
                         ],
         exclude:        [],
