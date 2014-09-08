@@ -78,6 +78,12 @@
         deleteExitMode: false,
 
         /**
+         * @property memoriseEachEdge
+         * @type {Boolean}
+         */
+        memoriseEachEdge: true,
+
+        /**
          * @property elbowDistance
          * @type {Number}
          */
@@ -117,6 +123,15 @@
                 link: 'https://github.com/Wildhoney/ConcaveHull'
             }
 
+        },
+
+        /**
+         * @method setMemoriseEachEdge
+         * @param value {Boolean}
+         * @return {void}
+         */
+        setMemoriseEachEdge: function setMemoriseEachEdge(value) {
+            this.memoriseEachEdge = !!value;
         },
 
         /**

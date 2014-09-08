@@ -384,6 +384,10 @@
                 this.notifyBoundaries();
                 this.boundaryUpdateRequired = false;
 
+                if (!this.options.memoriseEachEdge) {
+                    this.memory.save(this.getPolygons(true));
+                }
+
             }
 
             /**
@@ -761,7 +765,8 @@
 
             // Silently remove all of the polygons, and then obtain the new polygons to be inserted
             // into the Leaflet map.
-            this.silently(this.clearPolygons.bind(this));
+//            this.silently(this.clearPolygons.bind(this));
+            this.silently(this._clearPolygons.bind(this));
 
             var polygons = this.memory[method]();
 
@@ -903,6 +908,7 @@
             this.destroyEdges(polygon);
 
             if (!this.silenced) {
+                console.log('Blah');
                 this.notifyBoundaries();
                 this.memory.save(this.getPolygons(true));
             }
@@ -942,8 +948,14 @@
          * @return {void}
          */
         clearPolygons: function clearPolygons() {
+
             this.silently(this._clearPolygons);
-            this.notifyBoundaries();
+
+            if (!this.silenced) {
+                this.notifyBoundaries();
+                this.memory.save(this.getPolygons(true));
+            }
+
         },
 
         /**
@@ -953,8 +965,12 @@
          */
         _clearPolygons: function _clearPolygons() {
 
-            // Iteratively remove each polygon in the DOM.
-            this.getPolygons().forEach(this.destroyPolygon.bind(this));
+            this.getPolygons().forEach(function forEach(polygon) {
+
+                // Iteratively remove each polygon in the DOM.
+                this.destroyPolygon(polygon);
+
+            }.bind(this));
 
             if (!this.silenced) {
                 this.notifyBoundaries();
@@ -1252,6 +1268,10 @@
                     this.trimPolygonEdges(this.movingEdge._freedraw.polygon);
                     this.mergePolygons();
                     this.movingEdge = null;
+
+                    if (this.options.memoriseEachEdge) {
+                        this.memory.save(this.getPolygons(true));
+                    }
 
                     return;
 
@@ -1713,6 +1733,12 @@
         deleteExitMode: false,
 
         /**
+         * @property memoriseEachEdge
+         * @type {Boolean}
+         */
+        memoriseEachEdge: true,
+
+        /**
          * @property elbowDistance
          * @type {Number}
          */
@@ -1752,6 +1778,15 @@
                 link: 'https://github.com/Wildhoney/ConcaveHull'
             }
 
+        },
+
+        /**
+         * @method setMemoriseEachEdge
+         * @param value {Boolean}
+         * @return {void}
+         */
+        setMemoriseEachEdge: function setMemoriseEachEdge(value) {
+            this.memoriseEachEdge = !!value;
         },
 
         /**
