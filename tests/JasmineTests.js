@@ -40,7 +40,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to configure the various modes correctly', function() {
+    it('Should be able to configure the various modes correctly;', function() {
 
         expect(L.FreeDraw.MODES.VIEW).toEqual(2 >> 1);
         expect(L.FreeDraw.MODES.CREATE).toEqual(4 >> 1);
@@ -57,7 +57,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to throw an exception', function() {
+    it('Should be able to throw an exception;', function() {
 
         expect(function throwException() {
             L.FreeDraw.Throw('We threw an exception!');
@@ -65,14 +65,14 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to provide a unique list of latitude/longitude values;', function() {
+    it('Should be able to provide a unique list of latitude/longitude values;;', function() {
 
         var latLngs = [new L.LatLng(100, 100), new L.LatLng(120, 120), new L.LatLng(100, 100)];
         expect(freeDraw.uniqueLatLngs(latLngs).length).toEqual(2);
 
     });
 
-    it('Should be able to prevent the drawing of multiple polygons', function() {
+    it('Should be able to prevent the drawing of multiple polygons;', function() {
 
         var firstPolygon = createMockPolygon(),
             secondPolygon = createMockPolygon(),
@@ -94,7 +94,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to cancel the current action', function() {
+    it('Should be able to cancel the current action;', function() {
 
         freeDraw.creating   = 'Creating';
         freeDraw.movingEdge = 'Moving';
@@ -107,7 +107,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to perform events in silent mode', function() {
+    it('Should be able to perform events in silent mode;', function() {
 
         expect(freeDraw.silenced).toBeFalsy();
 
@@ -119,7 +119,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to set/unset the mode accordingly', function() {
+    it('Should be able to set/unset the mode accordingly;', function() {
 
         freeDraw.setMode(L.FreeDraw.MODES.CREATE);
         expect(freeDraw.mode).toEqual(L.FreeDraw.MODES.CREATE);
@@ -132,7 +132,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to convert lat/longs to ClipperJS points', function() {
+    it('Should be able to convert lat/longs to ClipperJS points;', function() {
 
         var latLngs = [new L.LatLng(10, 100), new L.LatLng(20, 210), new L.LatLng(185, 95)],
             points  = freeDraw.latLngsToClipperPoints(latLngs);
@@ -143,7 +143,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to convert ClipperJS polygons to flattened lat/lngs', function() {
+    it('Should be able to convert ClipperJS polygons to flattened lat/lngs;', function() {
 
         var latLngs         = [new L.LatLng(10, 100), new L.LatLng(20, 210), new L.LatLng(185, 95)],
             firstPolygon    = freeDraw.latLngsToClipperPoints(latLngs),
@@ -157,7 +157,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to create a triangle on the map and then remove it', function() {
+    it('Should be able to create a triangle on the map and then remove it;', function() {
 
         var latLngs = [new L.LatLng(10, 100), new L.LatLng(20, 210), new L.LatLng(185, 95), new L.LatLng(200, 200)],
             polygon = freeDraw.createPolygon(latLngs);
@@ -177,7 +177,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to create and remove the edges belonging to a polygon', function() {
+    it('Should be able to create and remove the edges belonging to a polygon;', function() {
 
         var firstLatLngs  = [new L.LatLng(10, 15), new L.LatLng(15, 18), new L.LatLng(18, 9), new L.LatLng(9, 14)],
             secondLatLngs = [new L.LatLng(12, 15), new L.LatLng(15, 13), new L.LatLng(18, 9), new L.LatLng(28, 14)],
@@ -206,7 +206,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to emit an event of the markers upon events', function() {
+    it('Should be able to emit an event of the markers upon events;', function() {
 
         freeDraw.silently(function silently() {
 
@@ -239,7 +239,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to re-create edges for a given polygon', function() {
+    it('Should be able to re-create edges for a given polygon;', function() {
 
         var polygon = createMockPolygon();
 
@@ -269,7 +269,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to decline creating a polygon using the right mouse button', function() {
+    it('Should be able to decline creating a polygon using the right mouse button;', function() {
 
         var event       = document.createEvent('MouseEvents'),
             mouseX      = 100,
@@ -286,7 +286,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to place the map in create mode and make a polygon', function() {
+    it('Should be able to place the map in create mode and make a polygon;', function() {
 
         // Disable the simplification of polygons for this example otherwise we're at the mercy of the
         // JSClipper algorithm.
@@ -341,7 +341,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to report the current mode', function() {
+    it('Should be able to report the current mode;', function() {
 
         freeDraw.on('mode', function modeReceived(eventData) {
             expect(eventData.mode).toEqual(L.FreeDraw.MODES.DELETE);
@@ -366,7 +366,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to create and destroy the D3 layer', function() {
+    it('Should be able to create and destroy the D3 layer;', function() {
 
         freeDraw.destroyD3();
         expect(typeof freeDraw.svg).toEqual('object');
@@ -376,7 +376,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to define the necessary classes on the map element', function() {
+    it('Should be able to define the necessary classes on the map element;', function() {
 
         var element = freeDraw.map._container;
 
@@ -425,7 +425,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to handle the clicking of a polygon', function() {
+    it('Should be able to handle the clicking of a polygon;', function() {
 
         var polygon   = createMockPolygon(),
             fakeEvent = { originalEvent: { clientX: 12, clientY: 17 } };
@@ -458,9 +458,9 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    describe('Hull Algorithms', function() {
+    describe('Hull Algorithms:', function() {
 
-        it('Should be able to specify the map instance', function() {
+        it('Should be able to specify the map instance;', function() {
 
             expect(freeDraw.hull.map).toBeNull();
             freeDraw.hull.setMap({ map: true });
@@ -471,9 +471,9 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    describe('Utility Methods', function() {
+    describe('Utility Methods:', function() {
 
-        it('Should be able to transform lat/long groups into MULTIPOLYGON', function() {
+        it('Should be able to transform lat/long groups into MULTIPOLYGON;', function() {
 
             var latLngs      = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)],
                 multiPolygon = L.FreeDraw.Utilities.getMySQLMultiPolygon([latLngs]);
@@ -483,7 +483,7 @@ describe('Leaflet FreeDraw', function() {
 
         });
 
-        it('Should be able to transform lat/long groups into multiple POLYGON', function() {
+        it('Should be able to transform lat/long groups into multiple POLYGON;', function() {
 
             var latLngs  = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)],
                 polygons = L.FreeDraw.Utilities.getMySQLPolygons([latLngs]);
@@ -496,9 +496,9 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    describe('State Memorisation', function() {
+    describe('State Memorisation:', function() {
 
-        it('Should be able to define the first state as an empty array', function() {
+        it('Should be able to define the first state as an empty array;', function() {
 
             expect(freeDraw.memory instanceof L.FreeDraw.Memory).toBeTruthy();
             expect(Array.isArray(freeDraw.memory.states[0])).toBeTruthy();
@@ -506,7 +506,7 @@ describe('Leaflet FreeDraw', function() {
 
         });
 
-        it('Should be able to add a state to the state array', function() {
+        it('Should be able to add a state to the state array;', function() {
 
             var latLngs = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)];
             freeDraw.memory.save([latLngs]);
@@ -514,7 +514,7 @@ describe('Leaflet FreeDraw', function() {
 
         });
 
-        it('Should be able to undo and redo the state', function() {
+        it('Should be able to undo and redo the state;', function() {
 
             var latLngs = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)];
             freeDraw.memory.save([latLngs]);
@@ -527,7 +527,7 @@ describe('Leaflet FreeDraw', function() {
 
         });
 
-        it('Should be able to overwrite the redo state if the user desires', function() {
+        it('Should be able to overwrite the redo state if the user desires;', function() {
 
             var latLngs = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)];
             freeDraw.memory.save([latLngs]);
@@ -542,17 +542,22 @@ describe('Leaflet FreeDraw', function() {
 
         });
 
-        it('Should not be able to undo/redo more than is available', function() {
+        it('Should not be able to undo/redo more than is available;', function() {
 
             var latLngs = [new L.LatLng(100, 100), new L.LatLng(200, 200), new L.LatLng(300, 300)];
             freeDraw.memory.save([latLngs]);
 
+            expect(freeDraw.memory.canUndo()).toBeTruthy();
             freeDraw.memory.undo();
+            expect(freeDraw.memory.canUndo()).toBeFalsy();
+
             expect(freeDraw.memory.current).toEqual(0);
             freeDraw.memory.undo(); freeDraw.memory.undo(); freeDraw.memory.undo(); freeDraw.memory.undo();
             expect(freeDraw.memory.current).toEqual(0);
 
-            freeDraw.memory.redo();freeDraw.memory.redo(); freeDraw.memory.redo();
+            expect(freeDraw.memory.canRedo()).toBeTruthy();
+            freeDraw.memory.redo(); freeDraw.memory.redo(); freeDraw.memory.redo();
+            expect(freeDraw.memory.canRedo()).toBeFalsy();
             expect(freeDraw.memory.current).toEqual(1);
 
         });

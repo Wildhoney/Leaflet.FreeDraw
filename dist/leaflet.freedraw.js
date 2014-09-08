@@ -748,20 +748,28 @@
         },
 
         /**
-         * @method modifyState
-         * @param method {String}
+         * @method undo
          * @return {void}
          */
-        modifyState: function modifyState(method) {
+        undo: function undo() {
+            this._modifyState('undo');
+        },
 
-            var allowedStates = ['redo', 'undo'];
+        /**
+         * @method redo
+         * @return {void}
+         */
+        redo: function redo() {
+            this._modifyState('redo');
+        },
 
-            if (allowedStates.indexOf(method) === -1) {
-
-                // User attempted to apply a state method that is not permitted.
-                L.FreeDraw.Throw('Must supply either "redo" or "undo"');
-
-            }
+        /**
+         * @method _modifyState
+         * @param method {String}
+         * @return {void}
+         * @private
+         */
+        _modifyState: function _modifyState(method) {
 
             // Silently remove all of the polygons, and then obtain the new polygons to be inserted
             // into the Leaflet map.
@@ -1618,6 +1626,14 @@
         },
 
         /**
+         * @method canUndo
+         * @return {Boolean}
+         */
+        canUndo: function canUndo() {
+            return !!this.states[this.current - 1];
+        },
+
+        /**
          * Responsible for fast-forwarding the state and returning the current state.
          *
          * @method previous
@@ -1636,6 +1652,14 @@
 
             return this.states[this.current];
 
+        },
+
+        /**
+         * @method canRedo
+         * @return {Boolean}
+         */
+        canRedo: function canRedo() {
+            return !!this.states[this.current + 1];
         },
 
         /**

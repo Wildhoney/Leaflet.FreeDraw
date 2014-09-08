@@ -85,6 +85,14 @@
         },
 
         /**
+         * @method canUndo
+         * @return {Boolean}
+         */
+        canUndo: function canUndo() {
+            return !!this.states[this.current - 1];
+        },
+
+        /**
          * Responsible for fast-forwarding the state and returning the current state.
          *
          * @method previous
@@ -103,6 +111,14 @@
 
             return this.states[this.current];
 
+        },
+
+        /**
+         * @method canRedo
+         * @return {Boolean}
+         */
+        canRedo: function canRedo() {
+            return !!this.states[this.current + 1];
         },
 
         /**
