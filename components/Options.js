@@ -241,4 +241,4 @@
 
     };
 
-})(window, window.L, window.d3, window.ClipperLib);
+})(window, window.L);
