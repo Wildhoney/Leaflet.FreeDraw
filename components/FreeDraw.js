@@ -148,6 +148,12 @@
         silenced: false,
 
         /**
+         * @constant RECOUNT_TIMEOUT
+         * @type {Number}
+         */
+        RECOUNT_TIMEOUT: 100,
+
+        /**
          * @method initialize
          * @param options {Object}
          * @return {void}
@@ -992,8 +998,7 @@
          */
         notifyBoundaries: function notifyBoundaries() {
 
-            var latLngs         = [],
-                RECOUNT_TIMEOUT = 1;
+            var latLngs = [];
 
             this.getPolygons(true).forEach(function forEach(polygon) {
 
@@ -1031,8 +1036,7 @@
             }.bind(this))();
 
             // Update the polygon count variable.
-            this.polygonCount = latLngs.length;
-            this.fire('count', { count: this.polygonCount });
+            this.emitCount();
 
             // Ensure the last shared notification differs from the current.
             var notificationFingerprint = JSON.stringify(latLngs);
@@ -1046,22 +1050,31 @@
             // Invoke the user passed method for specifying latitude/longitudes.
             this.fire('markers', { latLngs: latLngs });
 
-            setTimeout(function setTimeout() {
+            // Perform another count at a later date to account for polygons that may have been removed
+            // due to their polygon areas being too small.
+            setTimeout(this.emitCount.bind(this), this.RECOUNT_TIMEOUT);
 
-                // Perform a recount on the polygon count, since some may be removed because of their
-                // areas being too small.
-                var count = this.getPolygons(true).length;
+        },
 
-                if (count !== this.polygonCount) {
+        /**
+         * @method emitCount
+         * @return {void}
+         */
+        emitCount: function emitCount() {
 
-                    // If the size differs then we'll assign the new length, and emit the count event.
-                    this.polygonCount = count;
-                    this.fire('count', { count: this.polygonCount });
+            // Perform a recount on the polygon count, since some may be removed because of their
+            // areas being too small.
+            var count = this.getPolygons(true).length;
 
-                }
+            console.log(count);
 
-            }.bind(this), RECOUNT_TIMEOUT);
+            if (count !== this.polygonCount) {
 
+                // If the size differs then we'll assign the new length, and emit the count event.
+                this.polygonCount = count;
+                this.fire('count', { count: this.polygonCount });
+
+            }
 
         },
 
@@ -1300,6 +1313,7 @@
                         this.memory.save(this.getPolygons(true));
                     }
 
+                    setTimeout(this.emitCount.bind(this), this.RECOUNT_TIMEOUT);
                     return;
 
                 }
