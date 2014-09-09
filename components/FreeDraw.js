@@ -1066,8 +1066,6 @@
             // areas being too small.
             var count = this.getPolygons(true).length;
 
-            console.log(count);
-
             if (count !== this.polygonCount) {
 
                 // If the size differs then we'll assign the new length, and emit the count event.
