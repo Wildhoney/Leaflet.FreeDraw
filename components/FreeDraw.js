@@ -992,7 +992,8 @@
          */
         notifyBoundaries: function notifyBoundaries() {
 
-            var latLngs = [];
+            var latLngs         = [],
+                RECOUNT_TIMEOUT = 1;
 
             this.getPolygons(true).forEach(function forEach(polygon) {
 
@@ -1010,7 +1011,7 @@
                     // lat/long objects.
                     var lastIndex  = latLngGroup.length - 1;
 
-                    if (lastIndex) {
+                    if (lastIndex && latLngGroup[0] && latLngGroup[lastIndex]) {
 
                         var latDiffers = latLngGroup[0].lat !== latLngGroup[lastIndex].lat,
                             lngDiffers = latLngGroup[0].lng !== latLngGroup[lastIndex].lng;
@@ -1043,6 +1044,15 @@
 
             // Invoke the user passed method for specifying latitude/longitudes.
             this.fire('markers', { latLngs: latLngs });
+
+            setTimeout(function setTimeout() {
+
+                // Perform a recount on the polygon count, since some may be removed because of their
+                // areas being too small.
+                this.polygonCount = this.getPolygons(true).length;
+
+            }.bind(this), RECOUNT_TIMEOUT);
+
 
         },
 
