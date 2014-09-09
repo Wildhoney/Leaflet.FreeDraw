@@ -1078,7 +1078,6 @@
 
                 });
 
-
             if (allEmpty) {
 
                 this.silently(function silently() {
@@ -1086,6 +1085,7 @@
                     // Silently remove all of the polygons because they are empty.
                     this._clearPolygons();
                     this.fire('markers', { latLngs: [] });
+                    this.fire('count', { count: this.polygonCount });
 
                 }.bind(this));
 

@@ -1,33 +1,5 @@
 module.exports = function(grunt) {
 
-    /**
-     * Common options defined for the running of the Jasmine tests.
-     *
-     * @property jasmineOptions
-     * @type {Object}
-     */
-    var jasmineOptions = {
-        specs: 'tests/JasmineTests.js',
-        helpers: ['example/js/vendor/leaflet/dist/leaflet-src.js',
-            'example/js/vendor/concavehull/dist/concavehull.js',
-            'example/js/vendor/d3/d3.js',
-            'example/js/vendor/evispa-timo-jsclipper/clipper_unminified.js']
-    };
-
-    /**
-     * Common options defined for the running of the Karma tests.
-     *
-     * @property karmaOptions
-     * @type {Object}
-     */
-    var karmaOptions = [
-        { pattern: 'tests/KarmaTests.js' },
-        { pattern: 'example/js/vendor/leaflet/dist/leaflet-src.js' },
-        { pattern: 'example/js/vendor/evispa-timo-jsclipper/clipper_unminified.js' },
-        { pattern: 'example/js/vendor/d3/d3.js' },
-        { pattern: 'tests/fixtures/*' }
-    ];
-
     grunt.initConfig({
 
         /**
@@ -83,15 +55,13 @@ module.exports = function(grunt) {
         jasmine: {
             components: {
                 src: ['components/FreeDraw.js', 'components/*.js'],
-                options: jasmineOptions
-            },
-            minified: {
-                src: ['dist/<%= pkg.name %>.js'],
-                options: jasmineOptions
-            },
-            unminified: {
-                src: ['dist/<%= pkg.name %>-src.js'],
-                options: jasmineOptions
+                options: {
+                    specs: 'tests/JasmineTests.js',
+                    helpers: ['example/js/vendor/leaflet/dist/leaflet-src.js',
+                        'example/js/vendor/concavehull/dist/concavehull.js',
+                        'example/js/vendor/d3/d3.js',
+                        'example/js/vendor/evispa-timo-jsclipper/clipper_unminified.js']
+                }
             }
         },
 
@@ -102,7 +72,6 @@ module.exports = function(grunt) {
         karma: {
             components: {
                 configFile: 'karma.conf.js',
-                files: karmaOptions.concat([{ pattern: 'components/*' }]),
                 background: false,
                 browsers: ['Firefox']
             }
