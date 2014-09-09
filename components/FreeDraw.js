@@ -1032,6 +1032,7 @@
 
             // Update the polygon count variable.
             this.polygonCount = latLngs.length;
+            this.fire('count', { count: this.polygonCount });
 
             // Ensure the last shared notification differs from the current.
             var notificationFingerprint = JSON.stringify(latLngs);
@@ -1049,7 +1050,15 @@
 
                 // Perform a recount on the polygon count, since some may be removed because of their
                 // areas being too small.
-                this.polygonCount = this.getPolygons(true).length;
+                var count = this.getPolygons(true).length;
+
+                if (count !== this.polygonCount) {
+
+                    // If the size differs then we'll assign the new length, and emit the count event.
+                    this.polygonCount = count;
+                    this.fire('count', { count: this.polygonCount });
+
+                }
 
             }.bind(this), RECOUNT_TIMEOUT);
 
