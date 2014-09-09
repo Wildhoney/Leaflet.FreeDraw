@@ -105,18 +105,6 @@ module.exports = function(grunt) {
                 files: karmaOptions.concat([{ pattern: 'components/*' }]),
                 background: false,
                 browsers: ['Firefox']
-            },
-            minified: {
-                configFile: 'karma.conf.js',
-                files: karmaOptions.concat([{ pattern: 'dist/<%= pkg.name %>.js' }]),
-                background: false,
-                browsers: ['Firefox']
-            },
-            unminified: {
-                configFile: 'karma.conf.js',
-                files: karmaOptions.concat([{ pattern: 'dist/<%= pkg.name %>-src.js' }]),
-                background: false,
-                browsers: ['Firefox']
             }
         },
 

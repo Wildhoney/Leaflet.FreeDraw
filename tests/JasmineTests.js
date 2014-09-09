@@ -38,6 +38,9 @@ describe('Leaflet FreeDraw', function() {
         expect(typeof freeDraw.onAdd).toBe('function');
         expect(typeof freeDraw.onRemove).toBe('function');
 
+        // Mock the `emitPolygonCount` since it is problematic in tests.
+        spyOn(freeDraw, 'emitPolygonCount');
+
     });
 
     it('Should be able to configure the various modes correctly;', function() {

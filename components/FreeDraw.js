@@ -151,7 +151,7 @@
          * @constant RECOUNT_TIMEOUT
          * @type {Number}
          */
-        RECOUNT_TIMEOUT: 100,
+        RECOUNT_TIMEOUT: 1,
 
         /**
          * @method initialize
@@ -1036,7 +1036,7 @@
             }.bind(this))();
 
             // Update the polygon count variable.
-            this.emitCount();
+            this.polygonCount = latLngs.length;
 
             // Ensure the last shared notification differs from the current.
             var notificationFingerprint = JSON.stringify(latLngs);
@@ -1052,24 +1052,52 @@
 
             // Perform another count at a later date to account for polygons that may have been removed
             // due to their polygon areas being too small.
-            setTimeout(this.emitCount.bind(this), this.RECOUNT_TIMEOUT);
+            setTimeout(this.emitPolygonCount.bind(this), this.RECOUNT_TIMEOUT);
 
         },
 
         /**
-         * @method emitCount
+         * @method emitPolygonCount
          * @return {void}
          */
-        emitCount: function emitCount() {
+        emitPolygonCount: function emitPolygonCount() {
+
+            /**
+             * @constant EMPTY_PATH
+             * @type {String}
+             */
+            var EMPTY_PATH = 'M0 0';
 
             // Perform a recount on the polygon count, since some may be removed because of their
             // areas being too small.
-            var count = this.getPolygons(true).length;
+            var polygons = this.getPolygons(true),
+                allEmpty = polygons.every(function every(polygon) {
 
-            if (count !== this.polygonCount) {
+                    var path = polygon._container.lastChild.getAttribute('d').trim();
+                    return path === EMPTY_PATH;
+
+                });
+
+
+            if (allEmpty) {
+
+                this.silently(function silently() {
+
+                    // Silently remove all of the polygons because they are empty.
+                    this._clearPolygons();
+                    this.fire('markers', { latLngs: [] });
+
+                }.bind(this));
+
+                this.polygonCount = 0;
+                polygons.length   = 0;
+
+            }
+
+            if (polygons.length !== this.polygonCount) {
 
                 // If the size differs then we'll assign the new length, and emit the count event.
-                this.polygonCount = count;
+                this.polygonCount = polygons.length;
                 this.fire('count', { count: this.polygonCount });
 
             }
@@ -1311,7 +1339,7 @@
                         this.memory.save(this.getPolygons(true));
                     }
 
-                    setTimeout(this.emitCount.bind(this), this.RECOUNT_TIMEOUT);
+                    setTimeout(this.emitPolygonCount.bind(this), this.RECOUNT_TIMEOUT);
                     return;
 
                 }
