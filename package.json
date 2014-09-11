@@ -34,9 +34,9 @@
     "grunt-contrib-jasmine": "^0.7.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.5.1",
-    "grunt-karma": "^0.8.3",
+    "grunt-karma": "^0.9.0",
     "karma": "^0.12.23",
-    "karma-fixture": "^0.2.1",
+    "karma-fixture": "^0.2.1-1",
     "karma-html2js-preprocessor": "^0.1.0"
   },
   "devDependencies": {
