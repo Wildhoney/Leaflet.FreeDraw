@@ -68,7 +68,7 @@ describe('Leaflet FreeDraw', function() {
 
     });
 
-    it('Should be able to provide a unique list of latitude/longitude values;;', function() {
+    it('Should be able to provide a unique list of latitude/longitude values;', function() {
 
         var latLngs = [new L.LatLng(100, 100), new L.LatLng(120, 120), new L.LatLng(100, 100)];
         expect(freeDraw.uniqueLatLngs(latLngs).length).toEqual(2);
