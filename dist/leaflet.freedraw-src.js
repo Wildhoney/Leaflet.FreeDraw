@@ -694,11 +694,6 @@
             }
 
             var polygon = new L.Polygon(latLngs, {
-                color: '#D7217E',
-                weight: 0,
-                fill: true,
-                fillColor: '#D7217E',
-                fillOpacity: 0.75,
                 smoothFactor: this.options.smoothFactor
             });
 
