@@ -18,8 +18,7 @@ deploy:
   provider: heroku
   skip_cleanup: true
   api_key:
-    secure: dpIofJxARTkgAch2Ljo/+ITMxAairaFqAHEOcdrv0rxHeQZW1VUmW0KMzMuB0Tihxg173yK4Ogy1JeBvCt2PkzmEfkuN0/ELdt1uuLK+Rcup86VY8AOIzREBJHtuYxOpVjNcC8K99uswFmNerXNHbZmd0T3lA6kQdLRaf06eMKU=
+    secure: QYdYWMdWGZKckMKG413BpuEwkltoeTea7eR0peYitwkePPnclLDY3xKV6WoNIhAlJ/QzgpqsJL6bcd0BnJA449YtcHwqykeGb8JvYfwTo7hmcCVUie1AwZoXCmszVdEfE/4IiOX38Vx3Egvj81mfNopgEkdyb+0uAth35ow/1hw=
   app: freedraw
   on:
     repo: Wildhoney/Leaflet.FreeDraw
-    all_branches: true
