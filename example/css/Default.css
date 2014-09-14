@@ -30,6 +30,8 @@ section.map g path {
     stroke: #D7217E;
     position: absolute;
     z-index: 1001;
+    fill: #D7217E;
+    fill-opacity: .75;
 }
 
 section.map.mode-delete path {

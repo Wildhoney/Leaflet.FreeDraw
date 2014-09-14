@@ -72,7 +72,7 @@
                  * @constant TILE_URL
                  * @type {String}
                  */
-                $scope.TILE_URL = 'https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=b86b18b0645848bea383827fdccb878e';
+                $scope.TILE_URL = 'https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=f2ae86661a4e487bbced29a755799884';
 
             },
 
