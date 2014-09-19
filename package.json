@@ -6,7 +6,7 @@
   "scripts": {
     "test": "grunt test",
     "start": "node example/server/default.js",
-    "postinstall": "npm install; bower install; grunt build"
+    "postinstall": "bower install; grunt build"
   },
   "repository": {
     "type": "git",
