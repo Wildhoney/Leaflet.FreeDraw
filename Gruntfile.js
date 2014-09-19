@@ -116,7 +116,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
 
     grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
-    grunt.registerTask('test', ['jshint', 'karma', 'jasmine']);
+    grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('default', ['test', 'build']);
 
 };
