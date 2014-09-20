@@ -43,6 +43,15 @@
 
         };
 
+        /**
+         * @method setModeOnly
+         * @param mode {Number}
+         * @return {void}
+         */
+        $scope.setModeOnly = function setModeOnly(mode) {
+            $scope.mode = $scope.MODES.VIEW | mode;
+        };
+
     }).directive('map', function mapDirective() {
 
         return {
@@ -106,7 +115,7 @@
                 freeDraw.on('markers', function getMarkers(eventData) {
 
                     // Output the lat/lngs in the MySQL multi-polygon format.
-//            console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
+//                  console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
 
                 });
 

@@ -1,0 +1,51 @@
+section.planes {
+    position: absolute;
+    z-index: 4000;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+section.planes img.plane.first {
+    width: 48px;
+    transform: translate(-100px, 250px) rotate(45deg);
+    -webkit-animation: first 35s infinite linear;
+}
+
+@-webkit-keyframes first {
+
+    100% {
+        transform: translate(1220px, 450px) rotate(65deg);
+    }
+
+}
+
+section.planes img.plane.second {
+    width: 32px;
+    transform: translate(1200px, 1200px) rotate(320deg);
+    -webkit-animation: second 20s infinite linear;
+}
+
+@-webkit-keyframes second {
+
+    100% {
+        transform: translate(140px, -100px) rotate(340deg);
+    }
+
+}
+
+section.planes img.plane.third {
+    width: 32px;
+    transform: translate(400px, -100px) rotate(150deg);
+    -webkit-animation: third 45s infinite linear;
+}
+
+@-webkit-keyframes third {
+
+    100% {
+        transform: translate(0, 1000px) rotate(130deg);
+    }
+
+}

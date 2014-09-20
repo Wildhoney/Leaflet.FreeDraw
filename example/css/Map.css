@@ -1,0 +1,78 @@
+section.map {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    overflow: visible;
+    height: 100%;
+}
+
+section.map section.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    box-shadow: inset -100px 0 100px -100px rgba(0, 0, 0, .25);
+    width: 100%;
+    height: 100%;
+    z-index: 2001;
+}
+
+section.map.mode-create {
+    cursor: crosshair !important;
+}
+
+section.map g path {
+    transition: all 0.25s;
+    stroke-width: 4px;
+    stroke-opacity: 1;
+    stroke: #D7217E;
+    position: absolute;
+    z-index: 1001;
+    fill: #D7217E;
+    fill-opacity: .75;
+    -webkit-filter: none;
+}
+
+section.map.mode-delete path {
+    cursor: no-drop !important;
+}
+
+section.map.mode-delete path:hover {
+    fill: #4d4d4d !important;
+}
+
+section.map div.polygon-elbow {
+    -webkit-transition: opacity .25s;
+    box-shadow: 0 0 0 2px white, 0 0 10px rgba(0, 0, 0, .35);
+    border: 5px solid #D7217E;
+    border-radius: 10px;
+    transition: opacity 0.25s;
+    cursor: move;
+    opacity: 0;
+    pointer-events: none;
+    box-sizing: border-box;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+section.map div.polygon-elbow.non-polygon {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    border: 5px solid darkgray;
+}
+
+section.map.mode-edit div.polygon-elbow {
+    opacity: 1;
+    pointer-events: all;
+}
+
+section.map svg.tracer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2001;
+    pointer-events: none;
+}
