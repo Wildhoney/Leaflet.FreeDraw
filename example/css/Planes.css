@@ -53,16 +53,16 @@ section.planes div.rotate.first img.plane {
 /* Third Plane */
 
 section.planes img.plane.third {
-    transform: translate(800px, 600px) rotate(275deg);
+    transform: translate(1400px, 1200px) rotate(275deg);
     width: 42px;
-    -webkit-animation: third 10s infinite linear;
+    -webkit-animation: third 20s infinite linear;
 }
 
 @-webkit-keyframes third {
-    25% { transform: translate(600px, 400px) rotate(275deg) scale(1); }
-    50% { transform: translate(400px, 200px) rotate(275deg) scale(0.85); }
+    25% { transform: translate(1000px, 800px) rotate(275deg) scale(1); }
+    50% { transform: translate(600px, 400px) rotate(275deg) scale(0.85); }
     75% { transform: translate(200px, 0px) rotate(275deg) scale(1.2); }
-    100% { transform: translate(0px, -200px) rotate(275deg) scale(0.8); }
+    100% { transform: translate(-200px, -400px) rotate(275deg) scale(0.8); }
 }
 
 /* Fourth Plane */
