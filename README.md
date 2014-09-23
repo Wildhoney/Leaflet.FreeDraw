@@ -39,7 +39,7 @@ map.addLayer(new L.FreeDraw({
 }));
 ```
 
-Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; such as `L.map` for `new L.Map` &mdash; [read why here](http://37.media.tumblr.com/6a9fcffde2da977266b0ea99b15d5803/tumblr_n42cjjsriB1smcbm7o1_400.gif) &mdash; `L.FreeDraw` follows the same convention and provides a convenient `L.freeDraw` method for instantiating `L.FreeDraw` for you whilst passing through the options.
+Worth noting is that Leaflet.js often ships with `new`able equivalents &ndash; such as `L.map` for `new L.Map` &mdash; [see why here](http://37.media.tumblr.com/6a9fcffde2da977266b0ea99b15d5803/tumblr_n42cjjsriB1smcbm7o1_400.gif) &mdash; `L.FreeDraw` follows the same convention and provides a convenient `L.freeDraw` method for instantiating `L.FreeDraw` for you whilst passing through the options.
 
 ![Washes Right Off](http://images1.fanpop.com/images/photos/2500000/Calvin-and-Hobbes-Comic-Strips-calvin-and-hobbes-2509598-600-191.gif)
 
@@ -96,7 +96,7 @@ After drawing a polygon the `L.FreeDraw.MODES.CREATE` mode will automatically be
 FreeDraw by default uses the `L.FreeDraw.MODES.VIEW` mode which prevents the user from creating, editing, or deleting any polygons. When instantiating `L.FreeDraw` you may override the default mode &ndash; in the following case a user may **only** delete polygons:
 
 ```javascript
-var freeDraw = window.freeDraw = new L.FreeDraw({
+var freeDraw = new L.FreeDraw({
     mode: L.FreeDraw.MODES.DELETE
 });
 ```
