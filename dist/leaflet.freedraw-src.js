@@ -1226,6 +1226,7 @@
                     return;
                 }
 
+                console.log(this.options.disablePropagation);
                 var originalEvent = event.originalEvent;
                 originalEvent.stopPropagation();
                 originalEvent.preventDefault();
@@ -1817,6 +1818,12 @@
         memoriseEachEdge: true,
 
         /**
+         * @property disablePropagation
+         * @type {Boolean}
+         */
+        disablePropagation: false,
+
+        /**
          * @property elbowDistance
          * @type {Number}
          */
@@ -1885,6 +1892,14 @@
             // Prevent polygons outside of the viewport from being clipped.
             L.Path.CLIP_PADDING = value;
 
+        },
+
+        /**
+         * @method disableStopPropagation
+         * @return {void}
+         */
+        disableStopPropagation: function disableStopPropagation() {
+            this.disablePropagation = true;
         },
 
         /**

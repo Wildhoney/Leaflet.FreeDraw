@@ -1227,7 +1227,11 @@
                 }
 
                 var originalEvent = event.originalEvent;
-                originalEvent.stopPropagation();
+
+                if (!this.options.disablePropagation) {
+                    originalEvent.stopPropagation();
+                }
+
                 originalEvent.preventDefault();
 
                 this.latLngs   = [];
