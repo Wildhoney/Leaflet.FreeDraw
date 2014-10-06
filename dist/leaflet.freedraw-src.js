@@ -52,7 +52,7 @@
          * @property lineFunction
          * @type {Function}
          */
-        lineFunction: function () {},
+        lineFunction: function() {},
 
         /**
          * Responsible for holding an array of latitudinal and longitudinal points for generating
@@ -124,7 +124,10 @@
          * @property fromPoint
          * @type {Object}
          */
-        fromPoint: { x: 0, y: 0 },
+        fromPoint: {
+            x: 0,
+            y: 0
+        },
 
         /**
          * @property movingEdge
@@ -175,17 +178,20 @@
             }
 
             // Reset all of the properties.
-            this.fromPoint = { x: 0, y: 0 };
-            this.polygons  = [];
-            this.edges     = [];
-            this.hull      = {};
-            this.latLngs   = [];
+            this.fromPoint = {
+                x: 0,
+                y: 0
+            };
+            this.polygons = [];
+            this.edges = [];
+            this.hull = {};
+            this.latLngs = [];
 
             options = options || {};
 
-            this.memory  = new L.FreeDraw.Memory();
+            this.memory = new L.FreeDraw.Memory();
             this.options = new L.FreeDraw.Options();
-            this.hull    = new L.FreeDraw.Hull();
+            this.hull = new L.FreeDraw.Hull();
             this.element = options.element || null;
 
             this.setMode(options.mode || this.mode);
@@ -280,7 +286,7 @@
             }.bind(this));
 
             // Lazily hook up the options and hull objects.
-            this.map  = map;
+            this.map = map;
             this.mode = this.mode || L.FreeDraw.MODES.VIEW;
 
             if (!this.element) {
@@ -292,9 +298,13 @@
 
             // Define the line function for drawing the polygon from the user's mouse pointer.
             this.lineFunction = d3.svg.line()
-                                  .x(function pointX(d) { return d.x; })
-                                  .y(function pointY(d) { return d.y; })
-                                  .interpolate('linear');
+                .x(function pointX(d) {
+                    return d.x;
+                })
+                .y(function pointY(d) {
+                    return d.y;
+                })
+                .interpolate('linear');
 
             // Create a new instance of the D3 free-hand tracer.
             this.createD3();
@@ -336,7 +346,7 @@
          */
         cancelAction: function cancelAction() {
 
-            this.creating   = false;
+            this.creating = false;
             this.movingEdge = null;
 
             // Begin to create a brand-new polygon.
@@ -372,7 +382,9 @@
 
             // Set the current mode and emit the event.
             this.mode = mode;
-            this.fire('mode', { mode: mode });
+            this.fire('mode', {
+                mode: mode
+            });
 
             if (!this.map) {
                 return;
@@ -380,7 +392,7 @@
 
             // Enable or disable dragging according to the current mode.
             var isCreate = !!(mode & L.FreeDraw.MODES.CREATE),
-                method   = !isCreate ? 'enable' : 'disable';
+                method = !isCreate ? 'enable' : 'disable';
             this.map.dragging[method]();
 
             if (this.boundaryUpdateRequired && !(this.mode & L.FreeDraw.MODES.EDIT)) {
@@ -451,8 +463,8 @@
         createD3: function createD3() {
 
             this.svg = d3.select(this.options.element || this.element).append('svg')
-                         .attr('class', this.options.svgClassName)
-                         .attr('width', 200).attr('height', 200);
+                .attr('class', this.options.svgClassName)
+                .attr('width', 200).attr('height', 200);
 
         },
 
@@ -477,7 +489,10 @@
             return latLngs.map(function forEach(latLng) {
 
                 var point = this.map.latLngToLayerPoint(latLng);
-                return { X: point.x, Y: point.y };
+                return {
+                    X: point.x,
+                    Y: point.y
+                };
 
             }.bind(this));
 
@@ -516,7 +531,7 @@
         uniqueLatLngs: function uniqueLatLngs(latLngs) {
 
             var previousLatLngs = [],
-                uniqueValues    = [];
+                uniqueValues = [];
 
             latLngs.forEach(function forEach(latLng) {
 
@@ -543,12 +558,12 @@
          */
         handlePolygonClick: function handlePolygonClick(polygon, event) {
 
-            var latLngs        = [],
-                newPoint       = this.map.mouseEventToContainerPoint(event.originalEvent),
+            var latLngs = [],
+                newPoint = this.map.mouseEventToContainerPoint(event.originalEvent),
                 lowestDistance = Infinity,
-                startPoint     = new L.Point(),
-                endPoint       = new L.Point(),
-                parts          = [];
+                startPoint = new L.Point(),
+                endPoint = new L.Point(),
+                parts = [];
 
             polygon._latlngs.forEach(function forEach(latLng) {
 
@@ -560,16 +575,16 @@
 
             parts.forEach(function forEach(point, index) {
 
-                var firstPoint  = point,
+                var firstPoint = point,
                     secondPoint = parts[index + 1] || parts[0],
-                    distance    = L.LineUtil.pointToSegmentDistance(newPoint, firstPoint, secondPoint);
+                    distance = L.LineUtil.pointToSegmentDistance(newPoint, firstPoint, secondPoint);
 
                 if (distance < lowestDistance) {
 
                     // We discovered a distance that possibly should contain the new point!
                     lowestDistance = distance;
-                    startPoint     = firstPoint;
-                    endPoint       = secondPoint;
+                    startPoint = firstPoint;
+                    endPoint = secondPoint;
 
                 }
 
@@ -676,7 +691,7 @@
 
                 latLngs = function simplifyPolygons() {
 
-                    var points   = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
+                    var points = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
                         polygons = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
 
                     return this.clipperPolygonsToLatLngs(polygons);
@@ -862,7 +877,7 @@
             var mergePass = function mergePass() {
 
                 var allPolygons = this.getPolygons(),
-                    allPoints   = [];
+                    allPoints = [];
 
                 allPolygons.forEach(function forEach(polygon) {
                     allPoints.push(this.latLngsToClipperPoints(polygon._latlngs));
@@ -895,7 +910,8 @@
             }.bind(this);
 
             // Perform two merge passes to simplify the polygons.
-            mergePass(); mergePass();
+            mergePass();
+            mergePass();
 
             // Trim polygon edges after being modified.
             this.getPolygons(true).forEach(this.trimPolygonEdges.bind(this));
@@ -1009,7 +1025,7 @@
 
                     // Determine if the latitude/longitude values differ for the first and last
                     // lat/long objects.
-                    var lastIndex  = latLngGroup.length - 1;
+                    var lastIndex = latLngGroup.length - 1;
 
                     if (lastIndex && latLngGroup[0] && latLngGroup[lastIndex]) {
 
@@ -1043,7 +1059,9 @@
             this.lastNotification = notificationFingerprint;
 
             // Invoke the user passed method for specifying latitude/longitudes.
-            this.fire('markers', { latLngs: latLngs });
+            this.fire('markers', {
+                latLngs: latLngs
+            });
 
             // Perform another count at a later date to account for polygons that may have been removed
             // due to their polygon areas being too small.
@@ -1079,13 +1097,17 @@
 
                     // Silently remove all of the polygons because they are empty.
                     this._clearPolygons();
-                    this.fire('markers', { latLngs: [] });
-                    this.fire('count', { count: this.polygonCount });
+                    this.fire('markers', {
+                        latLngs: []
+                    });
+                    this.fire('count', {
+                        count: this.polygonCount
+                    });
 
                 }.bind(this));
 
                 this.polygonCount = 0;
-                polygons.length   = 0;
+                polygons.length = 0;
 
             }
 
@@ -1093,7 +1115,9 @@
 
                 // If the size differs then we'll assign the new length, and emit the count event.
                 this.polygonCount = polygons.length;
-                this.fire('count', { count: this.polygonCount });
+                this.fire('count', {
+                    count: this.polygonCount
+                });
 
             }
 
@@ -1128,7 +1152,7 @@
 
             }.bind(this);
 
-            var parts     = this.uniqueLatLngs(originalLatLngs(polygon)),
+            var parts = this.uniqueLatLngs(originalLatLngs(polygon)),
                 edgeCount = 0;
 
             if (!parts) {
@@ -1139,16 +1163,20 @@
 
                 // Leaflet creates elbows in the polygon, which we need to utilise to add the
                 // points for modifying its shape.
-                var edge   = L.divIcon({ className: this.options.iconClassName }),
+                var edge = L.divIcon({
+                        className: this.options.iconClassName
+                    }),
                     latLng = this.map.layerPointToLatLng(point);
 
-                edge = L.marker(latLng, { icon: edge }).addTo(this.map);
+                edge = L.marker(latLng, {
+                    icon: edge
+                }).addTo(this.map);
 
                 // Setup the freedraw object with the meta data.
                 edge._freedraw = {
-                    polygon:   polygon,
+                    polygon: polygon,
                     polygonId: polygon['_leaflet_id'],
-                    latLng:    edge._latlng
+                    latLng: edge._latlng
                 };
 
                 this.edges.push(edge);
@@ -1228,14 +1256,19 @@
 
                 var originalEvent = event.originalEvent;
 
+                var mapOffset = this._getOffset(document.getElementById(this.map._container.id));
+
                 if (!this.options.disablePropagation) {
                     originalEvent.stopPropagation();
                 }
 
                 originalEvent.preventDefault();
 
-                this.latLngs   = [];
-                this.fromPoint = { x: originalEvent.clientX, y: originalEvent.clientY };
+                this.latLngs = [];
+                this.fromPoint = {
+                    x: originalEvent.clientX - mapOffset.left,
+                    y: originalEvent.clientY - mapOffset.top
+                };
 
                 if (this.mode & L.FreeDraw.MODES.CREATE) {
 
@@ -1290,7 +1323,9 @@
          */
         _editMouseMove: function _editMouseMove(event) {
 
-            var pointModel = new L.Point(event.clientX, event.clientY);
+            var mapOffset = this._getOffset(document.getElementById(this.map._container.id));
+
+            var pointModel = new L.Point(event.clientX - mapOffset.left, event.clientY - mapOffset.top);
 
             // Modify the position of the marker on the map based on the user's mouse position.
             var styleDeclaration = this.movingEdge._icon.style;
@@ -1387,20 +1422,25 @@
          */
         _createMouseMove: function _createMouseMove(event) {
 
+            var mapOffset = this._getOffset(document.getElementById(this.map._container.id));
+
             // Grab the cursor's position from the event object.
-            var pointerX = event.clientX,
-                pointerY = event.clientY;
+            var pointerX = event.clientX - mapOffset.left,
+                pointerY = event.clientY - mapOffset.top;
 
             // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-            var point  = new L.Point(pointerX, pointerY),
+            var point = new L.Point(pointerX, pointerY),
                 latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.
-            var lineData = [this.fromPoint, { x: pointerX, y: pointerY }];
+            var lineData = [this.fromPoint, {
+                x: pointerX,
+                y: pointerY
+            }];
 
             // Draw SVG line based on the last movement of the mouse's position.
             this.svg.append('path').attr('d', this.lineFunction(lineData))
-                    .attr('stroke', '#D7217E').attr('stroke-width', 2).attr('fill', 'none');
+                .attr('stroke', '#D7217E').attr('stroke-width', 2).attr('fill', 'none');
 
             // Take the pointer's position from the event for the next invocation of the mouse move event,
             // and store the resolved latitudinal and longitudinal values.
@@ -1459,6 +1499,20 @@
 
             }
 
+        },
+
+        _getOffset: function(el) {
+            var _x = 0;
+            var _y = 0;
+            while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+                _x += el.offsetLeft - el.scrollLeft;
+                _y += el.offsetTop - el.scrollTop;
+                el = el.offsetParent;
+            }
+            return {
+                top: _y,
+                left: _x
+            };
         }
 
     });
@@ -1468,13 +1522,13 @@
      * @type {Object}
      */
     L.FreeDraw.MODES = {
-        VIEW:        1,
-        CREATE:      2,
-        EDIT:        4,
-        DELETE:      8,
-        APPEND:      16,
+        VIEW: 1,
+        CREATE: 2,
+        EDIT: 4,
+        DELETE: 8,
+        APPEND: 16,
         EDIT_APPEND: 4 | 16,
-        ALL:         1 | 2 | 4 | 8 | 16
+        ALL: 1 | 2 | 4 | 8 | 16
     };
 
     /**
