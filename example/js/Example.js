@@ -101,7 +101,9 @@
                     mode: scope.mode
                 });
 
-                freeDraw.options.setBoundariesAfterEdit(false);
+//                freeDraw.options.allowMultiplePolygons(false);
+//                freeDraw.options.destroyPreviousPolygon(true);
+                freeDraw.options.exitModeAfterCreate(false);
                 freeDraw.options.exitModeAfterCreate(false);
 
                 freeDraw.on('mode', function modeReceived(eventData) {

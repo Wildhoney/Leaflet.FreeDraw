@@ -679,8 +679,19 @@
 
             if (!this.options.multiplePolygons && this.getPolygons(true).length >= 1) {
 
-                // User is only allowed to create one polygon.
-                return false;
+                if (this.options.destroyPrevious) {
+
+                    // Destroy the current polygon and then draw the current polygon.
+                    this.silently(this.clearPolygons);
+
+                } else {
+
+                    // Otherwise delete the line because polygon creation has been disallowed, since there's
+                    // already one polygon on the map.
+                    this.destroyD3().createD3();
+                    return false;
+
+                }
 
             }
 
@@ -1875,6 +1886,12 @@
         memoriseEachEdge: true,
 
         /**
+         * @property destroyPrevious
+         * @type {Boolean}
+         */
+        destroyPrevious: false,
+
+        /**
          * @property disablePropagation
          * @type {Boolean}
          */
@@ -1984,6 +2001,15 @@
          */
         exitModeAfterDelete: function exitModeAfterDelete(value) {
             this.deleteExitMode = !!value;
+        },
+
+        /**
+         * @method destroyPreviousPolygon
+         * @param value {Boolean}
+         * @return {void}
+         */
+        destroyPreviousPolygon: function destroyPreviousPolygon(value) {
+            this.destroyPrevious = !!value;
         },
 
         /**
