@@ -84,6 +84,12 @@
         memoriseEachEdge: true,
 
         /**
+         * @property destroyPrevious
+         * @type {Boolean}
+         */
+        destroyPrevious: false,
+
+        /**
          * @property disablePropagation
          * @type {Boolean}
          */
@@ -193,6 +199,15 @@
          */
         exitModeAfterDelete: function exitModeAfterDelete(value) {
             this.deleteExitMode = !!value;
+        },
+
+        /**
+         * @method destroyPreviousPolygon
+         * @param value {Boolean}
+         * @return {void}
+         */
+        destroyPreviousPolygon: function destroyPreviousPolygon(value) {
+            this.destroyPrevious = !!value;
         },
 
         /**
