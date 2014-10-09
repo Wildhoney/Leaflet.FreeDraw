@@ -680,6 +680,7 @@
             if (!this.options.multiplePolygons && this.getPolygons(true).length >= 1) {
 
                 // User is only allowed to create one polygon.
+                this.destroyD3().createD3();
                 return false;
 
             }
