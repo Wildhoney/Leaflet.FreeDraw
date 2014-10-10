@@ -1409,7 +1409,7 @@
 
             var latLngs = [];
 
-            if (!polygon || !polygon._parts[0]) {
+            if (!polygon || polygon._parts.length === 0 || !polygon._parts[0]) {
                 return;
             }
 
