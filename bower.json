@@ -6,7 +6,7 @@
     "Adam Timberlake <adam.timberlake@gmail.com>"
   ],
   "description": "Zoopla inspired freehand polygon creation using Leaflet.js.",
-  "main": "dist/leaflet.freedraw.min.js",
+  "main": "dist/leaflet.freedraw.js",
   "keywords": [
     "leaflet",
     "freedraw",
