@@ -253,7 +253,7 @@
 
             polygons.forEach(function forEach(polygon) {
 
-                if (polygon._parts[0]) {
+                if (polygon && polygon._parts[0]) {
 
                     // If the polygon is currently visible then we'll re-attach its edges for the current
                     // zoom level.
