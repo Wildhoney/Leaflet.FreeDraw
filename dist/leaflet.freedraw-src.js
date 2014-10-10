@@ -702,7 +702,7 @@
 
                 latLngs = function simplifyPolygons() {
 
-                    var points = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
+                    var points   = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
                         polygons = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
 
                     return this.clipperPolygonsToLatLngs(polygons);
@@ -1409,7 +1409,7 @@
 
             var latLngs = [];
 
-            if (!polygon._parts[0]) {
+            if (!polygon || !polygon._parts[0]) {
                 return;
             }
 
