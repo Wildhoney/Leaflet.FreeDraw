@@ -197,6 +197,12 @@
             this.setMode(options.mode || this.mode);
             this.options.setPathClipperPadding(100);
 
+            L.FreeDraw.Polygon = L.Polygon.extend({
+                options: {
+                    className:"leaflet-freedraw-polygon"
+                }
+            });
+
         },
 
         /**
@@ -850,9 +856,11 @@
 
                         var polygon = this.map._layers[layerIndex];
 
-                        // Ensure we're dealing with a <g> node (...an SVG group element).
+                        // Ensure we're dealing with a <g> node that was created by FreeDraw (...an SVG group element).
                         if (polygon._container && polygon._container.tagName.toUpperCase() === GROUP_TAG) {
-                            polygons.push(polygon);
+                            if (polygon instanceof L.FreeDraw.Polygon) {
+                                polygons.push(polygon);
+                            }
                         }
 
                     }
@@ -864,7 +872,9 @@
                 this.edges.forEach(function forEach(edge) {
 
                     if (polygons.indexOf(edge._freedraw.polygon) === -1) {
-                        polygons.push(edge._freedraw.polygon);
+                        if (edge._freedraw.polygon instanceof L.FreeDraw.Polygon) {
+                            polygons.push(edge._freedraw.polygon);
+                        }
                     }
 
                 }.bind(this));
@@ -1544,3 +1554,4 @@
     };
 
 })(window, window.L, window.d3, window.ClipperLib);
+
