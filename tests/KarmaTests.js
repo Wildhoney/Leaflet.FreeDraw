@@ -2,7 +2,7 @@ describe('Leaflet FreeDraw', function() {
 
     var freeDraw = {};
 
-    // An odd bug in Jasmine? Monkey-patch!
+    // An odd bug in Karma? Monkey-patch!
     jasmine.Spec.prototype.addMatcherResult = function(result) {
 
         if (!this.results_) {
