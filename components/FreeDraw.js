@@ -1274,7 +1274,7 @@
                 originalEvent.preventDefault();
 
                 this.latLngs = [];
-                this.fromPoint = map.latLngToContainerPoint(event.latlng);
+                this.fromPoint = this.map.latLngToContainerPoint(event.latlng);
 
                 if (this.mode & L.FreeDraw.MODES.CREATE) {
 
