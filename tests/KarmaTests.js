@@ -2,6 +2,17 @@ describe('Leaflet FreeDraw', function() {
 
     var freeDraw = {};
 
+    // An odd bug in Jasmine? Monkey-patch!
+    jasmine.Spec.prototype.addMatcherResult = function(result) {
+
+        if (!this.results_) {
+            return;
+        }
+
+        this.results_.addResult(result);
+
+    };
+
     /**
      * @method getPolygon
      * @param name {String}
@@ -98,10 +109,10 @@ describe('Leaflet FreeDraw', function() {
             expect(eventData.latLngs.length).toEqual(0);
         });
 
-//        freeDraw.setMode(L.FreeDraw.MODES.DELETE);
-//        freeDraw.handlePolygonClick(lambethPolygon, fakeEvent);
-//        expect(freeDraw.getPolygons().length).toEqual(0);
-//        expect(freeDraw.getPolygons(true).length).toEqual(0);
+        freeDraw.setMode(L.FreeDraw.MODES.DELETE);
+        freeDraw.handlePolygonClick(lambethPolygon, fakeEvent);
+        expect(freeDraw.getPolygons().length).toEqual(0);
+        expect(freeDraw.getPolygons(true).length).toEqual(0);
 
         freeDraw.destroyEdges(lambethPolygon);
         expect(freeDraw.edges.length).toEqual(0);
