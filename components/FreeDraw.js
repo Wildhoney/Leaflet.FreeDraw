@@ -725,7 +725,7 @@
 
             }
 
-            var polygon = new L.Polygon(latLngs, {
+            var polygon = new L.FreeDraw.Polygon(latLngs, {
                 smoothFactor: this.options.smoothFactor
             });
 
