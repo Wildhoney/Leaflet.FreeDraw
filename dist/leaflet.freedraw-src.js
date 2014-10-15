@@ -1267,8 +1267,6 @@
 
                 var originalEvent = event.originalEvent;
 
-                var mapOffset = this._getOffset(document.getElementById(this.map._container.id));
-
                 if (!this.options.disablePropagation) {
                     originalEvent.stopPropagation();
                 }
@@ -1276,10 +1274,7 @@
                 originalEvent.preventDefault();
 
                 this.latLngs = [];
-                this.fromPoint = {
-                    x: originalEvent.clientX - mapOffset.left,
-                    y: originalEvent.clientY - mapOffset.top
-                };
+                this.fromPoint = this.map.latLngToContainerPoint(event.latlng);
 
                 if (this.mode & L.FreeDraw.MODES.CREATE) {
 
@@ -1334,9 +1329,7 @@
          */
         _editMouseMove: function _editMouseMove(event) {
 
-            var mapOffset = this._getOffset(document.getElementById(this.map._container.id));
-
-            var pointModel = new L.Point(event.clientX - mapOffset.left, event.clientY - mapOffset.top);
+            var pointModel = this.map.latLngToContainerPoint(event.latLng);
 
             // Modify the position of the marker on the map based on the user's mouse position.
             var styleDeclaration = this.movingEdge._icon.style;
@@ -1433,20 +1426,14 @@
          */
         _createMouseMove: function _createMouseMove(event) {
 
-            var mapOffset = this._getOffset(document.getElementById(this.map._container.id));
-
-            // Grab the cursor's position from the event object.
-            var pointerX = event.clientX - mapOffset.left,
-                pointerY = event.clientY - mapOffset.top;
-
             // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-            var point = new L.Point(pointerX, pointerY),
+            var point = this.map.mouseEventToContainerPoint(event),
                 latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.
             var lineData = [this.fromPoint, {
-                x: pointerX,
-                y: pointerY
+                x: point.x,
+                y: point.y
             }];
 
             // Draw SVG line based on the last movement of the mouse's position.
@@ -1455,8 +1442,8 @@
 
             // Take the pointer's position from the event for the next invocation of the mouse move event,
             // and store the resolved latitudinal and longitudinal values.
-            this.fromPoint.x = pointerX;
-            this.fromPoint.y = pointerY;
+            this.fromPoint.x = point.x;
+            this.fromPoint.y = point.y;
             this.latLngs.push(latLng);
 
         },
@@ -1511,20 +1498,6 @@
             }
 
         },
-
-        _getOffset: function(el) {
-            var _x = 0;
-            var _y = 0;
-            while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-                _x += el.offsetLeft - el.scrollLeft;
-                _y += el.offsetTop - el.scrollTop;
-                el = el.offsetParent;
-            }
-            return {
-                top: _y,
-                left: _x
-            };
-        }
 
     });
 
