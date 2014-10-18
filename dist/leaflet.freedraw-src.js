@@ -1312,7 +1312,7 @@
                 if (this.movingEdge) {
 
                     // User is in fact modifying the shape of the polygon.
-                    this._editMouseMove(originalEvent);
+                    this._editMouseMove(event);
                     return;
 
                 }
@@ -1339,7 +1339,7 @@
          */
         _editMouseMove: function _editMouseMove(event) {
 
-            var pointModel = this.map.latLngToContainerPoint(event.latLng);
+            var pointModel = this.map.latLngToContainerPoint(event.latlng);
 
             // Modify the position of the marker on the map based on the user's mouse position.
             var styleDeclaration = this.movingEdge._icon.style;
