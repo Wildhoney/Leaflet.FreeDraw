@@ -116,7 +116,7 @@
                 freeDraw.on('markers', function getMarkers(eventData) {
 
                     // Output the lat/lngs in the MySQL multi-polygon format.
-//                  console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
+                    console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
 
                 });
 
