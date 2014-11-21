@@ -781,6 +781,15 @@
         },
 
         /**
+         * @method predefinedPolygon
+         * @param latLngs {L.LatLng[]}
+         * @return {L.Polygon|Boolean}
+         */
+        predefinedPolygon: function predefinedPolyon(latLngs) {
+            return this.createPolygon(latLngs, true);
+        },
+
+        /**
          * @method undo
          * @return {void}
          */
