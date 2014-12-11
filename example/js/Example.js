@@ -107,6 +107,7 @@
 
                 freeDraw.on('mode', function modeReceived(eventData) {
                     scope.mode = eventData.mode;
+                    scope.$apply();
                 });
 
                 scope.$watch('mode', function modeReceived(mode) {
