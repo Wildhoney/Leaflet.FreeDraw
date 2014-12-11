@@ -1292,7 +1292,7 @@
 
                 originalEvent.preventDefault();
 
-                this.latLngs = [];
+                this.latLngs   = [];
                 this.fromPoint = this.map.latLngToContainerPoint(event.latlng);
 
                 if (this.mode & L.FreeDraw.MODES.CREATE) {
@@ -1480,7 +1480,6 @@
 
             // User has finished creating their polygon!
             this.creating = false;
-            this.setMapPermissions('enable');
 
             if (this.latLngs.length <= 2) {
 
@@ -1513,6 +1512,7 @@
 
                 // Automatically exit the user from the creation mode.
                 this.setMode(this.mode ^ L.FreeDraw.MODES.CREATE);
+                this.setMapPermissions('enable');
 
             }
 
