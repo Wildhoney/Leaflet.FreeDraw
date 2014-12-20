@@ -27,7 +27,7 @@
                 var group = [];
 
                 latLngs.forEach(function forEach(latLng) {
-                    group.push(latLng.lat + ' ' + latLng.lng);
+                    group.push(latLng.lng + ' ' + latLng.lat);
                 });
 
                 groups.push('((' + group.join(',') + '))');
@@ -54,7 +54,7 @@
                 var group = [];
 
                 latLngs.forEach(function forEach(latLng) {
-                    group.push(latLng.lat + ' ' + latLng.lng);
+                    group.push(latLng.lng + ' ' + latLng.lat);
                 });
 
                 groups.push('POLYGON((' + group.join(',') + '))');
