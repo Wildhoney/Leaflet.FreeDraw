@@ -1062,7 +1062,7 @@
                         var latDiffers = latLngGroup[0].lat !== latLngGroup[lastIndex].lat,
                             lngDiffers = latLngGroup[0].lng !== latLngGroup[lastIndex].lng;
 
-                        if (latDiffers && lngDiffers) {
+                        if (latDiffers || lngDiffers) {
 
                             // It's not currently a closed polygon for the query, so we'll create the closed
                             // polygon for the geospatial query.
