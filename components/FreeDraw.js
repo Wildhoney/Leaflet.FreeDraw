@@ -26,6 +26,12 @@
         state: [],
 
         /**
+         * @property defaultPreferences
+         * @type {Object}
+         */
+        defaultPreferences: {},
+
+        /**
          * @property svg
          * @type {Object}
          */
@@ -178,20 +184,17 @@
             }
 
             // Reset all of the properties.
-            this.fromPoint = {
-                x: 0,
-                y: 0
-            };
-            this.polygons = [];
-            this.edges = [];
-            this.hull = {};
-            this.latLngs = [];
+            this.fromPoint = { x: 0, y: 0 };
+            this.polygons  = [];
+            this.edges     = [];
+            this.hull      = {};
+            this.latLngs   = [];
 
             options = options || {};
 
-            this.memory = new L.FreeDraw.Memory();
+            this.memory  = new L.FreeDraw.Memory();
             this.options = new L.FreeDraw.Options();
-            this.hull = new L.FreeDraw.Hull();
+            this.hull    = new L.FreeDraw.Hull();
             this.element = options.element || null;
 
             this.setMode(options.mode || this.mode);
@@ -199,7 +202,7 @@
 
             L.FreeDraw.Polygon = L.Polygon.extend({
                 options: {
-                    className:"leaflet-freedraw-polygon"
+                    className: "leaflet-freedraw-polygon"
                 }
             });
 
@@ -292,8 +295,16 @@
             }.bind(this));
 
             // Lazily hook up the options and hull objects.
-            this.map = map;
+            this.map  = map;
             this.mode = this.mode || L.FreeDraw.MODES.VIEW;
+
+            // Memorise the preferences so we know how to revert.
+            this.defaultPreferences = {
+                dragging:        map.dragging._enabled,
+                touchZoom:       map.touchZoom._enabled,
+                doubleClickZoom: map.doubleClickZoom._enabled,
+                scrollWheelZoom: map.scrollWheelZoom._enabled
+            };
 
             if (!this.element) {
 
@@ -373,6 +384,28 @@
             this.map.touchZoom[method]();
             this.map.doubleClickZoom[method]();
             this.map.scrollWheelZoom[method]();
+
+            if (method === 'enable') {
+
+                // Inherit the preferences assigned to the map instance by the developer.
+
+                if (!this.defaultPreferences.dragging) {
+                    this.map.dragging.disable();
+                }
+
+                if (!this.defaultPreferences.touchZoom) {
+                    this.map.touchZoom.disable();
+                }
+
+                if (!this.defaultPreferences.doubleClickZoom) {
+                    this.map.doubleClickZoom.disable();
+                }
+
+                if (!this.defaultPreferences.scrollWheelZoom) {
+                    this.map.scrollWheelZoom.disable();
+                }
+
+            }
 
         },
 
