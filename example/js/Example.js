@@ -103,11 +103,15 @@
 
 //                freeDraw.options.allowMultiplePolygons(false);
 //                freeDraw.options.destroyPreviousPolygon(true);
-                freeDraw.options.exitModeAfterCreate(false);
+//                freeDraw.options.exitModeAfterCreate(false);
 
                 freeDraw.on('mode', function modeReceived(eventData) {
                     scope.mode = eventData.mode;
-                    scope.$apply();
+
+                    if (!scope.$root.$$phase) {
+                        scope.$apply();
+                    }
+
                 });
 
                 scope.$watch('mode', function modeReceived(mode) {
