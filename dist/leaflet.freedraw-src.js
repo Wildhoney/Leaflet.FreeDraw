@@ -352,9 +352,19 @@
          * @return {void}
          */
         silently: function silently(callbackFn) {
-            this.silenced = true;
+
+            var silentBefore = this.silenced;
+            this.silenced      = true;
             callbackFn.apply(this);
-            this.silenced = false;
+
+            if (!silentBefore) {
+
+                // Only remove the silence if it wasn't silent before, which prevents against
+                // nesting the `silently` methods inside one another.
+                this.silenced = false;
+
+            }
+            
         },
 
         /**
