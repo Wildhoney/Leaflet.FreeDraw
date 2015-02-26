@@ -1499,8 +1499,8 @@
             }];
 
             // Draw SVG line based on the last movement of the mouse's position.
-            this.svg.append('path').attr('d', this.lineFunction(lineData))
-                .attr('stroke', '#D7217E').attr('stroke-width', 2).attr('fill', 'none');
+            this.svg.append('path').classed('drawing-line', true).attr('d', this.lineFunction(lineData))
+                    .attr('stroke', '#D7217E').attr('stroke-width', 2).attr('fill', 'none');
 
             // Take the pointer's position from the event for the next invocation of the mouse move event,
             // and store the resolved latitudinal and longitudinal values.
