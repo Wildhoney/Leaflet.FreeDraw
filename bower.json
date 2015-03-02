@@ -26,10 +26,12 @@
     "d3": "~3.4.11",
     "leaflet": "~0.7.3",
     "graham_scan": "~1.0.2",
-    "underscore": "~1.6.0",
     "concavehull": "~0.1.2",
-    "evispa-timo-jsclipper": "*",
-    "hammerjs": "~2.0.2",
-    "angular": "~1.2.23"
+    "evispa-timo-jsclipper": "*"
+  },
+  "devDependencies": {
+    "hammerjs": "~2.0.4",
+    "angular": "~1.3.14",
+    "underscore": "~1.8.2"
   }
 }
