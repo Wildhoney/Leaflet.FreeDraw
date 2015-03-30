@@ -169,3 +169,21 @@ section.map.mode-create {
 ```
 
 You may change the class name of the polygon edges with the `setIconClassName` method, and the SVG class name with `setSVGClassName`.
+
+# Common Issues
+
+## Invisible Drawing Path
+
+When you're drawing a polygon on the map, the path that is being drawn is invisible &ndash; this is caused by a handful of missing styles that you need to apply to the `svg.traceur` node:
+
+```css
+svg.tracer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+```
+
+It's worth noting that the above style properties may well be changed to suit your circumstances, but this is a good starting point.
