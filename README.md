@@ -174,7 +174,7 @@ You may change the class name of the polygon edges with the `setIconClassName` m
 
 ## Invisible Drawing Path
 
-When you're drawing a polygon on the map, the path that is being drawn is invisible &ndash; this is caused by a handful of missing styles that you need to apply to the `svg.traceur` node:
+When you're drawing a polygon on the map, the path that is being drawn is invisible &ndash; this is caused by a handful of missing styles that you need to apply to the `svg.tracer` node:
 
 ```css
 svg.tracer {
