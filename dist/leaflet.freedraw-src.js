@@ -2106,6 +2106,10 @@
 
             }
 
+            if (!algorithm) {
+                return;
+            }
+
             // Resolve the hull algorithm.
             algorithm = this.hullAlgorithms[algorithm];
 
