@@ -101,6 +101,7 @@
                     mode: scope.mode
                 });
 
+                //freeDraw.options.setHullAlgorithm(false);
 //                freeDraw.options.allowMultiplePolygons(false);
 //                freeDraw.options.destroyPreviousPolygon(true);
 //                freeDraw.options.exitModeAfterCreate(false);
