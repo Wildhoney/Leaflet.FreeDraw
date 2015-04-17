@@ -270,6 +270,7 @@
             }
 
             if (!algorithm) {
+                this.hullAlgorithm = false;
                 return;
             }
 
