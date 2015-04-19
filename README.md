@@ -16,6 +16,8 @@ Use [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw) for drawing pre-defi
 
 `L.FreeDraw` has been tested in IE9+
 
+**Note:** For drawing polylines instead, try [`L.Pather`](https://github.com/Wildhoney/L.Pather).
+
 ![FreeDraw Screenshot](http://i.imgur.com/5ab3P4j.png)
 
 ---
