@@ -97,14 +97,14 @@
                 var map = new L.Map(element[0]).setView([51.505, -0.09], 14);
                 L.tileLayer(scope.TILE_URL).addTo(map);
 
-                var freeDraw = window.freeDraw = new L.FreeDraw({
+                var freeDraw = new L.FreeDraw({
                     mode: scope.mode
                 });
 
                 //freeDraw.options.setHullAlgorithm(false);
-//                freeDraw.options.allowMultiplePolygons(false);
-//                freeDraw.options.destroyPreviousPolygon(true);
-//                freeDraw.options.exitModeAfterCreate(false);
+                //freeDraw.options.allowMultiplePolygons(false);
+                //freeDraw.options.destroyPreviousPolygon(true);
+                //freeDraw.options.exitModeAfterCreate(false);
 
                 freeDraw.on('mode', function modeReceived(eventData) {
                     scope.mode = eventData.mode;

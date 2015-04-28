@@ -33,7 +33,7 @@
          * @property invalidLength
          * @type {Boolean}
          */
-        invalidLength: 4,
+        invalidLength: 3,
 
         /**
          * @property hullAlgorithm
