@@ -30,6 +30,12 @@
         simplifyPolygon: true,
 
         /**
+         * @property invalidLength
+         * @type {Boolean}
+         */
+        invalidLength: 4,
+
+        /**
          * @property hullAlgorithm
          * @type {String|Boolean}
          */

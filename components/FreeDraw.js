@@ -760,7 +760,7 @@
 
             }
 
-            if (latLngs.length <= 3) {
+            if (latLngs.length <= this.options.invalidLength) {
 
                 if (!forceCreation) {
                     return false;
@@ -1546,6 +1546,7 @@
             var polygon = this.createPolygon(latLngs || this.latLngs);
 
             if (!polygon) {
+                this.setMapPermissions('enable');
                 return;
             }
 
