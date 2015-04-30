@@ -188,7 +188,7 @@
             this.polygons  = [];
             this.edges     = [];
             this.hull      = {};
-            this.latLngs   = [];
+            this._latLngs  = [];
 
             options = options || {};
 
@@ -202,7 +202,7 @@
 
             L.FreeDraw.Polygon = L.Polygon.extend({
                 options: {
-                    className: "leaflet-freedraw-polygon"
+                    className: 'leaflet-freedraw-polygon'
                 }
             });
 
@@ -751,7 +751,7 @@
 
                 latLngs = function simplifyPolygons() {
 
-                    var points   = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
+                    var points   = ClipperLib.Clipper.CleanPolygon(this._latLngsToClipperPoints(latLngs), 1.1),
                         polygons = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
 
                     return this.clipperPolygonsToLatLngs(polygons);
@@ -953,7 +953,7 @@
                     allPoints = [];
 
                 allPolygons.forEach(function forEach(polygon) {
-                    allPoints.push(this.latLngsToClipperPoints(polygon._latlngs));
+                    allPoints.push(this._latLngsToClipperPoints(polygon._latlngs));
                 }.bind(this));
 
                 var polygons = ClipperLib.Clipper.SimplifyPolygons(allPoints, ClipperLib.PolyFillType.pftNonZero);
@@ -1225,7 +1225,7 @@
 
             }.bind(this);
 
-            var parts = this.uniqueLatLngs(originalLatLngs(polygon)),
+            var parts     = this.uniqueLatLngs(originalLatLngs(polygon)),
                 edgeCount = 0;
 
             if (!parts) {
@@ -1335,7 +1335,7 @@
 
                 originalEvent.preventDefault();
 
-                this.latLngs   = [];
+                this._latLngs  = [];
                 this.fromPoint = this.map.latLngToContainerPoint(event.latlng);
 
                 if (this.mode & L.FreeDraw.MODES.CREATE) {
@@ -1506,7 +1506,7 @@
             // and store the resolved latitudinal and longitudinal values.
             this.fromPoint.x = point.x;
             this.fromPoint.y = point.y;
-            this.latLngs.push(latLng);
+            this._latLngs.push(latLng);
 
         },
 
@@ -1524,7 +1524,7 @@
             // User has finished creating their polygon!
             this.creating = false;
 
-            if (this.latLngs.length <= 2) {
+            if (this._latLngs.length <= 2) {
 
                 // User has failed to drag their cursor enough to create a valid polygon.
                 return;
@@ -1535,22 +1535,22 @@
 
                 // Use the defined hull algorithm.
                 this.hull.setMap(this.map);
-                var latLngs = this.hull[this.options.hullAlgorithm](this.latLngs);
+                var latLngs = this.hull[this.options.hullAlgorithm](this._latLngs);
 
             }
 
             // Required for joining the two ends of the free-hand drawing to create a closed polygon.
-            this.latLngs.push(this.latLngs[0]);
+            this._latLngs.push(this._latLngs[0]);
 
             // Physically draw the Leaflet generated polygon.
-            var polygon = this.createPolygon(latLngs || this.latLngs);
+            var polygon = this.createPolygon(latLngs || this._latLngs);
 
             if (!polygon) {
                 this.setMapPermissions('enable');
                 return;
             }
 
-            this.latLngs = [];
+            this._latLngs = [];
 
             if (this.options.createExitMode) {
 
@@ -1560,7 +1560,7 @@
 
             }
 
-        },
+        }
 
     });
 
