@@ -188,7 +188,7 @@
             this.polygons  = [];
             this.edges     = [];
             this.hull      = {};
-            this._latLngs  = [];
+            this._latLngs   = [];
 
             options = options || {};
 
@@ -202,7 +202,7 @@
 
             L.FreeDraw.Polygon = L.Polygon.extend({
                 options: {
-                    className: 'leaflet-freedraw-polygon'
+                    className: "leaflet-freedraw-polygon"
                 }
             });
 
@@ -364,7 +364,7 @@
                 this.silenced = false;
 
             }
-            
+
         },
 
         /**
@@ -751,7 +751,7 @@
 
                 latLngs = function simplifyPolygons() {
 
-                    var points   = ClipperLib.Clipper.CleanPolygon(this._latLngsToClipperPoints(latLngs), 1.1),
+                    var points   = ClipperLib.Clipper.CleanPolygon(this.latLngsToClipperPoints(latLngs), 1.1),
                         polygons = ClipperLib.Clipper.SimplifyPolygon(points, ClipperLib.PolyFillType.pftNonZero);
 
                     return this.clipperPolygonsToLatLngs(polygons);
@@ -953,7 +953,7 @@
                     allPoints = [];
 
                 allPolygons.forEach(function forEach(polygon) {
-                    allPoints.push(this._latLngsToClipperPoints(polygon._latlngs));
+                    allPoints.push(this.latLngsToClipperPoints(polygon._latlngs));
                 }.bind(this));
 
                 var polygons = ClipperLib.Clipper.SimplifyPolygons(allPoints, ClipperLib.PolyFillType.pftNonZero);
@@ -1335,7 +1335,7 @@
 
                 originalEvent.preventDefault();
 
-                this._latLngs  = [];
+                this._latLngs   = [];
                 this.fromPoint = this.map.latLngToContainerPoint(event.latlng);
 
                 if (this.mode & L.FreeDraw.MODES.CREATE) {
@@ -1489,7 +1489,7 @@
         _createMouseMove: function _createMouseMove(event) {
 
             // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-            var point = this.map.mouseEventToContainerPoint(event),
+            var point  = this.map.mouseEventToContainerPoint(event),
                 latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.

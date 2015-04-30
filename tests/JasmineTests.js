@@ -307,7 +307,7 @@ describe('Leaflet FreeDraw', function() {
         expect(freeDraw.creating).toBeTruthy();
         expect(freeDraw.fromPoint.x).toEqual(mouseX);
         expect(freeDraw.fromPoint.y).toEqual(mouseY);
-        expect(freeDraw.latLngs.length).toEqual(0);
+        expect(freeDraw._latLngs.length).toEqual(0);
 
         // Create three more points for the polygon.
         mouseX = 100;
@@ -315,21 +315,21 @@ describe('Leaflet FreeDraw', function() {
         event  = document.createEvent('MouseEvents');
         event.initMouseEvent('mousemove', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
         freeDraw.map._container.dispatchEvent(event);
-        expect(freeDraw.latLngs.length).toEqual(1);
+        expect(freeDraw._latLngs.length).toEqual(1);
 
         mouseX = 100;
         mouseY = 100;
         event  = document.createEvent('MouseEvents');
         event.initMouseEvent('mousemove', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
         freeDraw.map._container.dispatchEvent(event);
-        expect(freeDraw.latLngs.length).toEqual(2);
+        expect(freeDraw._latLngs.length).toEqual(2);
 
         mouseX = 0;
         mouseY = 100;
         event  = document.createEvent('MouseEvents');
         event.initMouseEvent('mousemove', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
         freeDraw.map._container.dispatchEvent(event);
-        expect(freeDraw.latLngs.length).toEqual(3);
+        expect(freeDraw._latLngs.length).toEqual(3);
 
         // And finish the polygon creation!
         mouseX = 0;
