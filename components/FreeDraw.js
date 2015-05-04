@@ -1326,7 +1326,7 @@
                 return this.events;
             }
 
-            return this.events = {
+            this.events = {
 
                 /**
                  * @method mouseDown
@@ -1450,6 +1450,8 @@
                 }.bind(this)
 
             };
+
+            return this.events;
 
         },
 
