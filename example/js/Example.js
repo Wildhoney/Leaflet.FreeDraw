@@ -94,12 +94,14 @@
             link: function link(scope, element) {
 
                 // Setup Leaflet: http://leafletjs.com/examples/quick-start.html
-                var map = new L.Map(element[0]).setView([51.505, -0.09], 14);
+                var map = new L.Map(element[0], { doubleClickZoom: false }).setView([51.505, -0.09], 14);
                 L.tileLayer(scope.TILE_URL).addTo(map);
 
                 var freeDraw = new L.FreeDraw({
                     mode: scope.mode
                 });
+
+                freeDraw.options.setEvents(['mousedown', 'mouseup', 'dblclick']);
 
                 //freeDraw.options.setHullAlgorithm(false);
                 //freeDraw.options.allowMultiplePolygons(false);

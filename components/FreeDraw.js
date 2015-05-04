@@ -327,9 +327,9 @@
             this.createD3();
 
             // Attach all of the events.
-            this.map.on('mousedown touchstart', this.bindEvents().mouseDown);
-            this.map.on('mousemove touchmove', this.bindEvents().mouseMove);
-            this.map.on('mousedown touchstart', this.bindEvents().mouseUpLeave);
+            this.map.on(this.options.events[0] || 'mousedown', this.bindEvents().mouseDown);
+            this.map.on(this.options.events[1] || 'mousemove', this.bindEvents().mouseMove);
+            this.map.on(this.options.events[2] || 'mouseup', this.bindEvents().mouseUpLeave);
 
             // Set the default mode.
             this.setMode(this.mode);
@@ -1335,6 +1335,10 @@
                  */
                 mouseDown: function onMouseDown(event) {
 
+                    if (this.creating) {
+                        return;
+                    }
+
                     /**
                      * Used for determining if the user clicked with the right mouse button.
                      *
@@ -1512,10 +1516,7 @@
                 latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.
-            var lineData = [this.fromPoint, {
-                x: point.x,
-                y: point.y
-            }];
+            var lineData = [this.fromPoint, new L.Point(point.x, point.y)];
 
             // Draw SVG line based on the last movement of the mouse's position.
             this.svg.append('path').classed('drawing-line', true).attr('d', this.lineFunction(lineData))

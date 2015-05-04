@@ -4,6 +4,10 @@
     margin: 0;
 }
 
+body, html {
+    overflow: hidden;
+}
+
 a {
     color: dodgerblue;
 }

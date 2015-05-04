@@ -24,6 +24,12 @@
         multiplePolygons: true,
 
         /**
+         * @property events
+         * @type {Array}
+         */
+        events: [],
+
+        /**
          * @property simplifyPolygon
          * @type {Boolean}
          */
@@ -147,6 +153,15 @@
                 link: 'https://github.com/Wildhoney/ConcaveHull'
             }
 
+        },
+
+        /**
+         * @method setEvents
+         * @param {Array} eventMap
+         * @return {void}
+         */
+        setEvents: function setEvents(eventMap) {
+            this.events = eventMap;
         },
 
         /**
