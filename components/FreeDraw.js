@@ -329,7 +329,10 @@
             // Attach all of the events.
             this.map.on('mousedown touchstart', this.bindEvents().mouseDown);
             this.map.on('mousemove touchmove', this.bindEvents().mouseMove);
-            this.map.on('mousedown touchstart', this.bindEvents().mouseUpLeave);
+            this.map.on('mouseup   touchend', this.bindEvents().mouseUpLeave);
+
+            var element = $window.document.getElementsByTagName('body')[0];
+            element.addEventListener('mouseleave', this.bindEvents().mouseUpLeave);
 
             // Set the default mode.
             this.setMode(this.mode);
@@ -346,7 +349,10 @@
 
             this.map.off('mousedown touchstart', this.bindEvents().mouseDown);
             this.map.off('mousemove touchmove', this.bindEvents().mouseMove);
-            this.map.off('mousedown touchstart', this.bindEvents().mouseUpLeave);
+            this.map.off('mouseup   touchend', this.bindEvents().mouseUpLeave);
+
+            var element = $window.document.getElementsByTagName('body')[0];
+            element.removeEventListener('mouseleave', this.bindEvents().mouseUpLeave);
 
         },
 
@@ -1403,49 +1409,36 @@
                  */
                 mouseUpLeave: function mouseUpLeave() {
 
-                    /**
-                     * @method completeAction
-                     * @return {void}
-                     */
-                    var completeAction = function completeAction() {
+                    if (this.movingEdge) {
 
-                        if (this.movingEdge) {
+                        if (!this.options.boundariesAfterEdit) {
 
-                            if (!this.options.boundariesAfterEdit) {
+                            // Notify of a boundary update immediately after editing one edge.
+                            this.notifyBoundaries();
 
-                                // Notify of a boundary update immediately after editing one edge.
-                                this.notifyBoundaries();
+                        } else {
 
-                            } else {
-
-                                // Change the option so that the boundaries will be invoked once the edit mode
-                                // has been exited.
-                                this.boundaryUpdateRequired = true;
-
-                            }
-
-                            // Recreate the polygon boundaries because we may have straight edges now.
-                            this.trimPolygonEdges(this.movingEdge._freedraw.polygon);
-                            this.mergePolygons();
-                            this.movingEdge = null;
-
-                            if (this.options.memoriseEachEdge) {
-                                this.memory.save(this.getPolygons(true));
-                            }
-
-                            setTimeout(this.emitPolygonCount.bind(this), this.RECOUNT_TIMEOUT);
-                            return;
+                            // Change the option so that the boundaries will be invoked once the edit mode
+                            // has been exited.
+                            this.boundaryUpdateRequired = true;
 
                         }
 
-                        this._createMouseUp();
+                        // Recreate the polygon boundaries because we may have straight edges now.
+                        this.trimPolygonEdges(this.movingEdge._freedraw.polygon);
+                        this.mergePolygons();
+                        this.movingEdge = null;
 
-                    }.bind(this);
+                        if (this.options.memoriseEachEdge) {
+                            this.memory.save(this.getPolygons(true));
+                        }
 
-                    this.map.on('mouseup touchend', completeAction);
+                        setTimeout(this.emitPolygonCount.bind(this), this.RECOUNT_TIMEOUT);
+                        return;
 
-                    var element = $window.document.getElementsByTagName('body')[0];
-                    element.onmouseleave = completeAction;
+                    }
+
+                    this._createMouseUp();
 
                 }.bind(this)
 
