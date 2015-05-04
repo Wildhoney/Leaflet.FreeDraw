@@ -103,6 +103,20 @@ module.exports = function(grunt) {
                 dest: 'example/js/vendor/<%= pkg.name %>',
                 filter: 'isFile'
             }
+        },
+
+        /**
+         * @property watch
+         * @type {Object}
+         */
+        watch: {
+            scripts: {
+                files: ['components/*.js'],
+                tasks: ['build'],
+                options: {
+                    spawn: false
+                }
+            }
         }
 
     });
@@ -114,6 +128,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('build', ['concat', 'uglify', 'copy', 'compress']);
     grunt.registerTask('test', ['jshint', 'jasmine', 'karma']);
