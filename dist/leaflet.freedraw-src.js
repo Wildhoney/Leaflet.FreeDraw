@@ -327,9 +327,12 @@
             this.createD3();
 
             // Attach all of the events.
-            this.map.on('mousedown touchstart', this.bindEvents().mouseDown);
-            this.map.on('mousemove touchmove', this.bindEvents().mouseMove);
-            this.map.on('mousedown touchstart', this.bindEvents().mouseUpLeave);
+            this.map.on(this.options.events[0] || 'mousedown touchstart', this.bindEvents().mouseDown);
+            this.map.on(this.options.events[1] || 'mousemove touchmove', this.bindEvents().mouseMove);
+            this.map.on(this.options.events[2] || 'mouseup   touchend', this.bindEvents().mouseUpLeave);
+
+            var element = $window.document.getElementsByTagName('body')[0];
+            element.addEventListener('mouseleave', this.bindEvents().mouseUpLeave);
 
             // Set the default mode.
             this.setMode(this.mode);
@@ -344,9 +347,12 @@
 
             this._clearPolygons();
 
-            this.map.off('mousedown touchstart', this.bindEvents().mouseDown);
-            this.map.off('mousemove touchmove', this.bindEvents().mouseMove);
-            this.map.off('mousedown touchstart', this.bindEvents().mouseUpLeave);
+            this.map.off(this.options.events[0] || 'mousedown touchstart', this.bindEvents().mouseDown);
+            this.map.off(this.options.events[1] || 'mousemove touchmove', this.bindEvents().mouseMove);
+            this.map.off(this.options.events[2] || 'mousedown touchstart', this.bindEvents().mouseUpLeave);
+
+            var element = $window.document.getElementsByTagName('body')[0];
+            element.removeEventListener('mouseleave', this.bindEvents().mouseUpLeave);
 
         },
 
@@ -1335,6 +1341,10 @@
                  */
                 mouseDown: function onMouseDown(event) {
 
+                    if (this.creating) {
+                        return;
+                    }
+
                     /**
                      * Used for determining if the user clicked with the right mouse button.
                      *
@@ -1403,49 +1413,36 @@
                  */
                 mouseUpLeave: function mouseUpLeave() {
 
-                    /**
-                     * @method completeAction
-                     * @return {void}
-                     */
-                    var completeAction = function completeAction() {
+                    if (this.movingEdge) {
 
-                        if (this.movingEdge) {
+                        if (!this.options.boundariesAfterEdit) {
 
-                            if (!this.options.boundariesAfterEdit) {
+                            // Notify of a boundary update immediately after editing one edge.
+                            this.notifyBoundaries();
 
-                                // Notify of a boundary update immediately after editing one edge.
-                                this.notifyBoundaries();
+                        } else {
 
-                            } else {
-
-                                // Change the option so that the boundaries will be invoked once the edit mode
-                                // has been exited.
-                                this.boundaryUpdateRequired = true;
-
-                            }
-
-                            // Recreate the polygon boundaries because we may have straight edges now.
-                            this.trimPolygonEdges(this.movingEdge._freedraw.polygon);
-                            this.mergePolygons();
-                            this.movingEdge = null;
-
-                            if (this.options.memoriseEachEdge) {
-                                this.memory.save(this.getPolygons(true));
-                            }
-
-                            setTimeout(this.emitPolygonCount.bind(this), this.RECOUNT_TIMEOUT);
-                            return;
+                            // Change the option so that the boundaries will be invoked once the edit mode
+                            // has been exited.
+                            this.boundaryUpdateRequired = true;
 
                         }
 
-                        this._createMouseUp();
+                        // Recreate the polygon boundaries because we may have straight edges now.
+                        this.trimPolygonEdges(this.movingEdge._freedraw.polygon);
+                        this.mergePolygons();
+                        this.movingEdge = null;
 
-                    }.bind(this);
+                        if (this.options.memoriseEachEdge) {
+                            this.memory.save(this.getPolygons(true));
+                        }
 
-                    this.map.on('mouseup touchend', completeAction);
+                        setTimeout(this.emitPolygonCount.bind(this), this.RECOUNT_TIMEOUT);
+                        return;
 
-                    var element = $window.document.getElementsByTagName('body')[0];
-                    element.onmouseleave = completeAction;
+                    }
+
+                    this._createMouseUp();
 
                 }.bind(this)
 
@@ -1512,10 +1509,7 @@
                 latLng = this.map.containerPointToLatLng(point);
 
             // Line data that is fed into the D3 line function we defined earlier.
-            var lineData = [this.fromPoint, {
-                x: point.x,
-                y: point.y
-            }];
+            var lineData = [this.fromPoint, new L.Point(point.x, point.y)];
 
             // Draw SVG line based on the last movement of the mouse's position.
             this.svg.append('path').classed('drawing-line', true).attr('d', this.lineFunction(lineData))
@@ -1882,6 +1876,12 @@
         multiplePolygons: true,
 
         /**
+         * @property events
+         * @type {Array}
+         */
+        events: [],
+
+        /**
          * @property simplifyPolygon
          * @type {Boolean}
          */
@@ -2005,6 +2005,15 @@
                 link: 'https://github.com/Wildhoney/ConcaveHull'
             }
 
+        },
+
+        /**
+         * @method setEvents
+         * @param {Array} eventMap
+         * @return {void}
+         */
+        setEvents: function setEvents(eventMap) {
+            this.events = eventMap;
         },
 
         /**

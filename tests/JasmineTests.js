@@ -323,7 +323,7 @@ describe('Leaflet FreeDraw', function() {
         event.initMouseEvent('mousemove', true, true, window, 1, 12, 345, mouseX, mouseY, false, false, true, false, 0, null);
         freeDraw.map._container.dispatchEvent(event);
         expect(freeDraw.latLngs.length).toEqual(2);
-
+        //
         mouseX = 0;
         mouseY = 100;
         event  = document.createEvent('MouseEvents');
