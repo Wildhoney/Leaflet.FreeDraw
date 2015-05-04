@@ -60,12 +60,6 @@
         attemptMerge: true,
 
         /**
-         * @property svgClassName
-         * @type {String}
-         */
-        svgClassName: 'tracer',
-
-        /**
          * @property smoothFactor
          * @type {Number}
          */
@@ -76,6 +70,18 @@
          * @type {String}
          */
         iconClassName: 'polygon-elbow',
+
+        /**
+         * @property svgClassName
+         * @type {String}
+         */
+        svgClassName: 'tracer',
+
+        /**
+         * @property polygonClassName
+         * @type {String}
+         */
+        polygonClassName: 'tracer',
 
         /**
          * @property deleteExitMode
@@ -259,6 +265,15 @@
          */
         setIconClassName: function setIconClassName(className) {
             this.iconClassName = className;
+        },
+
+        /**
+         * @method setPolygonClassName
+         * @param className {String}
+         * @return {void}
+         */
+        setPolygonClassName: function setPolygonClassName(className) {
+            this.polygonClassName = className;
         },
 
         /**
