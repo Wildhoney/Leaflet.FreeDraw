@@ -101,7 +101,7 @@
                     mode: scope.mode
                 });
 
-                freeDraw.options.setEvents(['mousedown', 'mouseup', 'dblclick']);
+                //freeDraw.options.setEvents(['mousedown', 'mouseup', 'dblclick']);
 
                 //freeDraw.options.setHullAlgorithm(false);
                 //freeDraw.options.allowMultiplePolygons(false);
