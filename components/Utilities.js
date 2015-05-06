@@ -63,7 +63,36 @@
 
             return groups;
 
+        },
+        
+        /**
+         * Responsible to generating JSON object for geo-spatial queries.
+         *
+         * @method getMySQLPolygons
+         * @param latLngGroups {L.LatLng[]}
+         * @returns {Hash}
+         */
+        
+        getJsonPolygons: function getJsonPolygons(latLngGroups) {
+
+            var groups = [];
+
+            latLngGroups.forEach(function forEach(latLngs) {
+
+                var group = [];
+
+                latLngs.forEach(function forEach(latLng) {
+                    group.push('[' + latLng.lng + ', ' + latLng.lat + ']');
+                });
+
+                groups.push('{ "latLngs": [' + group.join(', ') + '] }');
+
+            });
+
+            return groups;
+
         }
+
 
     };
 
