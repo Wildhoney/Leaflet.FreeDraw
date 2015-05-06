@@ -102,7 +102,6 @@
                 });
 
                 //freeDraw.options.setEvents(['mousedown', 'mouseup', 'dblclick']);
-
                 //freeDraw.options.setHullAlgorithm(false);
                 //freeDraw.options.allowMultiplePolygons(false);
                 //freeDraw.options.destroyPreviousPolygon(true);
