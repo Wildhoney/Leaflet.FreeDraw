@@ -23,7 +23,7 @@
     "tests"
   ],
   "dependencies": {
-    "d3": "~3.4.11",
+    "d3": ">=3.4.11",
     "leaflet": "~0.7.3",
     "graham_scan": "~1.0.2",
     "concavehull": "~0.1.2",
