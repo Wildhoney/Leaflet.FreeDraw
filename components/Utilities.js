@@ -112,9 +112,11 @@
 
             });
 
+            /* jshint ignore:start */
             var model = { geo_polygon: {} };
             model.geo_polygon[propertyName] = { points: groups };
             return JSON.stringify(model);
+            /* jshint ignore:end */
 
         }
 
