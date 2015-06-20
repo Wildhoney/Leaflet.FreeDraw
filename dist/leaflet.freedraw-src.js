@@ -2252,9 +2252,8 @@
          *
          * @method getMySQLPolygons
          * @param latLngGroups {L.LatLng[]}
-         * @returns {Hash}
+         * @return {Object}
          */
-        
         getJsonPolygons: function getJsonPolygons(latLngGroups) {
 
             var groups = [];
@@ -2273,8 +2272,35 @@
 
             return groups;
 
-        }
+        },
 
+        /**
+         * @method getMySQLPolygons
+         * @param latLngGroups {L.LatLng[]}
+         * @param [propertyName="location"] {String}
+         * @return {Object}
+         */
+        getElasticSearchPolygons: function getElasticSearchPolygons(latLngGroups, propertyName) {
+
+            propertyName = propertyName || 'location';
+
+            var groups = [];
+
+            latLngGroups.forEach(function forEach(latLngs) {
+
+                latLngs.forEach(function forEach(latLng) {
+                    groups.push({ lat: latLng.lat, lng: latLng.lng });
+                });
+
+            });
+
+            /* jshint ignore:start */
+            var model = { geo_polygon: {} };
+            model.geo_polygon[propertyName] = { points: groups };
+            return JSON.stringify(model);
+            /* jshint ignore:end */
+
+        }
 
     };
 
