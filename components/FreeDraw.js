@@ -1569,9 +1569,10 @@
 
                 // Automatically exit the user from the creation mode.
                 this.setMode(this.mode ^ L.FreeDraw.MODES.CREATE);
-                this.setMapPermissions('enable');
-
+                
             }
+            // moved outside condition to try to fix locked zoom after poly creation
+            this.setMapPermissions('enable');
 
         }
 
