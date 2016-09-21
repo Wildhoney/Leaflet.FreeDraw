@@ -200,7 +200,7 @@
             this.setMode(options.mode || this.mode);
             this.options.setPathClipperPadding(100);
 
-            L.FreeDraw.Polygon = L.Polygon.extend({
+            this.Polygon = L.Polygon.extend({
                 options: {
                     className: "leaflet-freedraw-polygon"
                 }
@@ -781,7 +781,7 @@
             }
 
             var className = this.options.polygonClassName,
-                polygon   = new L.FreeDraw.Polygon(latLngs, {
+                polygon   = new this.Polygon(latLngs, {
                 smoothFactor: this.options.smoothFactor,
                 className: Array.isArray(className) ? className[this.polygons.length] : className
             });
@@ -924,7 +924,7 @@
 
                         // Ensure we're dealing with a <g> node that was created by FreeDraw (...an SVG group element).
                         if (polygon._container && polygon._container.tagName.toUpperCase() === GROUP_TAG) {
-                            if (polygon instanceof L.FreeDraw.Polygon) {
+                            if (polygon instanceof this.Polygon) {
                                 polygons.push(polygon);
                             }
                         }
@@ -938,7 +938,7 @@
                 this.edges.forEach(function forEach(edge) {
 
                     if (polygons.indexOf(edge._freedraw.polygon) === -1) {
-                        if (edge._freedraw.polygon instanceof L.FreeDraw.Polygon) {
+                        if (edge._freedraw.polygon instanceof this.Polygon) {
                             polygons.push(edge._freedraw.polygon);
                         }
                     }
