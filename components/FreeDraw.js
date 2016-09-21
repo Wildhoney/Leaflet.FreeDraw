@@ -1178,7 +1178,7 @@
             } else {
                 // Perform a recount on the polygon count, since some may be removed because of their
                 // areas being too small.
-                polygons = this.getPolygons(true),
+                polygons = this.getPolygons(true);
                 allEmpty = polygons.every(function every(polygon) {
 
                     var path = polygon._container.lastChild.getAttribute('d').trim();
