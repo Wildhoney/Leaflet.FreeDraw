@@ -198,7 +198,10 @@
             this.element = options.element || null;
 
             this.setMode(options.mode || this.mode);
-            this.options.setPathClipperPadding(100);
+            
+            if (!window.L_PREFER_CANVAS) {
+                this.options.setPathClipperPadding(100);
+            }
 
             L.FreeDraw.Polygon = L.Polygon.extend({
                 options: {
@@ -1166,17 +1169,23 @@
              * @constant EMPTY_PATH
              * @type {String}
              */
-            var EMPTY_PATH = 'M0 0';
-
-            // Perform a recount on the polygon count, since some may be removed because of their
-            // areas being too small.
-            var polygons = this.getPolygons(true),
+            var EMPTY_PATH = 'M0 0',
+                polygons,
+                allEmpty;
+                
+            if (window.L_PREFER_CANVAS) {
+                polygons = this.polygons || [];
+            } else {
+                // Perform a recount on the polygon count, since some may be removed because of their
+                // areas being too small.
+                polygons = this.getPolygons(true);
                 allEmpty = polygons.every(function every(polygon) {
 
                     var path = polygon._container.lastChild.getAttribute('d').trim();
                     return path === EMPTY_PATH;
 
                 });
+            }
 
             if (allEmpty) {
 
