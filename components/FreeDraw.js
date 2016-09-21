@@ -199,6 +199,9 @@
 
             this.setMode(options.mode || this.mode);
             this.options.setPathClipperPadding(100);
+            
+            // leaflet polygon options, e.g. color, weight, etc.
+            this.options.polygon = options.polygon || {};
 
             L.FreeDraw.Polygon = L.Polygon.extend({
                 options: {
@@ -781,10 +784,11 @@
             }
 
             var className = this.options.polygonClassName,
-                polygon   = new L.FreeDraw.Polygon(latLngs, {
-                smoothFactor: this.options.smoothFactor,
-                className: Array.isArray(className) ? className[this.polygons.length] : className
-            });
+                polygon_options = L.extend({}, {
+                    smoothFactor: this.options.smoothFactor,
+                    className: Array.isArray(className) ? className[this.polygons.length] : className    
+                }, this.options.polygon),
+                polygon = new L.FreeDraw.Polygon(latLngs, polygon_options);
 
             // Handle the click event on a polygon.
             polygon.on('click', function onClick(event) {
