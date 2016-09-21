@@ -784,11 +784,11 @@
             }
 
             var className = this.options.polygonClassName,
-                polygon_options = L.extend({}, {
+                polygonOptions = L.extend({}, {
                     smoothFactor: this.options.smoothFactor,
                     className: Array.isArray(className) ? className[this.polygons.length] : className    
                 }, this.options.polygon),
-                polygon = new L.FreeDraw.Polygon(latLngs, polygon_options);
+                polygon = new L.FreeDraw.Polygon(latLngs, polygonOptions);
 
             // Handle the click event on a polygon.
             polygon.on('click', function onClick(event) {
