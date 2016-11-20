@@ -1,5 +1,6 @@
 import { DivIcon, DomEvent } from 'leaflet';
-import { createPolygonFor } from '../FreeDraw';
+import { createPolygonFor, polygons } from '../FreeDraw';
+import mergePolygons from './Merge';
 
 /**
  * @method createEdges
@@ -85,6 +86,9 @@ export default function createEdges(map, polygon, options) {
                     createPolygonFor(map, latLngs, options);
 
                 }
+
+                // Merge the polygons if the options allow.
+                options.mergePolygons && mergePolygons(map, Array.from(polygons.get(map)), options);
 
             }
 

@@ -4,7 +4,14 @@ import createEdges from './helpers/Edges';
 import handlePolygonClick from './helpers/Polygon';
 import simplifyPolygon from './helpers/Simplify';
 import concavePolygon from './helpers/Concave';
+import mergePolygons from './helpers/Merge';
 import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from './helpers/Flags';
+
+/**
+ * @constant polygons
+ * @type {WeakMap}
+ */
+export const polygons = new WeakMap();
 
 /**
  * @constant defaultOptions
@@ -15,6 +22,7 @@ const defaultOptions = {
     smoothFactor: 5,
     elbowDistance: 10,
     simplifyFactor: 1.1,
+    mergePolygons: true,
     concavePolygon: true,
     recreatePostEdit: false
 };
@@ -30,15 +38,16 @@ export const edgesKey = Symbol('freedraw/edges');
  * @param {Object} map
  * @param {Array} latLngs
  * @param {Object} [options = defaultOptions]
- * @return {Object}
+ * @param {Boolean} [preventModifications = false]
+ * @return {Array}
  */
-export const createPolygonFor = (map, latLngs, options = defaultOptions) => {
+export const createPolygonFor = (map, latLngs, options = defaultOptions, preventModifications = false) => {
 
     // Apply the concave hull algorithm to the created polygon if the options allow.
-    const concavedLatLngs = options.concavePolygon ? concavePolygon(map, latLngs) : [latLngs];
+    const concavedLatLngs = !preventModifications && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
 
     // Simplify the polygon before adding it to the map.
-    return simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
+    const addedPolygons = simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
         const polygon = new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
             ...defaultOptions, ...options, className: 'leaflet-polygon'
@@ -57,6 +66,24 @@ export const createPolygonFor = (map, latLngs, options = defaultOptions) => {
 
     });
 
+    // Append the current polygon to the master set.
+    addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
+
+    if (!preventModifications && polygons.get(map).size > 1 && options.mergePolygons) {
+
+        // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
+        const addedMergedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);
+
+        // Clear the set, and added all of the merged polygons into the master set.
+        polygons.get(map).clear();
+        addedMergedPolygons.forEach(polygon => polygons.get(map).add(polygon));
+
+        return addedMergedPolygons;
+
+    }
+
+    return addedPolygons;
+
 };
 
 /**
@@ -69,6 +96,9 @@ export const removePolygonFor = (map, polygon) => {
     // Remove polygon and all of its associated edges.
     map.removeLayer(polygon);
     edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge));
+
+    // Remove polygon from the master set.
+    polygons.get(map).delete(polygon);
 
 };
 
@@ -91,6 +121,9 @@ export default class extends FeatureGroup {
      */
     onAdd(map) {
 
+        // Add the item to the map.
+        polygons.set(map, new Set());
+
         // Disable the map if the `CREATE` mode is a default flag.
         this.options.mode & CREATE && map.dragging.disable();
 
@@ -99,6 +132,18 @@ export default class extends FeatureGroup {
 
         // Set the mouse events.
         this.listenForEvents(map, svg, this.options);
+
+    }
+
+    /**
+     * @method onRemove
+     * @param {Object} map
+     * @return {void}
+     */
+    onRemove(map) {
+
+        // Remove the item from the map.
+        polygons.delete(map);
 
     }
 

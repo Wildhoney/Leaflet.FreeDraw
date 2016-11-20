@@ -21,7 +21,7 @@ export default (map, latLngs, { simplifyFactor }) => {
  * @param {LatLng[]} latLngs
  * @return {Array}
  */
-const latLngsToClipperPoints = (map, latLngs) => {
+export const latLngsToClipperPoints = (map, latLngs) => {
 
     return latLngs.map(latLng => {
         const point = map.latLngToLayerPoint(latLng);
