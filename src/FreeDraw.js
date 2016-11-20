@@ -4,20 +4,19 @@ import createEdges from './helpers/Edges';
 import handlePolygonClick from './helpers/Polygon';
 import simplifyPolygon from './helpers/Simplify';
 import concavePolygon from './helpers/Concave';
-import { CREATE, EDIT, DELETE, APPEND } from './helpers/Flags';
+import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from './helpers/Flags';
 
 /**
  * @constant defaultOptions
  * @type {Object}
  */
 const defaultOptions = {
-    mode: CREATE,
+    mode: ALL,
     smoothFactor: 5,
     elbowDistance: 10,
     simplifyFactor: 1.1,
     concavePolygon: true,
-    polygonClassName: 'fd-polygon',
-    recreatePostEdit: false,
+    recreatePostEdit: false
 };
 
 /**
@@ -42,7 +41,7 @@ export const createPolygonFor = (map, latLngs, options = defaultOptions) => {
     return simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
         const polygon = new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
-            ...defaultOptions, ...options
+            ...defaultOptions, ...options, className: 'leaflet-polygon'
         }).addTo(map);
 
         // Attach the edges to the polygon.
@@ -189,7 +188,7 @@ export default class extends FeatureGroup {
         const lineData = [fromPoint, toPoint];
 
         // Draw SVG line based on the last movement of the mouse's position.
-        svg.append('path').classed('drawing-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none');
+        svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none');
 
         // Recursively invoke the generator function, passing in the current to point as the from point.
         yield *this.createPath(map, svg, toPoint);
@@ -198,4 +197,4 @@ export default class extends FeatureGroup {
 
 }
 
-export { CREATE, EDIT, DELETE, APPEND } from './helpers/Flags';
+export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from './helpers/Flags';

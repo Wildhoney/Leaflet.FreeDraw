@@ -15,12 +15,22 @@ svg.free-draw {
     pointer-events: none;
 }
 
-svg.free-draw path.drawing-line {
+path.leaflet-line {
     stroke: #D7217E;
     stroke-width: 2;
 }
 
-div.leaflet-marker-icon {
-    background-color: white;
+div.leaflet-edge {
+    background-color: #D7217E;
+    box-shadow: 0 0 0 2px white, 0 0 10px rgba(0, 0, 0, .35);
+    border: 5px solid #D7217E;
     border-radius: 50%;
+    cursor: move;
+    outline: none;
+}
+
+path.leaflet-polygon {
+    fill: #D7217E;
+    stroke: #D7217E;
+    fill-opacity: .75;
 }
