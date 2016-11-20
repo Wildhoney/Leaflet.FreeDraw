@@ -1,1 +1,1 @@
-web: node example/server/default.js
+web: babel example/server/default.js | node
