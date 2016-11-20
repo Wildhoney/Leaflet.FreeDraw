@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import createEdges from './helpers/Edges';
 import handlePolygonClick from './helpers/Polygon';
 import simplifyPolygon from './helpers/Simplify';
+import concavePolygon from './helpers/Concave';
 import { CREATE, EDIT, DELETE, APPEND } from './helpers/Flags';
 
 /**
@@ -14,7 +15,7 @@ const defaultOptions = {
     smoothFactor: 5,
     elbowDistance: 10,
     simplifyFactor: 1.1,
-    simplifyPolygon: true,
+    concavePolygon: true,
     polygonClassName: 'fd-polygon',
     recreatePostEdit: false,
 };
@@ -34,20 +35,28 @@ export const edgesKey = Symbol('freedraw/edges');
  */
 export const createPolygonFor = (map, latLngs, options = defaultOptions) => {
 
-    const polygon = new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
-        ...defaultOptions, ...options
-    }).addTo(map);
+    // Apply the concave hull algorithm to the created polygon if the options allow.
+    const concavedLatLngs = options.concavePolygon ? concavePolygon(map, latLngs) : [latLngs];
 
-    // Attach the edges to the polygon.
-    polygon[edgesKey] = createEdges(map, polygon, options);
+    // Simplify the polygon before adding it to the map.
+    return simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
-    // Disable the propagation when you click on the marker.
-    DomEvent.disableClickPropagation(polygon);
+        const polygon = new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
+            ...defaultOptions, ...options
+        }).addTo(map);
 
-    // Yield the click handler to the `handlePolygonClick` function.
-    polygon.on('click', handlePolygonClick(map, polygon, options));
+        // Attach the edges to the polygon.
+        polygon[edgesKey] = createEdges(map, polygon, options);
 
-    return polygon;
+        // Disable the propagation when you click on the marker.
+        DomEvent.disableClickPropagation(polygon);
+
+        // Yield the click handler to the `handlePolygonClick` function.
+        polygon.on('click', handlePolygonClick(map, polygon, options));
+
+        return polygon;
+
+    });
 
 };
 
