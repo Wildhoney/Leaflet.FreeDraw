@@ -1,4 +1,4 @@
-import { FeatureGroup } from 'leaflet';
+import { FeatureGroup, Polygon } from 'leaflet';
 import * as d3 from 'd3';
 import { CREATE, EDIT, DELETE } from './helpers/Flags';
 
@@ -10,16 +10,20 @@ const defaultOptions = {
     mode: CREATE
 };
 
+const defaultOptionsForCreate = {
+    smoothFactor: 5,
+    className: 'fd-polygon'
+};
+
 /**
  * @method createPolygonFor
  * @param {Object} map
  * @param {Array} latLngs
- * @return {void}
+ * @param {Object} [options = defaultOptionsForCreate]
+ * @return {Object}
  */
-export const createPolygonFor = (map, latLngs) => {
-
-    console.log(map, latLngs);
-
+export const createPolygonFor = (map, latLngs, options = defaultOptionsForCreate) => {
+    return new Polygon(latLngs, { ...defaultOptionsForCreate, ...options }).addTo(map);
 };
 
 export default class extends FeatureGroup {
