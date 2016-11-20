@@ -1,6 +1,6 @@
 import { FeatureGroup, Polygon } from 'leaflet';
 import * as d3 from 'd3';
-import { Clipper, PolyFillType } from 'clipper-lib';
+import simplifyPolygon from './helpers/Simplify';
 import { CREATE, EDIT, DELETE } from './helpers/Flags';
 
 /**
@@ -11,6 +11,7 @@ const defaultOptions = {
     mode: CREATE,
     smoothFactor: 5,
     simplifyPolygon: true,
+    simplifyFactor: 1.1,
     polygonClassName: 'fd-polygon'
 };
 
@@ -23,58 +24,9 @@ const defaultOptions = {
  */
 export const createPolygonFor = (map, latLngs, options = defaultOptions) => {
 
-    const updatedLatLngs = options.simplifyPolygon ? (() => {
-
-        const points = Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), 1.1);
-        const polygons = Clipper.SimplifyPolygon(points, PolyFillType.pftNonZero);
-
-        return clipperPolygonsToLatLngs(map, polygons);
-
-    })() : latLngs;
-
-    return new Polygon(updatedLatLngs, { ...defaultOptions, ...options }).addTo(map);
-
-};
-
-/**
- * @method latLngsToClipperPoints
- * @param {Object} map
- * @param {LatLng[]} latLngs
- * @return {Array}
- */
-const latLngsToClipperPoints = (map, latLngs) => {
-
-    return latLngs.map(latLng => {
-        const point = map.latLngToLayerPoint(latLng);
-        return { X: point.x, Y: point.y };
-    });
-
-};
-
-/**
- * @method clipperPolygonsToLatLngs
- * @param {Object} map
- * @param {Array} polygons
- * @return {Array}
- */
-const clipperPolygonsToLatLngs = (map, polygons) => {
-
-    const latLngs = [];
-
-    polygons.forEach(function forEach(polygon) {
-
-        polygon.forEach(function polygons(point) {
-
-            point = L.point(point.X, point.Y);
-
-            const latLng = map.layerPointToLatLng(point);
-            latLngs.push(latLng);
-
-        });
-
-    });
-
-    return latLngs;
+    return new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
+        ...defaultOptions, ...options
+    }).addTo(map);
 
 };
 
