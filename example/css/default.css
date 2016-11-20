@@ -12,9 +12,15 @@ section.map {
 svg.free-draw {
     position: relative;
     z-index: 1001;
+    pointer-events: none;
 }
 
 svg.free-draw path.drawing-line {
     stroke: #D7217E;
     stroke-width: 2;
+}
+
+div.leaflet-marker-icon {
+    background-color: white;
+    border-radius: 50%;
 }

@@ -1,5 +1,6 @@
 import { FeatureGroup, Polygon } from 'leaflet';
 import * as d3 from 'd3';
+import createEdges from './helpers/Edges';
 import simplifyPolygon from './helpers/Simplify';
 import { CREATE, EDIT, DELETE } from './helpers/Flags';
 
@@ -12,7 +13,8 @@ const defaultOptions = {
     smoothFactor: 5,
     simplifyPolygon: true,
     simplifyFactor: 1.1,
-    polygonClassName: 'fd-polygon'
+    polygonClassName: 'fd-polygon',
+    recreatePostEdit: false
 };
 
 /**
@@ -24,9 +26,15 @@ const defaultOptions = {
  */
 export const createPolygonFor = (map, latLngs, options = defaultOptions) => {
 
-    return new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
+    const polygon = new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
         ...defaultOptions, ...options
-    }).addTo(map);
+    });
+
+    polygon.addTo(map);
+
+    createEdges(map, polygon, options);
+
+    return polygon;
 
 };
 
@@ -70,6 +78,8 @@ export default class extends FeatureGroup {
     listenForEvents(map, svg, options) {
 
         map.on('mousedown', function mouseDown(event) {
+
+            console.log('map');
 
             /**
              * @constant latLngs
