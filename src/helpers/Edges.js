@@ -6,7 +6,7 @@ import { createPolygonFor } from '../FreeDraw';
  * @param {Object} map
  * @param {L.Polygon} polygon
  * @param {Object} options
- * @return {Observable}
+ * @return {Array}
  */
 export default function createEdges(map, polygon, options) {
 
@@ -16,13 +16,6 @@ export default function createEdges(map, polygon, options) {
      * @return {Array}
      */
     const fetchLayerPoints = polygon => {
-
-        // if (!polygon._parts[0]) {
-        //
-        //     // We don't care for polygons that are not in the viewport.
-        //     return [];
-        //
-        // }
 
         return polygon._latlngs[0].map(latLng => {
             return map.latLngToLayerPoint(latLng);
@@ -35,7 +28,6 @@ export default function createEdges(map, polygon, options) {
         const icon = new DivIcon();
         const latLng = map.layerPointToLatLng(point);
         const marker = L.marker(latLng, { icon }).addTo(map);
-        const polygonId = polygon['_leaflet_id'];
 
         // Disable the propagation when you click on the marker.
         DomEvent.disableClickPropagation(marker);
@@ -107,5 +99,7 @@ export default function createEdges(map, polygon, options) {
         return marker;
 
     });
+
+    return markers;
 
 }

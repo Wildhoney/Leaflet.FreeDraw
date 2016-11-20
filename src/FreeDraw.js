@@ -1,8 +1,9 @@
-import { FeatureGroup, Polygon } from 'leaflet';
+import { FeatureGroup, Polygon, DomEvent } from 'leaflet';
 import * as d3 from 'd3';
 import createEdges from './helpers/Edges';
+import handlePolygonClick from './helpers/Polygon';
 import simplifyPolygon from './helpers/Simplify';
-import { CREATE, EDIT, DELETE } from './helpers/Flags';
+import { CREATE, EDIT, DELETE, APPEND } from './helpers/Flags';
 
 /**
  * @constant defaultOptions
@@ -11,11 +12,18 @@ import { CREATE, EDIT, DELETE } from './helpers/Flags';
 const defaultOptions = {
     mode: CREATE,
     smoothFactor: 5,
-    simplifyPolygon: true,
+    elbowDistance: 10,
     simplifyFactor: 1.1,
+    simplifyPolygon: true,
     polygonClassName: 'fd-polygon',
-    recreatePostEdit: false
+    recreatePostEdit: false,
 };
+
+/**
+ * @constant edgesKey
+ * @type {Symbol}
+ */
+export const edgesKey = Symbol('freedraw/edges');
 
 /**
  * @method createPolygonFor
@@ -28,13 +36,31 @@ export const createPolygonFor = (map, latLngs, options = defaultOptions) => {
 
     const polygon = new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
         ...defaultOptions, ...options
-    });
+    }).addTo(map);
 
-    polygon.addTo(map);
+    // Attach the edges to the polygon.
+    polygon[edgesKey] = createEdges(map, polygon, options);
 
-    createEdges(map, polygon, options);
+    // Disable the propagation when you click on the marker.
+    DomEvent.disableClickPropagation(polygon);
+
+    // Yield the click handler to the `handlePolygonClick` function.
+    polygon.on('click', handlePolygonClick(map, polygon, options));
 
     return polygon;
+
+};
+
+/**
+ * @method removePolygonFor
+ * @param {Object} map
+ * @param polygon
+ */
+export const removePolygonFor = (map, polygon) => {
+
+    // Remove polygon and all of its associated edges.
+    map.removeLayer(polygon);
+    edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge));
 
 };
 
@@ -78,8 +104,6 @@ export default class extends FeatureGroup {
     listenForEvents(map, svg, options) {
 
         map.on('mousedown', function mouseDown(event) {
-
-            console.log('map');
 
             /**
              * @constant latLngs
@@ -165,4 +189,4 @@ export default class extends FeatureGroup {
 
 }
 
-export { CREATE, EDIT, DELETE } from './helpers/Flags';
+export { CREATE, EDIT, DELETE, APPEND } from './helpers/Flags';

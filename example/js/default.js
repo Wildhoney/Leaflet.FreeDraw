@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import FreeDraw, { CREATE, EDIT } from '../../src/FreeDraw';
+import FreeDraw, { CREATE, EDIT, DELETE, APPEND } from '../../src/FreeDraw';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://tiles.lyrk.org/lr/{z}/{x}/{y}?apikey=f2ae86661a4e487bbced29a755799884').addTo(map);
 
     const freeDraw = new FreeDraw({
-        mode: CREATE | EDIT
+        mode: CREATE | EDIT | APPEND
     });
 
     map.addLayer(freeDraw);
