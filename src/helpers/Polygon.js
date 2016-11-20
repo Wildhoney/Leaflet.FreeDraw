@@ -4,7 +4,7 @@ import createEdges from './Edges';
 import { DELETE, APPEND } from './Flags';
 
 /**
- * @method appendEdge
+ * @method appendEdgeFor
  * @param {Object} map
  * @param {Object} polygon
  * @param {Array} parts
@@ -14,7 +14,7 @@ import { DELETE, APPEND } from './Flags';
  * @param {Object} options
  * @return {void}
  */
-const appendEdge = (map, polygon, parts, newPoint, startPoint, endPoint, options) => {
+const appendEdgeFor = (map, polygon, parts, newPoint, startPoint, endPoint, options) => {
 
     const latLngs = parts.reduce((accumulator, point, index) => {
 
@@ -61,7 +61,7 @@ export default (map, polygon, options) => {
         const newPoint = map.mouseEventToContainerPoint(event.originalEvent);
         const parts = polygon.getLatLngs()[0].map(latLng => map.latLngToContainerPoint(latLng));
 
-        const { startPoint, endPoint } = parts.reduce((accumulator, point, index) => {
+        const { startPoint, endPoint, lowestDistance } = parts.reduce((accumulator, point, index) => {
 
             const startPoint = point;
             const endPoint = parts[index + 1] || parts[0];
@@ -84,20 +84,24 @@ export default (map, polygon, options) => {
         const isAppend = !!(options.mode & APPEND);
         const isDeleteAndAppend = !!(options.mode & DELETE && options.mode & APPEND);
 
+        // Partially apply the remove and append functions.
+        const removePolygon = () => removePolygonFor(map, polygon);
+        const appendEdge = () => appendEdgeFor(map, polygon, parts, newPoint, startPoint, endPoint, options);
+
         switch (true) {
 
             // If both modes DELETE and APPEND are active then we need to do a little work to determine
             // which action to take based on where the user clicked on the polygon.
             case isDeleteAndAppend:
-                console.log('Both');
+                lowestDistance > options.elbowDistance ? removePolygon() : appendEdge();
                 break;
 
             case isDelete:
-                removePolygonFor(map, polygon);
+                removePolygon();
                 break;
 
             case isAppend:
-                appendEdge(map, polygon, parts, newPoint, startPoint, endPoint, options);
+                appendEdge();
                 break;
 
         }
