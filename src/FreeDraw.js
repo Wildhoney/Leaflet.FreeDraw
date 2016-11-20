@@ -1,5 +1,6 @@
 import { FeatureGroup, Polygon } from 'leaflet';
 import * as d3 from 'd3';
+import { Clipper, PolyFillType } from 'clipper-lib';
 import { CREATE, EDIT, DELETE } from './helpers/Flags';
 
 /**
@@ -7,23 +8,74 @@ import { CREATE, EDIT, DELETE } from './helpers/Flags';
  * @type {Object}
  */
 const defaultOptions = {
-    mode: CREATE
-};
-
-const defaultOptionsForCreate = {
+    mode: CREATE,
     smoothFactor: 5,
-    className: 'fd-polygon'
+    simplifyPolygon: true,
+    polygonClassName: 'fd-polygon'
 };
 
 /**
  * @method createPolygonFor
  * @param {Object} map
  * @param {Array} latLngs
- * @param {Object} [options = defaultOptionsForCreate]
+ * @param {Object} [options = defaultOptions]
  * @return {Object}
  */
-export const createPolygonFor = (map, latLngs, options = defaultOptionsForCreate) => {
-    return new Polygon(latLngs, { ...defaultOptionsForCreate, ...options }).addTo(map);
+export const createPolygonFor = (map, latLngs, options = defaultOptions) => {
+
+    const updatedLatLngs = options.simplifyPolygon ? (() => {
+
+        const points = Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), 1.1);
+        const polygons = Clipper.SimplifyPolygon(points, PolyFillType.pftNonZero);
+
+        return clipperPolygonsToLatLngs(map, polygons);
+
+    })() : latLngs;
+
+    return new Polygon(updatedLatLngs, { ...defaultOptions, ...options }).addTo(map);
+
+};
+
+/**
+ * @method latLngsToClipperPoints
+ * @param {Object} map
+ * @param {LatLng[]} latLngs
+ * @return {Array}
+ */
+const latLngsToClipperPoints = (map, latLngs) => {
+
+    return latLngs.map(latLng => {
+        const point = map.latLngToLayerPoint(latLng);
+        return { X: point.x, Y: point.y };
+    });
+
+};
+
+/**
+ * @method clipperPolygonsToLatLngs
+ * @param {Object} map
+ * @param {Array} polygons
+ * @return {Array}
+ */
+const clipperPolygonsToLatLngs = (map, polygons) => {
+
+    const latLngs = [];
+
+    polygons.forEach(function forEach(polygon) {
+
+        polygon.forEach(function polygons(point) {
+
+            point = L.point(point.X, point.Y);
+
+            const latLng = map.layerPointToLatLng(point);
+            latLngs.push(latLng);
+
+        });
+
+    });
+
+    return latLngs;
+
 };
 
 export default class extends FeatureGroup {
@@ -52,7 +104,7 @@ export default class extends FeatureGroup {
         const svg = d3.select(map._container).append('svg').classed('free-draw', true).attr('width', '100%').attr('height', '100%');
 
         // Set the mouse events.
-        this.listenForEvents(map, svg);
+        this.listenForEvents(map, svg, this.options);
 
     }
 
@@ -60,9 +112,10 @@ export default class extends FeatureGroup {
      * @method listenForEvents
      * @param {Object} map
      * @param {Object} svg
+     * @param {Object} options
      * @return {void}
      */
-    listenForEvents(map, svg) {
+    listenForEvents(map, svg, options) {
 
         map.on('mousedown', function mouseDown(event) {
 
@@ -114,7 +167,7 @@ export default class extends FeatureGroup {
 
                 // ...And finally if we have any lat longs in our set then we can attempt to
                 // create the polygon.
-                latLngs.size && createPolygonFor(map, Array.from(latLngs));
+                latLngs.size && createPolygonFor(map, Array.from(latLngs), options);
 
             });
 
