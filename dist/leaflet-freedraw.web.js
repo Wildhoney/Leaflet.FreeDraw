@@ -1416,7 +1416,7 @@ exports.f = {}.propertyIsEnumerable;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ALL = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.removePolygonFor = exports.createPolygonFor = exports.edgesKey = exports.polygons = undefined;
+exports.ALL = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.polygons = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1524,14 +1524,14 @@ var defaultOptions = {
 var edgesKey = exports.edgesKey = Symbol('freedraw/edges');
 
 /**
- * @method createPolygonFor
+ * @method createFor
  * @param {Object} map
  * @param {Array} latLngs
  * @param {Object} [options = defaultOptions]
  * @param {Boolean} [preventModifications = false]
  * @return {Array}
  */
-var createPolygonFor = exports.createPolygonFor = function createPolygonFor(map, latLngs) {
+var createFor = exports.createFor = function createFor(map, latLngs) {
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultOptions;
     var preventModifications = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
@@ -1580,11 +1580,12 @@ var createPolygonFor = exports.createPolygonFor = function createPolygonFor(map,
 };
 
 /**
- * @method removePolygonFor
+ * @method removeFor
  * @param {Object} map
- * @param polygon
+ * @param {Object} polygon
+ * @return {void}
  */
-var removePolygonFor = exports.removePolygonFor = function removePolygonFor(map, polygon) {
+var removeFor = exports.removeFor = function removeFor(map, polygon) {
 
     // Remove polygon and all of its associated edges.
     map.removeLayer(polygon);
@@ -1594,6 +1595,17 @@ var removePolygonFor = exports.removePolygonFor = function removePolygonFor(map,
 
     // Remove polygon from the master set.
     polygons.get(map).delete(polygon);
+};
+
+/**
+ * @method clearFor
+ * @param {Object} map
+ * @return {void}
+ */
+var clearFor = exports.clearFor = function clearFor(map) {
+    polygons.get(function (polygon) {
+        return removeFor(map, polygon);
+    });
 };
 
 var _class = function (_FeatureGroup) {
@@ -1714,7 +1726,7 @@ var _class = function (_FeatureGroup) {
 
                     // ...And finally if we have any lat longs in our set then we can attempt to
                     // create the polygon.
-                    latLngs.size && createPolygonFor(map, Array.from(latLngs), options);
+                    latLngs.size && createFor(map, Array.from(latLngs), options);
                 });
             }.bind(this));
         }
@@ -16068,7 +16080,7 @@ function createEdges(map, polygon, options) {
                     var latLngs = markers.map(function (marker) {
                         return marker.getLatLng();
                     });
-                    (0, _FreeDraw.createPolygonFor)(map, latLngs, options);
+                    (0, _FreeDraw.createFor)(map, latLngs, options);
                 }
 
                 // Merge the polygons if the options allow.
@@ -16179,7 +16191,7 @@ exports.default = function (map, polygons, options) {
 
     // Remove all of the existing polygons on the map.
     polygons.forEach(function (polygon) {
-        return (0, _FreeDraw.removePolygonFor)(map, polygon);
+        return (0, _FreeDraw.removeFor)(map, polygon);
     });
 
     return (0, _ramda.flatten)(mergePolygons.map(function (polygon) {
@@ -16190,7 +16202,7 @@ exports.default = function (map, polygons, options) {
 
         // Create the polygon, but this time prevent any merging, otherwise we'll find ourselves
         // in an infinite loop.
-        return (0, _FreeDraw.createPolygonFor)(map, latLngs, options, true);
+        return (0, _FreeDraw.createFor)(map, latLngs, options, true);
     }));
 };
 
@@ -24114,7 +24126,7 @@ exports.default = function (map, polygon, options) {
 
         // Partially apply the remove and append functions.
         var removePolygon = function removePolygon() {
-            return (0, _FreeDraw.removePolygonFor)(map, polygon);
+            return (0, _FreeDraw.removeFor)(map, polygon);
         };
         var appendEdge = function appendEdge() {
             return appendEdgeFor(map, polygon, parts, newPoint, startPoint, endPoint, options);
