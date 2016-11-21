@@ -5,7 +5,7 @@ import handlePolygonClick from './helpers/Polygon';
 import simplifyPolygon from './helpers/Simplify';
 import concavePolygon from './helpers/Concave';
 import mergePolygons from './helpers/Merge';
-import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from './helpers/Flags';
+import { VIEW, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from './helpers/Flags';
 
 /**
  * @constant polygons
@@ -26,6 +26,12 @@ const defaultOptions = {
     concavePolygon: true,
     recreatePostEdit: false
 };
+
+/**
+ * @constant modesKey
+ * @type {Symbol}
+ */
+export const modesKey = Symbol('freedraw/modes');
 
 /**
  * @constant edgesKey
@@ -112,6 +118,22 @@ export const clearFor = map => {
     polygons.get(polygon => removeFor(map, polygon));
 };
 
+/**
+ * @method setModeFor
+ * @param {Object} map
+ * @param {Number} mode
+ * @return {void}
+ */
+export const setModeFor = (map, mode) => {
+
+    // Update the mode.
+    map[modesKey] = mode;
+
+    // Disable the map if the `CREATE` mode is a default flag.
+    mode & CREATE ? map.dragging.disable() : map.dragging.enable();
+
+};
+
 export default class extends FeatureGroup {
 
     /**
@@ -131,11 +153,14 @@ export default class extends FeatureGroup {
      */
     onAdd(map) {
 
+        // Memorise the map instance.
+        this.map = map;
+
         // Add the item to the map.
         polygons.set(map, new Set());
 
-        // Disable the map if the `CREATE` mode is a default flag.
-        this.options.mode & CREATE && map.dragging.disable();
+        // Set the initial mode.
+        setModeFor(map, this.options.mode);
 
         // Instantiate the SVG layer that sits on top of the map.
         const svg = d3.select(map._container).append('svg').classed('free-draw', true).attr('width', '100%').attr('height', '100%');
@@ -143,6 +168,15 @@ export default class extends FeatureGroup {
         // Set the mouse events.
         this.listenForEvents(map, svg, this.options);
 
+    }
+
+    /**
+     * @method setMode
+     * @param {Number} mode
+     * @return {void}
+     */
+    setMode(mode) {
+        return setModeFor(this.map, mode);
     }
 
     /**
@@ -167,6 +201,14 @@ export default class extends FeatureGroup {
     listenForEvents(map, svg, options) {
 
         map.on('mousedown', function mouseDown(event) {
+
+            if (!(map[modesKey] & CREATE)) {
+
+                // Polygons can only be created when the mode includes create.
+                map.off('mousedown', mouseDown);
+                return;
+
+            }
 
             /**
              * @constant latLngs
@@ -252,4 +294,4 @@ export default class extends FeatureGroup {
 
 }
 
-export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from './helpers/Flags';
+export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, VIEW, ALL } from './helpers/Flags';

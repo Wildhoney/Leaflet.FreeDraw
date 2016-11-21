@@ -1,5 +1,6 @@
 import { DivIcon, DomEvent } from 'leaflet';
-import { createFor, polygons } from '../FreeDraw';
+import { createFor, polygons, modesKey } from '../FreeDraw';
+import { CREATE, EDIT } from './Flags';
 import mergePolygons from './Merge';
 
 /**
@@ -35,6 +36,17 @@ export default function createEdges(map, polygon, options) {
 
         marker.on('mousedown', function mouseDown() {
 
+            if (!(map[modesKey] & EDIT)) {
+
+                // Polygons can only be created when the mode includes edit.
+                map.off('mousedown', mouseDown);
+                return;
+
+            }
+
+            // Disable the map dragging as otherwise it's difficult to reposition the edge.
+            map.dragging.disable();
+
             /**
              * @method mouseMove
              * @param {Object} event
@@ -64,6 +76,13 @@ export default function createEdges(map, polygon, options) {
              * @return {void}
              */
             function mouseUp() {
+
+                if (!(map[modesKey] & CREATE)) {
+
+                    // Re-enable the dragging of the map only if created mode is not enabled.
+                    map.dragging.enable();
+
+                }
 
                 // Stop listening to the events.
                 map.off('mouseup', mouseUp);

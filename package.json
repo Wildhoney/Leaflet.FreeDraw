@@ -32,6 +32,7 @@
     "leaflet": "^1.0.1"
   },
   "devDependencies": {
+    "angular": "^1.6.0-rc.1",
     "babel-cli": "^6.18.0",
     "babel-loader": "^6.2.8",
     "babel-polyfill": "^6.16.0",
