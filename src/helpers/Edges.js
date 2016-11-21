@@ -1,5 +1,5 @@
 import { DivIcon, DomEvent } from 'leaflet';
-import { createPolygonFor, polygons } from '../FreeDraw';
+import { createFor, polygons } from '../FreeDraw';
 import mergePolygons from './Merge';
 
 /**
@@ -83,7 +83,7 @@ export default function createEdges(map, polygon, options) {
 
                     // ...And then recreate the polygon using the updated lat longs.
                     const latLngs = markers.map(marker => marker.getLatLng());
-                    createPolygonFor(map, latLngs, options);
+                    createFor(map, latLngs, options);
 
                 }
 

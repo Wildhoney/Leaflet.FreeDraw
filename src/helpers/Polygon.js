@@ -1,5 +1,5 @@
 import { LineUtil, Point } from 'leaflet';
-import { removePolygonFor, edgesKey } from '../FreeDraw';
+import { removeFor, edgesKey } from '../FreeDraw';
 import createEdges from './Edges';
 import { DELETE, APPEND } from './Flags';
 
@@ -85,7 +85,7 @@ export default (map, polygon, options) => {
         const isDeleteAndAppend = !!(options.mode & DELETE && options.mode & APPEND);
 
         // Partially apply the remove and append functions.
-        const removePolygon = () => removePolygonFor(map, polygon);
+        const removePolygon = () => removeFor(map, polygon);
         const appendEdge = () => appendEdgeFor(map, polygon, parts, newPoint, startPoint, endPoint, options);
 
         switch (true) {

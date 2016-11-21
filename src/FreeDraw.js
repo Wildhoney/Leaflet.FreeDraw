@@ -34,14 +34,14 @@ const defaultOptions = {
 export const edgesKey = Symbol('freedraw/edges');
 
 /**
- * @method createPolygonFor
+ * @method createFor
  * @param {Object} map
  * @param {Array} latLngs
  * @param {Object} [options = defaultOptions]
  * @param {Boolean} [preventModifications = false]
  * @return {Array}
  */
-export const createPolygonFor = (map, latLngs, options = defaultOptions, preventModifications = false) => {
+export const createFor = (map, latLngs, options = defaultOptions, preventModifications = false) => {
 
     // Apply the concave hull algorithm to the created polygon if the options allow.
     const concavedLatLngs = !preventModifications && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
@@ -87,11 +87,12 @@ export const createPolygonFor = (map, latLngs, options = defaultOptions, prevent
 };
 
 /**
- * @method removePolygonFor
+ * @method removeFor
  * @param {Object} map
- * @param polygon
+ * @param {Object} polygon
+ * @return {void}
  */
-export const removePolygonFor = (map, polygon) => {
+export const removeFor = (map, polygon) => {
 
     // Remove polygon and all of its associated edges.
     map.removeLayer(polygon);
@@ -100,6 +101,15 @@ export const removePolygonFor = (map, polygon) => {
     // Remove polygon from the master set.
     polygons.get(map).delete(polygon);
 
+};
+
+/**
+ * @method clearFor
+ * @param {Object} map
+ * @return {void}
+ */
+export const clearFor = map => {
+    polygons.get(polygon => removeFor(map, polygon));
 };
 
 export default class extends FeatureGroup {
@@ -206,7 +216,7 @@ export default class extends FeatureGroup {
 
                 // ...And finally if we have any lat longs in our set then we can attempt to
                 // create the polygon.
-                latLngs.size && createPolygonFor(map, Array.from(latLngs), options);
+                latLngs.size && createFor(map, Array.from(latLngs), options);
 
             });
 

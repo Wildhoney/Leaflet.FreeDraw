@@ -2,7 +2,7 @@ import { Point } from 'leaflet';
 import { flatten } from 'ramda';
 import { latLngsToClipperPoints } from './Simplify';
 import { Clipper, PolyFillType } from 'clipper-lib';
-import { createPolygonFor, removePolygonFor } from '../FreeDraw';
+import { createFor, removeFor } from '../FreeDraw';
 
 /**
  * @param {Object} map
@@ -21,7 +21,7 @@ export default (map, polygons, options) => {
     const mergePolygons = Clipper.SimplifyPolygons(points, PolyFillType.pftNonZero);
 
     // Remove all of the existing polygons on the map.
-    polygons.forEach(polygon => removePolygonFor(map, polygon));
+    polygons.forEach(polygon => removeFor(map, polygon));
 
     return flatten(mergePolygons.map(polygon => {
 
@@ -31,7 +31,7 @@ export default (map, polygons, options) => {
 
         // Create the polygon, but this time prevent any merging, otherwise we'll find ourselves
         // in an infinite loop.
-        return createPolygonFor(map, latLngs, options, true);
+        return createFor(map, latLngs, options, true);
 
     }));
 
