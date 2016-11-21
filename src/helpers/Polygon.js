@@ -1,5 +1,5 @@
 import { LineUtil, Point } from 'leaflet';
-import { removeFor, edgesKey } from '../FreeDraw';
+import { removeFor, edgesKey, modesKey } from '../FreeDraw';
 import createEdges from './Edges';
 import { DELETE, APPEND } from './Flags';
 
@@ -80,9 +80,10 @@ export default (map, polygon, options) => {
         }, { lowestDistance: Infinity, startPoint: new Point(), endPoint: Point() });
 
         // Setup the conditions for the switch statement to make the cases clearer.
-        const isDelete = !!(options.mode & DELETE);
-        const isAppend = !!(options.mode & APPEND);
-        const isDeleteAndAppend = !!(options.mode & DELETE && options.mode & APPEND);
+        const mode = map[modesKey];
+        const isDelete = !!(mode & DELETE);
+        const isAppend = !!(mode & APPEND);
+        const isDeleteAndAppend = !!(mode & DELETE && mode & APPEND);
 
         // Partially apply the remove and append functions.
         const removePolygon = () => removeFor(map, polygon);

@@ -27,7 +27,8 @@ export default function createEdges(map, polygon, options) {
 
     const markers = fetchLayerPoints(polygon).map(point => {
 
-        const icon = new DivIcon({ className: 'leaflet-edge' });
+        const mode = map[modesKey];
+        const icon = new DivIcon({ className: `leaflet-edge ${mode & EDIT ? '' : 'disabled'}`.trim() });
         const latLng = map.layerPointToLatLng(point);
         const marker = L.marker(latLng, { icon }).addTo(map);
 

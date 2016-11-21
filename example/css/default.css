@@ -135,12 +135,17 @@ path.leaflet-line {
 }
 
 div.leaflet-edge {
-    background-color: #D7217E;
+    background-color: #d7217e;
     box-shadow: 0 0 0 2px white, 0 0 10px rgba(0, 0, 0, .35);
-    border: 5px solid #D7217E;
     border-radius: 50%;
     cursor: move;
     outline: none;
+    transition: background-color .25s;
+}
+
+div.leaflet-edge.disabled {
+    pointer-events: none;
+    background-color: #bbb;
 }
 
 path.leaflet-polygon {

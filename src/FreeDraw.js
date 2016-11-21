@@ -1,4 +1,4 @@
-import { FeatureGroup, Polygon, DomEvent } from 'leaflet';
+import { FeatureGroup, Polygon, DomEvent, DomUtil } from 'leaflet';
 import * as d3 from 'd3';
 import createEdges from './helpers/Edges';
 import handlePolygonClick from './helpers/Polygon';
@@ -131,6 +131,17 @@ export const setModeFor = (map, mode) => {
 
     // Disable the map if the `CREATE` mode is a default flag.
     mode & CREATE ? map.dragging.disable() : map.dragging.enable();
+
+    Array.from(polygons.get(map)).forEach(polygon => {
+
+        polygon[edgesKey].forEach(edge => {
+
+            // Modify the edge class names based on whether edit mode is enabled.
+            mode & EDIT ? DomUtil.removeClass(edge._icon, 'disabled') : DomUtil.addClass(edge._icon, 'disabled');
+
+        });
+
+    });
 
 };
 
