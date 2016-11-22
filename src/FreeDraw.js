@@ -207,6 +207,32 @@ export default class extends FeatureGroup {
     }
 
     /**
+     * @method createPolygon
+     * @param {LatLng[]} latLngs
+     * @return {Object}
+     */
+    createPolygon(latLngs) {
+        return createFor(this.map, latLngs, this.options);
+    }
+
+    /**
+     * @method removePolygon
+     * @param {Object} polygon
+     * @return {void}
+     */
+    removePolygon(polygon) {
+        removeFor(this.map, polygon);
+    }
+
+    /**
+     * @method clearPolygons
+     * @return {void}
+     */
+    clearPolygons() {
+        clearFor(this.map);
+    }
+
+    /**
      * @method setMode
      * @param {Number} mode
      * @return {void}
