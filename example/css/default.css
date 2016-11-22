@@ -149,5 +149,6 @@ div.leaflet-edge.disabled {
 path.leaflet-polygon {
     fill: #D7217E;
     stroke: #D7217E;
+    stroke-width: 1px;
     fill-opacity: .75;
 }

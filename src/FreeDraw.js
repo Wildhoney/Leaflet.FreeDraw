@@ -331,7 +331,7 @@ export default class extends FeatureGroup {
                 map.off('mouseup', mouseUp);
                 map.off('mousedown', mouseDown);
                 map.off('mousemove', mouseMove);
-                'body' in document && document.body.removeEventListener('mouseup', mouseUp);
+                'body' in document && document.body.removeEventListener('mouseleave', mouseUp);
 
                 // Clear the SVG canvas.
                 svg.selectAll('*').remove();
