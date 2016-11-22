@@ -1665,6 +1665,21 @@ var setModeFor = exports.setModeFor = function setModeFor(map, mode) {
             mode & _Flags.EDIT ? _leaflet.DomUtil.removeClass(edge._icon, 'disabled') : _leaflet.DomUtil.addClass(edge._icon, 'disabled');
         });
     });
+
+    // Remove all of the current class names so we can begin from scratch.
+    var mapNode = map._container;
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-create');
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-edit');
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-delete');
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-view');
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-append');
+
+    // Apply the class names to the mapNode container depending on the current mode.
+    mode & _Flags.CREATE && _leaflet.DomUtil.addClass(mapNode, 'mode-create');
+    mode & _Flags.EDIT && _leaflet.DomUtil.addClass(mapNode, 'mode-edit');
+    mode & _Flags.DELETE && _leaflet.DomUtil.addClass(mapNode, 'mode-delete');
+    mode & _Flags.VIEW && _leaflet.DomUtil.addClass(mapNode, 'mode-view');
+    mode & _Flags.APPEND && _leaflet.DomUtil.addClass(mapNode, 'mode-append');
 };
 
 var _class = function (_FeatureGroup) {
@@ -1707,10 +1722,45 @@ var _class = function (_FeatureGroup) {
             setModeFor(map, this.options.mode);
 
             // Instantiate the SVG layer that sits on top of the map.
-            var svg = d3.select(map._container).append('svg').classed('free-draw', true).attr('width', '100%').attr('height', '100%');
+            var svg = d3.select(map._container).append('svg').classed('free-draw', true).attr('width', '100%').attr('height', '100%').style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
 
             // Set the mouse events.
             this.listenForEvents(map, svg, this.options);
+        }
+
+        /**
+         * @method createPolygon
+         * @param {LatLng[]} latLngs
+         * @return {Object}
+         */
+
+    }, {
+        key: 'createPolygon',
+        value: function createPolygon(latLngs) {
+            return createFor(this.map, latLngs, this.options);
+        }
+
+        /**
+         * @method removePolygon
+         * @param {Object} polygon
+         * @return {void}
+         */
+
+    }, {
+        key: 'removePolygon',
+        value: function removePolygon(polygon) {
+            removeFor(this.map, polygon);
+        }
+
+        /**
+         * @method clearPolygons
+         * @return {void}
+         */
+
+    }, {
+        key: 'clearPolygons',
+        value: function clearPolygons() {
+            clearFor(this.map);
         }
 
         /**
