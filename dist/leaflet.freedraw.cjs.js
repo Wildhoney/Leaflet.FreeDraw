@@ -1416,7 +1416,7 @@ exports.f = {}.propertyIsEnumerable;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ALL = exports.VIEW = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.setModeFor = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.modesKey = exports.polygons = undefined;
+exports.ALL = exports.VIEW = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.setModeFor = exports.triggerFor = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.modesKey = exports.polygons = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1503,6 +1503,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 /**
  * @constant polygons
  * @type {WeakMap}
@@ -1517,7 +1519,7 @@ var defaultOptions = {
     mode: _Flags.ALL,
     smoothFactor: 5,
     elbowDistance: 10,
-    simplifyFactor: 1.1,
+    simplifyFactor: 2,
     mergePolygons: true,
     concavePolygon: true,
     recreatePostEdit: false
@@ -1621,6 +1623,24 @@ var clearFor = exports.clearFor = function clearFor(map) {
 };
 
 /**
+ * @method triggerFor
+ * @param {Object} map
+ * @return {void}
+ */
+var triggerFor = exports.triggerFor = function triggerFor(map) {
+
+    var latLngs = Array.from(polygons.get(map)).map(function (polygon) {
+
+        // Ensure the polygon has been closed.
+        var latLngs = polygon.getLatLngs();
+        return [].concat(_toConsumableArray(latLngs[0]), [latLngs[0][0]]);
+    });
+
+    // Fire the current set of lat lngs.
+    map.fire('markers', { latLngs: latLngs });
+};
+
+/**
  * @method setModeFor
  * @param {Object} map
  * @param {Number} mode
@@ -1630,6 +1650,9 @@ var setModeFor = exports.setModeFor = function setModeFor(map, mode) {
 
     // Update the mode.
     map[modesKey] = mode;
+
+    // Fire the updated mode.
+    map.fire('mode', { mode: mode });
 
     // Disable the map if the `CREATE` mode is a default flag.
     mode & _Flags.CREATE ? map.dragging.disable() : map.dragging.enable();
@@ -1785,6 +1808,9 @@ var _class = function (_FeatureGroup) {
                     // ...And finally if we have any lat longs in our set then we can attempt to
                     // create the polygon.
                     latLngs.size && createFor(map, Array.from(latLngs), options);
+
+                    // Finally invoke the callback for the polygon regions.
+                    triggerFor(map);
                 });
             }.bind(this));
         }
@@ -16212,8 +16238,14 @@ function createEdges(map, polygon, options) {
                     (0, _FreeDraw.createFor)(map, latLngs, options);
                 }
 
-                // Merge the polygons if the options allow.
-                options.mergePolygons && (0, _Merge2.default)(map, Array.from(_FreeDraw.polygons.get(map)), options);
+                // Merge the polygons if the options allow using a two-pass approach as this yields the better results.
+                var merge = function merge() {
+                    return (0, _Merge2.default)(map, Array.from(_FreeDraw.polygons.get(map)), options);
+                };
+                options.mergePolygons && merge() && merge();
+
+                // Trigger the event for having modified the edges of a polygon.
+                (0, _FreeDraw.triggerFor)(map);
             }
 
             // Cleanup the mouse events when the user releases the mouse button.
@@ -24227,6 +24259,9 @@ exports.default = function (map, polygon, options) {
                 break;
 
         }
+
+        // Trigger the event for having deleted a polygon or appended an edge.
+        (isDelete || isAppend) && (0, _FreeDraw.triggerFor)(map);
     };
 };
 
