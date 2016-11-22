@@ -21,7 +21,7 @@ const defaultOptions = {
     mode: ALL,
     smoothFactor: 5,
     elbowDistance: 10,
-    simplifyFactor: 1.1,
+    simplifyFactor: 2,
     mergePolygons: true,
     concavePolygon: true,
     recreatePostEdit: false
@@ -119,6 +119,26 @@ export const clearFor = map => {
 };
 
 /**
+ * @method triggerFor
+ * @param {Object} map
+ * @return {void}
+ */
+export const triggerFor = map => {
+
+    const latLngs = Array.from(polygons.get(map)).map(polygon => {
+
+        // Ensure the polygon has been closed.
+        const latLngs = polygon.getLatLngs();
+        return [ ...latLngs[0], latLngs[0][0] ];
+
+    });
+
+    // Fire the current set of lat lngs.
+    map.fire('markers', { latLngs });
+
+};
+
+/**
  * @method setModeFor
  * @param {Object} map
  * @param {Number} mode
@@ -128,6 +148,9 @@ export const setModeFor = (map, mode) => {
 
     // Update the mode.
     map[modesKey] = mode;
+
+    // Fire the updated mode.
+    map.fire('mode', { mode });
 
     // Disable the map if the `CREATE` mode is a default flag.
     mode & CREATE ? map.dragging.disable() : map.dragging.enable();
@@ -270,6 +293,9 @@ export default class extends FeatureGroup {
                 // ...And finally if we have any lat longs in our set then we can attempt to
                 // create the polygon.
                 latLngs.size && createFor(map, Array.from(latLngs), options);
+
+                // Finally invoke the callback for the polygon regions.
+                triggerFor(map);
 
             });
 

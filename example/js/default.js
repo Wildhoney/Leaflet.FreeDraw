@@ -40,6 +40,15 @@ module('leafletApp', []).controller('MapController', function MapController($sco
     };
 
     /**
+     * @method stopPropagation
+     * @param {Object} event
+     * @return {void}
+     */
+    $scope.stopPropagation = function stopPropagation(event) {
+        event.stopPropagation();
+    };
+
+    /**
      * @method toggleMode
      * @param mode {Number}
      * @return {void}
@@ -116,7 +125,7 @@ module('leafletApp', []).controller('MapController', function MapController($sco
                 mode: scope.mode
             });
 
-            freeDraw.on('mode', function modeReceived(eventData) {
+            map.on('mode', function modeReceived(eventData) {
 
                 scope.mode = eventData.mode;
 
@@ -130,10 +139,10 @@ module('leafletApp', []).controller('MapController', function MapController($sco
                 freeDraw.setMode(mode);
             });
 
-            freeDraw.on('markers', function getMarkers(eventData) {
+            map.on('markers', function getMarkers(eventData) {
 
                 // Output the lat/lngs in the MySQL multi-polygon format.
-                // console.log(L.FreeDraw.Utilities.getMySQLMultiPolygon(eventData.latLngs));
+                console.log('LatLngs:', eventData.latLngs, 'Polygons:', eventData.latLngs.length);
 
             });
 

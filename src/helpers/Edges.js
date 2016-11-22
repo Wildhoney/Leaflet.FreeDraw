@@ -1,5 +1,5 @@
 import { DivIcon, DomEvent } from 'leaflet';
-import { createFor, polygons, modesKey } from '../FreeDraw';
+import { createFor, polygons, triggerFor, modesKey } from '../FreeDraw';
 import { CREATE, EDIT } from './Flags';
 import mergePolygons from './Merge';
 
@@ -107,8 +107,12 @@ export default function createEdges(map, polygon, options) {
 
                 }
 
-                // Merge the polygons if the options allow.
-                options.mergePolygons && mergePolygons(map, Array.from(polygons.get(map)), options);
+                // Merge the polygons if the options allow using a two-pass approach as this yields the better results.
+                const merge = () => mergePolygons(map, Array.from(polygons.get(map)), options);
+                options.mergePolygons && merge() && merge();
+
+                // Trigger the event for having modified the edges of a polygon.
+                triggerFor(map);
 
             }
 
