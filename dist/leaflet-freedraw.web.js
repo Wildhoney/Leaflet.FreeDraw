@@ -1801,7 +1801,7 @@ var _class = function (_FeatureGroup) {
         key: 'listenForEvents',
         value: function listenForEvents(map, svg, options) {
 
-            map.on('mousedown', function mouseDown(event) {
+            map.on('mousedown touchstart', function mouseDown(event) {
 
                 if (!(map[modesKey] & _Flags.CREATE)) {
 
@@ -1839,15 +1839,19 @@ var _class = function (_FeatureGroup) {
                 };
 
                 // Create the path when the user moves their cursor.
-                map.on('mousemove', mouseMove);
+                map.on('mousemove touchmove', mouseMove);
 
-                // Clear up the events when the user releases the mouse.
-                map.on('mouseup', function mouseUp() {
+                /**
+                 * @method mouseUp
+                 * @return {void}
+                 */
+                var mouseUp = function mouseUp() {
 
                     // Stop listening to the events.
                     map.off('mouseup', mouseUp);
                     map.off('mousedown', mouseDown);
                     map.off('mousemove', mouseMove);
+                    'body' in document && document.body.removeEventListener('mouseleave', mouseUp);
 
                     // Clear the SVG canvas.
                     svg.selectAll('*').remove();
@@ -1861,7 +1865,11 @@ var _class = function (_FeatureGroup) {
 
                     // Finally invoke the callback for the polygon regions.
                     triggerFor(map);
-                });
+                };
+
+                // Clear up the events when the user releases the mouse.
+                map.on('mouseup touchend', mouseUp);
+                'body' in document && document.body.addEventListener('mouseleave', mouseUp);
             }.bind(this));
         }
 
