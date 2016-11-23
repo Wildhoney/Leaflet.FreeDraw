@@ -258,6 +258,14 @@ export default class extends FeatureGroup {
     }
 
     /**
+     * @method getMode
+     * @return {Number}
+     */
+    getMode() {
+        return this.map[modesKey];
+    }
+
+    /**
      * @method onRemove
      * @param {Object} map
      * @return {void}

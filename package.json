@@ -9,6 +9,7 @@
     "watch": "npm run css && webpack --watch --config webpack.example.js",
     "start": "npm i && npm run dev && babel example/server/default.js | node",
     "css": "cp node_modules/leaflet/dist/leaflet.css ./example/css",
+    "spec": "ava",
     "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js"
   },
   "repository": {
@@ -33,17 +34,33 @@
   },
   "devDependencies": {
     "angular": "^1.6.0-rc.1",
+    "ava": "^0.17.0",
     "babel-cli": "^6.18.0",
     "babel-loader": "^6.2.8",
     "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-3": "^6.17.0",
+    "babel-register": "^6.18.0",
     "clipper-lib": "^6.2.1",
     "concavehull": "^0.1.6",
     "d3": "^4.3.0",
     "express": "^4.14.0",
+    "jsdom": "^9.8.3",
     "opener": "^1.4.2",
     "ramda": "^0.22.1",
+    "sinon": "^1.17.6",
     "webpack": "^2.1.0-beta.27"
+  },
+  "ava": {
+    "files": [
+      "tests/*.test.js",
+      "tests/**/*.test.js"
+    ],
+    "babel": "inherit",
+    "require": [
+      "babel-polyfill",
+      "babel-register",
+      "./tests/helpers/BrowserEnv.js"
+    ]
   }
 }
