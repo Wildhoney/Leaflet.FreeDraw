@@ -44,7 +44,7 @@ const clipperPolygonsToLatLngs = (map, polygons) => {
 export default (map, latLngs, { simplifyFactor }) => {
 
     const points = Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), simplifyFactor);
-    const polygons = Clipper.SimplifyPolygon(points, PolyFillType);
+    const polygons = Clipper.SimplifyPolygon(points, PolyFillType.pftNonZero);
 
     return clipperPolygonsToLatLngs(map, polygons);
 
