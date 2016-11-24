@@ -1,4 +1,4 @@
-import { DivIcon, DomEvent } from 'leaflet';
+import { DivIcon, Marker, DomEvent } from 'leaflet';
 import { createFor, polygons, triggerFor, modesKey } from '../FreeDraw';
 import { CREATE, EDIT } from './Flags';
 import mergePolygons from './Merge';
@@ -30,7 +30,7 @@ export default function createEdges(map, polygon, options) {
         const mode = map[modesKey];
         const icon = new DivIcon({ className: `leaflet-edge ${mode & EDIT ? '' : 'disabled'}`.trim() });
         const latLng = map.layerPointToLatLng(point);
-        const marker = L.marker(latLng, { icon }).addTo(map);
+        const marker = new Marker(latLng, { icon }).addTo(map);
 
         // Disable the propagation when you click on the marker.
         DomEvent.disableClickPropagation(marker);

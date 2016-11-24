@@ -9,7 +9,7 @@ import { Clipper, PolyFillType } from 'clipper-lib';
 export default (map, latLngs, { simplifyFactor }) => {
 
     const points = Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), simplifyFactor);
-    const polygons = Clipper.SimplifyPolygon(points, PolyFillType.pftNonZero);
+    const polygons = Clipper.SimplifyPolygon(points, PolyFillType);
 
     return clipperPolygonsToLatLngs(map, polygons);
 

@@ -44,18 +44,18 @@ export const edgesKey = Symbol('freedraw/edges');
  * @param {Object} map
  * @param {Array} latLngs
  * @param {Object} [options = defaultOptions]
- * @param {Boolean} [preventModifications = false]
+ * @param {Boolean} [preventMutations = false]
  * @return {Array}
  */
-export const createFor = (map, latLngs, options = defaultOptions, preventModifications = false) => {
+export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false) => {
 
     // Apply the concave hull algorithm to the created polygon if the options allow.
-    const concavedLatLngs = !preventModifications && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
+    const concavedLatLngs = !preventMutations && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
 
     // Simplify the polygon before adding it to the map.
-    const addedPolygons = simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
+    const addedPolygons = map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
-        const polygon = new Polygon(options.simplifyPolygon ? simplifyPolygon(map, latLngs, options) : latLngs, {
+        const polygon = new Polygon(options.simplifyPolygon ? map.simplifyPolygon(map, latLngs, options) : latLngs, {
             ...defaultOptions, ...options, className: 'leaflet-polygon'
         }).addTo(map);
 
@@ -75,7 +75,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventModific
     // Append the current polygon to the master set.
     addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
 
-    if (!preventModifications && polygons.get(map).size > 1 && options.mergePolygons) {
+    if (!preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
 
         // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
         const addedMergedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);
@@ -203,8 +203,9 @@ export default class extends FeatureGroup {
      */
     onAdd(map) {
 
-        // Memorise the map instance.
+        // Memorise the map instance, and setup DI for `simplifyPolygon`.
         this.map = map;
+        map.simplifyPolygon = simplifyPolygon;
 
         // Add the item to the map.
         polygons.set(map, new Set());

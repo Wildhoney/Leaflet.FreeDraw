@@ -15,10 +15,15 @@ test.beforeEach(t => {
             enable: spy()
         },
         _container: t.context.node,
-        latLngToLayerPoint: spy(({ x, y }) => ({ X: x, Y: y }))
+        latLngToLayerPoint: spy(({ lat, lng }) => {
+            return { x: lat, y: lng };
+        }),
+        layerPointToLatLng: spy(({ x, y }) => {
+            return { lat: x, lng: y };
+        })
     };
 
-    t.context.freeDraw = new FreeDraw({ mergePolygons: false });
+    t.context.freeDraw = new FreeDraw({ mergePolygons: false, concavePolygon: false });
 
 });
 
@@ -49,19 +54,25 @@ test('It should be able to create the map instance;', t => {
 test('It should be able to create polygons;', t => {
 
     const polygon = [new LatLng(51.50249181873096, -0.08634567260742189),
-                     new LatLng(51.50281238523426, -0.09501457214355469,
-                     new LatLng(51.50799456412721, -0.09441375732421875,
-                     new LatLng(51.509062981334914, -0.08428573608398438,
-                     new LatLng(51.50249181873096, -0.08634567260742189))))];
+                     new LatLng(51.50281238523426, -0.09501457214355469),
+                     new LatLng(51.50799456412721, -0.09441375732421875),
+                     new LatLng(51.509062981334914, -0.08428573608398438),
+                     new LatLng(51.50249181873096, -0.08634567260742189)];
 
     const { freeDraw, map } = t.context;
     freeDraw.onAdd(map);
-    freeDraw.createPolygon(polygon);
+
+    // Mock the required functions.
+    map.simplifyPolygon = (map, latLngs) => [latLngs];
+    map.addLayer = spy();
+
+    // ...And then invoke the `createPolygon` function!
+    freeDraw.createPolygon(polygon, true);
 
     // Ensure the simplified polygon function `latLngToLayerPoint` is invoked.
-    t.is(map.latLngToLayerPoint.callCount, polygon.length + 1);
+    t.is(map.latLngToLayerPoint.callCount, polygon.length - 1);
 
     // Ensure it's correctly added to the `polygons` set.
-    // t.is(polygons.get(map).size, 1);
+    t.is(polygons.get(map).size, 1);
 
 });
