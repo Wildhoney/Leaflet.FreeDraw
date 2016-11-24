@@ -5,6 +5,9 @@ module.exports = {
         library: 'FreeDraw',
         libraryTarget: 'var'
     },
+    externals: {
+        leaflet: 'L'
+    },
     module: {
         loaders: [
             {

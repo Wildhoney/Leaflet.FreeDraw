@@ -4,6 +4,12 @@ module.exports = {
         filename: './dist/leaflet.freedraw.cjs.js',
         libraryTarget: 'commonjs2'
     },
+    externals: {
+        leaflet: 'L',
+        d3: 'd3',
+        'clipper-lib': 'ClipperLib',
+        ramda: 'R'
+    },
     module: {
         loaders: [
             {

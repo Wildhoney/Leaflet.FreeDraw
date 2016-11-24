@@ -33,7 +33,10 @@
   },
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "dependencies": {
-    "leaflet": "^1.0.1"
+    "clipper-lib": "^6.2.1",
+    "d3": "^4.3.0",
+    "leaflet": "^1.0.1",
+    "ramda": "^0.22.1"
   },
   "devDependencies": {
     "angular": "^1.6.0-rc.1",
@@ -45,15 +48,12 @@
     "babel-preset-stage-3": "^6.17.0",
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
-    "clipper-lib": "^6.2.1",
     "concavehull": "^0.1.6",
-    "d3": "^4.3.0",
     "express": "^4.14.0",
     "jsdom": "^9.8.3",
     "mocha": "^3.1.2",
     "nightmare": "^2.8.1",
     "opener": "^1.4.2",
-    "ramda": "^0.22.1",
     "rimraf": "^2.5.4",
     "sinon": "^1.17.6",
     "webpack": "^2.1.0-beta.27",
