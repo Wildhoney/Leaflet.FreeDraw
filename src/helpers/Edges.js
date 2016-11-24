@@ -19,7 +19,7 @@ export default function createEdges(map, polygon, options) {
      */
     const fetchLayerPoints = polygon => {
 
-        return polygon._latlngs[0].map(latLng => {
+        return polygon.getLatLngs()[0].map(latLng => {
             return map.latLngToLayerPoint(latLng);
         });
 

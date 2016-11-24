@@ -1,11 +1,11 @@
-import { FeatureGroup, Polygon, DomEvent, DomUtil } from 'leaflet';
+import { FeatureGroup, Polygon, DomEvent, DomUtil, Point } from 'leaflet';
 import * as d3 from 'd3';
 import createEdges from './helpers/Edges';
 import handlePolygonClick from './helpers/Polygon';
 import simplifyPolygon from './helpers/Simplify';
 import concavePolygon from './helpers/Concave';
 import mergePolygons from './helpers/Merge';
-import { VIEW, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from './helpers/Flags';
+import { VIEW, CREATE, EDIT, DELETE, APPEND, ALL } from './helpers/Flags';
 
 /**
  * @constant polygons
@@ -323,13 +323,12 @@ export default class extends FeatureGroup {
                 latLngs.add(map.containerPointToLatLng(point));
 
                 // Invoke the generator by passing in the starting point for the path.
-                lineIterator.next(new L.Point(point.x, point.y));
+                lineIterator.next(new Point(point.x, point.y));
 
             };
 
             // Create the path when the user moves their cursor.
             map.on('mousemove touchmove', mouseMove);
-
 
             /**
              * @method mouseUp
@@ -370,10 +369,10 @@ export default class extends FeatureGroup {
      * @method createPath
      * @param {Object} map
      * @param {Object} svg
-     * @param {L.Point} fromPoint
+     * @param {Point} fromPoint
      * @return {void}
      */
-    *createPath(map, svg, fromPoint) {
+    * createPath(map, svg, fromPoint) {
 
         // Define the line function to be used for the hand-drawn lines.
         const lineFunction = d3.line().curve(d3.curveMonotoneX).x(d => d.x).y(d => d.y);
@@ -388,7 +387,7 @@ export default class extends FeatureGroup {
         svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none');
 
         // Recursively invoke the generator function, passing in the current to point as the from point.
-        yield *this.createPath(map, svg, toPoint);
+        yield * this.createPath(map, svg, toPoint);
 
     }
 

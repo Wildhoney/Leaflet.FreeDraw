@@ -1,19 +1,5 @@
+import { Point } from 'leaflet';
 import { Clipper, PolyFillType } from 'clipper-lib';
-
-/**
- * @param {Object} map
- * @param {LatLng[]} latLngs
- * @param {Number} simplifyFactor
- * @return {LatLng[]}
- */
-export default (map, latLngs, { simplifyFactor }) => {
-
-    const points = Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), simplifyFactor);
-    const polygons = Clipper.SimplifyPolygon(points, PolyFillType);
-
-    return clipperPolygonsToLatLngs(map, polygons);
-
-};
 
 /**
  * @method latLngsToClipperPoints
@@ -41,10 +27,25 @@ const clipperPolygonsToLatLngs = (map, polygons) => {
     return polygons.map(polygon => {
 
         return polygon.map(point => {
-            const updatedPoint = L.point(point.X, point.Y);
+            const updatedPoint = new Point(point.X, point.Y);
             return map.layerPointToLatLng(updatedPoint);
         });
 
     });
+
+};
+
+/**
+ * @param {Object} map
+ * @param {LatLng[]} latLngs
+ * @param {Number} simplifyFactor
+ * @return {LatLng[]}
+ */
+export default (map, latLngs, { simplifyFactor }) => {
+
+    const points = Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), simplifyFactor);
+    const polygons = Clipper.SimplifyPolygon(points, PolyFillType);
+
+    return clipperPolygonsToLatLngs(map, polygons);
 
 };

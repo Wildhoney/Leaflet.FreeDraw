@@ -1,8 +1,8 @@
 import { Point } from 'leaflet';
 import { flatten } from 'ramda';
-import { latLngsToClipperPoints } from './Simplify';
 import { Clipper, PolyFillType } from 'clipper-lib';
 import { createFor, removeFor } from '../FreeDraw';
+import { latLngsToClipperPoints } from './Simplify';
 
 /**
  * @param {Object} map

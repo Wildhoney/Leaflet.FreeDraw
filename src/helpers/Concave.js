@@ -6,5 +6,5 @@ import ConcaveHull from 'concavehull';
  * @return {LatLng[]}
  */
 export default (map, latLngs) => {
-    return new ConcaveHull([ ...latLngs, latLngs[0] ]).getLatLngs()
+    return new ConcaveHull([ ...latLngs, latLngs[0] ]).getLatLngs();
 };

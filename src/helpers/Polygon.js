@@ -7,14 +7,14 @@ import { DELETE, APPEND } from './Flags';
  * @method appendEdgeFor
  * @param {Object} map
  * @param {Object} polygon
+ * @param {Object} options
  * @param {Array} parts
  * @param {Object} newPoint
  * @param {Object} startPoint
  * @param {Object} endPoint
- * @param {Object} options
  * @return {void}
  */
-const appendEdgeFor = (map, polygon, parts, newPoint, startPoint, endPoint, options) => {
+const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, endPoint }) => {
 
     const latLngs = parts.reduce((accumulator, point, index) => {
 
@@ -81,13 +81,13 @@ export default (map, polygon, options) => {
 
         // Setup the conditions for the switch statement to make the cases clearer.
         const mode = map[modesKey];
-        const isDelete = !!(mode & DELETE);
-        const isAppend = !!(mode & APPEND);
-        const isDeleteAndAppend = !!(mode & DELETE && mode & APPEND);
+        const isDelete = Boolean(mode & DELETE);
+        const isAppend = Boolean(mode & APPEND);
+        const isDeleteAndAppend = Boolean(mode & DELETE && mode & APPEND);
 
         // Partially apply the remove and append functions.
         const removePolygon = () => removeFor(map, polygon);
-        const appendEdge = () => appendEdgeFor(map, polygon, parts, newPoint, startPoint, endPoint, options);
+        const appendEdge = () => appendEdgeFor(map, options, { polygon, parts, newPoint, startPoint, endPoint });
 
         switch (true) {
 

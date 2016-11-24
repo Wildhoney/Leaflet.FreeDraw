@@ -9,7 +9,9 @@
     "watch": "npm run css && webpack --watch --config webpack.example.js",
     "start": "npm i && npm run dev && babel example/server/default.js | node",
     "css": "cp node_modules/leaflet/dist/leaflet.css ./example/css",
+    "test": "npm run lint && npm run spec",
     "spec": "ava",
+    "lint": "xo src/*.js src/**/*.js",
     "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js"
   },
   "repository": {
@@ -49,7 +51,8 @@
     "opener": "^1.4.2",
     "ramda": "^0.22.1",
     "sinon": "^1.17.6",
-    "webpack": "^2.1.0-beta.27"
+    "webpack": "^2.1.0-beta.27",
+    "xo": "^0.17.1"
   },
   "ava": {
     "files": [
@@ -62,5 +65,45 @@
       "babel-register",
       "./tests/helpers/BrowserEnv.js"
     ]
+  },
+  "xo": {
+    "space": 4,
+    "esnext": true,
+    "globals": [
+      "window",
+      "document",
+      "self"
+    ],
+    "rules": {
+      "padded-blocks": "off",
+      "max-lines": [
+        2,
+        500
+      ],
+      "object-curly-spacing": [
+        2,
+        "always"
+      ],
+      "new-cap": "off",
+      "array-bracket-spacing": "off",
+      "max-nested-callbacks": [
+        1,
+        5
+      ],
+      "no-unused-vars": [
+        1,
+        {
+          "varsIgnorePattern": "element"
+        }
+      ],
+      "unicorn/filename-case": ["error", {"case": "pascalCase"}],
+      "default-case": "off",
+      "no-unused-expressions": "off",
+      "no-case-declarations": "off",
+      "import/no-unassigned-import": "off",
+      "import/no-named-as-default": "off",
+      "import/prefer-default-export": "off",
+      "no-duplicate-imports": "off"
+    }
   }
 }
