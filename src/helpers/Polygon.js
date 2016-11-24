@@ -58,7 +58,7 @@ export default (map, polygon, options) => {
     return event => {
 
         // Gather all of the points from the lat longs of the current polygon.
-        const newPoint = map.mouseEventToContainerPoint(event.originalEvent);
+        const newPoint = map.mouseEventToContainerPoint('originalEvent' in event ? event.originalEvent : event);
         const parts = polygon.getLatLngs()[0].map(latLng => map.latLngToContainerPoint(latLng));
 
         const { startPoint, endPoint, lowestDistance } = parts.reduce((accumulator, point, index) => {
@@ -87,7 +87,7 @@ export default (map, polygon, options) => {
 
         // Partially apply the remove and append functions.
         const removePolygon = () => removeFor(map, polygon);
-        const appendEdge = () => appendEdgeFor(map, options, { polygon, parts, newPoint, startPoint, endPoint });
+        const appendEdge = () => appendEdgeFor(map, polygon, options, { parts, newPoint, startPoint, endPoint });
 
         switch (true) {
 
