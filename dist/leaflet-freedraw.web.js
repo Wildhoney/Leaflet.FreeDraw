@@ -156,7 +156,7 @@ module.exports = function(it){
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-var store      = __webpack_require__(58)('wks')
+var store      = __webpack_require__(59)('wks')
   , uid        = __webpack_require__(39)
   , Symbol     = __webpack_require__(2).Symbol
   , USE_SYMBOL = typeof Symbol == 'function';
@@ -512,7 +512,7 @@ module.exports = function(fn, that, length){
 
 var Map     = __webpack_require__(116)
   , $export = __webpack_require__(0)
-  , shared  = __webpack_require__(58)('metadata')
+  , shared  = __webpack_require__(59)('metadata')
   , store   = shared.store || (shared.store = new (__webpack_require__(119)));
 
 var getOrCreateMetadataMap = function(target, targetKey, create){
@@ -573,7 +573,7 @@ if(__webpack_require__(6)){
     , global              = __webpack_require__(2)
     , fails               = __webpack_require__(3)
     , $export             = __webpack_require__(0)
-    , $typed              = __webpack_require__(59)
+    , $typed              = __webpack_require__(60)
     , $buffer             = __webpack_require__(84)
     , ctx                 = __webpack_require__(25)
     , anInstance          = __webpack_require__(31)
@@ -597,11 +597,11 @@ if(__webpack_require__(6)){
     , uid                 = __webpack_require__(39)
     , wks                 = __webpack_require__(5)
     , createArrayMethod   = __webpack_require__(21)
-    , createArrayIncludes = __webpack_require__(49)
+    , createArrayIncludes = __webpack_require__(50)
     , speciesConstructor  = __webpack_require__(78)
     , ArrayIterators      = __webpack_require__(87)
     , Iterators           = __webpack_require__(42)
-    , $iterDetect         = __webpack_require__(55)
+    , $iterDetect         = __webpack_require__(56)
     , setSpecies          = __webpack_require__(37)
     , arrayFill           = __webpack_require__(62)
     , arrayCopyWithin     = __webpack_require__(93)
@@ -1408,820 +1408,6 @@ exports.f = {}.propertyIsEnumerable;
 
 /***/ },
 /* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ALL = exports.VIEW = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.setModeFor = exports.triggerFor = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.modesKey = exports.polygons = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _Flags = __webpack_require__(61);
-
-Object.defineProperty(exports, 'CREATE', {
-    enumerable: true,
-    get: function get() {
-        return _Flags.CREATE;
-    }
-});
-Object.defineProperty(exports, 'EDIT', {
-    enumerable: true,
-    get: function get() {
-        return _Flags.EDIT;
-    }
-});
-Object.defineProperty(exports, 'DELETE', {
-    enumerable: true,
-    get: function get() {
-        return _Flags.DELETE;
-    }
-});
-Object.defineProperty(exports, 'APPEND', {
-    enumerable: true,
-    get: function get() {
-        return _Flags.APPEND;
-    }
-});
-Object.defineProperty(exports, 'EDIT_APPEND', {
-    enumerable: true,
-    get: function get() {
-        return _Flags.EDIT_APPEND;
-    }
-});
-Object.defineProperty(exports, 'VIEW', {
-    enumerable: true,
-    get: function get() {
-        return _Flags.VIEW;
-    }
-});
-Object.defineProperty(exports, 'ALL', {
-    enumerable: true,
-    get: function get() {
-        return _Flags.ALL;
-    }
-});
-
-var _leaflet = __webpack_require__(60);
-
-var _d = __webpack_require__(306);
-
-var d3 = _interopRequireWildcard(_d);
-
-var _Edges = __webpack_require__(88);
-
-var _Edges2 = _interopRequireDefault(_Edges);
-
-var _Polygon = __webpack_require__(123);
-
-var _Polygon2 = _interopRequireDefault(_Polygon);
-
-var _Simplify = __webpack_require__(90);
-
-var _Simplify2 = _interopRequireDefault(_Simplify);
-
-var _Concave = __webpack_require__(122);
-
-var _Concave2 = _interopRequireDefault(_Concave);
-
-var _Merge = __webpack_require__(89);
-
-var _Merge2 = _interopRequireDefault(_Merge);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/**
- * @constant polygons
- * @type {WeakMap}
- */
-var polygons = exports.polygons = new WeakMap();
-
-/**
- * @constant defaultOptions
- * @type {Object}
- */
-var defaultOptions = {
-    mode: _Flags.ALL,
-    smoothFactor: 5,
-    elbowDistance: 10,
-    simplifyFactor: 2,
-    mergePolygons: true,
-    concavePolygon: true,
-    recreatePostEdit: false
-};
-
-/**
- * @constant modesKey
- * @type {Symbol}
- */
-var modesKey = exports.modesKey = Symbol('freedraw/modes');
-
-/**
- * @constant edgesKey
- * @type {Symbol}
- */
-var edgesKey = exports.edgesKey = Symbol('freedraw/edges');
-
-/**
- * @method createFor
- * @param {Object} map
- * @param {Array} latLngs
- * @param {Object} [options = defaultOptions]
- * @param {Boolean} [preventModifications = false]
- * @return {Array}
- */
-var createFor = exports.createFor = function createFor(map, latLngs) {
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultOptions;
-    var preventModifications = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-
-    // Apply the concave hull algorithm to the created polygon if the options allow.
-    var concavedLatLngs = !preventModifications && options.concavePolygon ? (0, _Concave2.default)(map, latLngs) : latLngs;
-
-    // Simplify the polygon before adding it to the map.
-    var addedPolygons = (0, _Simplify2.default)(map, concavedLatLngs, options).map(function (latLngs) {
-
-        var polygon = new _leaflet.Polygon(options.simplifyPolygon ? (0, _Simplify2.default)(map, latLngs, options) : latLngs, _extends({}, defaultOptions, options, { className: 'leaflet-polygon'
-        })).addTo(map);
-
-        // Attach the edges to the polygon.
-        polygon[edgesKey] = (0, _Edges2.default)(map, polygon, options);
-
-        // Disable the propagation when you click on the marker.
-        _leaflet.DomEvent.disableClickPropagation(polygon);
-
-        // Yield the click handler to the `handlePolygonClick` function.
-        polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
-
-        return polygon;
-    });
-
-    // Append the current polygon to the master set.
-    addedPolygons.forEach(function (polygon) {
-        return polygons.get(map).add(polygon);
-    });
-
-    if (!preventModifications && polygons.get(map).size > 1 && options.mergePolygons) {
-
-        // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
-        var addedMergedPolygons = (0, _Merge2.default)(map, Array.from(polygons.get(map)), options);
-
-        // Clear the set, and added all of the merged polygons into the master set.
-        polygons.get(map).clear();
-        addedMergedPolygons.forEach(function (polygon) {
-            return polygons.get(map).add(polygon);
-        });
-
-        return addedMergedPolygons;
-    }
-
-    return addedPolygons;
-};
-
-/**
- * @method removeFor
- * @param {Object} map
- * @param {Object} polygon
- * @return {void}
- */
-var removeFor = exports.removeFor = function removeFor(map, polygon) {
-
-    // Remove polygon and all of its associated edges.
-    map.removeLayer(polygon);
-    edgesKey in polygon && polygon[edgesKey].map(function (edge) {
-        return map.removeLayer(edge);
-    });
-
-    // Remove polygon from the master set.
-    polygons.get(map).delete(polygon);
-};
-
-/**
- * @method clearFor
- * @param {Object} map
- * @return {void}
- */
-var clearFor = exports.clearFor = function clearFor(map) {
-    polygons.get(function (polygon) {
-        return removeFor(map, polygon);
-    });
-};
-
-/**
- * @method triggerFor
- * @param {Object} map
- * @return {void}
- */
-var triggerFor = exports.triggerFor = function triggerFor(map) {
-
-    var latLngs = Array.from(polygons.get(map)).map(function (polygon) {
-
-        // Ensure the polygon has been closed.
-        var latLngs = polygon.getLatLngs();
-        return [].concat(_toConsumableArray(latLngs[0]), [latLngs[0][0]]);
-    });
-
-    // Fire the current set of lat lngs.
-    map.fire('markers', { latLngs: latLngs });
-};
-
-/**
- * @method setModeFor
- * @param {Object} map
- * @param {Number} mode
- * @return {void}
- */
-var setModeFor = exports.setModeFor = function setModeFor(map, mode) {
-
-    // Update the mode.
-    map[modesKey] = mode;
-
-    // Fire the updated mode.
-    map.fire('mode', { mode: mode });
-
-    // Disable the map if the `CREATE` mode is a default flag.
-    mode & _Flags.CREATE ? map.dragging.disable() : map.dragging.enable();
-
-    Array.from(polygons.get(map)).forEach(function (polygon) {
-
-        polygon[edgesKey].forEach(function (edge) {
-
-            // Modify the edge class names based on whether edit mode is enabled.
-            mode & _Flags.EDIT ? _leaflet.DomUtil.removeClass(edge._icon, 'disabled') : _leaflet.DomUtil.addClass(edge._icon, 'disabled');
-        });
-    });
-
-    // Remove all of the current class names so we can begin from scratch.
-    var mapNode = map._container;
-    _leaflet.DomUtil.removeClass(mapNode, 'mode-create');
-    _leaflet.DomUtil.removeClass(mapNode, 'mode-edit');
-    _leaflet.DomUtil.removeClass(mapNode, 'mode-delete');
-    _leaflet.DomUtil.removeClass(mapNode, 'mode-view');
-    _leaflet.DomUtil.removeClass(mapNode, 'mode-append');
-
-    // Apply the class names to the mapNode container depending on the current mode.
-    mode & _Flags.CREATE && _leaflet.DomUtil.addClass(mapNode, 'mode-create');
-    mode & _Flags.EDIT && _leaflet.DomUtil.addClass(mapNode, 'mode-edit');
-    mode & _Flags.DELETE && _leaflet.DomUtil.addClass(mapNode, 'mode-delete');
-    mode & _Flags.VIEW && _leaflet.DomUtil.addClass(mapNode, 'mode-view');
-    mode & _Flags.APPEND && _leaflet.DomUtil.addClass(mapNode, 'mode-append');
-};
-
-var _class = function (_FeatureGroup) {
-    _inherits(_class, _FeatureGroup);
-
-    /**
-     * @constructor
-     * @param {Object} [options = {}]
-     * @return {void}
-     */
-    function _class() {
-        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultOptions;
-
-        _classCallCheck(this, _class);
-
-        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
-
-        _this.options = _extends({}, defaultOptions, options);
-        return _this;
-    }
-
-    /**
-     * @method onAdd
-     * @param {Object} map
-     * @return {void}
-     */
-
-
-    _createClass(_class, [{
-        key: 'onAdd',
-        value: function onAdd(map) {
-
-            // Memorise the map instance.
-            this.map = map;
-
-            // Add the item to the map.
-            polygons.set(map, new Set());
-
-            // Set the initial mode.
-            setModeFor(map, this.options.mode);
-
-            // Instantiate the SVG layer that sits on top of the map.
-            var svg = d3.select(map._container).append('svg').classed('free-draw', true).attr('width', '100%').attr('height', '100%').style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
-
-            // Set the mouse events.
-            this.listenForEvents(map, svg, this.options);
-        }
-
-        /**
-         * @method createPolygon
-         * @param {LatLng[]} latLngs
-         * @return {Object}
-         */
-
-    }, {
-        key: 'createPolygon',
-        value: function createPolygon(latLngs) {
-            return createFor(this.map, latLngs, this.options);
-        }
-
-        /**
-         * @method removePolygon
-         * @param {Object} polygon
-         * @return {void}
-         */
-
-    }, {
-        key: 'removePolygon',
-        value: function removePolygon(polygon) {
-            removeFor(this.map, polygon);
-        }
-
-        /**
-         * @method clearPolygons
-         * @return {void}
-         */
-
-    }, {
-        key: 'clearPolygons',
-        value: function clearPolygons() {
-            clearFor(this.map);
-        }
-
-        /**
-         * @method setMode
-         * @param {Number} mode
-         * @return {void}
-         */
-
-    }, {
-        key: 'setMode',
-        value: function setMode(mode) {
-            return setModeFor(this.map, mode);
-        }
-
-        /**
-         * @method onRemove
-         * @param {Object} map
-         * @return {void}
-         */
-
-    }, {
-        key: 'onRemove',
-        value: function onRemove(map) {
-
-            // Remove the item from the map.
-            polygons.delete(map);
-        }
-
-        /**
-         * @method listenForEvents
-         * @param {Object} map
-         * @param {Object} svg
-         * @param {Object} options
-         * @return {void}
-         */
-
-    }, {
-        key: 'listenForEvents',
-        value: function listenForEvents(map, svg, options) {
-
-            map.on('mousedown touchstart', function mouseDown(event) {
-
-                if (!(map[modesKey] & _Flags.CREATE)) {
-
-                    // Polygons can only be created when the mode includes create.
-                    map.off('mousedown', mouseDown);
-                    return;
-                }
-
-                /**
-                 * @constant latLngs
-                 * @type {Set}
-                 */
-                var latLngs = new Set();
-
-                // Create the line iterator and move it to its first `yield` point, passing in the start point
-                // from the mouse down event.
-                var lineIterator = this.createPath(map, svg, map.latLngToContainerPoint(event.latlng));
-                lineIterator.next();
-
-                /**
-                 * @method mouseMove
-                 * @param {Object} event
-                 * @return {void}
-                 */
-                var mouseMove = function mouseMove(event) {
-
-                    // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-                    var point = map.mouseEventToContainerPoint(event.originalEvent);
-
-                    // Push each lat long value into the points set.
-                    latLngs.add(map.containerPointToLatLng(point));
-
-                    // Invoke the generator by passing in the starting point for the path.
-                    lineIterator.next(new L.Point(point.x, point.y));
-                };
-
-                // Create the path when the user moves their cursor.
-                map.on('mousemove touchmove', mouseMove);
-
-                /**
-                 * @method mouseUp
-                 * @return {void}
-                 */
-                var mouseUp = function mouseUp() {
-
-                    // Stop listening to the events.
-                    map.off('mouseup', mouseUp);
-                    map.off('mousedown', mouseDown);
-                    map.off('mousemove', mouseMove);
-                    'body' in document && document.body.removeEventListener('mouseleave', mouseUp);
-
-                    // Clear the SVG canvas.
-                    svg.selectAll('*').remove();
-
-                    // Stop the iterator.
-                    lineIterator.return();
-
-                    // ...And finally if we have any lat longs in our set then we can attempt to
-                    // create the polygon.
-                    latLngs.size && createFor(map, Array.from(latLngs), options);
-
-                    // Finally invoke the callback for the polygon regions.
-                    triggerFor(map);
-                };
-
-                // Clear up the events when the user releases the mouse.
-                map.on('mouseup touchend', mouseUp);
-                'body' in document && document.body.addEventListener('mouseleave', mouseUp);
-            }.bind(this));
-        }
-
-        /**
-         * @method createPath
-         * @param {Object} map
-         * @param {Object} svg
-         * @param {L.Point} fromPoint
-         * @return {void}
-         */
-
-    }, {
-        key: 'createPath',
-        value: regeneratorRuntime.mark(function createPath(map, svg, fromPoint) {
-            var lineFunction, toPoint, lineData;
-            return regeneratorRuntime.wrap(function createPath$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-
-                            // Define the line function to be used for the hand-drawn lines.
-                            lineFunction = d3.line().curve(d3.curveMonotoneX).x(function (d) {
-                                return d.x;
-                            }).y(function (d) {
-                                return d.y;
-                            });
-
-                            // Wait for the iterator to be invoked by passing in the next point.
-
-                            _context.next = 3;
-                            return;
-
-                        case 3:
-                            toPoint = _context.sent;
-
-
-                            // Line data that is fed into the D3 line function we defined earlier.
-                            lineData = [fromPoint, toPoint];
-
-                            // Draw SVG line based on the last movement of the mouse's position.
-
-                            svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none');
-
-                            // Recursively invoke the generator function, passing in the current to point as the from point.
-                            return _context.delegateYield(this.createPath(map, svg, toPoint), 't0', 7);
-
-                        case 7:
-                        case 'end':
-                            return _context.stop();
-                    }
-                }
-            }, createPath, this);
-        })
-    }]);
-
-    return _class;
-}(_leaflet.FeatureGroup);
-
-exports.default = _class;
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-// false -> Array#indexOf
-// true  -> Array#includes
-var toIObject = __webpack_require__(15)
-  , toLength  = __webpack_require__(8)
-  , toIndex   = __webpack_require__(38);
-module.exports = function(IS_INCLUDES){
-  return function($this, el, fromIndex){
-    var O      = toIObject($this)
-      , length = toLength(O.length)
-      , index  = toIndex(fromIndex, length)
-      , value;
-    // Array#includes uses SameValueZero equality algorithm
-    if(IS_INCLUDES && el != el)while(length > index){
-      value = O[index++];
-      if(value != value)return true;
-    // Array#toIndex ignores holes, Array#includes - not
-    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-      if(O[index] === el)return IS_INCLUDES || index || 0;
-    } return !IS_INCLUDES && -1;
-  };
-};
-
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-var global            = __webpack_require__(2)
-  , $export           = __webpack_require__(0)
-  , redefine          = __webpack_require__(13)
-  , redefineAll       = __webpack_require__(36)
-  , meta              = __webpack_require__(28)
-  , forOf             = __webpack_require__(41)
-  , anInstance        = __webpack_require__(31)
-  , isObject          = __webpack_require__(4)
-  , fails             = __webpack_require__(3)
-  , $iterDetect       = __webpack_require__(55)
-  , setToStringTag    = __webpack_require__(43)
-  , inheritIfRequired = __webpack_require__(68);
-
-module.exports = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
-  var Base  = global[NAME]
-    , C     = Base
-    , ADDER = IS_MAP ? 'set' : 'add'
-    , proto = C && C.prototype
-    , O     = {};
-  var fixMethod = function(KEY){
-    var fn = proto[KEY];
-    redefine(proto, KEY,
-      KEY == 'delete' ? function(a){
-        return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
-      } : KEY == 'has' ? function has(a){
-        return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
-      } : KEY == 'get' ? function get(a){
-        return IS_WEAK && !isObject(a) ? undefined : fn.call(this, a === 0 ? 0 : a);
-      } : KEY == 'add' ? function add(a){ fn.call(this, a === 0 ? 0 : a); return this; }
-        : function set(a, b){ fn.call(this, a === 0 ? 0 : a, b); return this; }
-    );
-  };
-  if(typeof C != 'function' || !(IS_WEAK || proto.forEach && !fails(function(){
-    new C().entries().next();
-  }))){
-    // create collection constructor
-    C = common.getConstructor(wrapper, NAME, IS_MAP, ADDER);
-    redefineAll(C.prototype, methods);
-    meta.NEED = true;
-  } else {
-    var instance             = new C
-      // early implementations not supports chaining
-      , HASNT_CHAINING       = instance[ADDER](IS_WEAK ? {} : -0, 1) != instance
-      // V8 ~  Chromium 40- weak-collections throws on primitives, but should return false
-      , THROWS_ON_PRIMITIVES = fails(function(){ instance.has(1); })
-      // most early implementations doesn't supports iterables, most modern - not close it correctly
-      , ACCEPT_ITERABLES     = $iterDetect(function(iter){ new C(iter); }) // eslint-disable-line no-new
-      // for early implementations -0 and +0 not the same
-      , BUGGY_ZERO = !IS_WEAK && fails(function(){
-        // V8 ~ Chromium 42- fails only with 5+ elements
-        var $instance = new C()
-          , index     = 5;
-        while(index--)$instance[ADDER](index, index);
-        return !$instance.has(-0);
-      });
-    if(!ACCEPT_ITERABLES){ 
-      C = wrapper(function(target, iterable){
-        anInstance(target, C, NAME);
-        var that = inheritIfRequired(new Base, target, C);
-        if(iterable != undefined)forOf(iterable, IS_MAP, that[ADDER], that);
-        return that;
-      });
-      C.prototype = proto;
-      proto.constructor = C;
-    }
-    if(THROWS_ON_PRIMITIVES || BUGGY_ZERO){
-      fixMethod('delete');
-      fixMethod('has');
-      IS_MAP && fixMethod('get');
-    }
-    if(BUGGY_ZERO || HASNT_CHAINING)fixMethod(ADDER);
-    // weak collections should not contains .clear method
-    if(IS_WEAK && proto.clear)delete proto.clear;
-  }
-
-  setToStringTag(C, NAME);
-
-  O[NAME] = C;
-  $export($export.G + $export.W + $export.F * (C != Base), O);
-
-  if(!IS_WEAK)common.setStrong(C, NAME, IS_MAP);
-
-  return C;
-};
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-var hide     = __webpack_require__(12)
-  , redefine = __webpack_require__(13)
-  , fails    = __webpack_require__(3)
-  , defined  = __webpack_require__(19)
-  , wks      = __webpack_require__(5);
-
-module.exports = function(KEY, length, exec){
-  var SYMBOL   = wks(KEY)
-    , fns      = exec(defined, SYMBOL, ''[KEY])
-    , strfn    = fns[0]
-    , rxfn     = fns[1];
-  if(fails(function(){
-    var O = {};
-    O[SYMBOL] = function(){ return 7; };
-    return ''[KEY](O) != 7;
-  })){
-    redefine(String.prototype, KEY, strfn);
-    hide(RegExp.prototype, SYMBOL, length == 2
-      // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
-      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
-      ? function(string, arg){ return rxfn.call(string, this, arg); }
-      // 21.2.5.6 RegExp.prototype[@@match](string)
-      // 21.2.5.9 RegExp.prototype[@@search](string)
-      : function(string){ return rxfn.call(string, this); }
-    );
-  }
-};
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-// 21.2.5.3 get RegExp.prototype.flags
-var anObject = __webpack_require__(1);
-module.exports = function(){
-  var that   = anObject(this)
-    , result = '';
-  if(that.global)     result += 'g';
-  if(that.ignoreCase) result += 'i';
-  if(that.multiline)  result += 'm';
-  if(that.unicode)    result += 'u';
-  if(that.sticky)     result += 'y';
-  return result;
-};
-
-/***/ },
-/* 53 */
-/***/ function(module, exports) {
-
-// fast apply, http://jsperf.lnkit.com/fast-apply/5
-module.exports = function(fn, args, that){
-  var un = that === undefined;
-  switch(args.length){
-    case 0: return un ? fn()
-                      : fn.call(that);
-    case 1: return un ? fn(args[0])
-                      : fn.call(that, args[0]);
-    case 2: return un ? fn(args[0], args[1])
-                      : fn.call(that, args[0], args[1]);
-    case 3: return un ? fn(args[0], args[1], args[2])
-                      : fn.call(that, args[0], args[1], args[2]);
-    case 4: return un ? fn(args[0], args[1], args[2], args[3])
-                      : fn.call(that, args[0], args[1], args[2], args[3]);
-  } return              fn.apply(that, args);
-};
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-// 7.2.8 IsRegExp(argument)
-var isObject = __webpack_require__(4)
-  , cof      = __webpack_require__(18)
-  , MATCH    = __webpack_require__(5)('match');
-module.exports = function(it){
-  var isRegExp;
-  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : cof(it) == 'RegExp');
-};
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-var ITERATOR     = __webpack_require__(5)('iterator')
-  , SAFE_CLOSING = false;
-
-try {
-  var riter = [7][ITERATOR]();
-  riter['return'] = function(){ SAFE_CLOSING = true; };
-  Array.from(riter, function(){ throw 2; });
-} catch(e){ /* empty */ }
-
-module.exports = function(exec, skipClosing){
-  if(!skipClosing && !SAFE_CLOSING)return false;
-  var safe = false;
-  try {
-    var arr  = [7]
-      , iter = arr[ITERATOR]();
-    iter.next = function(){ return {done: safe = true}; };
-    arr[ITERATOR] = function(){ return iter; };
-    exec(arr);
-  } catch(e){ /* empty */ }
-  return safe;
-};
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-// Forced replacement prototype accessors methods
-module.exports = __webpack_require__(32)|| !__webpack_require__(3)(function(){
-  var K = Math.random();
-  // In FF throws only define methods
-  __defineSetter__.call(null, K, function(){ /* empty */});
-  delete __webpack_require__(2)[K];
-});
-
-/***/ },
-/* 57 */
-/***/ function(module, exports) {
-
-exports.f = Object.getOwnPropertySymbols;
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__(2)
-  , SHARED = '__core-js_shared__'
-  , store  = global[SHARED] || (global[SHARED] = {});
-module.exports = function(key){
-  return store[key] || (store[key] = {});
-};
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__(2)
-  , hide   = __webpack_require__(12)
-  , uid    = __webpack_require__(39)
-  , TYPED  = uid('typed_array')
-  , VIEW   = uid('view')
-  , ABV    = !!(global.ArrayBuffer && global.DataView)
-  , CONSTR = ABV
-  , i = 0, l = 9, Typed;
-
-var TypedArrayConstructors = (
-  'Int8Array,Uint8Array,Uint8ClampedArray,Int16Array,Uint16Array,Int32Array,Uint32Array,Float32Array,Float64Array'
-).split(',');
-
-while(i < l){
-  if(Typed = global[TypedArrayConstructors[i++]]){
-    hide(Typed.prototype, TYPED, true);
-    hide(Typed.prototype, VIEW, true);
-  } else CONSTR = false;
-}
-
-module.exports = {
-  ABV:    ABV,
-  CONSTR: CONSTR,
-  TYPED:  TYPED,
-  VIEW:   VIEW
-};
-
-/***/ },
-/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -15270,6 +14456,834 @@ L.Map.include({
 //# sourceMappingURL=leaflet-src.map
 
 /***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ALL = exports.VIEW = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.setModeFor = exports.triggerFor = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.modesKey = exports.polygons = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _Flags = __webpack_require__(61);
+
+Object.defineProperty(exports, 'CREATE', {
+    enumerable: true,
+    get: function get() {
+        return _Flags.CREATE;
+    }
+});
+Object.defineProperty(exports, 'EDIT', {
+    enumerable: true,
+    get: function get() {
+        return _Flags.EDIT;
+    }
+});
+Object.defineProperty(exports, 'DELETE', {
+    enumerable: true,
+    get: function get() {
+        return _Flags.DELETE;
+    }
+});
+Object.defineProperty(exports, 'APPEND', {
+    enumerable: true,
+    get: function get() {
+        return _Flags.APPEND;
+    }
+});
+Object.defineProperty(exports, 'EDIT_APPEND', {
+    enumerable: true,
+    get: function get() {
+        return _Flags.EDIT_APPEND;
+    }
+});
+Object.defineProperty(exports, 'VIEW', {
+    enumerable: true,
+    get: function get() {
+        return _Flags.VIEW;
+    }
+});
+Object.defineProperty(exports, 'ALL', {
+    enumerable: true,
+    get: function get() {
+        return _Flags.ALL;
+    }
+});
+
+var _leaflet = __webpack_require__(48);
+
+var _d = __webpack_require__(306);
+
+var d3 = _interopRequireWildcard(_d);
+
+var _Edges = __webpack_require__(88);
+
+var _Edges2 = _interopRequireDefault(_Edges);
+
+var _Polygon = __webpack_require__(123);
+
+var _Polygon2 = _interopRequireDefault(_Polygon);
+
+var _Simplify = __webpack_require__(90);
+
+var _Simplify2 = _interopRequireDefault(_Simplify);
+
+var _Concave = __webpack_require__(122);
+
+var _Concave2 = _interopRequireDefault(_Concave);
+
+var _Merge = __webpack_require__(89);
+
+var _Merge2 = _interopRequireDefault(_Merge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/**
+ * @constant polygons
+ * @type {WeakMap}
+ */
+var polygons = exports.polygons = new WeakMap();
+
+/**
+ * @constant defaultOptions
+ * @type {Object}
+ */
+var defaultOptions = {
+    mode: _Flags.ALL,
+    smoothFactor: 5,
+    elbowDistance: 10,
+    simplifyFactor: 2,
+    mergePolygons: true,
+    concavePolygon: true,
+    recreatePostEdit: false
+};
+
+/**
+ * @constant modesKey
+ * @type {Symbol}
+ */
+var modesKey = exports.modesKey = Symbol('freedraw/modes');
+
+/**
+ * @constant edgesKey
+ * @type {Symbol}
+ */
+var edgesKey = exports.edgesKey = Symbol('freedraw/edges');
+
+/**
+ * @method createFor
+ * @param {Object} map
+ * @param {Array} latLngs
+ * @param {Object} [options = defaultOptions]
+ * @param {Boolean} [preventMutations = false]
+ * @return {Array}
+ */
+var createFor = exports.createFor = function createFor(map, latLngs) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultOptions;
+    var preventMutations = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+
+    // Apply the concave hull algorithm to the created polygon if the options allow.
+    var concavedLatLngs = !preventMutations && options.concavePolygon ? (0, _Concave2.default)(map, latLngs) : latLngs;
+
+    // Simplify the polygon before adding it to the map.
+    var addedPolygons = map.simplifyPolygon(map, concavedLatLngs, options).map(function (latLngs) {
+
+        var polygon = new _leaflet.Polygon(options.simplifyPolygon ? map.simplifyPolygon(map, latLngs, options) : latLngs, _extends({}, defaultOptions, options, { className: 'leaflet-polygon'
+        })).addTo(map);
+
+        // Attach the edges to the polygon.
+        polygon[edgesKey] = (0, _Edges2.default)(map, polygon, options);
+
+        // Disable the propagation when you click on the marker.
+        _leaflet.DomEvent.disableClickPropagation(polygon);
+
+        // Yield the click handler to the `handlePolygonClick` function.
+        polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
+
+        return polygon;
+    });
+
+    // Append the current polygon to the master set.
+    addedPolygons.forEach(function (polygon) {
+        return polygons.get(map).add(polygon);
+    });
+
+    if (!preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
+
+        // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
+        var addedMergedPolygons = (0, _Merge2.default)(map, Array.from(polygons.get(map)), options);
+
+        // Clear the set, and added all of the merged polygons into the master set.
+        polygons.get(map).clear();
+        addedMergedPolygons.forEach(function (polygon) {
+            return polygons.get(map).add(polygon);
+        });
+
+        return addedMergedPolygons;
+    }
+
+    return addedPolygons;
+};
+
+/**
+ * @method removeFor
+ * @param {Object} map
+ * @param {Object} polygon
+ * @return {void}
+ */
+var removeFor = exports.removeFor = function removeFor(map, polygon) {
+
+    // Remove polygon and all of its associated edges.
+    map.removeLayer(polygon);
+    edgesKey in polygon && polygon[edgesKey].map(function (edge) {
+        return map.removeLayer(edge);
+    });
+
+    // Remove polygon from the master set.
+    polygons.get(map).delete(polygon);
+};
+
+/**
+ * @method clearFor
+ * @param {Object} map
+ * @return {void}
+ */
+var clearFor = exports.clearFor = function clearFor(map) {
+    Array.from(polygons.get(map).entries()).forEach(function (polygon) {
+        return removeFor(map, polygon);
+    });
+};
+
+/**
+ * @method triggerFor
+ * @param {Object} map
+ * @return {void}
+ */
+var triggerFor = exports.triggerFor = function triggerFor(map) {
+
+    var latLngs = Array.from(polygons.get(map)).map(function (polygon) {
+
+        // Ensure the polygon has been closed.
+        var latLngs = polygon.getLatLngs();
+        return [].concat(_toConsumableArray(latLngs[0]), [latLngs[0][0]]);
+    });
+
+    // Fire the current set of lat lngs.
+    map.fire('markers', { latLngs: latLngs });
+};
+
+/**
+ * @method setModeFor
+ * @param {Object} map
+ * @param {Number} mode
+ * @return {Number}
+ */
+var setModeFor = exports.setModeFor = function setModeFor(map, mode) {
+
+    // Update the mode.
+    map[modesKey] = mode;
+
+    // Fire the updated mode.
+    map.fire('mode', { mode: mode });
+
+    // Disable the map if the `CREATE` mode is a default flag.
+    mode & _Flags.CREATE ? map.dragging.disable() : map.dragging.enable();
+
+    Array.from(polygons.get(map)).forEach(function (polygon) {
+
+        polygon[edgesKey].forEach(function (edge) {
+
+            // Modify the edge class names based on whether edit mode is enabled.
+            mode & _Flags.EDIT ? _leaflet.DomUtil.removeClass(edge._icon, 'disabled') : _leaflet.DomUtil.addClass(edge._icon, 'disabled');
+        });
+    });
+
+    // Remove all of the current class names so we can begin from scratch.
+    var mapNode = map._container;
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-create');
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-edit');
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-delete');
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-view');
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-append');
+
+    // Apply the class names to the mapNode container depending on the current mode.
+    mode & _Flags.CREATE && _leaflet.DomUtil.addClass(mapNode, 'mode-create');
+    mode & _Flags.EDIT && _leaflet.DomUtil.addClass(mapNode, 'mode-edit');
+    mode & _Flags.DELETE && _leaflet.DomUtil.addClass(mapNode, 'mode-delete');
+    mode & _Flags.VIEW && _leaflet.DomUtil.addClass(mapNode, 'mode-view');
+    mode & _Flags.APPEND && _leaflet.DomUtil.addClass(mapNode, 'mode-append');
+
+    return mode;
+};
+
+var _class = function (_FeatureGroup) {
+    _inherits(_class, _FeatureGroup);
+
+    /**
+     * @constructor
+     * @param {Object} [options = {}]
+     * @return {void}
+     */
+    function _class() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultOptions;
+
+        _classCallCheck(this, _class);
+
+        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+
+        _this.options = _extends({}, defaultOptions, options);
+        return _this;
+    }
+
+    /**
+     * @method onAdd
+     * @param {Object} map
+     * @return {void}
+     */
+
+
+    _createClass(_class, [{
+        key: 'onAdd',
+        value: function onAdd(map) {
+
+            // Memorise the map instance, and setup DI for `simplifyPolygon`.
+            this.map = map;
+            map.simplifyPolygon = _Simplify2.default;
+
+            // Add the item to the map.
+            polygons.set(map, new Set());
+
+            // Set the initial mode.
+            setModeFor(map, this.options.mode);
+
+            // Instantiate the SVG layer that sits on top of the map.
+            var svg = d3.select(map._container).append('svg').classed('free-draw', true).attr('width', '100%').attr('height', '100%').style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
+
+            // Set the mouse events.
+            this.listenForEvents(map, svg, this.options);
+        }
+
+        /**
+         * @method onRemove
+         * @param {Object} map
+         * @return {void}
+         */
+
+    }, {
+        key: 'onRemove',
+        value: function onRemove(map) {
+
+            // Remove the item from the map.
+            polygons.delete(map);
+        }
+
+        /**
+         * @method createPolygon
+         * @param {LatLng[]} latLngs
+         * @return {Object}
+         */
+
+    }, {
+        key: 'createPolygon',
+        value: function createPolygon(latLngs) {
+            return createFor(this.map, latLngs, this.options);
+        }
+
+        /**
+         * @method removePolygon
+         * @param {Object} polygon
+         * @return {void}
+         */
+
+    }, {
+        key: 'removePolygon',
+        value: function removePolygon(polygon) {
+            removeFor(this.map, polygon);
+        }
+
+        /**
+         * @method clearPolygons
+         * @return {void}
+         */
+
+    }, {
+        key: 'clearPolygons',
+        value: function clearPolygons() {
+            clearFor(this.map);
+        }
+
+        /**
+         * @method setMode
+         * @param {Number} mode
+         * @return {void}
+         */
+
+    }, {
+        key: 'setMode',
+        value: function setMode(mode) {
+            return setModeFor(this.map, mode);
+        }
+
+        /**
+         * @method getMode
+         * @return {Number}
+         */
+
+    }, {
+        key: 'getMode',
+        value: function getMode() {
+            return this.map[modesKey];
+        }
+
+        /**
+         * @method listenForEvents
+         * @param {Object} map
+         * @param {Object} svg
+         * @param {Object} options
+         * @return {void}
+         */
+
+    }, {
+        key: 'listenForEvents',
+        value: function listenForEvents(map, svg, options) {
+
+            map.on('mousedown touchstart', function mouseDown(event) {
+
+                if (!(map[modesKey] & _Flags.CREATE)) {
+
+                    // Polygons can only be created when the mode includes create.
+                    map.off('mousedown', mouseDown);
+                    return;
+                }
+
+                /**
+                 * @constant latLngs
+                 * @type {Set}
+                 */
+                var latLngs = new Set();
+
+                // Create the line iterator and move it to its first `yield` point, passing in the start point
+                // from the mouse down event.
+                var lineIterator = this.createPath(map, svg, map.latLngToContainerPoint(event.latlng));
+                lineIterator.next();
+
+                /**
+                 * @method mouseMove
+                 * @param {Object} event
+                 * @return {void}
+                 */
+                var mouseMove = function mouseMove(event) {
+
+                    // Resolve the pixel point to the latitudinal and longitudinal equivalent.
+                    var point = map.mouseEventToContainerPoint(event.originalEvent);
+
+                    // Push each lat long value into the points set.
+                    latLngs.add(map.containerPointToLatLng(point));
+
+                    // Invoke the generator by passing in the starting point for the path.
+                    lineIterator.next(new _leaflet.Point(point.x, point.y));
+                };
+
+                // Create the path when the user moves their cursor.
+                map.on('mousemove touchmove', mouseMove);
+
+                /**
+                 * @method mouseUp
+                 * @return {void}
+                 */
+                var mouseUp = function mouseUp() {
+
+                    // Stop listening to the events.
+                    map.off('mouseup', mouseUp);
+                    map.off('mousedown', mouseDown);
+                    map.off('mousemove', mouseMove);
+                    'body' in document && document.body.removeEventListener('mouseleave', mouseUp);
+
+                    // Clear the SVG canvas.
+                    svg.selectAll('*').remove();
+
+                    // Stop the iterator.
+                    lineIterator.return();
+
+                    // ...And finally if we have any lat longs in our set then we can attempt to
+                    // create the polygon.
+                    latLngs.size && createFor(map, Array.from(latLngs), options);
+
+                    // Finally invoke the callback for the polygon regions.
+                    triggerFor(map);
+                };
+
+                // Clear up the events when the user releases the mouse.
+                map.on('mouseup touchend', mouseUp);
+                'body' in document && document.body.addEventListener('mouseleave', mouseUp);
+            }.bind(this));
+        }
+
+        /**
+         * @method createPath
+         * @param {Object} map
+         * @param {Object} svg
+         * @param {Point} fromPoint
+         * @return {void}
+         */
+
+    }, {
+        key: 'createPath',
+        value: regeneratorRuntime.mark(function createPath(map, svg, fromPoint) {
+            var lineFunction, toPoint, lineData;
+            return regeneratorRuntime.wrap(function createPath$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+
+                            // Define the line function to be used for the hand-drawn lines.
+                            lineFunction = d3.line().curve(d3.curveMonotoneX).x(function (d) {
+                                return d.x;
+                            }).y(function (d) {
+                                return d.y;
+                            });
+
+                            // Wait for the iterator to be invoked by passing in the next point.
+
+                            _context.next = 3;
+                            return fromPoint;
+
+                        case 3:
+                            toPoint = _context.sent;
+
+
+                            // Line data that is fed into the D3 line function we defined earlier.
+                            lineData = [fromPoint, toPoint];
+
+                            // Draw SVG line based on the last movement of the mouse's position.
+
+                            svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none');
+
+                            // Recursively invoke the generator function, passing in the current to point as the from point.
+                            return _context.delegateYield(this.createPath(map, svg, toPoint), 't0', 7);
+
+                        case 7:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, createPath, this);
+        })
+    }]);
+
+    return _class;
+}(_leaflet.FeatureGroup);
+
+exports.default = _class;
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+// false -> Array#indexOf
+// true  -> Array#includes
+var toIObject = __webpack_require__(15)
+  , toLength  = __webpack_require__(8)
+  , toIndex   = __webpack_require__(38);
+module.exports = function(IS_INCLUDES){
+  return function($this, el, fromIndex){
+    var O      = toIObject($this)
+      , length = toLength(O.length)
+      , index  = toIndex(fromIndex, length)
+      , value;
+    // Array#includes uses SameValueZero equality algorithm
+    if(IS_INCLUDES && el != el)while(length > index){
+      value = O[index++];
+      if(value != value)return true;
+    // Array#toIndex ignores holes, Array#includes - not
+    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+      if(O[index] === el)return IS_INCLUDES || index || 0;
+    } return !IS_INCLUDES && -1;
+  };
+};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+var global            = __webpack_require__(2)
+  , $export           = __webpack_require__(0)
+  , redefine          = __webpack_require__(13)
+  , redefineAll       = __webpack_require__(36)
+  , meta              = __webpack_require__(28)
+  , forOf             = __webpack_require__(41)
+  , anInstance        = __webpack_require__(31)
+  , isObject          = __webpack_require__(4)
+  , fails             = __webpack_require__(3)
+  , $iterDetect       = __webpack_require__(56)
+  , setToStringTag    = __webpack_require__(43)
+  , inheritIfRequired = __webpack_require__(68);
+
+module.exports = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
+  var Base  = global[NAME]
+    , C     = Base
+    , ADDER = IS_MAP ? 'set' : 'add'
+    , proto = C && C.prototype
+    , O     = {};
+  var fixMethod = function(KEY){
+    var fn = proto[KEY];
+    redefine(proto, KEY,
+      KEY == 'delete' ? function(a){
+        return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
+      } : KEY == 'has' ? function has(a){
+        return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
+      } : KEY == 'get' ? function get(a){
+        return IS_WEAK && !isObject(a) ? undefined : fn.call(this, a === 0 ? 0 : a);
+      } : KEY == 'add' ? function add(a){ fn.call(this, a === 0 ? 0 : a); return this; }
+        : function set(a, b){ fn.call(this, a === 0 ? 0 : a, b); return this; }
+    );
+  };
+  if(typeof C != 'function' || !(IS_WEAK || proto.forEach && !fails(function(){
+    new C().entries().next();
+  }))){
+    // create collection constructor
+    C = common.getConstructor(wrapper, NAME, IS_MAP, ADDER);
+    redefineAll(C.prototype, methods);
+    meta.NEED = true;
+  } else {
+    var instance             = new C
+      // early implementations not supports chaining
+      , HASNT_CHAINING       = instance[ADDER](IS_WEAK ? {} : -0, 1) != instance
+      // V8 ~  Chromium 40- weak-collections throws on primitives, but should return false
+      , THROWS_ON_PRIMITIVES = fails(function(){ instance.has(1); })
+      // most early implementations doesn't supports iterables, most modern - not close it correctly
+      , ACCEPT_ITERABLES     = $iterDetect(function(iter){ new C(iter); }) // eslint-disable-line no-new
+      // for early implementations -0 and +0 not the same
+      , BUGGY_ZERO = !IS_WEAK && fails(function(){
+        // V8 ~ Chromium 42- fails only with 5+ elements
+        var $instance = new C()
+          , index     = 5;
+        while(index--)$instance[ADDER](index, index);
+        return !$instance.has(-0);
+      });
+    if(!ACCEPT_ITERABLES){ 
+      C = wrapper(function(target, iterable){
+        anInstance(target, C, NAME);
+        var that = inheritIfRequired(new Base, target, C);
+        if(iterable != undefined)forOf(iterable, IS_MAP, that[ADDER], that);
+        return that;
+      });
+      C.prototype = proto;
+      proto.constructor = C;
+    }
+    if(THROWS_ON_PRIMITIVES || BUGGY_ZERO){
+      fixMethod('delete');
+      fixMethod('has');
+      IS_MAP && fixMethod('get');
+    }
+    if(BUGGY_ZERO || HASNT_CHAINING)fixMethod(ADDER);
+    // weak collections should not contains .clear method
+    if(IS_WEAK && proto.clear)delete proto.clear;
+  }
+
+  setToStringTag(C, NAME);
+
+  O[NAME] = C;
+  $export($export.G + $export.W + $export.F * (C != Base), O);
+
+  if(!IS_WEAK)common.setStrong(C, NAME, IS_MAP);
+
+  return C;
+};
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+var hide     = __webpack_require__(12)
+  , redefine = __webpack_require__(13)
+  , fails    = __webpack_require__(3)
+  , defined  = __webpack_require__(19)
+  , wks      = __webpack_require__(5);
+
+module.exports = function(KEY, length, exec){
+  var SYMBOL   = wks(KEY)
+    , fns      = exec(defined, SYMBOL, ''[KEY])
+    , strfn    = fns[0]
+    , rxfn     = fns[1];
+  if(fails(function(){
+    var O = {};
+    O[SYMBOL] = function(){ return 7; };
+    return ''[KEY](O) != 7;
+  })){
+    redefine(String.prototype, KEY, strfn);
+    hide(RegExp.prototype, SYMBOL, length == 2
+      // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
+      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
+      ? function(string, arg){ return rxfn.call(string, this, arg); }
+      // 21.2.5.6 RegExp.prototype[@@match](string)
+      // 21.2.5.9 RegExp.prototype[@@search](string)
+      : function(string){ return rxfn.call(string, this); }
+    );
+  }
+};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+// 21.2.5.3 get RegExp.prototype.flags
+var anObject = __webpack_require__(1);
+module.exports = function(){
+  var that   = anObject(this)
+    , result = '';
+  if(that.global)     result += 'g';
+  if(that.ignoreCase) result += 'i';
+  if(that.multiline)  result += 'm';
+  if(that.unicode)    result += 'u';
+  if(that.sticky)     result += 'y';
+  return result;
+};
+
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+// fast apply, http://jsperf.lnkit.com/fast-apply/5
+module.exports = function(fn, args, that){
+  var un = that === undefined;
+  switch(args.length){
+    case 0: return un ? fn()
+                      : fn.call(that);
+    case 1: return un ? fn(args[0])
+                      : fn.call(that, args[0]);
+    case 2: return un ? fn(args[0], args[1])
+                      : fn.call(that, args[0], args[1]);
+    case 3: return un ? fn(args[0], args[1], args[2])
+                      : fn.call(that, args[0], args[1], args[2]);
+    case 4: return un ? fn(args[0], args[1], args[2], args[3])
+                      : fn.call(that, args[0], args[1], args[2], args[3]);
+  } return              fn.apply(that, args);
+};
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+// 7.2.8 IsRegExp(argument)
+var isObject = __webpack_require__(4)
+  , cof      = __webpack_require__(18)
+  , MATCH    = __webpack_require__(5)('match');
+module.exports = function(it){
+  var isRegExp;
+  return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : cof(it) == 'RegExp');
+};
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+var ITERATOR     = __webpack_require__(5)('iterator')
+  , SAFE_CLOSING = false;
+
+try {
+  var riter = [7][ITERATOR]();
+  riter['return'] = function(){ SAFE_CLOSING = true; };
+  Array.from(riter, function(){ throw 2; });
+} catch(e){ /* empty */ }
+
+module.exports = function(exec, skipClosing){
+  if(!skipClosing && !SAFE_CLOSING)return false;
+  var safe = false;
+  try {
+    var arr  = [7]
+      , iter = arr[ITERATOR]();
+    iter.next = function(){ return {done: safe = true}; };
+    arr[ITERATOR] = function(){ return iter; };
+    exec(arr);
+  } catch(e){ /* empty */ }
+  return safe;
+};
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+// Forced replacement prototype accessors methods
+module.exports = __webpack_require__(32)|| !__webpack_require__(3)(function(){
+  var K = Math.random();
+  // In FF throws only define methods
+  __defineSetter__.call(null, K, function(){ /* empty */});
+  delete __webpack_require__(2)[K];
+});
+
+/***/ },
+/* 58 */
+/***/ function(module, exports) {
+
+exports.f = Object.getOwnPropertySymbols;
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+var global = __webpack_require__(2)
+  , SHARED = '__core-js_shared__'
+  , store  = global[SHARED] || (global[SHARED] = {});
+module.exports = function(key){
+  return store[key] || (store[key] = {});
+};
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+var global = __webpack_require__(2)
+  , hide   = __webpack_require__(12)
+  , uid    = __webpack_require__(39)
+  , TYPED  = uid('typed_array')
+  , VIEW   = uid('view')
+  , ABV    = !!(global.ArrayBuffer && global.DataView)
+  , CONSTR = ABV
+  , i = 0, l = 9, Typed;
+
+var TypedArrayConstructors = (
+  'Int8Array,Uint8Array,Uint8ClampedArray,Int16Array,Uint16Array,Int32Array,Uint32Array,Float32Array,Float64Array'
+).split(',');
+
+while(i < l){
+  if(Typed = global[TypedArrayConstructors[i++]]){
+    hide(Typed.prototype, TYPED, true);
+    hide(Typed.prototype, VIEW, true);
+  } else CONSTR = false;
+}
+
+module.exports = {
+  ABV:    ABV,
+  CONSTR: CONSTR,
+  TYPED:  TYPED,
+  VIEW:   VIEW
+};
+
+/***/ },
 /* 61 */
 /***/ function(module, exports) {
 
@@ -15662,7 +15676,7 @@ module.exports = {
 /* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(58)('keys')
+var shared = __webpack_require__(59)('keys')
   , uid    = __webpack_require__(39);
 module.exports = function(key){
   return shared[key] || (shared[key] = uid(key));
@@ -15708,7 +15722,7 @@ module.exports = function(TO_STRING){
 /***/ function(module, exports, __webpack_require__) {
 
 // helper for String#{startsWith, endsWith, includes}
-var isRegExp = __webpack_require__(54)
+var isRegExp = __webpack_require__(55)
   , defined  = __webpack_require__(19);
 
 module.exports = function(that, searchString, NAME){
@@ -15746,7 +15760,7 @@ module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u20
 /***/ function(module, exports, __webpack_require__) {
 
 var ctx                = __webpack_require__(25)
-  , invoke             = __webpack_require__(53)
+  , invoke             = __webpack_require__(54)
   , html               = __webpack_require__(67)
   , cel                = __webpack_require__(64)
   , global             = __webpack_require__(2)
@@ -15830,7 +15844,7 @@ module.exports = {
 var global         = __webpack_require__(2)
   , DESCRIPTORS    = __webpack_require__(6)
   , LIBRARY        = __webpack_require__(32)
-  , $typed         = __webpack_require__(59)
+  , $typed         = __webpack_require__(60)
   , hide           = __webpack_require__(12)
   , redefineAll    = __webpack_require__(36)
   , fails          = __webpack_require__(3)
@@ -16179,9 +16193,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = createEdges;
 
-var _leaflet = __webpack_require__(60);
+var _leaflet = __webpack_require__(48);
 
-var _FreeDraw = __webpack_require__(48);
+var _FreeDraw = __webpack_require__(49);
 
 var _Flags = __webpack_require__(61);
 
@@ -16207,7 +16221,7 @@ function createEdges(map, polygon, options) {
      */
     var fetchLayerPoints = function fetchLayerPoints(polygon) {
 
-        return polygon._latlngs[0].map(function (latLng) {
+        return polygon.getLatLngs()[0].map(function (latLng) {
             return map.latLngToLayerPoint(latLng);
         });
     };
@@ -16217,7 +16231,7 @@ function createEdges(map, polygon, options) {
         var mode = map[_FreeDraw.modesKey];
         var icon = new _leaflet.DivIcon({ className: ('leaflet-edge ' + (mode & _Flags.EDIT ? '' : 'disabled')).trim() });
         var latLng = map.layerPointToLatLng(point);
-        var marker = L.marker(latLng, { icon: icon }).addTo(map);
+        var marker = new _leaflet.Marker(latLng, { icon: icon }).addTo(map);
 
         // Disable the propagation when you click on the marker.
         _leaflet.DomEvent.disableClickPropagation(marker);
@@ -16330,15 +16344,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _leaflet = __webpack_require__(60);
+var _leaflet = __webpack_require__(48);
 
 var _ramda = __webpack_require__(308);
 
-var _Simplify = __webpack_require__(90);
-
 var _clipperLib = __webpack_require__(91);
 
-var _FreeDraw = __webpack_require__(48);
+var _FreeDraw = __webpack_require__(49);
+
+var _Simplify = __webpack_require__(90);
 
 /**
  * @param {Object} map
@@ -16385,23 +16399,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.latLngsToClipperPoints = undefined;
 
+var _leaflet = __webpack_require__(48);
+
 var _clipperLib = __webpack_require__(91);
-
-/**
- * @param {Object} map
- * @param {LatLng[]} latLngs
- * @param {Number} simplifyFactor
- * @return {LatLng[]}
- */
-exports.default = function (map, latLngs, _ref) {
-    var simplifyFactor = _ref.simplifyFactor;
-
-
-    var points = _clipperLib.Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), simplifyFactor);
-    var polygons = _clipperLib.Clipper.SimplifyPolygon(points, _clipperLib.PolyFillType.pftNonZero);
-
-    return clipperPolygonsToLatLngs(map, polygons);
-};
 
 /**
  * @method latLngsToClipperPoints
@@ -16409,8 +16409,6 @@ exports.default = function (map, latLngs, _ref) {
  * @param {LatLng[]} latLngs
  * @return {Array}
  */
-
-
 var latLngsToClipperPoints = exports.latLngsToClipperPoints = function latLngsToClipperPoints(map, latLngs) {
 
     return latLngs.map(function (latLng) {
@@ -16430,10 +16428,27 @@ var clipperPolygonsToLatLngs = function clipperPolygonsToLatLngs(map, polygons) 
     return polygons.map(function (polygon) {
 
         return polygon.map(function (point) {
-            var updatedPoint = L.point(point.X, point.Y);
+            var updatedPoint = new _leaflet.Point(point.X, point.Y);
             return map.layerPointToLatLng(updatedPoint);
         });
     });
+};
+
+/**
+ * @param {Object} map
+ * @param {LatLng[]} latLngs
+ * @param {Number} simplifyFactor
+ * @return {LatLng[]}
+ */
+
+exports.default = function (map, latLngs, _ref) {
+    var simplifyFactor = _ref.simplifyFactor;
+
+
+    var points = _clipperLib.Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), simplifyFactor);
+    var polygons = _clipperLib.Clipper.SimplifyPolygon(points, _clipperLib.PolyFillType);
+
+    return clipperPolygonsToLatLngs(map, polygons);
 };
 
 /***/ },
@@ -23456,7 +23471,7 @@ module.exports = function(that, callbackfn, aLen, memo, isRight){
 'use strict';
 var aFunction  = __webpack_require__(11)
   , isObject   = __webpack_require__(4)
-  , invoke     = __webpack_require__(53)
+  , invoke     = __webpack_require__(54)
   , arraySlice = [].slice
   , factories  = {};
 
@@ -23790,7 +23805,7 @@ module.exports = Math.log1p || function log1p(x){
 'use strict';
 // 19.1.2.1 Object.assign(target, source, ...)
 var getKeys  = __webpack_require__(35)
-  , gOPS     = __webpack_require__(57)
+  , gOPS     = __webpack_require__(58)
   , pIE      = __webpack_require__(47)
   , toObject = __webpack_require__(9)
   , IObject  = __webpack_require__(46)
@@ -23870,7 +23885,7 @@ module.exports.f = function getOwnPropertyNames(it){
 
 var has          = __webpack_require__(10)
   , toIObject    = __webpack_require__(15)
-  , arrayIndexOf = __webpack_require__(49)(false)
+  , arrayIndexOf = __webpack_require__(50)(false)
   , IE_PROTO     = __webpack_require__(77)('IE_PROTO');
 
 module.exports = function(object, names){
@@ -23913,7 +23928,7 @@ module.exports = function(isEntries){
 
 // all object keys, includes non-enumerable and symbols
 var gOPN     = __webpack_require__(34)
-  , gOPS     = __webpack_require__(57)
+  , gOPS     = __webpack_require__(58)
   , anObject = __webpack_require__(1)
   , Reflect  = __webpack_require__(2).Reflect;
 module.exports = Reflect && Reflect.ownKeys || function ownKeys(it){
@@ -23995,7 +24010,7 @@ exports.f = __webpack_require__(5);
 var strong = __webpack_require__(97);
 
 // 23.1 Map Objects
-module.exports = __webpack_require__(50)('Map', function(get){
+module.exports = __webpack_require__(51)('Map', function(get){
   return function Map(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.1.3.6 Map.prototype.get(key)
@@ -24016,7 +24031,7 @@ module.exports = __webpack_require__(50)('Map', function(get){
 // 21.2.5.3 get RegExp.prototype.flags()
 if(__webpack_require__(6) && /./g.flags != 'g')__webpack_require__(7).f(RegExp.prototype, 'flags', {
   configurable: true,
-  get: __webpack_require__(52)
+  get: __webpack_require__(53)
 });
 
 /***/ },
@@ -24028,7 +24043,7 @@ if(__webpack_require__(6) && /./g.flags != 'g')__webpack_require__(7).f(RegExp.p
 var strong = __webpack_require__(97);
 
 // 23.2 Set Objects
-module.exports = __webpack_require__(50)('Set', function(get){
+module.exports = __webpack_require__(51)('Set', function(get){
   return function Set(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.2.3.1 Set.prototype.add(value)
@@ -24077,7 +24092,7 @@ var methods = {
 };
 
 // 23.3 WeakMap Objects
-var $WeakMap = module.exports = __webpack_require__(50)('WeakMap', wrapper, methods, weak, true, true);
+var $WeakMap = module.exports = __webpack_require__(51)('WeakMap', wrapper, methods, weak, true, true);
 
 // IE11 WeakMap frozen keys fix
 if(new $WeakMap().set((Object.freeze || Object)(tmp), 7).get(tmp) != 7){
@@ -24198,9 +24213,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _leaflet = __webpack_require__(60);
+var _leaflet = __webpack_require__(48);
 
-var _FreeDraw = __webpack_require__(48);
+var _FreeDraw = __webpack_require__(49);
 
 var _Edges = __webpack_require__(88);
 
@@ -24216,14 +24231,19 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
  * @method appendEdgeFor
  * @param {Object} map
  * @param {Object} polygon
+ * @param {Object} options
  * @param {Array} parts
  * @param {Object} newPoint
  * @param {Object} startPoint
  * @param {Object} endPoint
- * @param {Object} options
  * @return {void}
  */
-var appendEdgeFor = function appendEdgeFor(map, polygon, parts, newPoint, startPoint, endPoint, options) {
+var appendEdgeFor = function appendEdgeFor(map, polygon, options, _ref) {
+    var parts = _ref.parts,
+        newPoint = _ref.newPoint,
+        startPoint = _ref.startPoint,
+        endPoint = _ref.endPoint;
+
 
     var latLngs = parts.reduce(function (accumulator, point, index) {
 
@@ -24288,16 +24308,16 @@ exports.default = function (map, polygon, options) {
 
 
         var mode = map[_FreeDraw.modesKey];
-        var isDelete = !!(mode & _Flags.DELETE);
-        var isAppend = !!(mode & _Flags.APPEND);
-        var isDeleteAndAppend = !!(mode & _Flags.DELETE && mode & _Flags.APPEND);
+        var isDelete = Boolean(mode & _Flags.DELETE);
+        var isAppend = Boolean(mode & _Flags.APPEND);
+        var isDeleteAndAppend = Boolean(mode & _Flags.DELETE && mode & _Flags.APPEND);
 
         // Partially apply the remove and append functions.
         var removePolygon = function removePolygon() {
             return (0, _FreeDraw.removeFor)(map, polygon);
         };
         var appendEdge = function appendEdge() {
-            return appendEdgeFor(map, polygon, parts, newPoint, startPoint, endPoint, options);
+            return appendEdgeFor(map, options, { polygon: polygon, parts: parts, newPoint: newPoint, startPoint: startPoint, endPoint: endPoint });
         };
 
         switch (true) {
@@ -24390,7 +24410,7 @@ module.exports = function(hint){
 
 // all enumerable object keys, includes symbols
 var getKeys = __webpack_require__(35)
-  , gOPS    = __webpack_require__(57)
+  , gOPS    = __webpack_require__(58)
   , pIE     = __webpack_require__(47);
 module.exports = function(it){
   var result     = getKeys(it)
@@ -24426,7 +24446,7 @@ module.exports = function(object, el){
 "use strict";
 'use strict';
 var path      = __webpack_require__(132)
-  , invoke    = __webpack_require__(53)
+  , invoke    = __webpack_require__(54)
   , aFunction = __webpack_require__(11);
 module.exports = function(/* ...pargs */){
   var fn     = aFunction(this)
@@ -24604,7 +24624,7 @@ var ctx            = __webpack_require__(25)
   , createProperty = __webpack_require__(63)
   , getIterFn      = __webpack_require__(86);
 
-$export($export.S + $export.F * !__webpack_require__(55)(function(iter){ Array.from(iter); }), 'Array', {
+$export($export.S + $export.F * !__webpack_require__(56)(function(iter){ Array.from(iter); }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
   from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
     var O       = toObject(arrayLike)
@@ -24640,7 +24660,7 @@ $export($export.S + $export.F * !__webpack_require__(55)(function(iter){ Array.f
 "use strict";
 'use strict';
 var $export       = __webpack_require__(0)
-  , $indexOf      = __webpack_require__(49)(false)
+  , $indexOf      = __webpack_require__(50)(false)
   , $native       = [].indexOf
   , NEGATIVE_ZERO = !!$native && 1 / [1].indexOf(1, -0) < 0;
 
@@ -26083,7 +26103,7 @@ $export($export.S + $export.F * (LIBRARY || !USE_NATIVE), PROMISE, {
     return capability.promise;
   }
 });
-$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(55)(function(iter){
+$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(56)(function(iter){
   $Promise.all(iter)['catch'](empty);
 })), PROMISE, {
   // 25.4.4.1 Promise.all(iterable)
@@ -26455,8 +26475,8 @@ var global            = __webpack_require__(2)
   , inheritIfRequired = __webpack_require__(68)
   , dP                = __webpack_require__(7).f
   , gOPN              = __webpack_require__(34).f
-  , isRegExp          = __webpack_require__(54)
-  , $flags            = __webpack_require__(52)
+  , isRegExp          = __webpack_require__(55)
+  , $flags            = __webpack_require__(53)
   , $RegExp           = global.RegExp
   , Base              = $RegExp
   , proto             = $RegExp.prototype
@@ -26500,7 +26520,7 @@ __webpack_require__(37)('RegExp');
 /***/ function(module, exports, __webpack_require__) {
 
 // @@match logic
-__webpack_require__(51)('match', 1, function(defined, MATCH, $match){
+__webpack_require__(52)('match', 1, function(defined, MATCH, $match){
   // 21.1.3.11 String.prototype.match(regexp)
   return [function match(regexp){
     'use strict';
@@ -26515,7 +26535,7 @@ __webpack_require__(51)('match', 1, function(defined, MATCH, $match){
 /***/ function(module, exports, __webpack_require__) {
 
 // @@replace logic
-__webpack_require__(51)('replace', 2, function(defined, REPLACE, $replace){
+__webpack_require__(52)('replace', 2, function(defined, REPLACE, $replace){
   // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
   return [function replace(searchValue, replaceValue){
     'use strict';
@@ -26532,7 +26552,7 @@ __webpack_require__(51)('replace', 2, function(defined, REPLACE, $replace){
 /***/ function(module, exports, __webpack_require__) {
 
 // @@search logic
-__webpack_require__(51)('search', 1, function(defined, SEARCH, $search){
+__webpack_require__(52)('search', 1, function(defined, SEARCH, $search){
   // 21.1.3.15 String.prototype.search(regexp)
   return [function search(regexp){
     'use strict';
@@ -26547,9 +26567,9 @@ __webpack_require__(51)('search', 1, function(defined, SEARCH, $search){
 /***/ function(module, exports, __webpack_require__) {
 
 // @@split logic
-__webpack_require__(51)('split', 2, function(defined, SPLIT, $split){
+__webpack_require__(52)('split', 2, function(defined, SPLIT, $split){
   'use strict';
-  var isRegExp   = __webpack_require__(54)
+  var isRegExp   = __webpack_require__(55)
     , _split     = $split
     , $push      = [].push
     , $SPLIT     = 'split'
@@ -26625,7 +26645,7 @@ __webpack_require__(51)('split', 2, function(defined, SPLIT, $split){
 'use strict';
 __webpack_require__(117);
 var anObject    = __webpack_require__(1)
-  , $flags      = __webpack_require__(52)
+  , $flags      = __webpack_require__(53)
   , DESCRIPTORS = __webpack_require__(6)
   , TO_STRING   = 'toString'
   , $toString   = /./[TO_STRING];
@@ -27012,7 +27032,7 @@ var global         = __webpack_require__(2)
   , redefine       = __webpack_require__(13)
   , META           = __webpack_require__(28).KEY
   , $fails         = __webpack_require__(3)
-  , shared         = __webpack_require__(58)
+  , shared         = __webpack_require__(59)
   , setToStringTag = __webpack_require__(43)
   , uid            = __webpack_require__(39)
   , wks            = __webpack_require__(5)
@@ -27154,7 +27174,7 @@ if(!USE_NATIVE){
   $DP.f   = $defineProperty;
   __webpack_require__(34).f = gOPNExt.f = $getOwnPropertyNames;
   __webpack_require__(47).f  = $propertyIsEnumerable;
-  __webpack_require__(57).f = $getOwnPropertySymbols;
+  __webpack_require__(58).f = $getOwnPropertySymbols;
 
   if(DESCRIPTORS && !__webpack_require__(32)){
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
@@ -27246,7 +27266,7 @@ setToStringTag(global.JSON, 'JSON', true);
 "use strict";
 'use strict';
 var $export      = __webpack_require__(0)
-  , $typed       = __webpack_require__(59)
+  , $typed       = __webpack_require__(60)
   , buffer       = __webpack_require__(84)
   , anObject     = __webpack_require__(1)
   , toIndex      = __webpack_require__(38)
@@ -27296,7 +27316,7 @@ __webpack_require__(37)(ARRAY_BUFFER);
 /***/ function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
-$export($export.G + $export.W + $export.F * !__webpack_require__(59).ABV, {
+$export($export.G + $export.W + $export.F * !__webpack_require__(60).ABV, {
   DataView: __webpack_require__(84).DataView
 });
 
@@ -27399,7 +27419,7 @@ __webpack_require__(27)('Uint8', 1, function(init){
 var weak = __webpack_require__(99);
 
 // 23.4 WeakSet Objects
-__webpack_require__(50)('WeakSet', function(get){
+__webpack_require__(51)('WeakSet', function(get){
   return function WeakSet(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.4.3.1 WeakSet.prototype.add(value)
@@ -27416,7 +27436,7 @@ __webpack_require__(50)('WeakSet', function(get){
 'use strict';
 // https://github.com/tc39/Array.prototype.includes
 var $export   = __webpack_require__(0)
-  , $includes = __webpack_require__(49)(true);
+  , $includes = __webpack_require__(50)(true);
 
 $export($export.P, 'Array', {
   includes: function includes(el /*, fromIndex = 0 */){
@@ -27552,7 +27572,7 @@ var $export         = __webpack_require__(0)
   , $defineProperty = __webpack_require__(7);
 
 // B.2.2.2 Object.prototype.__defineGetter__(P, getter)
-__webpack_require__(6) && $export($export.P + __webpack_require__(56), 'Object', {
+__webpack_require__(6) && $export($export.P + __webpack_require__(57), 'Object', {
   __defineGetter__: function __defineGetter__(P, getter){
     $defineProperty.f(toObject(this), P, {get: aFunction(getter), enumerable: true, configurable: true});
   }
@@ -27570,7 +27590,7 @@ var $export         = __webpack_require__(0)
   , $defineProperty = __webpack_require__(7);
 
 // B.2.2.3 Object.prototype.__defineSetter__(P, setter)
-__webpack_require__(6) && $export($export.P + __webpack_require__(56), 'Object', {
+__webpack_require__(6) && $export($export.P + __webpack_require__(57), 'Object', {
   __defineSetter__: function __defineSetter__(P, setter){
     $defineProperty.f(toObject(this), P, {set: aFunction(setter), enumerable: true, configurable: true});
   }
@@ -27627,7 +27647,7 @@ var $export                  = __webpack_require__(0)
   , getOwnPropertyDescriptor = __webpack_require__(16).f;
 
 // B.2.2.4 Object.prototype.__lookupGetter__(P)
-__webpack_require__(6) && $export($export.P + __webpack_require__(56), 'Object', {
+__webpack_require__(6) && $export($export.P + __webpack_require__(57), 'Object', {
   __lookupGetter__: function __lookupGetter__(P){
     var O = toObject(this)
       , K = toPrimitive(P, true)
@@ -27651,7 +27671,7 @@ var $export                  = __webpack_require__(0)
   , getOwnPropertyDescriptor = __webpack_require__(16).f;
 
 // B.2.2.5 Object.prototype.__lookupSetter__(P)
-__webpack_require__(6) && $export($export.P + __webpack_require__(56), 'Object', {
+__webpack_require__(6) && $export($export.P + __webpack_require__(57), 'Object', {
   __lookupSetter__: function __lookupSetter__(P){
     var O = toObject(this)
       , K = toPrimitive(P, true)
@@ -28077,8 +28097,8 @@ $export($export.P, 'String', {
 var $export     = __webpack_require__(0)
   , defined     = __webpack_require__(19)
   , toLength    = __webpack_require__(8)
-  , isRegExp    = __webpack_require__(54)
-  , getFlags    = __webpack_require__(52)
+  , isRegExp    = __webpack_require__(55)
+  , getFlags    = __webpack_require__(53)
   , RegExpProto = RegExp.prototype;
 
 var $RegExpStringIterator = function(regexp, string){
@@ -28227,7 +28247,7 @@ $export($export.G + $export.B, {
 // ie9- setTimeout & setInterval additional parameters fix
 var global     = __webpack_require__(2)
   , $export    = __webpack_require__(0)
-  , invoke     = __webpack_require__(53)
+  , invoke     = __webpack_require__(54)
   , partial    = __webpack_require__(131)
   , navigator  = global.navigator
   , MSIE       = !!navigator && /MSIE .\./.test(navigator.userAgent); // <- dirty ie9- check
@@ -54519,7 +54539,7 @@ process.umask = function() { return 0; };
 /***/ function(module, exports, __webpack_require__) {
 
 __webpack_require__(121);
-module.exports = __webpack_require__(48);
+module.exports = __webpack_require__(49);
 
 
 /***/ }
