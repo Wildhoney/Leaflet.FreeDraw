@@ -12,6 +12,7 @@
     "test": "npm run lint && npm run spec",
     "spec": "ava && mocha tests/functional/FreeDraw.test.js --compilers js:babel-register",
     "lint": "xo src/*.js src/**/*.js",
+    "cleanup": "rimraf node_modules",
     "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js"
   },
   "repository": {
@@ -53,6 +54,7 @@
     "nightmare": "^2.8.1",
     "opener": "^1.4.2",
     "ramda": "^0.22.1",
+    "rimraf": "^2.5.4",
     "sinon": "^1.17.6",
     "webpack": "^2.1.0-beta.27",
     "xo": "^0.17.1"
