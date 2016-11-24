@@ -66,7 +66,9 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
         DomEvent.disableClickPropagation(polygon);
 
         // Yield the click handler to the `handlePolygonClick` function.
-        polygon.on('click', handlePolygonClick(map, polygon, options));
+        // Why do we have a ternary operator? Because for the Nightmare tests the LeafletJS events do not work.
+        '_path' in polygon ? polygon._path.addEventListener('click', handlePolygonClick(map, polygon, options)) :
+                             polygon.on('click', handlePolygonClick(map, polygon, options));
 
         return polygon;
 
