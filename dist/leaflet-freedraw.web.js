@@ -14615,7 +14615,8 @@ var createFor = exports.createFor = function createFor(map, latLngs) {
         _leaflet.DomEvent.disableClickPropagation(polygon);
 
         // Yield the click handler to the `handlePolygonClick` function.
-        polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
+        // Why do we have a ternary operator? Because for the Nightmare tests the LeafletJS events do not work.
+        '_path' in polygon ? polygon._path.addEventListener('click', (0, _Polygon2.default)(map, polygon, options)) : polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
 
         return polygon;
     });
@@ -16446,7 +16447,7 @@ exports.default = function (map, latLngs, _ref) {
 
 
     var points = _clipperLib.Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), simplifyFactor);
-    var polygons = _clipperLib.Clipper.SimplifyPolygon(points, _clipperLib.PolyFillType);
+    var polygons = _clipperLib.Clipper.SimplifyPolygon(points, _clipperLib.PolyFillType.pftNonZero);
 
     return clipperPolygonsToLatLngs(map, polygons);
 };
@@ -24280,7 +24281,7 @@ exports.default = function (map, polygon, options) {
     return function (event) {
 
         // Gather all of the points from the lat longs of the current polygon.
-        var newPoint = map.mouseEventToContainerPoint(event.originalEvent);
+        var newPoint = map.mouseEventToContainerPoint('originalEvent' in event ? event.originalEvent : event);
         var parts = polygon.getLatLngs()[0].map(function (latLng) {
             return map.latLngToContainerPoint(latLng);
         });
@@ -24317,7 +24318,7 @@ exports.default = function (map, polygon, options) {
             return (0, _FreeDraw.removeFor)(map, polygon);
         };
         var appendEdge = function appendEdge() {
-            return appendEdgeFor(map, options, { polygon: polygon, parts: parts, newPoint: newPoint, startPoint: startPoint, endPoint: endPoint });
+            return appendEdgeFor(map, polygon, options, { parts: parts, newPoint: newPoint, startPoint: startPoint, endPoint: endPoint });
         };
 
         switch (true) {
