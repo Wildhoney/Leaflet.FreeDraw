@@ -115,7 +115,7 @@ export const removeFor = (map, polygon) => {
  * @return {void}
  */
 export const clearFor = map => {
-    polygons.get(polygon => removeFor(map, polygon));
+    Array.from(polygons.get(map).entries()).forEach(polygon => removeFor(map, polygon));
 };
 
 /**
@@ -142,7 +142,7 @@ export const triggerFor = map => {
  * @method setModeFor
  * @param {Object} map
  * @param {Number} mode
- * @return {void}
+ * @return {Number}
  */
 export const setModeFor = (map, mode) => {
 
@@ -166,7 +166,6 @@ export const setModeFor = (map, mode) => {
 
     });
 
-
     // Remove all of the current class names so we can begin from scratch.
     const mapNode = map._container;
     DomUtil.removeClass(mapNode, 'mode-create');
@@ -181,6 +180,8 @@ export const setModeFor = (map, mode) => {
     mode & DELETE && DomUtil.addClass(mapNode, 'mode-delete');
     mode & VIEW && DomUtil.addClass(mapNode, 'mode-view');
     mode & APPEND && DomUtil.addClass(mapNode, 'mode-append');
+
+    return mode;
 
 };
 
@@ -220,6 +221,18 @@ export default class extends FeatureGroup {
 
         // Set the mouse events.
         this.listenForEvents(map, svg, this.options);
+
+    }
+
+    /**
+     * @method onRemove
+     * @param {Object} map
+     * @return {void}
+     */
+    onRemove(map) {
+
+        // Remove the item from the map.
+        polygons.delete(map);
 
     }
 
@@ -264,18 +277,6 @@ export default class extends FeatureGroup {
      */
     getMode() {
         return this.map[modesKey];
-    }
-
-    /**
-     * @method onRemove
-     * @param {Object} map
-     * @return {void}
-     */
-    onRemove(map) {
-
-        // Remove the item from the map.
-        polygons.delete(map);
-
     }
 
     /**
@@ -378,7 +379,7 @@ export default class extends FeatureGroup {
         const lineFunction = d3.line().curve(d3.curveMonotoneX).x(d => d.x).y(d => d.y);
 
         // Wait for the iterator to be invoked by passing in the next point.
-        const toPoint = yield;
+        const toPoint = yield fromPoint;
 
         // Line data that is fed into the D3 line function we defined earlier.
         const lineData = [fromPoint, toPoint];
