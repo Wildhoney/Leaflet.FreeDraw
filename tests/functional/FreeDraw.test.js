@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { createFirstPolygon, createSecondPolygon, createMergedPolygon, removeFirstPolygon } from './helpers/Polygons';
 
 // Instantiate Nightmare.
-const nightmare = Nightmare({ show: false });
+const nightmare = Nightmare({ show: false, frame: false });
 
 // Fetch the absolute path to the index page.
 const url = `file://${resolve('example/index.html')}`;
