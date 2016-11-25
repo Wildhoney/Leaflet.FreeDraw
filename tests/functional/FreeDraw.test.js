@@ -35,7 +35,7 @@ describe('FreeDraw', () => {
             .then(() => done())
             .catch(error(done));
 
-    });
+    }).timeout(15000);
 
     it('It should be able to create merged polygons;', done => {
 
@@ -48,7 +48,7 @@ describe('FreeDraw', () => {
             .then(() => done())
             .catch(error(done));
 
-    });
+    }).timeout(15000);
 
     it('It should be able to delete polygon;', done => {
 
@@ -60,6 +60,6 @@ describe('FreeDraw', () => {
             .then(() => done())
             .catch(error(done));
 
-    });
+    }).timeout(15000);
 
 });
