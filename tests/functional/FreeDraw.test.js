@@ -3,6 +3,12 @@ import { resolve } from 'path';
 import { expect } from 'chai';
 import { createFirstPolygon, createSecondPolygon, createMergedPolygon, removeFirstPolygon } from './helpers/Polygons';
 
+/**
+ * @constant timeout
+ * @type {Number}
+ */
+const timeout = 10000;
+
 // Instantiate Nightmare.
 const nightmare = Nightmare({ show: false, frame: false });
 
@@ -35,7 +41,7 @@ describe('FreeDraw', () => {
             .then(() => done())
             .catch(error(done));
 
-    }).timeout(15000);
+    }).timeout(timeout);
 
     it('It should be able to create merged polygons;', done => {
 
@@ -48,7 +54,7 @@ describe('FreeDraw', () => {
             .then(() => done())
             .catch(error(done));
 
-    }).timeout(15000);
+    }).timeout(timeout);
 
     it('It should be able to delete polygon;', done => {
 
@@ -60,6 +66,6 @@ describe('FreeDraw', () => {
             .then(() => done())
             .catch(error(done));
 
-    }).timeout(15000);
+    }).timeout(timeout);
 
 });
