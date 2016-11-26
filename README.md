@@ -1,4 +1,4 @@
-![FreeDraw](media/logo.png)
+<img src="media/logo.png" width="100" />
 
 ![Travis](http://img.shields.io/travis/Wildhoney/Leaflet.FreeDraw.svg?style=flat)
 &nbsp;
