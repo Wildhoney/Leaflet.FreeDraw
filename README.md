@@ -1,5 +1,8 @@
 <img src="media/logo.png" width="400" />
 
+> FreeDraw allows the free-hand drawing of shapes on your Leaflet.js map layer &ndash; providing an intuitive and familiar UX for creating geospatial boundaries similar to [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map) and others. Included out-of-the-box is the [concaving of polygons](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html), polygon merging and simplifying, as well as the ability to add edges and modify existing shapes.
+> **Note:** For drawing polylines instead, try [`L.Pather`](https://github.com/Wildhoney/L.Pather).
+
 ![Travis](http://img.shields.io/travis/Wildhoney/Leaflet.FreeDraw.svg?style=flat-square)
 &nbsp;
 ![npm](http://img.shields.io/npm/v/leaflet.freedraw.svg?style=flat-square)
@@ -7,10 +10,6 @@
 ![Bower](https://img.shields.io/bower/v/bootstrap.svg?style=flat-square)
 &nbsp;
 ![MIT License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat-square)
-
-> Use [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw) for drawing pre-defined polygons and linear shapes &ndash; `Leaflet.FreeDraw`'s selling point is that it allows you to freely draw a polygon like [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map). Hulls are also supported to normalise polygons when users draw an insane polygon &ndash; currently `Leaflet.FreeDraw` supports Brian Barnett's [Graham Scan module](https://github.com/brian3kb/graham_scan_js) and my adaptation of the [concave hull algorithm](https://github.com/Wildhoney/ConcaveHull).
-
-**Note:** For drawing polylines instead, try [`L.Pather`](https://github.com/Wildhoney/L.Pather).
 
 * **npm:** `npm i leaflet.freedraw`
 * **Bower:** `bower i leaflet.freedraw`
