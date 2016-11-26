@@ -19,9 +19,9 @@ export const polygons = new WeakMap();
  */
 const defaultOptions = {
     mode: ALL,
-    smoothFactor: 5,
+    smoothFactor: 1,
     elbowDistance: 10,
-    simplifyFactor: 2,
+    simplifyFactor: 1.1,
     mergePolygons: true,
     concavePolygon: true,
     recreatePostEdit: false
