@@ -40,6 +40,12 @@ export const modesKey = Symbol('freedraw/modes');
 export const edgesKey = Symbol('freedraw/edges');
 
 /**
+ * @constant cancelKey
+ * @type {Symbol}
+ */
+const cancelKey = Symbol('freedraw/cancel');
+
+/**
  * @method createFor
  * @param {Object} map
  * @param {Array} latLngs
@@ -187,7 +193,7 @@ export const setModeFor = (map, mode) => {
 
 };
 
-export default class extends FeatureGroup {
+export default class FreeDraw extends FeatureGroup {
 
     /**
      * @constructor
@@ -208,6 +214,7 @@ export default class extends FeatureGroup {
 
         // Memorise the map instance, and setup DI for `simplifyPolygon`.
         this.map = map;
+        this.map[cancelKey] = () => {};
         map.simplifyPolygon = simplifyPolygon;
 
         // Add the item to the map.
@@ -282,6 +289,14 @@ export default class extends FeatureGroup {
     }
 
     /**
+     * @method cancelAction
+     * @return {void}
+     */
+    cancelAction() {
+        this.map[cancelKey]();
+    }
+
+    /**
      * @method listenForEvents
      * @param {Object} map
      * @param {Object} svg
@@ -338,6 +353,9 @@ export default class extends FeatureGroup {
              */
             const mouseUp = () => {
 
+                // Remove the ability to invoke `cancelAction`.
+                map[cancelKey] = () => {};
+
                 // Stop listening to the events.
                 map.off('mouseup', mouseUp);
                 map.off('mousedown', mouseDown);
@@ -362,6 +380,9 @@ export default class extends FeatureGroup {
             // Clear up the events when the user releases the mouse.
             map.on('mouseup touchend', mouseUp);
             'body' in document && document.body.addEventListener('mouseleave', mouseUp);
+
+            // Setup the function to invoke when `cancelAction` has been invoked.
+            map[cancelKey] = mouseUp;
 
         }.bind(this));
 
@@ -394,5 +415,13 @@ export default class extends FeatureGroup {
     }
 
 }
+
+/**
+ * @method freeDraw
+ * @return {Object}
+ */
+export const freeDraw = options => {
+    return new FreeDraw(options);
+};
 
 export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, VIEW, ALL } from './helpers/Flags';
