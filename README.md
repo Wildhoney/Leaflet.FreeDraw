@@ -16,4 +16,50 @@
 
 ![FreeDraw Screenshot](media/screenshot.png)
 
----
+## Getting Started
+
+`FreeDraw` functions as a standard Leaflet module, meaning you initialise it and add it to your map layer via the `addLayer` function on your map instance &ndash; when you instantiate `FreeDraw` you can pass a set of [`options`](#options) for behaviour customisation.
+
+```javascript
+import L from 'leaflet';
+import FreeDraw from 'leaflet-freedraw';
+
+const map = new L.Map(node);
+const freeDraw = new FreeDraw();
+```
+
+By attaching `FreeDraw` to your map layer, an SVG node will be appended to the DOM, and mouse event listeners will be attached to the `map` instance for creating and managing the geospatial polygons.
+
+When a user creates a polygon an event is fired on the `map` instance called `markers` which you can listen for by using the native Leaflet `on` function.
+
+```javascript
+map.on('markers', event => {
+    console.log(event.latLngs);
+});
+```
+
+Once you have received the latitude and longitude values the next step would likely be to perform any necessary geospatial queries, and then render the relevant markers onto the map &ndash; for this you *could* use `L.Marker` and the native `addTo` method for [placing markers](http://leafletjs.com/reference-1.0.2.html#marker) on the map &ndash; however the important take-away is that `FreeDraw` doesn't concern itself with marker placement, as this is sufficiently covered by Leaflet.
+
+Another event that `FreeDraw` fires is `mode` which is invoked each and every time the mode has been modified.
+
+By default the mode is `ALL` which means all actions can be performed on the `FreeDraw` layer &mdash; create, edit, delete, and append &mdash; you're able to modify the mode at any time by using the `setMode` method, or upon instantiation by passing an object as the first argument.
+
+```javascript
+import L from 'leaflet';
+import FreeDraw, { CREATE, EDIT, DELETE } from 'leaflet-freedraw';
+
+const map = new L.Map(node);
+const freeDraw = new FreeDraw({
+    mode: CREATE | EDIT
+});
+```
+
+By passing in the `mode` as `CREATE | EDIT` you're **only** allowing the user to create and edit polygons, they are not able to append edges, nor delete them. You can use `setMode` to allow users to also delete polygons at any time.
+
+```javascript
+import { CREATE, EDIT, DELETE } from 'leaflet-freedraw';
+
+// ...
+
+freeDraw.setMode(CREATE | EDIT | DELETE);
+```

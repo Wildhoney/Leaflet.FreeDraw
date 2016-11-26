@@ -8,5 +8,6 @@ const isHeroku = 'HEROKU_APP_NAME' in process.env;
 
 app.use(express.static(__dirname + '/example'));
 
-server.listen(process.env.PORT || 5000);
-!isHeroku && opener('http://localhost:5000');
+const port = process.env.PORT || 5000;
+server.listen(port);
+!isHeroku && opener(`http://localhost:${port}`);
