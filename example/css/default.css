@@ -128,12 +128,12 @@ section.map.mode-create {
 }
 
 path.leaflet-line {
-    stroke: #D7217E;
+    stroke: #64a843;
     stroke-width: 2;
 }
 
 div.leaflet-edge {
-    background-color: #d7217e;
+    background-color: #64a843;
     box-shadow: 0 0 0 2px white, 0 0 10px rgba(0, 0, 0, .35);
     border-radius: 50%;
     cursor: move;
@@ -147,8 +147,8 @@ div.leaflet-edge.disabled {
 }
 
 path.leaflet-polygon {
-    fill: #D7217E;
-    stroke: #D7217E;
+    fill: #b4dd66;
+    stroke: #b4dd66;
     stroke-width: 1px;
     fill-opacity: .75;
 }
