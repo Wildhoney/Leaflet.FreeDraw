@@ -7,7 +7,7 @@ import { createFirstPolygon, createSecondPolygon, createMergedPolygon, removeFir
  * @constant timeout
  * @type {Number}
  */
-const timeout = 60000;
+const timeout = 30000;
 
 // Instantiate Nightmare.
 const nightmare = Nightmare({ show: false, frame: false });
