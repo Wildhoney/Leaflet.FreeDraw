@@ -136,7 +136,7 @@ module('leafletApp', []).controller('MapController', $scope => {
             });
 
             // Exposed for testing purposes.
-            window.polygons = polygons.get(map);
+            window._polygons = polygons.get(map);
 
         }
 

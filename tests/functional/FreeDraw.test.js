@@ -72,6 +72,6 @@ describe('FreeDraw', () => {
             .then(() => done())
             .catch(error(done));
 
-    }).timeout(Infinity);
+    }).timeout(timeout);
 
 });

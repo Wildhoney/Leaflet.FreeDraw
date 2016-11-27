@@ -10,7 +10,7 @@
     "start": "npm i && npm run dev && babel example/server/default.js | node",
     "css": "cp node_modules/leaflet/dist/leaflet.css ./example/css",
     "test": "npm run lint && npm run spec",
-    "spec": "ava && mocha tests/functional/FreeDraw.test.js --compilers js:babel-register",
+    "spec": "ava && npm run dev && mocha tests/functional/FreeDraw.test.js --compilers js:babel-register",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
     "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js"
