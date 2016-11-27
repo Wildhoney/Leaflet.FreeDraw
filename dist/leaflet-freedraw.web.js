@@ -1422,7 +1422,7 @@ module.exports = L;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ALL = exports.VIEW = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.setModeFor = exports.triggerFor = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.modesKey = exports.polygons = undefined;
+exports.ALL = exports.NONE = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.freeDraw = exports.setModeFor = exports.triggerFor = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.modesKey = exports.polygons = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1460,10 +1460,10 @@ Object.defineProperty(exports, 'EDIT_APPEND', {
         return _Flags.EDIT_APPEND;
     }
 });
-Object.defineProperty(exports, 'VIEW', {
+Object.defineProperty(exports, 'NONE', {
     enumerable: true,
     get: function get() {
-        return _Flags.VIEW;
+        return _Flags.NONE;
     }
 });
 Object.defineProperty(exports, 'ALL', {
@@ -1523,9 +1523,9 @@ var polygons = exports.polygons = new WeakMap();
  */
 var defaultOptions = {
     mode: _Flags.ALL,
-    smoothFactor: 5,
+    smoothFactor: 0.3,
     elbowDistance: 10,
-    simplifyFactor: 2,
+    simplifyFactor: 1.1,
     mergePolygons: true,
     concavePolygon: true,
     recreatePostEdit: false
@@ -1542,6 +1542,12 @@ var modesKey = exports.modesKey = Symbol('freedraw/modes');
  * @type {Symbol}
  */
 var edgesKey = exports.edgesKey = Symbol('freedraw/edges');
+
+/**
+ * @constant cancelKey
+ * @type {Symbol}
+ */
+var cancelKey = Symbol('freedraw/cancel');
 
 /**
  * @method createFor
@@ -1572,8 +1578,7 @@ var createFor = exports.createFor = function createFor(map, latLngs) {
         _leaflet.DomEvent.disableClickPropagation(polygon);
 
         // Yield the click handler to the `handlePolygonClick` function.
-        // Why do we have a ternary operator? Because for the Nightmare tests the LeafletJS events do not work.
-        '_path' in polygon ? polygon._path.addEventListener('click', (0, _Polygon2.default)(map, polygon, options)) : polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
+        polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
 
         return polygon;
     });
@@ -1675,36 +1680,36 @@ var setModeFor = exports.setModeFor = function setModeFor(map, mode) {
 
     // Remove all of the current class names so we can begin from scratch.
     var mapNode = map._container;
+    _leaflet.DomUtil.removeClass(mapNode, 'mode-none');
     _leaflet.DomUtil.removeClass(mapNode, 'mode-create');
     _leaflet.DomUtil.removeClass(mapNode, 'mode-edit');
     _leaflet.DomUtil.removeClass(mapNode, 'mode-delete');
-    _leaflet.DomUtil.removeClass(mapNode, 'mode-view');
     _leaflet.DomUtil.removeClass(mapNode, 'mode-append');
 
     // Apply the class names to the mapNode container depending on the current mode.
+    mode & _Flags.NONE && _leaflet.DomUtil.addClass(mapNode, 'mode-view');
     mode & _Flags.CREATE && _leaflet.DomUtil.addClass(mapNode, 'mode-create');
     mode & _Flags.EDIT && _leaflet.DomUtil.addClass(mapNode, 'mode-edit');
     mode & _Flags.DELETE && _leaflet.DomUtil.addClass(mapNode, 'mode-delete');
-    mode & _Flags.VIEW && _leaflet.DomUtil.addClass(mapNode, 'mode-view');
     mode & _Flags.APPEND && _leaflet.DomUtil.addClass(mapNode, 'mode-append');
 
     return mode;
 };
 
-var _class = function (_FeatureGroup) {
-    _inherits(_class, _FeatureGroup);
+var FreeDraw = function (_FeatureGroup) {
+    _inherits(FreeDraw, _FeatureGroup);
 
     /**
      * @constructor
      * @param {Object} [options = {}]
      * @return {void}
      */
-    function _class() {
+    function FreeDraw() {
         var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultOptions;
 
-        _classCallCheck(this, _class);
+        _classCallCheck(this, FreeDraw);
 
-        var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this));
+        var _this = _possibleConstructorReturn(this, (FreeDraw.__proto__ || Object.getPrototypeOf(FreeDraw)).call(this));
 
         _this.options = _extends({}, defaultOptions, options);
         return _this;
@@ -1717,12 +1722,13 @@ var _class = function (_FeatureGroup) {
      */
 
 
-    _createClass(_class, [{
+    _createClass(FreeDraw, [{
         key: 'onAdd',
         value: function onAdd(map) {
 
             // Memorise the map instance, and setup DI for `simplifyPolygon`.
             this.map = map;
+            this.map[cancelKey] = function () {};
             map.simplifyPolygon = _Simplify2.default;
 
             // Add the item to the map.
@@ -1732,7 +1738,7 @@ var _class = function (_FeatureGroup) {
             setModeFor(map, this.options.mode);
 
             // Instantiate the SVG layer that sits on top of the map.
-            var svg = d3.select(map._container).append('svg').classed('free-draw', true).attr('width', '100%').attr('height', '100%').style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
+            var svg = this.svg = d3.select(map._container).append('svg').classed('free-draw', true).attr('width', '100%').attr('height', '100%').style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
 
             // Set the mouse events.
             this.listenForEvents(map, svg, this.options);
@@ -1750,64 +1756,71 @@ var _class = function (_FeatureGroup) {
 
             // Remove the item from the map.
             polygons.delete(map);
+
+            // Remove the SVG layer.
+            this.svg.remove();
         }
 
         /**
-         * @method createPolygon
+         * @method create
          * @param {LatLng[]} latLngs
          * @return {Object}
          */
 
     }, {
-        key: 'createPolygon',
-        value: function createPolygon(latLngs) {
+        key: 'create',
+        value: function create(latLngs) {
             return createFor(this.map, latLngs, this.options);
         }
 
         /**
-         * @method removePolygon
+         * @method remove
          * @param {Object} polygon
          * @return {void}
          */
 
     }, {
-        key: 'removePolygon',
-        value: function removePolygon(polygon) {
+        key: 'remove',
+        value: function remove(polygon) {
             removeFor(this.map, polygon);
         }
 
         /**
-         * @method clearPolygons
+         * @method clear
          * @return {void}
          */
 
     }, {
-        key: 'clearPolygons',
-        value: function clearPolygons() {
+        key: 'clear',
+        value: function clear() {
             clearFor(this.map);
         }
 
         /**
          * @method setMode
-         * @param {Number} mode
-         * @return {void}
-         */
-
-    }, {
-        key: 'setMode',
-        value: function setMode(mode) {
-            return setModeFor(this.map, mode);
-        }
-
-        /**
-         * @method getMode
+         * @param {Number} [mode = null]
          * @return {Number}
          */
 
     }, {
-        key: 'getMode',
-        value: function getMode() {
+        key: 'mode',
+        value: function mode() {
+            var _mode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            // Set mode when passed `mode` is numeric, and then yield the current mode.
+            typeof _mode === 'number' && setModeFor(this.map, _mode);
             return this.map[modesKey];
+        }
+
+        /**
+         * @method cancel
+         * @return {void}
+         */
+
+    }, {
+        key: 'cancel',
+        value: function cancel() {
+            this.map[cancelKey]();
         }
 
         /**
@@ -1868,6 +1881,9 @@ var _class = function (_FeatureGroup) {
                  */
                 var mouseUp = function mouseUp() {
 
+                    // Remove the ability to invoke `cancel`.
+                    map[cancelKey] = function () {};
+
                     // Stop listening to the events.
                     map.off('mouseup', mouseUp);
                     map.off('mousedown', mouseDown);
@@ -1891,6 +1907,9 @@ var _class = function (_FeatureGroup) {
                 // Clear up the events when the user releases the mouse.
                 map.on('mouseup touchend', mouseUp);
                 'body' in document && document.body.addEventListener('mouseleave', mouseUp);
+
+                // Setup the function to invoke when `cancel` has been invoked.
+                map[cancelKey] = mouseUp;
             }.bind(this));
         }
 
@@ -1946,10 +1965,19 @@ var _class = function (_FeatureGroup) {
         })
     }]);
 
-    return _class;
+    return FreeDraw;
 }(_leaflet.FeatureGroup);
 
-exports.default = _class;
+/**
+ * @method freeDraw
+ * @return {Object}
+ */
+
+
+exports.default = FreeDraw;
+var freeDraw = exports.freeDraw = function freeDraw(options) {
+    return new FreeDraw(options);
+};
 
 /***/ },
 /* 50 */
@@ -2252,10 +2280,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 /**
- * @constant VIEW
+ * @constant NONE
  * @type {Number}
  */
-var VIEW = exports.VIEW = 0;
+var NONE = exports.NONE = 0;
 
 /**
  * @constant CREATE
