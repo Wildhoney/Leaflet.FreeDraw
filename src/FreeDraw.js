@@ -19,7 +19,7 @@ export const polygons = new WeakMap();
  */
 const defaultOptions = {
     mode: ALL,
-    smoothFactor: 1,
+    smoothFactor: 0.3,
     elbowDistance: 10,
     simplifyFactor: 1.1,
     mergePolygons: true,
