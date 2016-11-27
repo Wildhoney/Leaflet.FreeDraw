@@ -1,8 +1,8 @@
 /**
- * @constant VIEW
+ * @constant NONE
  * @type {Number}
  */
-export const VIEW = 0;
+export const NONE = 0;
 
 /**
  * @constant CREATE

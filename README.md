@@ -99,11 +99,11 @@ Depending on the current modes active on the map instance, the relevant classes 
 
 | Class Name          | Mode         |
 | ------------------- |------------- |
+| `mode-none`         | `NONE`       |
 | `mode-create`       | `CREATE`     |
 | `mode-edit`         | `EDIT`       |
 | `mode-delete`       | `DELETE`     |
 | `mode-append`       | `APPEND`     |
-| `mode-view`         | `VIEW`       |
 
 From the above example if the current mode is `CREATE | EDIT | APPEND` then the **three** class names that will be present on the `map` node will be `mode-create`, `mode-edit` and `mode-append`, allowing you to provide a better UX from within your attached stylesheet.
 

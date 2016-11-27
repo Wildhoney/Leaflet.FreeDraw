@@ -5,7 +5,7 @@ import handlePolygonClick from './helpers/Polygon';
 import simplifyPolygon from './helpers/Simplify';
 import concavePolygon from './helpers/Concave';
 import mergePolygons from './helpers/Merge';
-import { VIEW, CREATE, EDIT, DELETE, APPEND, ALL } from './helpers/Flags';
+import { NONE, CREATE, EDIT, DELETE, APPEND, ALL } from './helpers/Flags';
 
 /**
  * @constant polygons
@@ -176,17 +176,17 @@ export const setModeFor = (map, mode) => {
 
     // Remove all of the current class names so we can begin from scratch.
     const mapNode = map._container;
-    DomUtil.removeClass(mapNode, 'mode-view');
+    DomUtil.removeClass(mapNode, 'mode-none');
     DomUtil.removeClass(mapNode, 'mode-create');
     DomUtil.removeClass(mapNode, 'mode-edit');
     DomUtil.removeClass(mapNode, 'mode-delete');
     DomUtil.removeClass(mapNode, 'mode-append');
 
     // Apply the class names to the mapNode container depending on the current mode.
+    mode & NONE && DomUtil.addClass(mapNode, 'mode-view');
     mode & CREATE && DomUtil.addClass(mapNode, 'mode-create');
     mode & EDIT && DomUtil.addClass(mapNode, 'mode-edit');
     mode & DELETE && DomUtil.addClass(mapNode, 'mode-delete');
-    mode & VIEW && DomUtil.addClass(mapNode, 'mode-view');
     mode & APPEND && DomUtil.addClass(mapNode, 'mode-append');
 
     return mode;
@@ -420,4 +420,4 @@ export const freeDraw = options => {
     return new FreeDraw(options);
 };
 
-export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, VIEW, ALL } from './helpers/Flags';
+export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL } from './helpers/Flags';
