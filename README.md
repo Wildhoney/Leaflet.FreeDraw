@@ -14,7 +14,7 @@
 * **npm:** `npm i leaflet.freedraw`
 * **Bower:** `bower i leaflet.freedraw`
 
-<pre>For Leaflet pre-1.0.0 please use [`v1.2.2`](https://github.com/Wildhoney/Leaflet.FreeDraw/tree/v1.2.2).</pre>
+<sub><sup>For Leaflet pre-1.0.0 please use [`v1.2.2`](https://github.com/Wildhoney/Leaflet.FreeDraw/tree/v1.2.2).</sup></sub>
 
 ## Table of Contents
 
