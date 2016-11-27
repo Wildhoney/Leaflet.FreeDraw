@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { LatLng, Point } from 'leaflet';
 import { spy } from 'sinon';
 import FreeDraw, { triggerFor, polygons, edgesKey } from '../src/FreeDraw';
-import { VIEW, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from '../src/helpers/Flags';
+import { NONE, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from '../src/helpers/Flags';
 
 /**
  * @method mockFunctions
@@ -58,7 +58,7 @@ test('It should be able to create the map instance;', t => {
     t.truthy(polygons.has(map));
 
     // Ensure the mode has been set by default to `ALL`.
-    t.is(freeDraw.getMode(), ALL);
+    t.is(freeDraw.mode(), ALL);
 
     // Ensure the initial event for the modes was invoked.
     t.is(map.fire.callCount, 1);
@@ -79,8 +79,8 @@ test('It should be able to create polygons;', t => {
     freeDraw.onAdd(map);
     mockFunctions(map);
 
-    // ...And then invoke the `createPolygon` function!
-    freeDraw.createPolygon(polygon, true);
+    // ...And then invoke the `create` function!
+    freeDraw.create(polygon, true);
 
     // Ensure the expected functions are invoked.
     t.truthy(map.addLayer.called);
@@ -97,15 +97,15 @@ test('It should be able to remove polygons;', t => {
     freeDraw.onAdd(map);
     mockFunctions(map);
 
-    // Invoke the `createPolygon` function.
-    const [firstPolygon] = freeDraw.createPolygon(polygon, true);
+    // Invoke the `create` function.
+    const [firstPolygon] = freeDraw.create(polygon, true);
 
     // Ensure it's correctly added to the `polygons` set, as well as the associated edges.
     t.is(polygons.get(map).size, 1);
     t.is(firstPolygon[edgesKey].length, 4);
 
     // ... And then remove it immediately.
-    freeDraw.removePolygon(firstPolygon);
+    freeDraw.remove(firstPolygon);
 
     // Ensure it's correctly removed from the `polygons` set.
     t.is(polygons.get(map).size, 0);
@@ -121,10 +121,10 @@ test('It should be able to remove polygons;', t => {
 //     freeDraw.onAdd(map);
 //     mockFunctions(map);
 //
-//     // Invoke the `createPolygon` function.
-//     freeDraw.createPolygon(polygon, true);
-//     freeDraw.createPolygon(polygon, true);
-//     freeDraw.createPolygon(polygon, true);
+//     // Invoke the `create` function.
+//     freeDraw.create(polygon, true);
+//     freeDraw.create(polygon, true);
+//     freeDraw.create(polygon, true);
 //
 //     // Ensure it's correctly added to the `polygons` set.
 //     t.is(polygons.get(map).size, 3);
@@ -141,8 +141,8 @@ test('It should be able to trigger events on the map instance;', t => {
     freeDraw.onAdd(map);
     mockFunctions(map);
 
-    // Invoke the `createPolygon` function.
-    const [firstPolygon] = freeDraw.createPolygon(polygon, true);
+    // Invoke the `create` function.
+    const [firstPolygon] = freeDraw.create(polygon, true);
 
     // Ensure the `fire` method has been invoked with the correct parameters.
     triggerFor(map);
@@ -173,25 +173,25 @@ test('It should be able to set the mode on the map;', t => {
     freeDraw.onAdd(map);
 
     // Ensure default mode is correctly set, with all of the relevant class names.
-    t.is(freeDraw.getMode(), ALL);
+    t.is(freeDraw.mode(), ALL);
     t.truthy(node.classList.contains('mode-create'));
     t.truthy(node.classList.contains('mode-edit'));
     t.truthy(node.classList.contains('mode-delete'));
     t.truthy(node.classList.contains('mode-append'));
 
-    // Update the mode to VIEW only.
-    const firstMode = freeDraw.setMode(VIEW);
-    t.is(firstMode, VIEW);
-    t.is(freeDraw.getMode(), VIEW);
+    // Update the mode to NONE only.
+    const firstMode = freeDraw.mode(NONE);
+    t.is(firstMode, NONE);
+    t.is(freeDraw.mode(), NONE);
     t.falsy(node.classList.contains('mode-create'));
     t.falsy(node.classList.contains('mode-edit'));
     t.falsy(node.classList.contains('mode-delete'));
     t.falsy(node.classList.contains('mode-append'));
 
     // Update to CREATE and EDIT only.
-    const secondMode = freeDraw.setMode(CREATE | EDIT);
+    const secondMode = freeDraw.mode(CREATE | EDIT);
     t.is(secondMode, CREATE | EDIT);
-    t.is(freeDraw.getMode(), CREATE | EDIT);
+    t.is(freeDraw.mode(), CREATE | EDIT);
     t.truthy(node.classList.contains('mode-create'));
     t.truthy(node.classList.contains('mode-edit'));
     t.falsy(node.classList.contains('mode-delete'));

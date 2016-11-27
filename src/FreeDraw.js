@@ -14,12 +14,6 @@ import { NONE, CREATE, EDIT, DELETE, APPEND, ALL } from './helpers/Flags';
 export const polygons = new WeakMap();
 
 /**
- * @constant isElectron
- * @type {Boolean}
- */
-const isElectron = window && window.process && window.process.type;
-
-/**
  * @constant defaultOptions
  * @type {Object}
  */
@@ -78,9 +72,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
         DomEvent.disableClickPropagation(polygon);
 
         // Yield the click handler to the `handlePolygonClick` function.
-        // Why do we have a ternary operator? Because for the Nightmare tests the LeafletJS events do not work.
-        isElectron ? polygon._path.addEventListener('click', handlePolygonClick(map, polygon, options)) :
-                     polygon.on('click', handlePolygonClick(map, polygon, options));
+        polygon.on('click', handlePolygonClick(map, polygon, options));
 
         return polygon;
 

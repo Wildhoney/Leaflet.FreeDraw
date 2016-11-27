@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import FreeDraw, { VIEW, CREATE, EDIT, DELETE, APPEND, ALL } from '../../src/FreeDraw';
+import FreeDraw, { NONE, CREATE, EDIT, DELETE, APPEND, ALL, polygons } from '../../src/FreeDraw';
 
 import { module } from 'angular';
 
@@ -9,7 +9,7 @@ module('leafletApp', []).controller('MapController', function MapController($sco
      * @constant MODES
      * @type {Object}
      */
-    $scope.MODES = { CREATE, EDIT, DELETE, APPEND, VIEW };
+    $scope.MODES = { CREATE, EDIT, DELETE, APPEND, NONE };
 
     /**
      * @property mode
@@ -61,7 +61,7 @@ module('leafletApp', []).controller('MapController', function MapController($sco
      * @return {void}
      */
     $scope.modeOnly = function modeOnly(mode) {
-        $scope.mode = $scope.MODES.VIEW | mode;
+        $scope.mode = $scope.MODES.NONE | mode;
     };
 
 }).directive('map', function mapDirective() {
@@ -123,8 +123,6 @@ module('leafletApp', []).controller('MapController', function MapController($sco
 
             });
 
-            // map ng-isolate-scope leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-touch-zoom leaflet-grab leaflet-touch-drag mode-edit mode-delete mode-append
-
             scope.$watch('mode', function modeReceived(mode) {
                 freeDraw.mode(mode);
             });
@@ -137,6 +135,9 @@ module('leafletApp', []).controller('MapController', function MapController($sco
             });
 
             map.addLayer(freeDraw);
+
+            // Exposed for testing purposes.
+            window.polygons = polygons.get(map);
 
         }
 

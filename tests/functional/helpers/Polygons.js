@@ -52,8 +52,8 @@ export const createSecondPolygon = () => {
 
 export const removeFirstPolygon = () => {
 
-    const polygon = Array.from(document.querySelectorAll('path.leaflet-polygon'))[1];
-    polygon.dispatchEvent(new MouseEvent('click'));
+    const polygonClass = Array.from(window.polygons)[0];
+    polygonClass.fire('click');
 
     return Array.from(document.querySelectorAll('path.leaflet-polygon'));
 

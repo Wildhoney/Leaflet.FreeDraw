@@ -4,13 +4,19 @@ import { expect } from 'chai';
 import { createFirstPolygon, createSecondPolygon, createMergedPolygon, removeFirstPolygon } from './helpers/Polygons';
 
 /**
+ * @constant debug
+ * @type {Boolean}
+ */
+const debug = false;
+
+/**
  * @constant timeout
  * @type {Number}
  */
 const timeout = 60000;
 
 // Instantiate Nightmare.
-const nightmare = Nightmare({ show: false, frame: false });
+const nightmare = Nightmare(debug ? { show: true, openDevTools: { mode: 'detach' }} : { show: false });
 
 // Fetch the absolute path to the index page.
 const url = `file://${resolve('example/index.html')}`;
@@ -66,6 +72,6 @@ describe('FreeDraw', () => {
             .then(() => done())
             .catch(error(done));
 
-    }).timeout(timeout);
+    }).timeout(Infinity);
 
 });
