@@ -600,7 +600,7 @@ if(__webpack_require__(6)){
     , createArrayIncludes = __webpack_require__(55)
     , speciesConstructor  = __webpack_require__(83)
     , ArrayIterators      = __webpack_require__(92)
-    , Iterators           = __webpack_require__(45)
+    , Iterators           = __webpack_require__(46)
     , $iterDetect         = __webpack_require__(61)
     , setSpecies          = __webpack_require__(39)
     , arrayFill           = __webpack_require__(67)
@@ -1367,6 +1367,16 @@ module.exports = function (fn) {
 /* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
+"use strict";
+'use strict';
+
+module.exports = __webpack_require__(355)() ? Symbol : __webpack_require__(357);
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
 // 22.1.3.31 Array.prototype[@@unscopables]
 var UNSCOPABLES = __webpack_require__(5)('unscopables')
   , ArrayProto  = Array.prototype;
@@ -1376,7 +1386,7 @@ module.exports = function(key){
 };
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 var ctx         = __webpack_require__(25)
@@ -1406,13 +1416,13 @@ exports.BREAK  = BREAK;
 exports.RETURN = RETURN;
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports) {
 
 module.exports = {};
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 var def = __webpack_require__(7).f
@@ -1424,7 +1434,7 @@ module.exports = function(it, tag, stat){
 };
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0)
@@ -1457,16 +1467,6 @@ var trim = exporter.trim = function(string, TYPE){
 };
 
 module.exports = exporter;
-
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-
-module.exports = __webpack_require__(355)() ? Symbol : __webpack_require__(357);
-
 
 /***/ },
 /* 49 */
@@ -1605,6 +1605,10 @@ var _es6WeakMap = __webpack_require__(359);
 
 var _es6WeakMap2 = _interopRequireDefault(_es6WeakMap);
 
+var _es6Symbol = __webpack_require__(43);
+
+var _es6Symbol2 = _interopRequireDefault(_es6Symbol);
+
 var _Edges = __webpack_require__(98);
 
 var _Edges2 = _interopRequireDefault(_Edges);
@@ -1661,19 +1665,19 @@ var defaultOptions = {
  * @constant modesKey
  * @type {Symbol}
  */
-var modesKey = exports.modesKey = Symbol('freedraw/modes');
+var modesKey = exports.modesKey = (0, _es6Symbol2.default)('freedraw/modes');
 
 /**
  * @constant edgesKey
  * @type {Symbol}
  */
-var edgesKey = exports.edgesKey = Symbol('freedraw/edges');
+var edgesKey = exports.edgesKey = (0, _es6Symbol2.default)('freedraw/edges');
 
 /**
  * @constant cancelKey
  * @type {Symbol}
  */
-var cancelKey = Symbol('freedraw/cancel');
+var cancelKey = (0, _es6Symbol2.default)('freedraw/cancel');
 
 /**
  * @method createFor
@@ -2151,12 +2155,12 @@ var global            = __webpack_require__(2)
   , redefine          = __webpack_require__(13)
   , redefineAll       = __webpack_require__(38)
   , meta              = __webpack_require__(29)
-  , forOf             = __webpack_require__(44)
+  , forOf             = __webpack_require__(45)
   , anInstance        = __webpack_require__(33)
   , isObject          = __webpack_require__(4)
   , fails             = __webpack_require__(3)
   , $iterDetect       = __webpack_require__(61)
-  , setToStringTag    = __webpack_require__(46)
+  , setToStringTag    = __webpack_require__(47)
   , inheritIfRequired = __webpack_require__(73);
 
 module.exports = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
@@ -2553,7 +2557,7 @@ module.exports = function(that, target, C){
 /***/ function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators  = __webpack_require__(45)
+var Iterators  = __webpack_require__(46)
   , ITERATOR   = __webpack_require__(5)('iterator')
   , ArrayProto = Array.prototype;
 
@@ -2579,7 +2583,7 @@ module.exports = Array.isArray || function isArray(arg){
 'use strict';
 var create         = __webpack_require__(35)
   , descriptor     = __webpack_require__(30)
-  , setToStringTag = __webpack_require__(46)
+  , setToStringTag = __webpack_require__(47)
   , IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -2601,9 +2605,9 @@ var LIBRARY        = __webpack_require__(34)
   , redefine       = __webpack_require__(13)
   , hide           = __webpack_require__(12)
   , has            = __webpack_require__(10)
-  , Iterators      = __webpack_require__(45)
+  , Iterators      = __webpack_require__(46)
   , $iterCreate    = __webpack_require__(76)
-  , setToStringTag = __webpack_require__(46)
+  , setToStringTag = __webpack_require__(47)
   , getPrototypeOf = __webpack_require__(17)
   , ITERATOR       = __webpack_require__(5)('iterator')
   , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
@@ -2975,7 +2979,7 @@ var global         = __webpack_require__(2)
   , gOPN           = __webpack_require__(36).f
   , dP             = __webpack_require__(7).f
   , arrayFill      = __webpack_require__(67)
-  , setToStringTag = __webpack_require__(46)
+  , setToStringTag = __webpack_require__(47)
   , ARRAY_BUFFER   = 'ArrayBuffer'
   , DATA_VIEW      = 'DataView'
   , PROTOTYPE      = 'prototype'
@@ -3255,7 +3259,7 @@ module.exports = function(name){
 
 var classof   = __webpack_require__(49)
   , ITERATOR  = __webpack_require__(5)('iterator')
-  , Iterators = __webpack_require__(45);
+  , Iterators = __webpack_require__(46);
 module.exports = __webpack_require__(24).getIteratorMethod = function(it){
   if(it != undefined)return it[ITERATOR]
     || it['@@iterator']
@@ -3268,9 +3272,9 @@ module.exports = __webpack_require__(24).getIteratorMethod = function(it){
 
 "use strict";
 'use strict';
-var addToUnscopables = __webpack_require__(43)
+var addToUnscopables = __webpack_require__(44)
   , step             = __webpack_require__(113)
-  , Iterators        = __webpack_require__(45)
+  , Iterators        = __webpack_require__(46)
   , toIObject        = __webpack_require__(15);
 
 // 22.1.3.4 Array.prototype.entries()
@@ -3370,7 +3374,7 @@ var clear    = __webpack_require__(130)
   , value    = __webpack_require__(28)
   , d        = __webpack_require__(32)
   , autoBind = __webpack_require__(323)
-  , Symbol   = __webpack_require__(48)
+  , Symbol   = __webpack_require__(43)
 
   , defineProperty = Object.defineProperty
   , defineProperties = Object.defineProperties
@@ -10694,7 +10698,7 @@ module.exports = [].copyWithin || function copyWithin(target/*= 0*/, start/*= 0,
 /* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
-var forOf = __webpack_require__(44);
+var forOf = __webpack_require__(45);
 
 module.exports = function(iter, ITERATOR){
   var result = [];
@@ -10778,7 +10782,7 @@ var dP          = __webpack_require__(7).f
   , ctx         = __webpack_require__(25)
   , anInstance  = __webpack_require__(33)
   , defined     = __webpack_require__(19)
-  , forOf       = __webpack_require__(44)
+  , forOf       = __webpack_require__(45)
   , $iterDefine = __webpack_require__(77)
   , step        = __webpack_require__(113)
   , setSpecies  = __webpack_require__(39)
@@ -10939,7 +10943,7 @@ var redefineAll       = __webpack_require__(38)
   , anObject          = __webpack_require__(1)
   , isObject          = __webpack_require__(4)
   , anInstance        = __webpack_require__(33)
-  , forOf             = __webpack_require__(44)
+  , forOf             = __webpack_require__(45)
   , createArrayMethod = __webpack_require__(21)
   , $has              = __webpack_require__(10)
   , arrayFind         = createArrayMethod(5)
@@ -11215,7 +11219,7 @@ module.exports = Reflect && Reflect.ownKeys || function ownKeys(it){
 /***/ function(module, exports, __webpack_require__) {
 
 var $parseFloat = __webpack_require__(2).parseFloat
-  , $trim       = __webpack_require__(47).trim;
+  , $trim       = __webpack_require__(48).trim;
 
 module.exports = 1 / $parseFloat(__webpack_require__(87) + '-0') !== -Infinity ? function parseFloat(str){
   var string = $trim(String(str), 3)
@@ -11228,7 +11232,7 @@ module.exports = 1 / $parseFloat(__webpack_require__(87) + '-0') !== -Infinity ?
 /***/ function(module, exports, __webpack_require__) {
 
 var $parseInt = __webpack_require__(2).parseInt
-  , $trim     = __webpack_require__(47).trim
+  , $trim     = __webpack_require__(48).trim
   , ws        = __webpack_require__(87)
   , hex       = /^[\-+]?0[xX]/;
 
@@ -11583,7 +11587,7 @@ var isArguments    = __webpack_require__(93)
   , ArrayIterator  = __webpack_require__(347)
   , StringIterator = __webpack_require__(349)
   , iterable       = __webpack_require__(136)
-  , iteratorSymbol = __webpack_require__(48).iterator;
+  , iteratorSymbol = __webpack_require__(43).iterator;
 
 module.exports = function (obj) {
 	if (typeof iterable(obj)[iteratorSymbol] === 'function') return obj[iteratorSymbol]();
@@ -12001,7 +12005,7 @@ var $export = __webpack_require__(0);
 
 $export($export.P, 'Array', {copyWithin: __webpack_require__(103)});
 
-__webpack_require__(43)('copyWithin');
+__webpack_require__(44)('copyWithin');
 
 /***/ },
 /* 153 */
@@ -12028,7 +12032,7 @@ var $export = __webpack_require__(0);
 
 $export($export.P, 'Array', {fill: __webpack_require__(67)});
 
-__webpack_require__(43)('fill');
+__webpack_require__(44)('fill');
 
 /***/ },
 /* 155 */
@@ -12064,7 +12068,7 @@ $export($export.P + $export.F * forced, 'Array', {
     return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
   }
 });
-__webpack_require__(43)(KEY);
+__webpack_require__(44)(KEY);
 
 /***/ },
 /* 157 */
@@ -12084,7 +12088,7 @@ $export($export.P + $export.F * forced, 'Array', {
     return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
   }
 });
-__webpack_require__(43)(KEY);
+__webpack_require__(44)(KEY);
 
 /***/ },
 /* 158 */
@@ -12823,7 +12827,7 @@ var global            = __webpack_require__(2)
   , gOPN              = __webpack_require__(36).f
   , gOPD              = __webpack_require__(16).f
   , dP                = __webpack_require__(7).f
-  , $trim             = __webpack_require__(47).trim
+  , $trim             = __webpack_require__(48).trim
   , NUMBER            = 'Number'
   , $Number           = global[NUMBER]
   , Base              = $Number
@@ -13351,7 +13355,7 @@ var LIBRARY            = __webpack_require__(34)
   , isObject           = __webpack_require__(4)
   , aFunction          = __webpack_require__(11)
   , anInstance         = __webpack_require__(33)
-  , forOf              = __webpack_require__(44)
+  , forOf              = __webpack_require__(45)
   , speciesConstructor = __webpack_require__(83)
   , task               = __webpack_require__(88).set
   , microtask          = __webpack_require__(80)()
@@ -13572,7 +13576,7 @@ if(!USE_NATIVE){
 }
 
 $export($export.G + $export.W + $export.F * !USE_NATIVE, {Promise: $Promise});
-__webpack_require__(46)($Promise, PROMISE);
+__webpack_require__(47)($Promise, PROMISE);
 __webpack_require__(39)(PROMISE);
 Wrapper = __webpack_require__(24)[PROMISE];
 
@@ -14506,7 +14510,7 @@ __webpack_require__(14)('sup', function(createHTML){
 "use strict";
 'use strict';
 // 21.1.3.25 String.prototype.trim()
-__webpack_require__(47)('trim', function($trim){
+__webpack_require__(48)('trim', function($trim){
   return function trim(){
     return $trim(this, 3);
   };
@@ -14527,7 +14531,7 @@ var global         = __webpack_require__(2)
   , META           = __webpack_require__(29).KEY
   , $fails         = __webpack_require__(3)
   , shared         = __webpack_require__(64)
-  , setToStringTag = __webpack_require__(46)
+  , setToStringTag = __webpack_require__(47)
   , uid            = __webpack_require__(41)
   , wks            = __webpack_require__(5)
   , wksExt         = __webpack_require__(125)
@@ -14938,7 +14942,7 @@ $export($export.P, 'Array', {
   }
 });
 
-__webpack_require__(43)('includes');
+__webpack_require__(44)('includes');
 
 /***/ },
 /* 285 */
@@ -15207,7 +15211,7 @@ var $export     = __webpack_require__(0)
   , anInstance  = __webpack_require__(33)
   , redefineAll = __webpack_require__(38)
   , hide        = __webpack_require__(12)
-  , forOf       = __webpack_require__(44)
+  , forOf       = __webpack_require__(45)
   , RETURN      = forOf.RETURN;
 
 var getMethod = function(fn){
@@ -15656,7 +15660,7 @@ $export($export.P, 'String', {
 "use strict";
 'use strict';
 // https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(47)('trimLeft', function($trim){
+__webpack_require__(48)('trimLeft', function($trim){
   return function trimLeft(){
     return $trim(this, 1);
   };
@@ -15669,7 +15673,7 @@ __webpack_require__(47)('trimLeft', function($trim){
 "use strict";
 'use strict';
 // https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(47)('trimRight', function($trim){
+__webpack_require__(48)('trimRight', function($trim){
   return function trimRight(){
     return $trim(this, 2);
   };
@@ -15704,7 +15708,7 @@ var $iterators    = __webpack_require__(92)
   , redefine      = __webpack_require__(13)
   , global        = __webpack_require__(2)
   , hide          = __webpack_require__(12)
-  , Iterators     = __webpack_require__(45)
+  , Iterators     = __webpack_require__(46)
   , wks           = __webpack_require__(5)
   , ITERATOR      = wks('iterator')
   , TO_STRING_TAG = wks('toStringTag')
@@ -32834,7 +32838,7 @@ ArrayIterator.prototype = Object.create(Iterator.prototype, {
 
 var isArguments    = __webpack_require__(93)
   , isString       = __webpack_require__(96)
-  , iteratorSymbol = __webpack_require__(48).iterator
+  , iteratorSymbol = __webpack_require__(43).iterator
 
   , isArray = Array.isArray;
 
@@ -32959,7 +32963,7 @@ var setPrototypeOf    = __webpack_require__(52)
   , contains          = __webpack_require__(95)
   , d                 = __webpack_require__(32)
   , Iterator          = __webpack_require__(97)
-  , toStringTagSymbol = __webpack_require__(48).toStringTag
+  , toStringTagSymbol = __webpack_require__(43).toStringTag
 
   , defineProperty = Object.defineProperty
   , SetIterator;
@@ -32998,7 +33002,7 @@ var clear          = __webpack_require__(130)
   , callable       = __webpack_require__(42)
   , d              = __webpack_require__(32)
   , ee             = __webpack_require__(363)
-  , Symbol         = __webpack_require__(48)
+  , Symbol         = __webpack_require__(43)
   , iterator       = __webpack_require__(136)
   , forOf          = __webpack_require__(134)
   , Iterator       = __webpack_require__(353)
@@ -33318,7 +33322,7 @@ var setPrototypeOf    = __webpack_require__(52)
   , d                 = __webpack_require__(32)
   , getIterator       = __webpack_require__(135)
   , forOf             = __webpack_require__(134)
-  , toStringTagSymbol = __webpack_require__(48).toStringTag
+  , toStringTagSymbol = __webpack_require__(43).toStringTag
   , isNative          = __webpack_require__(361)
 
   , isArray = Array.isArray, defineProperty = Object.defineProperty
