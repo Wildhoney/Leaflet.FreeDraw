@@ -38,6 +38,8 @@
 <img src="https://github.com/alrra/browser-logos/blob/master/edge/edge_128x128.png?raw=true" width="64" />
 <img src="https://github.com/alrra/browser-logos/blob/master/safari/safari_128x128.png?raw=true" width="64" />
 
+<sub><sup>`FreeDraw` has been tested in IE10+</sup></sub>
+
 ## Getting Started
 
 `FreeDraw` functions as a standard Leaflet module, meaning you initialise it and add it to your map layer via the `addLayer` function on your map instance &ndash; when you instantiate `FreeDraw` you can pass a set of [`options`](#options) for behaviour customisation.
