@@ -22,6 +22,8 @@
   1. [Markers](#markers)
   2. [Modes](#modes)
   3. [Options](#options)
+  4. [Classes](#classes)
+  5. [Methods](#methods)
 
 ## Getting Started
 
@@ -90,3 +92,29 @@ All of the following options can be passed in when instantiating `FreeDraw` in t
 | `recreatePostEdit`  | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
 
 By using the options above we can tweak how `FreeDraw` functions &ndash; whilst some of the options have obvious effects, others are much more *tweak and see* based on your expected outcome &ndash; such as the subjective `simplifyFactor` and `elbowDistance` options.
+
+### Classes
+
+Depending on the current modes active on the map instance, the relevant classes are applied to the `map` container that you instantiated `L.Map` with &ndash; by using these class names it allows you to tailor the UX to the current mode, such as changing the `cursor` to `crosshair` when the user is allowed to create polygons.
+
+| Class Name          | Mode         |
+| ------------------- |------------- |
+| `mode-create`       | `CREATE`     |
+| `mode-edit`         | `EDIT`       |
+| `mode-delete`       | `DELETE`     |
+| `mode-append`       | `APPEND`     |
+| `mode-view`         | `VIEW`       |
+
+From the above example if the current mode is `CREATE | EDIT | APPEND` then the **three** class names that will be present on the `map` node will be `mode-create`, `mode-edit` and `mode-append`, allowing you to provide a better UX from within your attached stylesheet.
+
+### Methods
+
+With the instance of `freeDraw` there are certain methods for manipulating `FreeDraw` directly, such as creating polygon from a set of latitude and longitude values.
+
+| Method              | Yields       | Result                                                         |
+| ------------------- |------------- | -------------------------------------------------------------- |
+| `create`            | `Array`      | Creates a polygon by passing an array of `LatLng`s             |
+| `remove`            | `void`       | Removes a polygon that is yielded from `create`                |
+| `clear`             | `void`       | Clears all polygons from the current instance                  |
+| `mode`              | `Number`     | Sets and retrieves the current [`mode`](#modes).               |
+| `cancel`            | `void`       | Cancels the current create action &ndash; such as on escape.   |

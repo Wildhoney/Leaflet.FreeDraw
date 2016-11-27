@@ -176,10 +176,10 @@ export const setModeFor = (map, mode) => {
 
     // Remove all of the current class names so we can begin from scratch.
     const mapNode = map._container;
+    DomUtil.removeClass(mapNode, 'mode-view');
     DomUtil.removeClass(mapNode, 'mode-create');
     DomUtil.removeClass(mapNode, 'mode-edit');
     DomUtil.removeClass(mapNode, 'mode-delete');
-    DomUtil.removeClass(mapNode, 'mode-view');
     DomUtil.removeClass(mapNode, 'mode-append');
 
     // Apply the class names to the mapNode container depending on the current mode.
