@@ -16,6 +16,13 @@
 
 ![FreeDraw Screenshot](media/screenshot.png)
 
+## Table of Contents
+
+1. [Getting Started](#getting-started)
+  1. [Markers](#markers)
+  2. [Modes](#modes)
+  3. [Options](#options)
+
 ## Getting Started
 
 `FreeDraw` functions as a standard Leaflet module, meaning you initialise it and add it to your map layer via the `addLayer` function on your map instance &ndash; when you instantiate `FreeDraw` you can pass a set of [`options`](#options) for behaviour customisation.
@@ -82,4 +89,4 @@ All of the following options can be passed in when instantiating `FreeDraw` in t
 | `concavePolygon`    | `true`       | Whether to apply the [concaving algorithm](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) to the polygons.  |
 | `recreatePostEdit`  | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
 
-
+By using the options above we can tweak how `FreeDraw` functions &ndash; whilst some of the options have obvious effects, others are much more *tweak and see* based on your expected outcome &ndash; such as the subjective `simplifyFactor` and `elbowDistance` options.
