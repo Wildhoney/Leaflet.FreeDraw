@@ -56,11 +56,11 @@ module('leafletApp', []).controller('MapController', function MapController($sco
     };
 
     /**
-     * @method setModeOnly
+     * @method modeOnly
      * @param mode {Number}
      * @return {void}
      */
-    $scope.setModeOnly = function setModeOnly(mode) {
+    $scope.modeOnly = function modeOnly(mode) {
         $scope.mode = $scope.MODES.VIEW | mode;
     };
 
@@ -123,8 +123,10 @@ module('leafletApp', []).controller('MapController', function MapController($sco
 
             });
 
+            // map ng-isolate-scope leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-touch-zoom leaflet-grab leaflet-touch-drag mode-edit mode-delete mode-append
+
             scope.$watch('mode', function modeReceived(mode) {
-                freeDraw.setMode(mode);
+                freeDraw.mode(mode);
             });
 
             map.on('markers', function getMarkers(eventData) {
