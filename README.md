@@ -72,7 +72,7 @@ By default the mode is `ALL` which means all actions can be performed on the `Fr
 
 ```javascript
 import L from 'leaflet';
-import FreeDraw, { CREATE, EDIT, DELETE } from 'leaflet-freedraw';
+import FreeDraw, { CREATE, EDIT } from 'leaflet-freedraw';
 
 const map = new L.Map(node);
 const freeDraw = new FreeDraw({
@@ -83,11 +83,14 @@ const freeDraw = new FreeDraw({
 By passing in the `mode` as `CREATE | EDIT` you're **only** allowing the user to create and edit polygons, they are not able to append edges, nor delete them. You may use the `mode` method post-instantiation to modify the `mode` at any time &ndash; in the case below to also allow deleting of polygons.
 
 ```javascript
-import { CREATE, EDIT, DELETE } from 'leaflet-freedraw';
-
-// ...
-
+// Allow create, edit and delete.
 freeDraw.mode(CREATE | EDIT | DELETE);
+
+// Allow everything except create.
+freeDraw.mode(ALL ^ CREATE);
+
+// Allow nothing.
+freeDraw.mode(NONE);
 ```
 
 > Note: Invoking `mode` without passing a mode simply returns the current mode.

@@ -1,9 +1,8 @@
 import L from 'leaflet';
 import FreeDraw, { NONE, CREATE, EDIT, DELETE, APPEND, ALL, polygons } from '../../src/FreeDraw';
-
 import { module } from 'angular';
 
-module('leafletApp', []).controller('MapController', function MapController($scope) {
+module('leafletApp', []).controller('MapController', $scope => {
 
     /**
      * @constant MODES
@@ -22,25 +21,21 @@ module('leafletApp', []).controller('MapController', function MapController($sco
      * @param mode {Number}
      * @returns {Boolean}
      */
-    $scope.isDisabled = function isDisabled(mode) {
-        return !(mode & $scope.mode);
-    };
+    $scope.isDisabled = mode => !(mode & $scope.mode);
 
     /**
      * @method stopPropagation
      * @param {Object} event
      * @return {void}
      */
-    $scope.stopPropagation = function stopPropagation(event) {
-        event.stopPropagation();
-    };
+    $scope.stopPropagation = event => event.stopPropagation();
 
     /**
      * @method toggleMode
      * @param mode {Number}
      * @return {void}
      */
-    $scope.toggleMode = function toggleMode(mode) {
+    $scope.toggleMode = mode => {
 
         if ($scope.isDisabled(mode)) {
 
@@ -60,11 +55,11 @@ module('leafletApp', []).controller('MapController', function MapController($sco
      * @param mode {Number}
      * @return {void}
      */
-    $scope.setModeOnly = function setModeOnly(mode) {
+    $scope.setModeOnly = mode => {
         $scope.mode = $scope.MODES.NONE | mode;
     };
 
-}).directive('map', function mapDirective() {
+}).directive('map', () => {
 
     return {
 
@@ -87,7 +82,7 @@ module('leafletApp', []).controller('MapController', function MapController($sco
          * @param $scope {Object}
          * @return {void}
          */
-        controller: function controller($scope) {
+        controller($scope) {
 
             /**
              * @constant TILE_URL
@@ -104,45 +99,41 @@ module('leafletApp', []).controller('MapController', function MapController($sco
          * @param element {Object}
          * @return {void}
          */
-        link: function link(scope, element) {
+        link(scope, element) {
 
+            // Instantiate L.Map and the FreeDraw layer, passing in the default mode.
             const map = new L.Map(element[0], { doubleClickZoom: false }).setView([51.505, -0.09], 14);
+            const freeDraw = new FreeDraw({ mode: ALL });
+
+            // Add the tile layer and the FreeDraw layer.
             L.tileLayer(scope.TILE_URL).addTo(map);
-
-            const freeDraw = new FreeDraw({
-                mode: scope.mode
-            });
-
-            map.on('mode', function modeReceived(eventData) {
-
-                scope.mode = eventData.mode;
-
-                if (!scope.$root.$$phase) {
-                    scope.$apply();
-                }
-
-            });
-
-            document.addEventListener('keydown', e => {
-
-                if (e.key === 'Escape') {
-                    freeDraw.cancel();
-                }
-
-            });
-
-            scope.$watch('mode', function modeReceived(mode) {
-                freeDraw.mode(mode);
-            });
-
-            map.on('markers', function getMarkers(eventData) {
-
-                // Output the lat/lngs in the MySQL multi-polygon format.
-                console.log('LatLngs:', eventData.latLngs, 'Polygons:', eventData.latLngs.length);
-
-            });
-
             map.addLayer(freeDraw);
+
+            map.on('mode', event => {
+
+                // Memorise the mode and re-render the directive.
+                scope.mode = event.mode;
+                !scope.$root.$$phase && scope.$apply();
+
+            });
+
+            // Listen for a change in the mode.
+            scope.$watch('mode', mode => freeDraw.mode(mode));
+
+            document.addEventListener('keydown', event => {
+
+                // Cancel the current FreeDraw action when the escape key is pressed.
+                event.key === 'Escape' && freeDraw.cancel();
+
+            });
+
+
+            map.on('markers', event => {
+
+                // Listen for any markers added, removed or edited, and then output the lat lng boundaries.
+                console.log('LatLngs:', event.latLngs, 'Polygons:', event.latLngs.length);
+
+            });
 
             // Exposed for testing purposes.
             window.polygons = polygons.get(map);
