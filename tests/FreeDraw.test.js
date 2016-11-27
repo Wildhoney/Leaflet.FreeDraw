@@ -115,25 +115,25 @@ test('It should be able to remove polygons;', t => {
 
 });
 
-// test('It should be able to clear polygons;', t => {
-//
-//     const { freeDraw, map, polygon } = t.context;
-//     freeDraw.onAdd(map);
-//     mockFunctions(map);
-//
-//     // Invoke the `create` function.
-//     freeDraw.create(polygon, true);
-//     freeDraw.create(polygon, true);
-//     freeDraw.create(polygon, true);
-//
-//     // Ensure it's correctly added to the `polygons` set.
-//     t.is(polygons.get(map).size, 3);
-//
-//     // ... And then clear them all.
-//     freeDraw.clearPolygons();
-//     t.is(polygons.get(map).size, 0);
-//
-// });
+test('It should be able to clear polygons;', t => {
+
+    const { freeDraw, map, polygon } = t.context;
+    freeDraw.onAdd(map);
+    mockFunctions(map);
+
+    // Invoke the `create` function.
+    freeDraw.create(polygon, true);
+    freeDraw.create(polygon, true);
+    freeDraw.create(polygon, true);
+
+    // Ensure it's correctly added to the `polygons` set.
+    t.is(polygons.get(map).size, 3);
+
+    // ... And then clear them all.
+    freeDraw.clear();
+    t.is(polygons.get(map).size, 0);
+
+});
 
 test('It should be able to trigger events on the map instance;', t => {
 
