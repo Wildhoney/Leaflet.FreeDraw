@@ -224,9 +224,9 @@ export default class FreeDraw extends FeatureGroup {
         setModeFor(map, this.options.mode);
 
         // Instantiate the SVG layer that sits on top of the map.
-        const svg = d3.select(map._container).append('svg')
-                      .classed('free-draw', true).attr('width', '100%').attr('height', '100%')
-                      .style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
+        const svg = this.svg = d3.select(map._container).append('svg')
+                                 .classed('free-draw', true).attr('width', '100%').attr('height', '100%')
+                                 .style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
 
         // Set the mouse events.
         this.listenForEvents(map, svg, this.options);
@@ -242,6 +242,9 @@ export default class FreeDraw extends FeatureGroup {
 
         // Remove the item from the map.
         polygons.delete(map);
+
+        // Remove the SVG layer.
+        this.svg.remove();
 
     }
 
