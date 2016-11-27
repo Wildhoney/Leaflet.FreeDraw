@@ -346,9 +346,11 @@ export default class FreeDraw extends FeatureGroup {
 
             /**
              * @method mouseUp
-             * @return {void}
+             * @param {Object} event
+             * @param {Boolean} [create = true]
+             * @return {Function}
              */
-            const mouseUp = () => {
+            const mouseUp = (event, create = true) => {
 
                 // Remove the ability to invoke `cancel`.
                 map[cancelKey] = () => {};
@@ -365,12 +367,16 @@ export default class FreeDraw extends FeatureGroup {
                 // Stop the iterator.
                 lineIterator.return();
 
-                // ...And finally if we have any lat longs in our set then we can attempt to
-                // create the polygon.
-                latLngs.size && createFor(map, Array.from(latLngs), options);
+                if (create) {
 
-                // Finally invoke the callback for the polygon regions.
-                triggerFor(map);
+                    // ...And finally if we have any lat longs in our set then we can attempt to
+                    // create the polygon.
+                    latLngs.size && createFor(map, Array.from(latLngs), options);
+
+                    // Finally invoke the callback for the polygon regions.
+                    triggerFor(map);
+
+                }
 
             };
 
@@ -379,7 +385,7 @@ export default class FreeDraw extends FeatureGroup {
             'body' in document && document.body.addEventListener('mouseleave', mouseUp);
 
             // Setup the function to invoke when `cancel` has been invoked.
-            map[cancelKey] = mouseUp;
+            map[cancelKey] = () => mouseUp({}, false);
 
         }.bind(this));
 

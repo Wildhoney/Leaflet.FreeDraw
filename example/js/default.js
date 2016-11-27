@@ -123,6 +123,14 @@ module('leafletApp', []).controller('MapController', function MapController($sco
 
             });
 
+            document.addEventListener('keydown', e => {
+
+                if (e.key === 'Escape') {
+                    freeDraw.cancel();
+                }
+
+            });
+
             scope.$watch('mode', function modeReceived(mode) {
                 freeDraw.mode(mode);
             });
