@@ -2,6 +2,7 @@ import { FeatureGroup, Polygon, DomEvent, DomUtil, Point } from 'leaflet';
 import * as d3 from 'd3';
 import Set from 'es6-set';
 import WeakMap from 'es6-weak-map';
+import Symbol from 'es6-symbol';
 import createEdges from './helpers/Edges';
 import handlePolygonClick from './helpers/Polygon';
 import simplifyPolygon from './helpers/Simplify';

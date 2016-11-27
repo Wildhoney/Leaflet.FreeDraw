@@ -50,6 +50,7 @@
     "chai": "^3.5.0",
     "concavehull": "^0.1.6",
     "es6-set": "^0.1.4",
+    "es6-symbol": "^3.1.0",
     "es6-weak-map": "^2.0.1",
     "express": "^4.14.0",
     "jsdom": "^9.8.3",
