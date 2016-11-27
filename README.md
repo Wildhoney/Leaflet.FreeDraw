@@ -68,4 +68,11 @@ freeDraw.mode(CREATE | EDIT | DELETE);
 
 > Note: Invoking `mode` without passing a mode simply returns the current mode.
 
-Another event that `FreeDraw` fires is `mode` which is invoked each and every time the mode has been modified.
+### Options
+
+All of the following options can be passed in when instantiating `FreeDraw` in the same way that we pass `mode` in the previous examples.
+
+| Option              | Default      | Result                               |
+| ------------------- |------------- | ------------------------------------ |
+| `mode`              | `ALL`        | Modifies the default [mode](#modes). |
+| `smoothFactor`      | `0.3`        | By how much to [smooth](http://leafletjs.com/reference-1.0.2.html#polyline-smoothfactor) the polygons.  |
