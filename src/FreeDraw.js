@@ -246,53 +246,49 @@ export default class FreeDraw extends FeatureGroup {
     }
 
     /**
-     * @method createPolygon
+     * @method create
      * @param {LatLng[]} latLngs
      * @return {Object}
      */
-    createPolygon(latLngs) {
+    create(latLngs) {
         return createFor(this.map, latLngs, this.options);
     }
 
     /**
-     * @method removePolygon
+     * @method remove
      * @param {Object} polygon
      * @return {void}
      */
-    removePolygon(polygon) {
+    remove(polygon) {
         removeFor(this.map, polygon);
     }
 
     /**
-     * @method clearPolygons
+     * @method clear
      * @return {void}
      */
-    clearPolygons() {
+    clear() {
         clearFor(this.map);
     }
 
     /**
      * @method setMode
-     * @param {Number} mode
-     * @return {void}
-     */
-    setMode(mode) {
-        return setModeFor(this.map, mode);
-    }
-
-    /**
-     * @method getMode
+     * @param {Number} [mode = null]
      * @return {Number}
      */
-    getMode() {
+    mode(mode = null) {
+
+        // Set mode when passed `mode` is numeric, and then yield the current mode.
+        typeof mode === 'number' && setModeFor(this.map, mode);
         return this.map[modesKey];
+
     }
 
     /**
-     * @method cancelAction
+     * @method cancel
      * @return {void}
      */
-    cancelAction() {
+    cancel() {
         this.map[cancelKey]();
     }
 
@@ -353,7 +349,7 @@ export default class FreeDraw extends FeatureGroup {
              */
             const mouseUp = () => {
 
-                // Remove the ability to invoke `cancelAction`.
+                // Remove the ability to invoke `cancel`.
                 map[cancelKey] = () => {};
 
                 // Stop listening to the events.
@@ -381,7 +377,7 @@ export default class FreeDraw extends FeatureGroup {
             map.on('mouseup touchend', mouseUp);
             'body' in document && document.body.addEventListener('mouseleave', mouseUp);
 
-            // Setup the function to invoke when `cancelAction` has been invoked.
+            // Setup the function to invoke when `cancel` has been invoked.
             map[cancelKey] = mouseUp;
 
         }.bind(this));
