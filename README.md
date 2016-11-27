@@ -14,8 +14,6 @@
 * **npm:** `npm i leaflet.freedraw`
 * **Bower:** `bower i leaflet.freedraw`
 
-![FreeDraw Screenshot](media/screenshot.png)
-
 ## Table of Contents
 
 1. [Getting Started](#getting-started)
@@ -24,6 +22,8 @@
   3. [Options](#options)
   4. [Classes](#classes)
   5. [Methods](#methods)
+  
+![FreeDraw Screenshot](media/screenshot.png)
 
 ## Getting Started
 
