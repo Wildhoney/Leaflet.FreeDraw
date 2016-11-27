@@ -19,7 +19,8 @@
 
 ## Table of Contents
 
-1. [Getting Started](#getting-started)
+1. [Browser Support](#browser-support)
+2. [Getting Started](#getting-started)
   1. [Markers](#markers)
   2. [Modes](#modes)
   3. [Options](#options)
@@ -27,6 +28,15 @@
   5. [Methods](#methods)
   
 ![FreeDraw Screenshot](media/screenshot.png)
+
+## Browser Support
+
+<img src="https://github.com/alrra/browser-logos/blob/master/chrome/chrome_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/master/opera/opera_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/master/firefox/firefox_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/master/internet-explorer/internet-explorer_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/master/edge/edge_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/master/safari/safari_128x128.png?raw=true" width="64" />
 
 ## Getting Started
 
