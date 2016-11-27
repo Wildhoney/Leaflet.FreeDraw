@@ -109,7 +109,7 @@ module('leafletApp', []).controller('MapController', $scope => {
             L.tileLayer(scope.TILE_URL).addTo(map);
             map.addLayer(freeDraw);
 
-            map.on('mode', event => {
+            freeDraw.on('mode', event => {
 
                 // Memorise the mode and re-render the directive.
                 scope.mode = event.mode;
@@ -128,7 +128,7 @@ module('leafletApp', []).controller('MapController', $scope => {
             });
 
 
-            map.on('markers', event => {
+            freeDraw.on('markers', event => {
 
                 // Listen for any markers added, removed or edited, and then output the lat lng boundaries.
                 console.log('LatLngs:', event.latLngs, 'Polygons:', event.latLngs.length);

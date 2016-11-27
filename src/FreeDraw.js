@@ -31,6 +31,12 @@ const defaultOptions = {
 };
 
 /**
+ * @constant instanceKey
+ * @type {Symbol}
+ */
+export const instanceKey = Symbol('freedraw/instance');
+
+/**
  * @constant modesKey
  * @type {Symbol}
  */
@@ -143,7 +149,7 @@ export const triggerFor = map => {
     });
 
     // Fire the current set of lat lngs.
-    map.fire('markers', { latLngs });
+    map[instanceKey].fire('markers', { latLngs });
 
 };
 
@@ -159,7 +165,7 @@ export const setModeFor = (map, mode) => {
     map[modesKey] = mode;
 
     // Fire the updated mode.
-    map.fire('mode', { mode });
+    map[instanceKey].fire('mode', { mode });
 
     // Disable the map if the `CREATE` mode is a default flag.
     mode & CREATE ? map.dragging.disable() : map.dragging.enable();
@@ -213,9 +219,14 @@ export default class FreeDraw extends FeatureGroup {
      */
     onAdd(map) {
 
-        // Memorise the map instance, and setup DI for `simplifyPolygon`.
+        // Memorise the map instance.
         this.map = map;
-        this.map[cancelKey] = () => {};
+
+        // Attach the cancel function and the instance to the map.
+        map[cancelKey] = () => {};
+        map[instanceKey] = this;
+
+        // Setup the dependency injection for simplifying the polygon.
         map.simplifyPolygon = simplifyPolygon;
 
         // Add the item to the map.
@@ -246,6 +257,11 @@ export default class FreeDraw extends FeatureGroup {
 
         // Remove the SVG layer.
         this.svg.remove();
+
+        // Remove the appendages from the map container.
+        delete map[cancelKey];
+        delete map[instanceKey];
+        delete map.simplifyPolygon;
 
     }
 

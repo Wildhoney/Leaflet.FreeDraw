@@ -51,6 +51,7 @@ test.beforeEach(t => {
 test('It should be able to create the map instance;', t => {
 
     const { freeDraw, map, node } = t.context;
+    freeDraw.fire = spy();
     freeDraw.listenForEvents = spy();
     freeDraw.onAdd(map);
 
@@ -61,8 +62,8 @@ test('It should be able to create the map instance;', t => {
     t.is(freeDraw.mode(), ALL);
 
     // Ensure the initial event for the modes was invoked.
-    t.is(map.fire.callCount, 1);
-    t.truthy(map.fire.calledWith('mode', { mode: ALL }));
+    t.is(freeDraw.fire.callCount, 1);
+    t.truthy(freeDraw.fire.calledWith('mode', { mode: ALL }));
 
     // Ensure D3 has successfully appended the SVG node.
     // Twice because the `beforeEach` also appends a SVG node.
@@ -138,6 +139,7 @@ test('It should be able to clear polygons;', t => {
 test('It should be able to trigger events on the map instance;', t => {
 
     const { freeDraw, map, polygon } = t.context;
+    freeDraw.fire = spy();
     freeDraw.onAdd(map);
     mockFunctions(map);
 
@@ -148,7 +150,7 @@ test('It should be able to trigger events on the map instance;', t => {
     triggerFor(map);
 
     const closedPolygon = [...firstPolygon.getLatLngs()[0], firstPolygon.getLatLngs()[0][0]];
-    t.truthy(map.fire.calledWith('markers', { latLngs: [closedPolygon] }));
+    t.truthy(freeDraw.fire.calledWith('markers', { latLngs: [closedPolygon] }));
 
 });
 

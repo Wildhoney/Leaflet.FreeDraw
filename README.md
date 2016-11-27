@@ -3,8 +3,6 @@
 > FreeDraw allows the free-hand drawing of shapes on your Leaflet.js map layer &ndash; providing an intuitive and familiar UX for creating geospatial boundaries similar to [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map) and others. Included out-of-the-box is the [concaving of polygons](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html), polygon merging and simplifying, as well as the ability to add edges and modify existing shapes.
 > **Note:** For drawing polylines instead, try [`L.Pather`](https://github.com/Wildhoney/L.Pather).
 
-<sub><sup>For Leaflet pre-1.0.0 please use [`v1.2.2`](https://github.com/Wildhoney/Leaflet.FreeDraw/tree/v1.2.2).</sup></sub>
-
 ![Travis](http://img.shields.io/travis/Wildhoney/Leaflet.FreeDraw.svg?style=flat-square)
 &nbsp;
 ![npm](http://img.shields.io/npm/v/leaflet.freedraw.svg?style=flat-square)
@@ -16,6 +14,7 @@
 * **npm:** `npm i leaflet.freedraw`
 * **Bower:** `bower i leaflet.freedraw`
 
+For Leaflet pre-1.0.0 please use [`v1.2.2`](https://github.com/Wildhoney/Leaflet.FreeDraw/tree/v1.2.2).
 
 ## Table of Contents
 
@@ -59,7 +58,7 @@ By attaching `FreeDraw` to your map layer, an SVG node will be appended to the D
 When a user creates a polygon an event is fired on the `map` instance called `markers` which you can listen for by using the native Leaflet `on` function.
 
 ```javascript
-map.on('markers', event => {
+freeDraw.on('markers', event => {
     console.log(event.latLngs);
 });
 ```

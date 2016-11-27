@@ -1540,7 +1540,7 @@ module.exports = L;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ALL = exports.NONE = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.freeDraw = exports.setModeFor = exports.triggerFor = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.modesKey = exports.polygons = undefined;
+exports.ALL = exports.NONE = exports.EDIT_APPEND = exports.APPEND = exports.DELETE = exports.EDIT = exports.CREATE = exports.freeDraw = exports.setModeFor = exports.triggerFor = exports.clearFor = exports.removeFor = exports.createFor = exports.edgesKey = exports.modesKey = exports.instanceKey = exports.polygons = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -1662,6 +1662,12 @@ var defaultOptions = {
 };
 
 /**
+ * @constant instanceKey
+ * @type {Symbol}
+ */
+var instanceKey = exports.instanceKey = (0, _es6Symbol2.default)('freedraw/instance');
+
+/**
  * @constant modesKey
  * @type {Symbol}
  */
@@ -1779,7 +1785,7 @@ var triggerFor = exports.triggerFor = function triggerFor(map) {
     });
 
     // Fire the current set of lat lngs.
-    map.fire('markers', { latLngs: latLngs });
+    map[instanceKey].fire('markers', { latLngs: latLngs });
 };
 
 /**
@@ -1794,7 +1800,7 @@ var setModeFor = exports.setModeFor = function setModeFor(map, mode) {
     map[modesKey] = mode;
 
     // Fire the updated mode.
-    map.fire('mode', { mode: mode });
+    map[instanceKey].fire('mode', { mode: mode });
 
     // Disable the map if the `CREATE` mode is a default flag.
     mode & _Flags.CREATE ? map.dragging.disable() : map.dragging.enable();
@@ -1856,9 +1862,14 @@ var FreeDraw = function (_FeatureGroup) {
         key: 'onAdd',
         value: function onAdd(map) {
 
-            // Memorise the map instance, and setup DI for `simplifyPolygon`.
+            // Memorise the map instance.
             this.map = map;
-            this.map[cancelKey] = function () {};
+
+            // Attach the cancel function and the instance to the map.
+            map[cancelKey] = function () {};
+            map[instanceKey] = this;
+
+            // Setup the dependency injection for simplifying the polygon.
             map.simplifyPolygon = _Simplify2.default;
 
             // Add the item to the map.
@@ -1889,6 +1900,11 @@ var FreeDraw = function (_FeatureGroup) {
 
             // Remove the SVG layer.
             this.svg.remove();
+
+            // Remove the appendages from the map container.
+            delete map[cancelKey];
+            delete map[instanceKey];
+            delete map.simplifyPolygon;
         }
 
         /**
