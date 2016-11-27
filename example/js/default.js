@@ -56,11 +56,11 @@ module('leafletApp', []).controller('MapController', function MapController($sco
     };
 
     /**
-     * @method modeOnly
+     * @method setModeOnly
      * @param mode {Number}
      * @return {void}
      */
-    $scope.modeOnly = function modeOnly(mode) {
+    $scope.setModeOnly = function setModeOnly(mode) {
         $scope.mode = $scope.MODES.NONE | mode;
     };
 

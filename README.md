@@ -1,4 +1,4 @@
-<img src="media/logo.png" width="400" />
+<img src="example/media/logo.png" width="400" />
 
 > FreeDraw allows the free-hand drawing of shapes on your Leaflet.js map layer &ndash; providing an intuitive and familiar UX for creating geospatial boundaries similar to [Zoopla](http://www.zoopla.co.uk/for-sale/map/property/london/?include_retirement_homes=true&include_shared_ownership=true&new_homes=include&q=London&results_sort=newest_listings&search_source=home&pn=1&view_type=map) and others. Included out-of-the-box is the [concaving of polygons](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html), polygon merging and simplifying, as well as the ability to add edges and modify existing shapes.
 > **Note:** For drawing polylines instead, try [`L.Pather`](https://github.com/Wildhoney/L.Pather).
@@ -27,7 +27,7 @@
   4. [Classes](#classes)
   5. [Methods](#methods)
   
-![FreeDraw Screenshot](media/screenshot.png)
+![FreeDraw Screenshot](example/media/screenshot.png)
 
 ## Browser Support
 

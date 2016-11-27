@@ -412,7 +412,8 @@ export default class FreeDraw extends FeatureGroup {
         const lineData = [fromPoint, toPoint];
 
         // Draw SVG line based on the last movement of the mouse's position.
-        svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none');
+        svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none')
+           .attr('stroke', 'black').attr('stroke-width', 2);
 
         // Recursively invoke the generator function, passing in the current to point as the from point.
         yield * this.createPath(map, svg, toPoint);
