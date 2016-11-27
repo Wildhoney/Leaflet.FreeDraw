@@ -1755,7 +1755,7 @@ var removeFor = exports.removeFor = function removeFor(map, polygon) {
  * @return {void}
  */
 var clearFor = exports.clearFor = function clearFor(map) {
-    Array.from(polygons.get(map).entries()).forEach(function (polygon) {
+    Array.from(polygons.get(map).values()).forEach(function (polygon) {
         return removeFor(map, polygon);
     });
 };
