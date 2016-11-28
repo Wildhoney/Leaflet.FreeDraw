@@ -1,14 +1,11 @@
-import { FeatureGroup, Polygon, DomEvent, DomUtil, Point } from 'leaflet';
+import { FeatureGroup, Point } from 'leaflet';
 import * as d3 from 'd3';
 import Set from 'es6-set';
 import WeakMap from 'es6-weak-map';
 import Symbol from 'es6-symbol';
-import createEdges from './helpers/Edges';
-import handlePolygonClick from './helpers/Polygon';
+import { createFor, removeFor, clearFor, triggerFor, modeFor } from './helpers/Utilities';
 import simplifyPolygon from './helpers/Simplify';
-import concavePolygon from './helpers/Concave';
-import mergePolygons from './helpers/Merge';
-import { NONE, CREATE, EDIT, DELETE, APPEND, ALL } from './helpers/Flags';
+import { CREATE, ALL } from './helpers/Flags';
 
 /**
  * @constant polygons
@@ -20,14 +17,15 @@ export const polygons = new WeakMap();
  * @constant defaultOptions
  * @type {Object}
  */
-const defaultOptions = {
+export const defaultOptions = {
     mode: ALL,
     smoothFactor: 0.3,
     elbowDistance: 10,
     simplifyFactor: 1.1,
     mergePolygons: true,
     concavePolygon: true,
-    recreatePostEdit: false
+    recreatePostEdit: false,
+    exitModeAfterCreate: false
 };
 
 /**
@@ -53,152 +51,6 @@ export const edgesKey = Symbol('freedraw/edges');
  * @type {Symbol}
  */
 const cancelKey = Symbol('freedraw/cancel');
-
-/**
- * @method createFor
- * @param {Object} map
- * @param {Array} latLngs
- * @param {Object} [options = defaultOptions]
- * @param {Boolean} [preventMutations = false]
- * @return {Array}
- */
-export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false) => {
-
-    // Apply the concave hull algorithm to the created polygon if the options allow.
-    const concavedLatLngs = !preventMutations && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
-
-    // Simplify the polygon before adding it to the map.
-    const addedPolygons = map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
-
-        const polygon = new Polygon(options.simplifyPolygon ? map.simplifyPolygon(map, latLngs, options) : latLngs, {
-            ...defaultOptions, ...options, className: 'leaflet-polygon'
-        }).addTo(map);
-
-        // Attach the edges to the polygon.
-        polygon[edgesKey] = createEdges(map, polygon, options);
-
-        // Disable the propagation when you click on the marker.
-        DomEvent.disableClickPropagation(polygon);
-
-        // Yield the click handler to the `handlePolygonClick` function.
-        polygon.on('click', handlePolygonClick(map, polygon, options));
-
-        return polygon;
-
-    });
-
-    // Append the current polygon to the master set.
-    addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
-
-    if (!preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
-
-        // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
-        const addedMergedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);
-
-        // Clear the set, and added all of the merged polygons into the master set.
-        polygons.get(map).clear();
-        addedMergedPolygons.forEach(polygon => polygons.get(map).add(polygon));
-
-        return addedMergedPolygons;
-
-    }
-
-    return addedPolygons;
-
-};
-
-/**
- * @method removeFor
- * @param {Object} map
- * @param {Object} polygon
- * @return {void}
- */
-export const removeFor = (map, polygon) => {
-
-    // Remove polygon and all of its associated edges.
-    map.removeLayer(polygon);
-    edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge));
-
-    // Remove polygon from the master set.
-    polygons.get(map).delete(polygon);
-
-};
-
-/**
- * @method clearFor
- * @param {Object} map
- * @return {void}
- */
-export const clearFor = map => {
-    Array.from(polygons.get(map).values()).forEach(polygon => removeFor(map, polygon));
-};
-
-/**
- * @method triggerFor
- * @param {Object} map
- * @return {void}
- */
-export const triggerFor = map => {
-
-    const latLngs = Array.from(polygons.get(map)).map(polygon => {
-
-        // Ensure the polygon has been closed.
-        const latLngs = polygon.getLatLngs();
-        return [ ...latLngs[0], latLngs[0][0] ];
-
-    });
-
-    // Fire the current set of lat lngs.
-    map[instanceKey].fire('markers', { latLngs });
-
-};
-
-/**
- * @method setModeFor
- * @param {Object} map
- * @param {Number} mode
- * @return {Number}
- */
-export const setModeFor = (map, mode) => {
-
-    // Update the mode.
-    map[modesKey] = mode;
-
-    // Fire the updated mode.
-    map[instanceKey].fire('mode', { mode });
-
-    // Disable the map if the `CREATE` mode is a default flag.
-    mode & CREATE ? map.dragging.disable() : map.dragging.enable();
-
-    Array.from(polygons.get(map)).forEach(polygon => {
-
-        polygon[edgesKey].forEach(edge => {
-
-            // Modify the edge class names based on whether edit mode is enabled.
-            mode & EDIT ? DomUtil.removeClass(edge._icon, 'disabled') : DomUtil.addClass(edge._icon, 'disabled');
-
-        });
-
-    });
-
-    // Remove all of the current class names so we can begin from scratch.
-    const mapNode = map._container;
-    DomUtil.removeClass(mapNode, 'mode-none');
-    DomUtil.removeClass(mapNode, 'mode-create');
-    DomUtil.removeClass(mapNode, 'mode-edit');
-    DomUtil.removeClass(mapNode, 'mode-delete');
-    DomUtil.removeClass(mapNode, 'mode-append');
-
-    // Apply the class names to the mapNode container depending on the current mode.
-    mode & NONE && DomUtil.addClass(mapNode, 'mode-view');
-    mode & CREATE && DomUtil.addClass(mapNode, 'mode-create');
-    mode & EDIT && DomUtil.addClass(mapNode, 'mode-edit');
-    mode & DELETE && DomUtil.addClass(mapNode, 'mode-delete');
-    mode & APPEND && DomUtil.addClass(mapNode, 'mode-append');
-
-    return mode;
-
-};
 
 export default class FreeDraw extends FeatureGroup {
 
@@ -233,7 +85,7 @@ export default class FreeDraw extends FeatureGroup {
         polygons.set(map, new Set());
 
         // Set the initial mode.
-        setModeFor(map, this.options.mode);
+        modeFor(map, this.options.mode);
 
         // Instantiate the SVG layer that sits on top of the map.
         const svg = this.svg = d3.select(map._container).append('svg')
@@ -299,7 +151,7 @@ export default class FreeDraw extends FeatureGroup {
     mode(mode = null) {
 
         // Set mode when passed `mode` is numeric, and then yield the current mode.
-        typeof mode === 'number' && setModeFor(this.map, mode);
+        typeof mode === 'number' && modeFor(this.map, mode);
         return this.map[modesKey];
 
     }
@@ -394,6 +246,9 @@ export default class FreeDraw extends FeatureGroup {
 
                     // Finally invoke the callback for the polygon regions.
                     triggerFor(map);
+
+                    // Exit the `CREATE` mode if the options permit it.
+                    options.exitModeAfterCreate && this.mode(this.mode() ^ CREATE);
 
                 }
 
