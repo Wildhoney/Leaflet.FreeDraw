@@ -1642,9 +1642,9 @@ var defaultOptions = exports.defaultOptions = {
   simplifyFactor: 1.1,
   mergePolygons: true,
   concavePolygon: true,
-  recreatePostEdit: false,
-  exitModeAfterCreate: false,
-  notifyAfterLeaveEdit: false
+  recreateAfterEdit: false,
+  leaveModeAfterCreate: false,
+  notifyAfterEditExit: false
 };
 
 /**
@@ -1903,7 +1903,7 @@ var FreeDraw = function (_FeatureGroup) {
             (0, _Utilities.triggerFor)(map);
 
             // Exit the `CREATE` mode if the options permit it.
-            options.exitModeAfterCreate && _this2.mode(_this2.mode() ^ _Flags.CREATE);
+            options.leaveModeAfterCreate && _this2.mode(_this2.mode() ^ _Flags.CREATE);
           }
         };
 
@@ -2240,8 +2240,8 @@ var modeFor = exports.modeFor = function modeFor(map, mode, options) {
     classesFor(map, mode);
 
     // Fire the event for having manipulated the polygons if the `hasManipulated` is `true` and the
-    // `notifyAfterLeaveEdit` option is equal to `true`, and then reset the `notifyDeferredKey`.
-    options.notifyAfterLeaveEdit && map[_FreeDraw.notifyDeferredKey]();
+    // `notifyAfterEditExit` option is equal to `true`, and then reset the `notifyDeferredKey`.
+    options.notifyAfterEditExit && map[_FreeDraw.notifyDeferredKey]();
     map[_FreeDraw.notifyDeferredKey] = function () {};
 
     return mode;
@@ -3649,7 +3649,7 @@ function createEdges(map, polygon, options) {
                 // We can optionally recreate the polygon after modifying its shape, as sometimes edges/
                 // become "detached" and thus if we choose to re-render the polygon afterwards, those edges
                 // will disappear, otherwise they will remain and look somewhat detached, yet still active.
-                if (options.recreatePostEdit) {
+                if (options.recreateAfterEdit) {
 
                     // Remove all of the existing markers for the current polygon.
                     markers.forEach(function (marker) {
@@ -3672,9 +3672,9 @@ function createEdges(map, polygon, options) {
                 };
                 options.mergePolygons && merge() && merge();
 
-                // Trigger the event for having modified the edges of a polygon, unless the `notifyAfterLeaveEdit`
+                // Trigger the event for having modified the edges of a polygon, unless the `notifyAfterEditExit`
                 // option is equal to `true`, in which case we'll defer the notification.
-                options.notifyAfterLeaveEdit ? function () {
+                options.notifyAfterEditExit ? function () {
 
                     // Deferred function that will be invoked by `modeFor` when the `EDIT` mode is exited.
                     map[_FreeDraw.notifyDeferredKey] = function () {

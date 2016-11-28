@@ -1642,9 +1642,9 @@ var defaultOptions = exports.defaultOptions = {
   simplifyFactor: 1.1,
   mergePolygons: true,
   concavePolygon: true,
-  recreatePostEdit: false,
-  exitModeAfterCreate: false,
-  notifyAfterLeaveEdit: false
+  recreateAfterEdit: false,
+  leaveModeAfterCreate: false,
+  notifyAfterEditExit: false
 };
 
 /**
@@ -1903,7 +1903,7 @@ var FreeDraw = function (_FeatureGroup) {
             (0, _Utilities.triggerFor)(map);
 
             // Exit the `CREATE` mode if the options permit it.
-            options.exitModeAfterCreate && _this2.mode(_this2.mode() ^ _Flags.CREATE);
+            options.leaveModeAfterCreate && _this2.mode(_this2.mode() ^ _Flags.CREATE);
           }
         };
 
@@ -2240,8 +2240,8 @@ var modeFor = exports.modeFor = function modeFor(map, mode, options) {
     classesFor(map, mode);
 
     // Fire the event for having manipulated the polygons if the `hasManipulated` is `true` and the
-    // `notifyAfterLeaveEdit` option is equal to `true`, and then reset the `notifyDeferredKey`.
-    options.notifyAfterLeaveEdit && map[_FreeDraw.notifyDeferredKey]();
+    // `notifyAfterEditExit` option is equal to `true`, and then reset the `notifyDeferredKey`.
+    options.notifyAfterEditExit && map[_FreeDraw.notifyDeferredKey]();
     map[_FreeDraw.notifyDeferredKey] = function () {};
 
     return mode;
@@ -3649,7 +3649,7 @@ function createEdges(map, polygon, options) {
                 // We can optionally recreate the polygon after modifying its shape, as sometimes edges/
                 // become "detached" and thus if we choose to re-render the polygon afterwards, those edges
                 // will disappear, otherwise they will remain and look somewhat detached, yet still active.
-                if (options.recreatePostEdit) {
+                if (options.recreateAfterEdit) {
 
                     // Remove all of the existing markers for the current polygon.
                     markers.forEach(function (marker) {
@@ -3672,9 +3672,9 @@ function createEdges(map, polygon, options) {
                 };
                 options.mergePolygons && merge() && merge();
 
-                // Trigger the event for having modified the edges of a polygon, unless the `notifyAfterLeaveEdit`
+                // Trigger the event for having modified the edges of a polygon, unless the `notifyAfterEditExit`
                 // option is equal to `true`, in which case we'll defer the notification.
-                options.notifyAfterLeaveEdit ? function () {
+                options.notifyAfterEditExit ? function () {
 
                     // Deferred function that will be invoked by `modeFor` when the `EDIT` mode is exited.
                     map[_FreeDraw.notifyDeferredKey] = function () {
@@ -16072,14 +16072,14 @@ module.exports = function (props/*, bindTo*/) {
 /* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
-// https://d3js.org Version 4.3.0. Copyright 2016 Mike Bostock.
+// https://d3js.org Version 4.4.0. Copyright 2016 Mike Bostock.
 (function (global, factory) {
    true ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (factory((global.d3 = global.d3 || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "4.3.0";
+var version = "4.4.0";
 
 var ascending = function(a, b) {
   return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -17117,7 +17117,7 @@ var tauEpsilon = tau$1 - epsilon;
 function Path() {
   this._x0 = this._y0 = // start of current subpath
   this._x1 = this._y1 = null; // end of current subpath
-  this._ = [];
+  this._ = "";
 }
 
 function path() {
@@ -17127,22 +17127,22 @@ function path() {
 Path.prototype = path.prototype = {
   constructor: Path,
   moveTo: function(x, y) {
-    this._.push("M", this._x0 = this._x1 = +x, ",", this._y0 = this._y1 = +y);
+    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y);
   },
   closePath: function() {
     if (this._x1 !== null) {
       this._x1 = this._x0, this._y1 = this._y0;
-      this._.push("Z");
+      this._ += "Z";
     }
   },
   lineTo: function(x, y) {
-    this._.push("L", this._x1 = +x, ",", this._y1 = +y);
+    this._ += "L" + (this._x1 = +x) + "," + (this._y1 = +y);
   },
   quadraticCurveTo: function(x1, y1, x, y) {
-    this._.push("Q", +x1, ",", +y1, ",", this._x1 = +x, ",", this._y1 = +y);
+    this._ += "Q" + (+x1) + "," + (+y1) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
   },
   bezierCurveTo: function(x1, y1, x2, y2, x, y) {
-    this._.push("C", +x1, ",", +y1, ",", +x2, ",", +y2, ",", this._x1 = +x, ",", this._y1 = +y);
+    this._ += "C" + (+x1) + "," + (+y1) + "," + (+x2) + "," + (+y2) + "," + (this._x1 = +x) + "," + (this._y1 = +y);
   },
   arcTo: function(x1, y1, x2, y2, r) {
     x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
@@ -17159,9 +17159,7 @@ Path.prototype = path.prototype = {
 
     // Is this path empty? Move to (x1,y1).
     if (this._x1 === null) {
-      this._.push(
-        "M", this._x1 = x1, ",", this._y1 = y1
-      );
+      this._ += "M" + (this._x1 = x1) + "," + (this._y1 = y1);
     }
 
     // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
@@ -17171,9 +17169,7 @@ Path.prototype = path.prototype = {
     // Equivalently, is (x1,y1) coincident with (x2,y2)?
     // Or, is the radius zero? Line to (x1,y1).
     else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon) || !r) {
-      this._.push(
-        "L", this._x1 = x1, ",", this._y1 = y1
-      );
+      this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
     }
 
     // Otherwise, draw an arc!
@@ -17190,14 +17186,10 @@ Path.prototype = path.prototype = {
 
       // If the start tangent is not coincident with (x0,y0), line to.
       if (Math.abs(t01 - 1) > epsilon) {
-        this._.push(
-          "L", x1 + t01 * x01, ",", y1 + t01 * y01
-        );
+        this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
       }
 
-      this._.push(
-        "A", r, ",", r, ",0,0,", +(y01 * x20 > x01 * y20), ",", this._x1 = x1 + t21 * x21, ",", this._y1 = y1 + t21 * y21
-      );
+      this._ += "A" + r + "," + r + ",0,0," + (+(y01 * x20 > x01 * y20)) + "," + (this._x1 = x1 + t21 * x21) + "," + (this._y1 = y1 + t21 * y21);
     }
   },
   arc: function(x, y, r, a0, a1, ccw) {
@@ -17214,16 +17206,12 @@ Path.prototype = path.prototype = {
 
     // Is this path empty? Move to (x0,y0).
     if (this._x1 === null) {
-      this._.push(
-        "M", x0, ",", y0
-      );
+      this._ += "M" + x0 + "," + y0;
     }
 
     // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
     else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) {
-      this._.push(
-        "L", x0, ",", y0
-      );
+      this._ += "L" + x0 + "," + y0;
     }
 
     // Is this arc empty? We’re done.
@@ -17231,25 +17219,20 @@ Path.prototype = path.prototype = {
 
     // Is this a complete circle? Draw two arcs to complete the circle.
     if (da > tauEpsilon) {
-      this._.push(
-        "A", r, ",", r, ",0,1,", cw, ",", x - dx, ",", y - dy,
-        "A", r, ",", r, ",0,1,", cw, ",", this._x1 = x0, ",", this._y1 = y0
-      );
+      this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
     }
 
     // Otherwise, draw an arc!
     else {
       if (da < 0) da = da % tau$1 + tau$1;
-      this._.push(
-        "A", r, ",", r, ",0,", +(da >= pi$1), ",", cw, ",", this._x1 = x + r * Math.cos(a1), ",", this._y1 = y + r * Math.sin(a1)
-      );
+      this._ += "A" + r + "," + r + ",0," + (+(da >= pi$1)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
     }
   },
   rect: function(x, y, w, h) {
-    this._.push("M", this._x0 = this._x1 = +x, ",", this._y0 = this._y1 = +y, "h", +w, "v", +h, "h", -w, "Z");
+    this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y) + "h" + (+w) + "v" + (+h) + "h" + (-w) + "Z";
   },
   toString: function() {
-    return this._.join("");
+    return this._;
   }
 };
 
@@ -19574,14 +19557,17 @@ function Color() {}
 var darker = 0.7;
 var brighter = 1 / darker;
 
+var reI = "\\s*([+-]?\\d+)\\s*";
+var reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*";
+var reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*";
 var reHex3 = /^#([0-9a-f]{3})$/;
 var reHex6 = /^#([0-9a-f]{6})$/;
-var reRgbInteger = /^rgb\(\s*([-+]?\d+)\s*,\s*([-+]?\d+)\s*,\s*([-+]?\d+)\s*\)$/;
-var reRgbPercent = /^rgb\(\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*\)$/;
-var reRgbaInteger = /^rgba\(\s*([-+]?\d+)\s*,\s*([-+]?\d+)\s*,\s*([-+]?\d+)\s*,\s*([-+]?\d+(?:\.\d+)?)\s*\)$/;
-var reRgbaPercent = /^rgba\(\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)\s*\)$/;
-var reHslPercent = /^hsl\(\s*([-+]?\d+(?:\.\d+)?)\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*\)$/;
-var reHslaPercent = /^hsla\(\s*([-+]?\d+(?:\.\d+)?)\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)%\s*,\s*([-+]?\d+(?:\.\d+)?)\s*\)$/;
+var reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$");
+var reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$");
+var reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$");
+var reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$");
+var reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$");
+var reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
 
 var named = {
   aliceblue: 0xf0f8ff,
@@ -26121,7 +26107,7 @@ function squarifyRatio(ratio, parent, x0, y0, x1, y1) {
       row,
       nodeValue,
       i0 = 0,
-      i1,
+      i1 = 0,
       n = nodes.length,
       dx, dy,
       value = parent.value,
@@ -26135,13 +26121,16 @@ function squarifyRatio(ratio, parent, x0, y0, x1, y1) {
 
   while (i0 < n) {
     dx = x1 - x0, dy = y1 - y0;
-    minValue = maxValue = sumValue = nodes[i0].value;
+
+    // Find the next non-empty node.
+    do sumValue = nodes[i1++].value; while (!sumValue && i1 < n);
+    minValue = maxValue = sumValue;
     alpha = Math.max(dy / dx, dx / dy) / (value * ratio);
     beta = sumValue * sumValue * alpha;
     minRatio = Math.max(maxValue / beta, beta / minValue);
 
     // Keep adding nodes while the aspect ratio maintains or improves.
-    for (i1 = i0 + 1; i1 < n; ++i1) {
+    for (; i1 < n; ++i1) {
       sumValue += nodeValue = nodes[i1].value;
       if (nodeValue < minValue) minValue = nodeValue;
       if (nodeValue > maxValue) maxValue = nodeValue;
@@ -26422,7 +26411,7 @@ var collide = function(radius) {
       tree = quadtree(nodes, x$1, y$1).visitAfter(prepare);
       for (i = 0; i < n; ++i) {
         node = nodes[i];
-        ri = radii[i], ri2 = ri * ri;
+        ri = radii[node.index], ri2 = ri * ri;
         xi = node.x + node.vx;
         yi = node.y + node.vy;
         tree.visit(apply);
@@ -26432,7 +26421,7 @@ var collide = function(radius) {
     function apply(quad, x0, y0, x1, y1) {
       var data = quad.data, rj = quad.r, r = ri + rj;
       if (data) {
-        if (data.index > i) {
+        if (data.index > node.index) {
           var x = xi - data.x - data.vx,
               y = yi - data.y - data.vy,
               l = x * x + y * y;
@@ -26463,9 +26452,9 @@ var collide = function(radius) {
 
   function initialize() {
     if (!nodes) return;
-    var i, n = nodes.length;
+    var i, n = nodes.length, node;
     radii = new Array(n);
-    for (i = 0; i < n; ++i) radii[i] = +radius(nodes[i], i, nodes);
+    for (i = 0; i < n; ++i) node = nodes[i], radii[node.index] = +radius(node, i, nodes);
   }
 
   force.initialize = function(_) {
@@ -26488,8 +26477,8 @@ var collide = function(radius) {
   return force;
 };
 
-function index$2(d, i) {
-  return i;
+function index$2(d) {
+  return d.index;
 }
 
 function find(nodeById, nodeId) {
@@ -26541,15 +26530,12 @@ var link = function(links) {
         nodeById = map$1(nodes, id),
         link;
 
-    for (i = 0, count = new Array(n); i < n; ++i) {
-      count[i] = 0;
-    }
-
-    for (i = 0; i < m; ++i) {
+    for (i = 0, count = new Array(n); i < m; ++i) {
       link = links[i], link.index = i;
       if (typeof link.source !== "object") link.source = find(nodeById, link.source);
       if (typeof link.target !== "object") link.target = find(nodeById, link.target);
-      ++count[link.source.index], ++count[link.target.index];
+      count[link.source.index] = (count[link.source.index] || 0) + 1;
+      count[link.target.index] = (count[link.target.index] || 0) + 1;
     }
 
     for (i = 0, bias = new Array(m); i < m; ++i) {
@@ -26761,9 +26747,9 @@ var manyBody = function() {
 
   function initialize() {
     if (!nodes) return;
-    var i, n = nodes.length;
+    var i, n = nodes.length, node;
     strengths = new Array(n);
-    for (i = 0; i < n; ++i) strengths[i] = +strength(nodes[i], i, nodes);
+    for (i = 0; i < n; ++i) node = nodes[i], strengths[node.index] = +strength(node, i, nodes);
   }
 
   function accumulate(quad) {
@@ -28223,6 +28209,7 @@ var zoom = function() {
       y0 = x0,
       y1 = x1,
       duration = 250,
+      interpolate$$1 = interpolateZoom,
       gestures = [],
       listeners = dispatch("start", "zoom", "end"),
       touchstarting,
@@ -28296,9 +28283,14 @@ var zoom = function() {
   }
 
   function constrain(transform, extent) {
-    var dx = Math.min(0, transform.invertX(extent[0][0]) - x0) || Math.max(0, transform.invertX(extent[1][0]) - x1),
-        dy = Math.min(0, transform.invertY(extent[0][1]) - y0) || Math.max(0, transform.invertY(extent[1][1]) - y1);
-    return dx || dy ? transform.translate(dx, dy) : transform;
+    var dx0 = transform.invertX(extent[0][0]) - x0,
+        dx1 = transform.invertX(extent[1][0]) - x1,
+        dy0 = transform.invertY(extent[0][1]) - y0,
+        dy1 = transform.invertY(extent[1][1]) - y1;
+    return transform.translate(
+      dx1 > dx0 ? (dx0 + dx1) / 2 : Math.min(0, dx0) || Math.max(0, dx1),
+      dy1 > dy0 ? (dy0 + dy1) / 2 : Math.min(0, dy0) || Math.max(0, dy1)
+    );
   }
 
   function centroid(extent) {
@@ -28318,7 +28310,7 @@ var zoom = function() {
               w = Math.max(e[1][0] - e[0][0], e[1][1] - e[0][1]),
               a = that.__zoom,
               b = typeof transform === "function" ? transform.apply(that, args) : transform,
-              i = interpolateZoom(a.invert(p).concat(w / a.k), b.invert(p).concat(w / b.k));
+              i = interpolate$$1(a.invert(p).concat(w / a.k), b.invert(p).concat(w / b.k));
           return function(t) {
             if (t === 1) t = b; // Avoid rounding error on end.
             else { var l = i(t), k = w / l[2]; t = new Transform(k, p[0] - l[0] * k, p[1] - l[1] * k); }
@@ -28461,10 +28453,18 @@ var zoom = function() {
       if (!g.touch0) g.touch0 = p;
       else if (!g.touch1) g.touch1 = p;
     }
+
+    // If this is a dbltap, reroute to the (optional) dblclick.zoom handler.
     if (touchstarting) {
       touchstarting = clearTimeout(touchstarting);
-      if (!g.touch1) return g.end(), dblclicked.apply(this, arguments);
+      if (!g.touch1) {
+        g.end();
+        p = select(this).on("dblclick.zoom");
+        if (p) p.apply(this, arguments);
+        return;
+      }
     }
+
     if (exports.event.touches.length === n) {
       touchstarting = setTimeout(function() { touchstarting = null; }, touchDelay);
       interrupt(this);
@@ -28534,6 +28534,10 @@ var zoom = function() {
 
   zoom.duration = function(_) {
     return arguments.length ? (duration = +_, zoom) : duration;
+  };
+
+  zoom.interpolate = function(_) {
+    return arguments.length ? (interpolate$$1 = _, zoom) : interpolate$$1;
   };
 
   zoom.on = function() {
@@ -30910,12 +30914,12 @@ var index$3 = function(projection, context) {
   };
 
   path.projection = function(_) {
-    return arguments.length ? (projectionStream = (projection = _) == null ? identity$7 : _.stream, path) : projection;
+    return arguments.length ? (projectionStream = _ == null ? (projection = null, identity$7) : (projection = _).stream, path) : projection;
   };
 
   path.context = function(_) {
     if (!arguments.length) return context;
-    contextStream = (context = _) == null ? new PathString : new PathContext(_);
+    contextStream = _ == null ? (context = null, new PathString) : new PathContext(context = _);
     if (typeof pointRadius !== "function") contextStream.pointRadius(pointRadius);
     return path;
   };
@@ -31980,16 +31984,16 @@ var gnomonic = function() {
       .clipAngle(60);
 };
 
-function scaleTranslate(k, tx, ty) {
-  return k === 1 && tx === 0 && ty === 0 ? identity$7 : transformer({
+function scaleTranslate(kx, ky, tx, ty) {
+  return kx === 1 && ky === 1 && tx === 0 && ty === 0 ? identity$7 : transformer({
     point: function(x, y) {
-      this.stream.point(x * k + tx, y * k + ty);
+      this.stream.point(x * kx + tx, y * ky + ty);
     }
   });
 }
 
 var identity$8 = function() {
-  var k = 1, tx = 0, ty = 0, transform = identity$7, // scale and translate
+  var k = 1, tx = 0, ty = 0, sx = 1, sy = 1, transform = identity$7, // scale, translate and reflect
       x0 = null, y0, x1, y1, clip = identity$7, // clip extent
       cache,
       cacheStream,
@@ -32008,10 +32012,16 @@ var identity$8 = function() {
       return arguments.length ? (clip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$7) : clipExtent(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
     },
     scale: function(_) {
-      return arguments.length ? (transform = scaleTranslate(k = +_, tx, ty), reset()) : k;
+      return arguments.length ? (transform = scaleTranslate((k = +_) * sx, k * sy, tx, ty), reset()) : k;
     },
     translate: function(_) {
-      return arguments.length ? (transform = scaleTranslate(k, tx = +_[0], ty = +_[1]), reset()) : [tx, ty];
+      return arguments.length ? (transform = scaleTranslate(k * sx, k * sy, tx = +_[0], ty = +_[1]), reset()) : [tx, ty];
+    },
+    reflectX: function(_) {
+      return arguments.length ? (transform = scaleTranslate(k * (sx = _ ? -1 : 1), k * sy, tx, ty), reset()) : sx < 0;
+    },
+    reflectY: function(_) {
+      return arguments.length ? (transform = scaleTranslate(k * sx, k * (sy = _ ? -1 : 1), tx, ty), reset()) : sy < 0;
     },
     fitExtent: function(extent, object) {
       return fitExtent(projection, extent, object);
