@@ -24,9 +24,9 @@ export const defaultOptions = {
     simplifyFactor: 1.1,
     mergePolygons: true,
     concavePolygon: true,
-    recreatePostEdit: false,
-    exitModeAfterCreate: false,
-    notifyAfterLeaveEdit: false
+    recreateAfterEdit: false,
+    leaveModeAfterCreate: false,
+    notifyAfterEditExit: false
 };
 
 /**
@@ -256,7 +256,7 @@ export default class FreeDraw extends FeatureGroup {
                     triggerFor(map);
 
                     // Exit the `CREATE` mode if the options permit it.
-                    options.exitModeAfterCreate && this.mode(this.mode() ^ CREATE);
+                    options.leaveModeAfterCreate && this.mode(this.mode() ^ CREATE);
 
                 }
 

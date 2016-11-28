@@ -94,7 +94,7 @@ export default function createEdges(map, polygon, options) {
                 // We can optionally recreate the polygon after modifying its shape, as sometimes edges/
                 // become "detached" and thus if we choose to re-render the polygon afterwards, those edges
                 // will disappear, otherwise they will remain and look somewhat detached, yet still active.
-                if (options.recreatePostEdit) {
+                if (options.recreateAfterEdit) {
 
                     // Remove all of the existing markers for the current polygon.
                     markers.forEach(marker => map.removeLayer(marker));
@@ -112,9 +112,9 @@ export default function createEdges(map, polygon, options) {
                 const merge = () => mergePolygons(map, Array.from(polygons.get(map)), options);
                 options.mergePolygons && merge() && merge();
 
-                // Trigger the event for having modified the edges of a polygon, unless the `notifyAfterLeaveEdit`
+                // Trigger the event for having modified the edges of a polygon, unless the `notifyAfterEditExit`
                 // option is equal to `true`, in which case we'll defer the notification.
-                options.notifyAfterLeaveEdit ? (() => {
+                options.notifyAfterEditExit ? (() => {
 
                     // Deferred function that will be invoked by `modeFor` when the `EDIT` mode is exited.
                     map[notifyDeferredKey] = () => triggerFor(map);

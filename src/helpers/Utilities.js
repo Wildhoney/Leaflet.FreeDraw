@@ -173,8 +173,8 @@ export const modeFor = (map, mode, options) => {
     classesFor(map, mode);
 
     // Fire the event for having manipulated the polygons if the `hasManipulated` is `true` and the
-    // `notifyAfterLeaveEdit` option is equal to `true`, and then reset the `notifyDeferredKey`.
-    options.notifyAfterLeaveEdit && map[notifyDeferredKey]();
+    // `notifyAfterEditExit` option is equal to `true`, and then reset the `notifyDeferredKey`.
+    options.notifyAfterEditExit && map[notifyDeferredKey]();
     map[notifyDeferredKey] = () => {};
 
     return mode;

@@ -102,9 +102,9 @@ All of the following options can be passed in when instantiating `FreeDraw` in t
 | `simplifyFactor`       | `1.1`        | By how much to [simplify](https://sourceforge.net/p/jsclipper/wiki/documentation/#clipperlibclippercleanpolygon) the polygon.  |
 | `mergePolygons`        | `true`       | Whether to attempting merging of polygons that intersect.  |
 | `concavePolygon`       | `true`       | Whether to apply the [concaving algorithm](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) to the polygons.  |
-| `recreatePostEdit`     | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
-| `exitModeAfterCreate`  | `false`      | Whether to exit `CREATE` mode after each polygon creation.  |
-| `notifyAfterLeaveEdit` | `false`      | Whether to defer `markers` event until after exiting `EDIT` mode.  |
+| `recreateAfterEdit`    | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
+| `notifyAfterEditExit`  | `false`      | Whether to defer `markers` event until after exiting `EDIT` mode.  |
+| `leaveModeAfterCreate` | `false`      | Whether to exit `CREATE` mode after each polygon creation.  |
 
 By using the options above we can tweak how `FreeDraw` functions &ndash; whilst some of the options have obvious effects, others are much more *tweak and see* based on your expected outcome &ndash; such as the subjective `simplifyFactor` and `elbowDistance` options.
 
