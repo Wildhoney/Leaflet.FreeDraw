@@ -14,8 +14,6 @@
 * **npm:** `npm i leaflet.freedraw`
 * **Bower:** `bower i leaflet.freedraw`
 
-For Leaflet pre-1.0.0 please use [`v1.2.2`](https://github.com/Wildhoney/Leaflet.FreeDraw/tree/v1.2.2).
-
 ## Table of Contents
 
 1. [Browser Support](#browser-support)
@@ -33,11 +31,9 @@ For Leaflet pre-1.0.0 please use [`v1.2.2`](https://github.com/Wildhoney/Leaflet
 <img src="https://github.com/alrra/browser-logos/blob/master/chrome/chrome_128x128.png?raw=true" width="64" />
 <img src="https://github.com/alrra/browser-logos/blob/master/opera/opera_128x128.png?raw=true" width="64" />
 <img src="https://github.com/alrra/browser-logos/blob/master/firefox/firefox_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/master/internet-explorer/internet-explorer_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/master/internet-explorer/internet-explorer_128x128.png?raw=true" width="64" alt="IE10 onwards" />
 <img src="https://github.com/alrra/browser-logos/blob/master/edge/edge_128x128.png?raw=true" width="64" />
 <img src="https://github.com/alrra/browser-logos/blob/master/safari/safari_128x128.png?raw=true" width="64" />
-
-<sub><sup>`FreeDraw` has been tested in IE10+</sup></sub>
 
 ## Getting Started
 
@@ -98,15 +94,16 @@ freeDraw.mode(NONE);
 
 All of the following options can be passed in when instantiating `FreeDraw` in the same way that we pass `mode` in the previous examples.
 
-| Option              | Default      | Result                               |
-| ------------------- |------------- | ------------------------------------ |
-| `mode`              | `ALL`        | Modifies the default [mode](#modes). |
-| `smoothFactor`      | `0.3`        | By how much to [smooth](http://leafletjs.com/reference-1.0.2.html#polyline-smoothfactor) the polygons.  |
-| `elbowDistance`     | `10`         | Factor to determine when to delete or when to append an edge.  |
-| `simplifyFactor`    | `1.1`        | By how much to [simplify](https://sourceforge.net/p/jsclipper/wiki/documentation/#clipperlibclippercleanpolygon) the polygon.  |
-| `mergePolygons`     | `true`       | Whether to attempting merging of polygons that intersect.  |
-| `concavePolygon`    | `true`       | Whether to apply the [concaving algorithm](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) to the polygons.  |
-| `recreatePostEdit`  | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
+| Option                | Default      | Result                               |
+| --------------------- |------------- | ------------------------------------ |
+| `mode`                | `ALL`        | Modifies the default [mode](#modes). |
+| `smoothFactor`        | `0.3`        | By how much to [smooth](http://leafletjs.com/reference-1.0.2.html#polyline-smoothfactor) the polygons.  |
+| `elbowDistance`       | `10`         | Factor to determine when to delete or when to append an edge.  |
+| `simplifyFactor`      | `1.1`        | By how much to [simplify](https://sourceforge.net/p/jsclipper/wiki/documentation/#clipperlibclippercleanpolygon) the polygon.  |
+| `mergePolygons`       | `true`       | Whether to attempting merging of polygons that intersect.  |
+| `concavePolygon`      | `true`       | Whether to apply the [concaving algorithm](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) to the polygons.  |
+| `recreatePostEdit`    | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
+| `exitModeAfterCreate` | `false`      | Whether to exit `CREATE` mode after each polygon creation.  |
 
 By using the options above we can tweak how `FreeDraw` functions &ndash; whilst some of the options have obvious effects, others are much more *tweak and see* based on your expected outcome &ndash; such as the subjective `simplifyFactor` and `elbowDistance` options.
 
@@ -122,6 +119,12 @@ Depending on the current modes active on the map instance, the relevant classes 
 | `mode-delete`       | `DELETE`     |
 | `mode-append`       | `APPEND`     |
 
+```css
+.map.mode-create {
+    cursor: crosshair;
+}
+```
+
 From the above example if the current mode is `CREATE | EDIT | APPEND` then the **three** class names that will be present on the `map` node will be `mode-create`, `mode-edit` and `mode-append`, allowing you to provide a better UX from within your attached stylesheet.
 
 ### Methods
@@ -135,3 +138,40 @@ With the instance of `freeDraw` there are certain methods for manipulating `Free
 | `clear`             | `void`       | Clears all polygons from the current instance                  |
 | `mode`              | `Number`     | Sets and retrieves the current [`mode`](#modes).               |
 | `cancel`            | `void`       | Cancels the current create action &ndash; such as on escape.   |
+
+When using the `create` method to create polygons from an array of latitude and longitude values, the `CREATE` mode is disregarded, which means it doesn't need to be enabled to `create` to succeed &ndash; if you would like such behaviour then you could simply assert that `CREATE` is enabled.
+
+```javascript
+import L, { LatLng } from 'leaflet';
+import FreeDraw from 'leaflet-freedraw';
+
+const map = new L.Map(node);
+const freeDraw = new FreeDraw();
+
+// Create a polygon based on the given lat/long values.
+const polygons = freeDraw.create([
+    new LatLng(51.50046151184328, -0.08771896362304689),
+    new LatLng(51.50067523261736, -0.09175300598144533),
+    new LatLng(51.50329323076107, -0.09106636047363283),
+    new LatLng(51.50409462869737, -0.08763313293457033)
+]);
+
+// Remove the created polygons from the map.
+polygons.forEach(polygon => freeDraw.remove(polygon));
+
+// Alternatively you could have cleared ALL polygons.
+freeDraw.clear();
+```
+
+**Note:** `create` method returns an array of polygons, as often it may yield more than one.
+
+In the case of the `cancel` method it's often desirable to cancel the creation of the polygon when the escape key is pressed &ndash; for this you simply need to attach an event to the `document.body`.
+
+```javascript
+document.addEventListener('keydown', event => {
+
+    // Cancel the current action when the escape key is pressed.
+    event.key === 'Escape' && freeDraw.cancel();
+
+});
+```
