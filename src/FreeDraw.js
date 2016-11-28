@@ -3,9 +3,10 @@ import * as d3 from 'd3';
 import Set from 'es6-set';
 import WeakMap from 'es6-weak-map';
 import Symbol from 'es6-symbol';
-import { createFor, removeFor, clearFor, triggerFor, modeFor } from './helpers/Utilities';
+import { triggerFor } from './helpers/Events';
+import { createFor, removeFor, clearFor } from './helpers/Polygon';
+import { CREATE, ALL, modeFor } from './helpers/Modes';
 import simplifyPolygon from './helpers/Simplify';
-import { CREATE, ALL } from './helpers/Flags';
 
 /**
  * @constant polygons
@@ -310,4 +311,4 @@ export const freeDraw = options => {
     return new FreeDraw(options);
 };
 
-export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL } from './helpers/Flags';
+export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL } from './helpers/Modes';

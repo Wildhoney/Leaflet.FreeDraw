@@ -1,8 +1,11 @@
-import { LineUtil, Point } from 'leaflet';
-import { edgesKey, modesKey } from '../FreeDraw';
-import { removeFor, triggerFor } from './Utilities';
+import { LineUtil, Point, Polygon, DomEvent } from 'leaflet';
+import { defaultOptions, edgesKey, modesKey, polygons } from '../FreeDraw';
+import { triggerFor } from './Events';
 import createEdges from './Edges';
-import { DELETE, APPEND } from './Flags';
+import { DELETE, APPEND } from './Modes';
+import handlePolygonClick from './Polygon';
+import concavePolygon from './Concave';
+import mergePolygons from './Merge';
 
 /**
  * @method appendEdgeFor
@@ -46,6 +49,85 @@ const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, end
     polygon[edgesKey].map(edge => map.removeLayer(edge));
     polygon[edgesKey] = createEdges(map, polygon, options);
 
+};
+
+/**
+ * @method createFor
+ * @param {Object} map
+ * @param {Array} latLngs
+ * @param {Object} [options = defaultOptions]
+ * @param {Boolean} [preventMutations = false]
+ * @return {Array}
+ */
+export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false) => {
+
+    // Apply the concave hull algorithm to the created polygon if the options allow.
+    const concavedLatLngs = !preventMutations && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
+
+    // Simplify the polygon before adding it to the map.
+    const addedPolygons = map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
+
+        const polygon = new Polygon(options.simplifyPolygon ? map.simplifyPolygon(map, latLngs, options) : latLngs, {
+            ...defaultOptions, ...options, className: 'leaflet-polygon'
+        }).addTo(map);
+
+        // Attach the edges to the polygon.
+        polygon[edgesKey] = createEdges(map, polygon, options);
+
+        // Disable the propagation when you click on the marker.
+        DomEvent.disableClickPropagation(polygon);
+
+        // Yield the click handler to the `handlePolygonClick` function.
+        polygon.on('click', handlePolygonClick(map, polygon, options));
+
+        return polygon;
+
+    });
+
+    // Append the current polygon to the master set.
+    addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
+
+    if (!preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
+
+        // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
+        const addedMergedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);
+
+        // Clear the set, and added all of the merged polygons into the master set.
+        polygons.get(map).clear();
+        addedMergedPolygons.forEach(polygon => polygons.get(map).add(polygon));
+
+        return addedMergedPolygons;
+
+    }
+
+    return addedPolygons;
+
+};
+
+/**
+ * @method removeFor
+ * @param {Object} map
+ * @param {Object} polygon
+ * @return {void}
+ */
+export const removeFor = (map, polygon) => {
+
+    // Remove polygon and all of its associated edges.
+    map.removeLayer(polygon);
+    edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge));
+
+    // Remove polygon from the master set.
+    polygons.get(map).delete(polygon);
+
+};
+
+/**
+ * @method clearFor
+ * @param {Object} map
+ * @return {void}
+ */
+export const clearFor = map => {
+    Array.from(polygons.get(map).values()).forEach(polygon => removeFor(map, polygon));
 };
 
 /**

@@ -3,8 +3,8 @@ import * as d3 from 'd3';
 import { LatLng, Point } from 'leaflet';
 import { spy } from 'sinon';
 import FreeDraw, { polygons, edgesKey } from '../src/FreeDraw';
-import { triggerFor } from '../src/helpers/Utilities';
-import { NONE, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from '../src/helpers/Flags';
+import { triggerFor } from '../src/helpers/Events';
+import { NONE, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from '../src/helpers/Modes';
 
 /**
  * @method mockFunctions
