@@ -1,4 +1,10 @@
-/.idea
-/node_modules
-/example/js/vendor/*
-!/example/js/vendor/.gitignore
+# ide
+.idea
+
+# npm
+node_modules
+npm-debug.log
+
+# build
+example/js/build.js
+example/css/leaflet.css

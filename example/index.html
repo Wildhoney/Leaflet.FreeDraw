@@ -1,34 +1,18 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
 
-    <title>Leaflet.FreeDraw</title>
+    <meta charset="UTF-8" />
+    <title>Leaflet FreeDraw</title>
 
-    <meta charset="utf-8" />
+
+    <link rel="stylesheet" href="css/default.css" />
+    <link rel="stylesheet" href="css/leaflet.css" />
+
+    <script type="text/javascript" src="js/build.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <!-- Aesthetics! -->
-    <link rel="stylesheet" type="text/css" href="css/Default.css" />
-    <link rel="stylesheet" type="text/css" href="css/Map.css" />
-    <link rel="stylesheet" type="text/css" href="js/vendor/leaflet/dist/leaflet.css" />
-    <link href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" rel="stylesheet" type="text/css" />
-
-    <!-- Behaviour! -->
-    <script type="text/javascript" src="js/vendor/d3/d3.js"></script>
-    <script type="text/javascript" src="js/vendor/evispa-timo-jsclipper/clipper_unminified.js"></script>
-    <script type="text/javascript" src="js/vendor/graham_scan/graham_scan.min.js"></script>
-    <script type="text/javascript" src="js/vendor/angular/angular.js"></script>
-    <script type="text/javascript" src="js/vendor/hammerjs/hammer.js"></script>
-    <script type="text/javascript" src="js/vendor/concavehull/dist/concavehull.js"></script>
-    <script type="text/javascript" src="js/vendor/leaflet/dist/leaflet-src.js"></script>
-    <script type="text/javascript" src="js/vendor/leaflet.freedraw/FreeDraw.js"></script>
-    <script type="text/javascript" src="js/vendor/leaflet.freedraw/Options.js"></script>
-    <script type="text/javascript" src="js/vendor/leaflet.freedraw/Utilities.js"></script>
-    <script type="text/javascript" src="js/vendor/leaflet.freedraw/Memory.js"></script>
-    <script type="text/javascript" src="js/vendor/leaflet.freedraw/Hull.js"></script>
-
-    <!-- Application! -->
-    <script type="text/javascript" src="js/Example.js"></script>
 
 </head>
 <body ng-app="leafletApp" ng-controller="MapController">
@@ -37,9 +21,10 @@
 
         <section class="overlay"></section>
 
-        <section class="information">
+        <section class="information" ng-mousedown="stopPropagation($event)">
 
-            <h1>Leaflet.FreeDraw</h1>
+            <img src="media/logo.png" alt="FreeDraw">
+
             <h2>Plugin by <a href="https://github.com/Wildhoney">Adam Timberlake</a>.</h2>
 
             <p class="description">FreeDraw allows you to draw a freehand polygon on the map &ndash; which is then converted to a normalised polygon which can be manipulated.</p>

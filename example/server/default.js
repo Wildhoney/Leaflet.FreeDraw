@@ -1,12 +1,13 @@
-(function($process) {
+import http from 'http';
+import express from 'express';
+import opener from 'opener';
 
-    "use strict";
+const app = express();
+const server = http.createServer(app);
+const isHeroku = 'HEROKU_APP_NAME' in process.env;
 
-    var express     = require('express'),
-        app         = express(),
-        server      = require('http').createServer(app);
+app.use(express.static(__dirname + '/example'));
 
-    app.use(express.static(__dirname + '/..'));
-    server.listen($process.env.PORT || 3507);
-
-})(process);
+const port = process.env.PORT || 5000;
+server.listen(port);
+!isHeroku && opener(`http://localhost:${port}`);

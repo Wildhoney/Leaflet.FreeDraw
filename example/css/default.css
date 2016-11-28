@@ -1,0 +1,150 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body, html {
+    overflow: hidden;
+}
+
+a {
+    color: dodgerblue;
+}
+
+section.information {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: -100%;
+    background-color: white;
+    z-index: 20001;
+    position: absolute;
+    padding: 15px 25px;
+    cursor: default;
+}
+
+section.information img {
+    width: 300px;
+}
+
+section.information h2 {
+    font-family: Times New Roman, Times, serif;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: normal;
+    margin-top: -2px;
+}
+
+section.information p.description {
+    font-family: Lato, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    margin: 8px 0 0 0;
+    width: 65%;
+}
+
+section.information h3.modes {
+    margin-top: 20px;
+}
+
+section.information label.toggle-modes {
+    background-color: rgba(0, 0, 0, .2);
+    font-size: 10px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    display: inline-block;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .1);
+    border-radius: 3px;
+    padding: 2px 8px;
+}
+
+section.information ul.controls {
+    list-style-type: square;
+    margin: 15px 0 0 25px;
+}
+
+section.information ul.controls li {
+    font-family: Lato, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+section.information ul.controls li.disabled a {
+    color: rgba(0, 0, 0, .35);
+}
+
+section.information ul.controls li a {
+    cursor: pointer;
+    transition: color .25s;
+}
+
+section.information ul.controls li:not(.disabled) a:hover {
+    color: black;
+}
+
+section.information ul.controls li span.only {
+    color: rgba(0, 0, 0, .25);
+    font-size: 10px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: color .25s;
+}
+
+section.information ul.controls li span.only:hover {
+    color: rgba(0, 0, 0, .35);
+}
+
+section.information span.current-mode {
+    color: rgba(0, 0, 0, .25);
+    font-size: 10px;
+    margin-left: 10px;
+}
+
+section.git-hub {
+    margin-top: 60px;
+    opacity: .65;
+}
+
+section.git-hub img {
+    width: 200px;
+}
+
+section.git-hub a {
+    text-decoration: none;
+}
+
+section.map {
+    width: 60vw;
+    overflow: visible;
+    height: 100vh;
+}
+
+section.map.mode-create {
+    cursor: crosshair;
+}
+
+path.leaflet-line {
+    stroke: #50622b;
+    stroke-width: 2;
+}
+
+div.leaflet-edge {
+    background-color: #95bc59;
+    box-shadow: 0 0 0 2px white, 0 0 10px rgba(0, 0, 0, .35);
+    border-radius: 50%;
+    cursor: move;
+    outline: none;
+    transition: background-color .25s;
+}
+
+div.leaflet-edge.disabled {
+    pointer-events: none;
+    background-color: #bbb;
+}
+
+path.leaflet-polygon {
+    fill: #b4cd8a;
+    stroke: #50622b;
+    stroke-width: 2;
+    fill-opacity: .75;
+}
