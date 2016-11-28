@@ -25,7 +25,8 @@ export const defaultOptions = {
     mergePolygons: true,
     concavePolygon: true,
     recreatePostEdit: false,
-    exitModeAfterCreate: false
+    exitModeAfterCreate: false,
+    notifyAfterLeaveEdit: false
 };
 
 /**
@@ -39,6 +40,12 @@ export const instanceKey = Symbol('freedraw/instance');
  * @type {Symbol}
  */
 export const modesKey = Symbol('freedraw/modes');
+
+/**
+ * @constant notifyDeferredKey
+ * @type {Symbol}
+ */
+export const notifyDeferredKey = Symbol('freedraw/notify-deferred');
 
 /**
  * @constant edgesKey
@@ -77,6 +84,7 @@ export default class FreeDraw extends FeatureGroup {
         // Attach the cancel function and the instance to the map.
         map[cancelKey] = () => {};
         map[instanceKey] = this;
+        map[notifyDeferredKey] = () => {};
 
         // Setup the dependency injection for simplifying the polygon.
         map.simplifyPolygon = simplifyPolygon;
@@ -85,7 +93,7 @@ export default class FreeDraw extends FeatureGroup {
         polygons.set(map, new Set());
 
         // Set the initial mode.
-        modeFor(map, this.options.mode);
+        modeFor(map, this.options.mode, this.options);
 
         // Instantiate the SVG layer that sits on top of the map.
         const svg = this.svg = d3.select(map._container).append('svg')
@@ -151,7 +159,7 @@ export default class FreeDraw extends FeatureGroup {
     mode(mode = null) {
 
         // Set mode when passed `mode` is numeric, and then yield the current mode.
-        typeof mode === 'number' && modeFor(this.map, mode);
+        typeof mode === 'number' && modeFor(this.map, mode, this.options);
         return this.map[modesKey];
 
     }

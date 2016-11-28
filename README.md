@@ -94,16 +94,17 @@ freeDraw.mode(NONE);
 
 All of the following options can be passed in when instantiating `FreeDraw` in the same way that we pass `mode` in the previous examples.
 
-| Option                | Default      | Result                               |
-| --------------------- |------------- | ------------------------------------ |
-| `mode`                | `ALL`        | Modifies the default [mode](#modes). |
-| `smoothFactor`        | `0.3`        | By how much to [smooth](http://leafletjs.com/reference-1.0.2.html#polyline-smoothfactor) the polygons.  |
-| `elbowDistance`       | `10`         | Factor to determine when to delete or when to append an edge.  |
-| `simplifyFactor`      | `1.1`        | By how much to [simplify](https://sourceforge.net/p/jsclipper/wiki/documentation/#clipperlibclippercleanpolygon) the polygon.  |
-| `mergePolygons`       | `true`       | Whether to attempting merging of polygons that intersect.  |
-| `concavePolygon`      | `true`       | Whether to apply the [concaving algorithm](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) to the polygons.  |
-| `recreatePostEdit`    | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
-| `exitModeAfterCreate` | `false`      | Whether to exit `CREATE` mode after each polygon creation.  |
+| Option                 | Default      | Result                               |
+| ---------------------- |------------- | ------------------------------------ |
+| `mode`                 | `ALL`        | Modifies the default [mode](#modes). |
+| `smoothFactor`         | `0.3`        | By how much to [smooth](http://leafletjs.com/reference-1.0.2.html#polyline-smoothfactor) the polygons.  |
+| `elbowDistance`        | `10`         | Factor to determine when to delete or when to append an edge.  |
+| `simplifyFactor`       | `1.1`        | By how much to [simplify](https://sourceforge.net/p/jsclipper/wiki/documentation/#clipperlibclippercleanpolygon) the polygon.  |
+| `mergePolygons`        | `true`       | Whether to attempting merging of polygons that intersect.  |
+| `concavePolygon`       | `true`       | Whether to apply the [concaving algorithm](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) to the polygons.  |
+| `recreatePostEdit`     | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
+| `exitModeAfterCreate`  | `false`      | Whether to exit `CREATE` mode after each polygon creation.  |
+| `notifyAfterLeaveEdit` | `false`      | Whether to defer `markers` event until after exiting `EDIT` mode.  |
 
 By using the options above we can tweak how `FreeDraw` functions &ndash; whilst some of the options have obvious effects, others are much more *tweak and see* based on your expected outcome &ndash; such as the subjective `simplifyFactor` and `elbowDistance` options.
 

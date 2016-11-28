@@ -1,5 +1,5 @@
 import { DomEvent, DomUtil, Polygon } from 'leaflet';
-import { defaultOptions, edgesKey, modesKey, instanceKey, polygons } from '../FreeDraw';
+import { defaultOptions, edgesKey, modesKey, instanceKey, notifyDeferredKey, polygons } from '../FreeDraw';
 import { NONE, CREATE, EDIT, DELETE, APPEND } from './Flags';
 import concavePolygon from './Concave';
 import mergePolygons from './Merge';
@@ -144,9 +144,10 @@ export const classesFor = (map, mode) => {
  * @method modeFor
  * @param {Object} map
  * @param {Number} mode
+ * @param {Object} options
  * @return {Number}
  */
-export const modeFor = (map, mode) => {
+export const modeFor = (map, mode, options) => {
 
     // Update the mode.
     map[modesKey] = mode;
@@ -170,6 +171,11 @@ export const modeFor = (map, mode) => {
 
     // Apply the conditional class names to the map container.
     classesFor(map, mode);
+
+    // Fire the event for having manipulated the polygons if the `hasManipulated` is `true` and the
+    // `notifyAfterLeaveEdit` option is equal to `true`, and then reset the `notifyDeferredKey`.
+    options.notifyAfterLeaveEdit && map[notifyDeferredKey]();
+    map[notifyDeferredKey] = () => {};
 
     return mode;
 

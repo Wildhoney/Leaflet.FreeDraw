@@ -38,12 +38,12 @@ const clipperPolygonsToLatLngs = (map, polygons) => {
 /**
  * @param {Object} map
  * @param {LatLng[]} latLngs
- * @param {Number} simplifyFactor
+ * @param {Object} options
  * @return {LatLng[]}
  */
-export default (map, latLngs, { simplifyFactor }) => {
+export default (map, latLngs, options) => {
 
-    const points = Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), simplifyFactor);
+    const points = Clipper.CleanPolygon(latLngsToClipperPoints(map, latLngs), options.simplifyFactor);
     const polygons = Clipper.SimplifyPolygon(points, PolyFillType.pftNonZero);
 
     return clipperPolygonsToLatLngs(map, polygons);
