@@ -1,5 +1,6 @@
 import { LineUtil, Point } from 'leaflet';
-import { removeFor, triggerFor, edgesKey, modesKey } from '../FreeDraw';
+import { edgesKey, modesKey } from '../FreeDraw';
+import { removeFor, triggerFor } from './Utilities';
 import createEdges from './Edges';
 import { DELETE, APPEND } from './Flags';
 

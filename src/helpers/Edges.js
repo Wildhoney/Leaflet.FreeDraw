@@ -1,5 +1,6 @@
 import { DivIcon, Marker, DomEvent } from 'leaflet';
-import { createFor, polygons, triggerFor, modesKey } from '../FreeDraw';
+import { polygons, modesKey } from '../FreeDraw';
+import { createFor, triggerFor } from './Utilities';
 import { CREATE, EDIT } from './Flags';
 import mergePolygons from './Merge';
 
