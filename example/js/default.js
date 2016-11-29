@@ -131,7 +131,7 @@ module('leafletApp', []).controller('MapController', $scope => {
             freeDraw.on('markers', event => {
 
                 // Listen for any markers added, removed or edited, and then output the lat lng boundaries.
-                console.log('LatLngs:', event.latLngs, 'Polygons:', event.latLngs.length);
+                console.log('LatLngs:', event.latLngs, 'Polygons:', freeDraw.size());
 
             });
 

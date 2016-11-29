@@ -25,9 +25,10 @@ export const defaultOptions = {
     simplifyFactor: 1.1,
     mergePolygons: true,
     concavePolygon: true,
+    maximumPolygons: 2,
     recreateAfterEdit: false,
-    leaveModeAfterCreate: false,
-    notifyAfterEditExit: false
+    notifyAfterEditExit: false,
+    leaveModeAfterCreate: false
 };
 
 /**
@@ -163,6 +164,14 @@ export default class FreeDraw extends FeatureGroup {
         typeof mode === 'number' && modeFor(this.map, mode, this.options);
         return this.map[modesKey];
 
+    }
+
+    /**
+     * @method size
+     * @return {Number}
+     */
+    size() {
+        return polygons.get(this.map).size;
     }
 
     /**
