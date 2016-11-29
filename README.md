@@ -139,6 +139,7 @@ With the instance of `freeDraw` there are certain methods for manipulating `Free
 | `clear`             | `void`       | Clears all polygons from the current instance                  |
 | `mode`              | `Number`     | Sets and retrieves the current [`mode`](#modes).               |
 | `cancel`            | `void`       | Cancels the current create action &ndash; such as on escape.   |
+| `size`              | `Number`     | Yields the number of polygons on the map layer.                |
 
 When using the `create` method to create polygons from an array of latitude and longitude values, the `CREATE` mode is disregarded, which means it doesn't need to be enabled to `create` to succeed &ndash; if you would like such behaviour then you could simply assert that `CREATE` is enabled.
 
