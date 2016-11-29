@@ -57,15 +57,18 @@ const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, end
  * @param {Array} latLngs
  * @param {Object} [options = defaultOptions]
  * @param {Boolean} [preventMutations = false]
- * @return {Array}
+ * @return {Array|Boolean}
  */
 export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false) => {
+
+    // Determine whether we've reached the maximum polygons.
+    const limitReached = polygons.get(map).size === options.maximumPolygons;
 
     // Apply the concave hull algorithm to the created polygon if the options allow.
     const concavedLatLngs = !preventMutations && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
 
     // Simplify the polygon before adding it to the map.
-    const addedPolygons = map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
+    const addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
         const polygon = new Polygon(latLngs, {
             ...defaultOptions, ...options, className: 'leaflet-polygon'
