@@ -90,7 +90,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
     // Append the current polygon to the master set.
     addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
 
-    if (!preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
+    if (!limitReached && !preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
 
         // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
         const addedMergedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);
