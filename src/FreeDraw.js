@@ -25,7 +25,7 @@ export const defaultOptions = {
     simplifyFactor: 1.1,
     mergePolygons: true,
     concavePolygon: true,
-    maximumPolygons: 2,
+    maximumPolygons: Infinity,
     recreateAfterEdit: false,
     notifyAfterEditExit: false,
     leaveModeAfterCreate: false
