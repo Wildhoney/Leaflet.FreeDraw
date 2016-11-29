@@ -1588,9 +1588,10 @@ var defaultOptions = exports.defaultOptions = {
   simplifyFactor: 1.1,
   mergePolygons: true,
   concavePolygon: true,
+  maximumPolygons: Infinity,
   recreateAfterEdit: false,
-  leaveModeAfterCreate: false,
-  notifyAfterEditExit: false
+  notifyAfterEditExit: false,
+  leaveModeAfterCreate: false
 };
 
 /**
@@ -1748,6 +1749,17 @@ var FreeDraw = function (_FeatureGroup) {
       // Set mode when passed `mode` is numeric, and then yield the current mode.
       typeof _mode === 'number' && (0, _Modes.modeFor)(this.map, _mode, this.options);
       return this.map[modesKey];
+    }
+
+    /**
+     * @method size
+     * @return {Number}
+     */
+
+  }, {
+    key: 'size',
+    value: function size() {
+      return polygons.get(this.map).size;
     }
 
     /**
@@ -2173,20 +2185,23 @@ var appendEdgeFor = function appendEdgeFor(map, polygon, options, _ref) {
  * @param {Array} latLngs
  * @param {Object} [options = defaultOptions]
  * @param {Boolean} [preventMutations = false]
- * @return {Array}
+ * @return {Array|Boolean}
  */
 var createFor = exports.createFor = function createFor(map, latLngs) {
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _FreeDraw.defaultOptions;
     var preventMutations = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
 
+    // Determine whether we've reached the maximum polygons.
+    var limitReached = _FreeDraw.polygons.get(map).size === options.maximumPolygons;
+
     // Apply the concave hull algorithm to the created polygon if the options allow.
     var concavedLatLngs = !preventMutations && options.concavePolygon ? (0, _Concave2.default)(map, latLngs) : latLngs;
 
     // Simplify the polygon before adding it to the map.
-    var addedPolygons = map.simplifyPolygon(map, concavedLatLngs, options).map(function (latLngs) {
+    var addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(function (latLngs) {
 
-        var polygon = new _leaflet.Polygon(options.simplifyPolygon ? map.simplifyPolygon(map, latLngs, options) : latLngs, _extends({}, _FreeDraw.defaultOptions, options, { className: 'leaflet-polygon'
+        var polygon = new _leaflet.Polygon(latLngs, _extends({}, _FreeDraw.defaultOptions, options, { className: 'leaflet-polygon'
         })).addTo(map);
 
         // Attach the edges to the polygon.
