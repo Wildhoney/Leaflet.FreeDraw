@@ -67,7 +67,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
     // Simplify the polygon before adding it to the map.
     const addedPolygons = map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
-        const polygon = new Polygon(options.simplifyPolygon ? map.simplifyPolygon(map, latLngs, options) : latLngs, {
+        const polygon = new Polygon(latLngs, {
             ...defaultOptions, ...options, className: 'leaflet-polygon'
         }).addTo(map);
 
