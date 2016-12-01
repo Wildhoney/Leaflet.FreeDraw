@@ -23,7 +23,7 @@
   3. [Options](#options)
   4. [Classes](#classes)
   5. [Methods](#methods)
-  
+
 ![FreeDraw Screenshot](example/media/screenshot.png)
 
 ## Browser Support
@@ -48,6 +48,18 @@ const freeDraw = new FreeDraw();
 ```
 
 By attaching `FreeDraw` to your map layer, an SVG node will be appended to the DOM, and mouse event listeners will be attached to the `map` instance for creating and managing the geospatial polygons.
+
+**Note:** If you're using Webpack to run/build your project, don't forget to add those few lines to your config :
+
+```
+resolve: {
+  alias: {
+    L: 'leaflet',
+    ClipperLib: 'clipper-lib',
+    R: 'ramda',
+  },
+},
+```
 
 ### Markers
 
