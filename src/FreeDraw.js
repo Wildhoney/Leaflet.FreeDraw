@@ -151,6 +151,7 @@ export default class FreeDraw extends FeatureGroup {
      */
     clear() {
         clearFor(this.map);
+        triggerFor(this.map);
     }
 
     /**
