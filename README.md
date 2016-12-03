@@ -54,11 +54,11 @@ By attaching `FreeDraw` to your map layer, an SVG node will be appended to the D
 
 ```javascript
 resolve: {
-  alias: {
-    L: 'leaflet',
-    ClipperLib: 'clipper-lib',
-    R: 'ramda'
-  },
+    alias: {
+        L: 'leaflet',
+        ClipperLib: 'clipper-lib',
+        R: 'ramda'
+    }
 },
 ```
 
