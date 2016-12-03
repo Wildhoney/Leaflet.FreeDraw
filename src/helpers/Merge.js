@@ -1,5 +1,5 @@
 import { Point } from 'leaflet';
-import { flatten } from 'ramda';
+import flatten from 'ramda/src/flatten';
 import { Clipper, PolyFillType } from 'clipper-lib';
 import { createFor, removeFor } from './Polygon';
 import { latLngsToClipperPoints } from './Simplify';

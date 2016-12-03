@@ -1,5 +1,6 @@
 import { FeatureGroup, Point } from 'leaflet';
-import * as d3 from 'd3';
+import { select } from 'd3-selection';
+import { line, curveMonotoneX } from 'd3-shape';
 import Set from 'es6-set';
 import WeakMap from 'es6-weak-map';
 import Symbol from 'es6-symbol';
@@ -98,7 +99,7 @@ export default class FreeDraw extends FeatureGroup {
         modeFor(map, this.options.mode, this.options);
 
         // Instantiate the SVG layer that sits on top of the map.
-        const svg = this.svg = d3.select(map._container).append('svg')
+        const svg = this.svg = select(map._container).append('svg')
                                  .classed('free-draw', true).attr('width', '100%').attr('height', '100%')
                                  .style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
 
@@ -302,7 +303,7 @@ export default class FreeDraw extends FeatureGroup {
     * createPath(map, svg, fromPoint) {
 
         // Define the line function to be used for the hand-drawn lines.
-        const lineFunction = d3.line().curve(d3.curveMonotoneX).x(d => d.x).y(d => d.y);
+        const lineFunction = line().curve(curveMonotoneX).x(d => d.x).y(d => d.y);
 
         // Wait for the iterator to be invoked by passing in the next point.
         const toPoint = yield fromPoint;

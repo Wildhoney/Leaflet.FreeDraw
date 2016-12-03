@@ -34,7 +34,6 @@
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "dependencies": {
     "clipper-lib": "^6.2.1",
-    "d3": "^4.3.0",
     "leaflet": "^1.0.1",
     "ramda": "^0.22.1"
   },
@@ -49,6 +48,8 @@
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
     "concavehull": "^0.1.6",
+    "d3-selection": "^1.0.3",
+    "d3-shape": "^1.0.4",
     "es6-set": "^0.1.4",
     "es6-symbol": "^3.1.0",
     "es6-weak-map": "^2.0.1",

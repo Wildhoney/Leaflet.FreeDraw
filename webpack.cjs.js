@@ -6,7 +6,6 @@ module.exports = {
     },
     externals: {
         leaflet: 'L',
-        d3: 'd3',
         'clipper-lib': 'ClipperLib',
         ramda: 'R'
     },
