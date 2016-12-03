@@ -13,7 +13,7 @@
     "spec": "ava && npm run dev && mocha tests/functional/FreeDraw.test.js --compilers js:babel-register",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
-    "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js"
+    "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js -p"
   },
   "repository": {
     "type": "git",
