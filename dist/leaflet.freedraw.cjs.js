@@ -1575,12 +1575,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @constant polygons
  * @type {WeakMap}
  */
-var polygons = exports.polygons = new _es6WeakMap2.default();
+var _polygons = new _es6WeakMap2.default();
 
 /**
  * @constant defaultOptions
  * @type {Object}
  */
+exports.polygons = _polygons;
 var defaultOptions = exports.defaultOptions = {
   mode: _Modes.ALL,
   smoothFactor: 0.3,
@@ -1666,7 +1667,7 @@ var FreeDraw = function (_FeatureGroup) {
       map.simplifyPolygon = _Simplify2.default;
 
       // Add the item to the map.
-      polygons.set(map, new _es6Set2.default());
+      _polygons.set(map, new _es6Set2.default());
 
       // Set the initial mode.
       (0, _Modes.modeFor)(map, this.options.mode, this.options);
@@ -1689,7 +1690,7 @@ var FreeDraw = function (_FeatureGroup) {
     value: function onRemove(map) {
 
       // Remove the item from the map.
-      polygons.delete(map);
+      _polygons.delete(map);
 
       // Remove the SVG layer.
       this.svg.remove();
@@ -1733,6 +1734,7 @@ var FreeDraw = function (_FeatureGroup) {
     key: 'clear',
     value: function clear() {
       (0, _Polygon.clearFor)(this.map);
+      (0, _Events.triggerFor)(this.map);
     }
 
     /**
@@ -1759,7 +1761,18 @@ var FreeDraw = function (_FeatureGroup) {
   }, {
     key: 'size',
     value: function size() {
-      return polygons.get(this.map).size;
+      return _polygons.get(this.map).size;
+    }
+
+    /**
+     * @method polygons
+     * @return {Array}
+     */
+
+  }, {
+    key: 'polygons',
+    value: function polygons() {
+      return Array.from(_polygons.get(this.map));
     }
 
     /**
@@ -1941,6 +1954,20 @@ exports.default = FreeDraw;
 var freeDraw = exports.freeDraw = function freeDraw(options) {
   return new FreeDraw(options);
 };
+
+if (typeof window !== 'undefined') {
+
+  // Attach to the `window` as `FreeDraw` if it exists, as this would prevent `new FreeDraw.default` when
+  // using the web version.
+  window.FreeDraw = FreeDraw;
+  FreeDraw.CREATE = _Modes.CREATE;
+  FreeDraw.EDIT = _Modes.EDIT;
+  FreeDraw.DELETE = _Modes.DELETE;
+  FreeDraw.APPEND = _Modes.APPEND;
+  FreeDraw.EDIT_APPEND = _Modes.EDIT_APPEND;
+  FreeDraw.NONE = _Modes.NONE;
+  FreeDraw.ALL = _Modes.ALL;
+}
 
 /***/ },
 /* 51 */
@@ -2221,7 +2248,7 @@ var createFor = exports.createFor = function createFor(map, latLngs) {
         return _FreeDraw.polygons.get(map).add(polygon);
     });
 
-    if (!preventMutations && _FreeDraw.polygons.get(map).size > 1 && options.mergePolygons) {
+    if (!limitReached && !preventMutations && _FreeDraw.polygons.get(map).size > 1 && options.mergePolygons) {
 
         // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
         var addedMergedPolygons = (0, _Merge2.default)(map, Array.from(_FreeDraw.polygons.get(map)), options);
