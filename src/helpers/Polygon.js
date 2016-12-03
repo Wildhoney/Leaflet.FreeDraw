@@ -2,7 +2,7 @@ import { LineUtil, Point, Polygon, DomEvent } from 'leaflet';
 import { defaultOptions, edgesKey, modesKey, polygons } from '../FreeDraw';
 import { updateFor } from './Layer';
 import createEdges from './Edges';
-import { DELETE, APPEND } from './Modes';
+import { DELETE, APPEND } from './Flags';
 import handlePolygonClick from './Polygon';
 import concavePolygon from './Concave';
 import mergePolygons from './Merge';

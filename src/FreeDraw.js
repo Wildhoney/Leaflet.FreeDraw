@@ -6,7 +6,7 @@ import WeakMap from 'es6-weak-map';
 import Symbol from 'es6-symbol';
 import { updateFor } from './helpers/Layer';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
-import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Modes';
+import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Flags';
 import simplifyPolygon from './helpers/Simplify';
 import { UNDO, REDO } from './helpers/History';
 
@@ -365,7 +365,7 @@ export const freeDraw = options => {
     return new FreeDraw(options);
 };
 
-export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL } from './helpers/Modes';
+export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL } from './helpers/Flags';
 
 if (typeof window !== 'undefined') {
 

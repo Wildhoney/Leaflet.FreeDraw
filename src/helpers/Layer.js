@@ -1,6 +1,6 @@
 import { DomUtil } from 'leaflet';
 import { polygons, instanceKey } from '../FreeDraw';
-import { NONE, CREATE, EDIT, DELETE, APPEND } from './Modes';
+import { NONE, CREATE, EDIT, DELETE, APPEND } from './Flags';
 import { addFor } from './History';
 
 /**

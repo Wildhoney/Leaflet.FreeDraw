@@ -4,7 +4,7 @@ import { LatLng, Point } from 'leaflet';
 import { spy } from 'sinon';
 import FreeDraw, { polygons, edgesKey } from '../src/FreeDraw';
 import { updateFor } from '../src/helpers/Layer';
-import { NONE, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from '../src/helpers/Modes';
+import { NONE, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from '../src/helpers/Flags';
 
 /**
  * @method mockFunctions

@@ -2,7 +2,7 @@ import { DivIcon, Marker, DomEvent } from 'leaflet';
 import { polygons, modesKey, notifyDeferredKey } from '../FreeDraw';
 import { createFor } from './Polygon';
 import { updateFor } from './Layer';
-import { CREATE, EDIT } from './Modes';
+import { CREATE, EDIT } from './Flags';
 import mergePolygons from './Merge';
 
 /**
