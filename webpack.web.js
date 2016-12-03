@@ -2,7 +2,6 @@ module.exports = {
     entry: ['babel-polyfill', './src/FreeDraw.js'],
     output: {
         filename: './dist/leaflet-freedraw.web.js',
-        library: 'FreeDraw',
         libraryTarget: 'var'
     },
     externals: {
