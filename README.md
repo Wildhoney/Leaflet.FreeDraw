@@ -13,7 +13,7 @@
 
 * **npm:** `npm i leaflet.freedraw`
 * **Bower:** `bower i leaflet.freedraw`
-* **JSFiddle:** https://jsfiddle.net/enad5k9L/
+* **JSFiddle:** https://jsfiddle.net/t6e48rm5/
 
 ## Table of Contents
 
