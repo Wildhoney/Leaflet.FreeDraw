@@ -1,6 +1,7 @@
 import { DomUtil } from 'leaflet';
 import { polygons, instanceKey } from '../FreeDraw';
 import { NONE, CREATE, EDIT, DELETE, APPEND } from './Modes';
+import { addFor } from './History';
 
 /**
  * @method updateFor
@@ -16,6 +17,9 @@ export const updateFor = map => {
         return [ ...latLngs[0], latLngs[0][0] ];
 
     });
+
+    // Memory the current set of lat lng values.
+    addFor(map, latLngs);
 
     // Fire the current set of lat lngs.
     map[instanceKey].fire('markers', { latLngs });
