@@ -5,7 +5,7 @@ import WeakMap from 'es6-weak-map';
 import Symbol from 'es6-symbol';
 import { triggerFor } from './helpers/Events';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
-import { CREATE, ALL, modeFor } from './helpers/Modes';
+import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Modes';
 import simplifyPolygon from './helpers/Simplify';
 
 /**
@@ -176,6 +176,14 @@ export default class FreeDraw extends FeatureGroup {
     }
 
     /**
+     * @method polygons
+     * @return {Array}
+     */
+    polygons() {
+        return Array.from(polygons.get(this.map));
+    }
+
+    /**
      * @method cancel
      * @return {void}
      */
@@ -322,3 +330,19 @@ export const freeDraw = options => {
 };
 
 export { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL } from './helpers/Modes';
+
+if (typeof window !== 'undefined') {
+
+    // Attach to the `window` as `FreeDraw` if it exists, as this would prevent `new FreeDraw.default` when
+    // using the web version.
+    window.FreeDraw = FreeDraw;
+    FreeDraw.CREATE = CREATE;
+    FreeDraw.EDIT = EDIT;
+    FreeDraw.DELETE = DELETE;
+    FreeDraw.APPEND = APPEND;
+    FreeDraw.EDIT_APPEND = EDIT_APPEND;
+    FreeDraw.NONE = NONE;
+    FreeDraw.ALL = ALL;
+
+}
+
