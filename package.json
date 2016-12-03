@@ -47,6 +47,7 @@
     "babel-preset-stage-3": "^6.17.0",
     "babel-register": "^6.18.0",
     "chai": "^3.5.0",
+    "compression": "^1.6.2",
     "concavehull": "^0.1.6",
     "d3-selection": "^1.0.3",
     "d3-shape": "^1.0.4",
