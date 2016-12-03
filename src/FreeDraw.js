@@ -177,10 +177,10 @@ export default class FreeDraw extends FeatureGroup {
     }
 
     /**
-     * @method polygons
+     * @method all
      * @return {Array}
      */
-    polygons() {
+    all() {
         return Array.from(polygons.get(this.map));
     }
 
