@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as d3 from 'd3';
+import { select } from 'd3-selection';
 import { LatLng, Point } from 'leaflet';
 import { spy } from 'sinon';
 import FreeDraw, { polygons, edgesKey } from '../src/FreeDraw';
@@ -43,7 +43,7 @@ test.beforeEach(t => {
         layerPointToLatLng: spy(({ x, y }) => ({ lat: x, lng: y }))
     };
 
-    t.context.svg = d3.select(node).append('svg');
+    t.context.svg = select(node).append('svg');
     t.context.polygon = [...polygon];
     t.context.freeDraw = new FreeDraw({ mergePolygons: false, concavePolygon: false });
 
