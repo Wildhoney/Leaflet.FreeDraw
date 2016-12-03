@@ -13,6 +13,7 @@
 
 * **npm:** `npm i leaflet.freedraw`
 * **Bower:** `bower i leaflet.freedraw`
+* **JSFiddle:** https://jsfiddle.net/enad5k9L/
 
 ## Table of Contents
 
@@ -56,7 +57,7 @@ resolve: {
   alias: {
     L: 'leaflet',
     ClipperLib: 'clipper-lib',
-    R: 'ramda',
+    R: 'ramda'
   },
 },
 ```
