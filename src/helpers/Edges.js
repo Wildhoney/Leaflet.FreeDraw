@@ -1,7 +1,7 @@
 import { DivIcon, Marker, DomEvent } from 'leaflet';
 import { polygons, modesKey, notifyDeferredKey } from '../FreeDraw';
 import { createFor } from './Polygon';
-import { triggerFor } from './Events';
+import { updateFor } from './Layer';
 import { CREATE, EDIT } from './Modes';
 import mergePolygons from './Merge';
 
@@ -118,9 +118,9 @@ export default function createEdges(map, polygon, options) {
                 options.notifyAfterEditExit ? (() => {
 
                     // Deferred function that will be invoked by `modeFor` when the `EDIT` mode is exited.
-                    map[notifyDeferredKey] = () => triggerFor(map);
+                    map[notifyDeferredKey] = () => updateFor(map);
 
-                })() : triggerFor(map);
+                })() : updateFor(map);
 
             }
 

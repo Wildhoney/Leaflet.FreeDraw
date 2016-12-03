@@ -1,6 +1,6 @@
 import { LineUtil, Point, Polygon, DomEvent } from 'leaflet';
 import { defaultOptions, edgesKey, modesKey, polygons } from '../FreeDraw';
-import { triggerFor } from './Events';
+import { updateFor } from './Layer';
 import createEdges from './Edges';
 import { DELETE, APPEND } from './Modes';
 import handlePolygonClick from './Polygon';
@@ -194,7 +194,7 @@ export default (map, polygon, options) => {
         }
 
         // Trigger the event for having deleted a polygon or appended an edge.
-        (isDelete || isAppend) && triggerFor(map);
+        (isDelete || isAppend) && updateFor(map);
 
     };
 

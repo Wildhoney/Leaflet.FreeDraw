@@ -1,5 +1,26 @@
 import { DomUtil } from 'leaflet';
+import { polygons, instanceKey } from '../FreeDraw';
 import { NONE, CREATE, EDIT, DELETE, APPEND } from './Modes';
+
+/**
+ * @method updateFor
+ * @param {Object} map
+ * @return {void}
+ */
+export const updateFor = map => {
+
+    const latLngs = Array.from(polygons.get(map)).map(polygon => {
+
+        // Ensure the polygon has been closed.
+        const latLngs = polygon.getLatLngs();
+        return [ ...latLngs[0], latLngs[0][0] ];
+
+    });
+
+    // Fire the current set of lat lngs.
+    map[instanceKey].fire('markers', { latLngs });
+
+};
 
 /**
  * @method classesFor

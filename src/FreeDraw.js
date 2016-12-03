@@ -4,7 +4,7 @@ import { line, curveMonotoneX } from 'd3-shape';
 import Set from 'es6-set';
 import WeakMap from 'es6-weak-map';
 import Symbol from 'es6-symbol';
-import { triggerFor } from './helpers/Events';
+import { updateFor } from './helpers/Layer';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
 import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Modes';
 import simplifyPolygon from './helpers/Simplify';
@@ -152,7 +152,7 @@ export default class FreeDraw extends FeatureGroup {
      */
     clear() {
         clearFor(this.map);
-        triggerFor(this.map);
+        updateFor(this.map);
     }
 
     /**
@@ -273,7 +273,7 @@ export default class FreeDraw extends FeatureGroup {
                     latLngs.size && createFor(map, Array.from(latLngs), options);
 
                     // Finally invoke the callback for the polygon regions.
-                    triggerFor(map);
+                    updateFor(map);
 
                     // Exit the `CREATE` mode if the options permit it.
                     options.leaveModeAfterCreate && this.mode(this.mode() ^ CREATE);
