@@ -49,9 +49,9 @@ const freeDraw = new FreeDraw();
 
 By attaching `FreeDraw` to your map layer, an SVG node will be appended to the DOM, and mouse event listeners will be attached to the `map` instance for creating and managing the geospatial polygons.
 
-**Note:** If you're using Webpack to run/build your project, don't forget to add those few lines to your config :
+**Note:** If you're using Webpack to run/build your project, don't forget to add those few lines to your config:
 
-```
+```javascript
 resolve: {
   alias: {
     L: 'leaflet',
