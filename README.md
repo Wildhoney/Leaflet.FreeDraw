@@ -32,7 +32,7 @@
 <img src="https://github.com/alrra/browser-logos/blob/master/chrome/chrome_128x128.png?raw=true" width="64" />
 <img src="https://github.com/alrra/browser-logos/blob/master/opera/opera_128x128.png?raw=true" width="64" />
 <img src="https://github.com/alrra/browser-logos/blob/master/firefox/firefox_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/master/internet-explorer/internet-explorer_128x128.png?raw=true" width="64" alt="IE10 onwards" />
+<img src="https://github.com/alrra/browser-logos/blob/master/archive/internet-explorer_9-11/internet-explorer_9-11_128x128.png?raw=true" width="64" alt="IE10 onwards" />
 <img src="https://github.com/alrra/browser-logos/blob/master/edge/edge_128x128.png?raw=true" width="64" />
 <img src="https://github.com/alrra/browser-logos/blob/master/safari/safari_128x128.png?raw=true" width="64" />
 
