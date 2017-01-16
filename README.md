@@ -46,6 +46,8 @@ import FreeDraw from 'leaflet-freedraw';
 
 const map = new L.Map(node);
 const freeDraw = new FreeDraw();
+
+map.addLayer(freeDraw);
 ```
 
 By attaching `FreeDraw` to your map layer, an SVG node will be appended to the DOM, and mouse event listeners will be attached to the `map` instance for creating and managing the geospatial polygons.
