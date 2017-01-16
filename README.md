@@ -115,7 +115,7 @@ All of the following options can be passed in when instantiating `FreeDraw` in t
 | `smoothFactor`         | `0.3`        | By how much to [smooth](http://leafletjs.com/reference-1.0.2.html#polyline-smoothfactor) the polygons.  |
 | `elbowDistance`        | `10`         | Factor to determine when to delete or when to append an edge.  |
 | `simplifyFactor`       | `1.1`        | By how much to [simplify](https://sourceforge.net/p/jsclipper/wiki/documentation/#clipperlibclippercleanpolygon) the polygon.  |
-| `mergePolygons`        | `true`       | Whether to attempting merging of polygons that intersect.  |
+| `mergePolygons`        | `true`       | Whether to attempt merging of polygons that intersect.  |
 | `concavePolygon`       | `true`       | Whether to apply the [concaving algorithm](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) to the polygons.  |
 | `maximumPolygons`      | `Infinity`   | Maximum number of polygons to be added to the map layer.  |
 | `recreateAfterEdit`    | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
