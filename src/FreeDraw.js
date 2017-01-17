@@ -8,7 +8,6 @@ import { updateFor } from './helpers/Layer';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
 import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Flags';
 import simplifyPolygon from './helpers/Simplify';
-import { UNDO, REDO } from './helpers/History';
 
 /**
  * @constant polygons
@@ -183,40 +182,6 @@ export default class FreeDraw extends FeatureGroup {
      */
     all() {
         return Array.from(polygons.get(this.map));
-    }
-
-    /**
-     * @method can
-     * @param {Number} action
-     * @return {Boolean}
-     */
-    can(action) {
-
-        switch (action) {
-
-            case CREATE: case EDIT: case DELETE: case APPEND:
-                return Boolean(this.mode() & action);
-
-            case UNDO: case REDO:
-
-        }
-
-    }
-
-    /**
-     * @method undo
-     * @return {void}
-     */
-    undo() {
-
-    }
-
-    /**
-     * @method redo
-     * @return {void}
-     */
-    redo() {
-
     }
 
     /**
