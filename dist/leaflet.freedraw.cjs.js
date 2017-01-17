@@ -2306,8 +2306,6 @@ var _FreeDraw = __webpack_require__(52);
 
 var _Flags = __webpack_require__(60);
 
-var _History = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./History\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -2325,9 +2323,6 @@ var updateFor = exports.updateFor = function updateFor(map) {
         var latLngs = polygon.getLatLngs();
         return [].concat(_toConsumableArray(latLngs[0]), [latLngs[0][0]]);
     });
-
-    // Memory the current set of lat lng values.
-    (0, _History.addFor)(map, latLngs);
 
     // Fire the current set of lat lngs.
     map[_FreeDraw.instanceKey].fire('markers', { latLngs: latLngs });
