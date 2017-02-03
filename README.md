@@ -5,14 +5,14 @@
 
 ![Travis](http://img.shields.io/travis/Wildhoney/Leaflet.FreeDraw.svg?style=flat-square)
 &nbsp;
-![npm](http://img.shields.io/npm/v/leaflet.freedraw.svg?style=flat-square)
+![npm](http://img.shields.io/npm/v/leaflet-freedraw.svg?style=flat-square)
 &nbsp;
 ![Bower](https://img.shields.io/bower/v/bootstrap.svg?style=flat-square)
 &nbsp;
 ![MIT License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat-square)
 
-* **npm:** `npm i leaflet.freedraw`
-* **Bower:** `bower i leaflet.freedraw`
+* **npm:** `npm i leaflet-freedraw`
+* **Bower:** `bower i leaflet-freedraw`
 * **JSFiddle:** https://jsfiddle.net/t6e48rm5/
 
 ## Table of Contents
