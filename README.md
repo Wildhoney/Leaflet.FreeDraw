@@ -61,7 +61,7 @@ resolve: {
         ClipperLib: 'clipper-lib',
         R: 'ramda'
     }
-},
+}
 ```
 
 ### Markers
