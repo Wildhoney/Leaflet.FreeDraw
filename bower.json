@@ -1,6 +1,6 @@
 {
   "name": "leaflet-freedraw",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Zoopla inspired freehand polygon creation using Leaflet.js.",
   "main": "dist/leaflet-freedraw.web.js",
   "authors": [
