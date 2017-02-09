@@ -346,4 +346,3 @@ if (typeof window !== 'undefined') {
     FreeDraw.ALL = ALL;
 
 }
-
