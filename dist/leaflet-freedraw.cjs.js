@@ -1492,7 +1492,7 @@ module.exports = __webpack_require__(454)() ? Symbol : __webpack_require__(456);
 /* 45 */
 /***/ (function(module, exports) {
 
-module.exports = require("L");
+module.exports = require("leaflet");
 
 /***/ }),
 /* 46 */
@@ -6231,7 +6231,7 @@ module.exports = g;
 /* 177 */
 /***/ (function(module, exports) {
 
-module.exports = require("ClipperLib");
+module.exports = require("clipper-lib");
 
 /***/ }),
 /* 178 */
