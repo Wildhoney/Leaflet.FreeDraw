@@ -52,18 +52,6 @@ map.addLayer(freeDraw);
 
 By attaching `FreeDraw` to your map layer, an SVG node will be appended to the DOM, and mouse event listeners will be attached to the `map` instance for creating and managing the geospatial polygons.
 
-**Note:** When using Webpack you **must** include the following in your Webpack configuration:
-
-```javascript
-resolve: {
-    alias: {
-        L: 'leaflet',
-        ClipperLib: 'clipper-lib',
-        R: 'ramda'
-    }
-}
-```
-
 ### Markers
 
 When a user creates a polygon an event is fired on the `map` instance called `markers` which you can listen for by using the native Leaflet `on` function.
