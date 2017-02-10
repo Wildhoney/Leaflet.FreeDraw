@@ -7,10 +7,10 @@
     "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js -p",
     "example": "webpack --config webpack.example.js && npm run css",
     "watch": "npm run css && webpack --watch --config webpack.example.js",
-    "start": "npm i && npm run dev && babel example/server/default.js | node",
+    "start": "npm i && npm run example && babel example/server/default.js | node",
     "css": "cp node_modules/leaflet/dist/leaflet.css ./example/css",
     "test": "npm run lint && npm run spec",
-    "spec": "ava && npm run dev && mocha tests/functional/FreeDraw.test.js --compilers js:babel-register",
+    "spec": "ava && npm run example && mocha tests/functional/FreeDraw.test.js --compilers js:babel-register",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules"
   },
