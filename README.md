@@ -29,12 +29,7 @@
 
 ## Browser Support
 
-<img src="https://github.com/alrra/browser-logos/blob/37.2.1/chrome/chrome_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/37.2.1/opera/opera_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/37.2.1/firefox/firefox_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/37.2.1/internet-explorer/internet-explorer_128x128.png?raw=true" width="64" alt="IE10 onwards" />
-<img src="https://github.com/alrra/browser-logos/blob/37.2.1/edge/edge_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/37.2.1/safari/safari_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/37.2.1/chrome/chrome_128x128.png?raw=true" width="64" /><img src="https://github.com/alrra/browser-logos/blob/37.2.1/opera/opera_128x128.png?raw=true" width="64" /><img src="https://github.com/alrra/browser-logos/blob/37.2.1/firefox/firefox_128x128.png?raw=true" width="64" /><img src="https://github.com/alrra/browser-logos/blob/37.2.1/internet-explorer/internet-explorer_128x128.png?raw=true" width="64" alt="IE10 onwards" /><img src="https://github.com/alrra/browser-logos/blob/37.2.1/edge/edge_128x128.png?raw=true" width="64" /><img src="https://github.com/alrra/browser-logos/blob/37.2.1/safari/safari_128x128.png?raw=true" width="64" />
 
 ## Getting Started
 
