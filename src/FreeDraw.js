@@ -29,7 +29,8 @@ export const defaultOptions = {
     maximumPolygons: Infinity,
     recreateAfterEdit: false,
     notifyAfterEditExit: false,
-    leaveModeAfterCreate: false
+    leaveModeAfterCreate: false,
+    strokeWidth: 2
 };
 
 /**
@@ -313,7 +314,7 @@ export default class FreeDraw extends FeatureGroup {
 
         // Draw SVG line based on the last movement of the mouse's position.
         svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none')
-           .attr('stroke', 'black').attr('stroke-width', 2);
+           .attr('stroke', 'black').attr('stroke-width', strokeWidth);
 
         // Recursively invoke the generator function, passing in the current to point as the from point.
         yield * this.createPath(map, svg, toPoint);
