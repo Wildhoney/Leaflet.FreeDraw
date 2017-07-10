@@ -202,12 +202,16 @@ export default class FreeDraw extends FeatureGroup {
      */
     listenForEvents(map, svg, options) {
 
-        map.on('mousedown touchstart', function mouseDown(event) {
+        /**
+         * @method mouseDown
+         * @param {Object} event
+         * @return {void}
+         */
+        const mouseDown = event => {
 
             if (!(map[modesKey] & CREATE)) {
 
                 // Polygons can only be created when the mode includes create.
-                map.off('mousedown', mouseDown);
                 return;
 
             }
@@ -257,7 +261,6 @@ export default class FreeDraw extends FeatureGroup {
 
                 // Stop listening to the events.
                 map.off('mouseup', mouseUp);
-                map.off('mousedown', mouseDown);
                 map.off('mousemove', mouseMove);
                 'body' in document && document.body.removeEventListener('mouseleave', mouseUp);
 
@@ -290,7 +293,9 @@ export default class FreeDraw extends FeatureGroup {
             // Setup the function to invoke when `cancel` has been invoked.
             map[cancelKey] = () => mouseUp({}, false);
 
-        }.bind(this));
+        };
+
+        map.on('mousedown touchstart', mouseDown);
 
     }
 

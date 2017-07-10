@@ -1717,7 +1717,8 @@ var defaultOptions = exports.defaultOptions = {
   maximumPolygons: Infinity,
   recreateAfterEdit: false,
   notifyAfterEditExit: false,
-  leaveModeAfterCreate: false
+  leaveModeAfterCreate: false,
+  strokeWidth: 2
 };
 
 /**
@@ -1922,14 +1923,18 @@ var FreeDraw = function (_FeatureGroup) {
   }, {
     key: 'listenForEvents',
     value: function listenForEvents(map, svg, options) {
+      var _this2 = this;
 
-      map.on('mousedown touchstart', function mouseDown(event) {
-        var _this2 = this;
+      /**
+       * @method mouseDown
+       * @param {Object} event
+       * @return {void}
+       */
+      var mouseDown = function mouseDown(event) {
 
         if (!(map[modesKey] & _Flags.CREATE)) {
 
           // Polygons can only be created when the mode includes create.
-          map.off('mousedown', mouseDown);
           return;
         }
 
@@ -1941,7 +1946,7 @@ var FreeDraw = function (_FeatureGroup) {
 
         // Create the line iterator and move it to its first `yield` point, passing in the start point
         // from the mouse down event.
-        var lineIterator = this.createPath(map, svg, map.latLngToContainerPoint(event.latlng));
+        var lineIterator = _this2.createPath(map, svg, map.latLngToContainerPoint(event.latlng), options.strokeWidth);
         lineIterator.next();
 
         /**
@@ -1979,7 +1984,6 @@ var FreeDraw = function (_FeatureGroup) {
 
           // Stop listening to the events.
           map.off('mouseup', mouseUp);
-          map.off('mousedown', mouseDown);
           map.off('mousemove', mouseMove);
           'body' in document && document.body.removeEventListener('mouseleave', mouseUp);
 
@@ -2011,7 +2015,9 @@ var FreeDraw = function (_FeatureGroup) {
         map[cancelKey] = function () {
           return mouseUp({}, false);
         };
-      }.bind(this));
+      };
+
+      map.on('mousedown touchstart', mouseDown);
     }
 
     /**
@@ -2019,12 +2025,13 @@ var FreeDraw = function (_FeatureGroup) {
      * @param {Object} map
      * @param {Object} svg
      * @param {Point} fromPoint
+     * @param {Number} strokeWidth
      * @return {void}
      */
 
   }, {
     key: 'createPath',
-    value: regeneratorRuntime.mark(function createPath(map, svg, fromPoint) {
+    value: regeneratorRuntime.mark(function createPath(map, svg, fromPoint, strokeWidth) {
       var lineFunction, toPoint, lineData;
       return regeneratorRuntime.wrap(function createPath$(_context) {
         while (1) {
@@ -2052,10 +2059,10 @@ var FreeDraw = function (_FeatureGroup) {
 
               // Draw SVG line based on the last movement of the mouse's position.
 
-              svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none').attr('stroke', 'black').attr('stroke-width', 2);
+              svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none').attr('stroke', 'black').attr('stroke-width', strokeWidth);
 
               // Recursively invoke the generator function, passing in the current to point as the from point.
-              return _context.delegateYield(this.createPath(map, svg, toPoint), 't0', 7);
+              return _context.delegateYield(this.createPath(map, svg, toPoint, strokeWidth), 't0', 7);
 
             case 7:
             case 'end':

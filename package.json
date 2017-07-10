@@ -32,9 +32,9 @@
   },
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "dependencies": {
-    "clipper-lib": "^6.2.1",
-    "leaflet": "^1.0.1",
-    "ramda": "^0.22.1"
+    "clipper-lib": "~6.2.1",
+    "leaflet": "~1.0.1",
+    "ramda": "~0.22.1"
   },
   "devDependencies": {
     "angular": "^1.6.0-rc.1",
