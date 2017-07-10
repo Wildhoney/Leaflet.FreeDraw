@@ -220,7 +220,7 @@ export default class FreeDraw extends FeatureGroup {
 
             // Create the line iterator and move it to its first `yield` point, passing in the start point
             // from the mouse down event.
-            const lineIterator = this.createPath(map, svg, map.latLngToContainerPoint(event.latlng));
+            const lineIterator = this.createPath(map, svg, map.latLngToContainerPoint(event.latlng), options.strokeWidth);
             lineIterator.next();
 
             /**
@@ -299,9 +299,10 @@ export default class FreeDraw extends FeatureGroup {
      * @param {Object} map
      * @param {Object} svg
      * @param {Point} fromPoint
+     * @param {Number} strokeWidth
      * @return {void}
      */
-    * createPath(map, svg, fromPoint) {
+    * createPath(map, svg, fromPoint, strokeWidth) {
 
         // Define the line function to be used for the hand-drawn lines.
         const lineFunction = line().curve(curveMonotoneX).x(d => d.x).y(d => d.y);
@@ -314,10 +315,10 @@ export default class FreeDraw extends FeatureGroup {
 
         // Draw SVG line based on the last movement of the mouse's position.
         svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none')
-           .attr('stroke', 'black').attr('stroke-width', strokeWidth);
+                                                        .attr('stroke', 'black').attr('stroke-width', strokeWidth);
 
         // Recursively invoke the generator function, passing in the current to point as the from point.
-        yield * this.createPath(map, svg, toPoint);
+        yield * this.createPath(map, svg, toPoint, strokeWidth);
 
     }
 
