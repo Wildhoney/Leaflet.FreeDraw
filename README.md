@@ -19,11 +19,12 @@
 
 1. [Browser Support](#browser-support)
 2. [Getting Started](#getting-started)
-  1. [Markers](#markers)
-  2. [Modes](#modes)
-  3. [Options](#options)
+  1. [Markers](#adding-markers)
+  2. [Modes](#setting-modes)
+  3. [Options](#passing-options)
   4. [Classes](#classes)
-  5. [Methods](#methods)
+  5. [Methods](#bundled-methods)
+  6. [Predefined Polygons](#predefined-polygons)
 
 ![FreeDraw Screenshot](example/media/screenshot.png)
 
@@ -33,7 +34,7 @@
 
 ## Getting Started
 
-`FreeDraw` functions as a standard Leaflet module, meaning you initialise it and add it to your map layer via the `addLayer` function on your map instance &ndash; when you instantiate `FreeDraw` you can pass a set of [`options`](#options) for behaviour customisation.
+`FreeDraw` functions as a standard Leaflet module, meaning you initialise it and add it to your map layer via the `addLayer` function on your map instance &ndash; when you instantiate `FreeDraw` you can pass a set of [`options`](#passing-options) for behaviour customisation.
 
 ```javascript
 import L from 'leaflet';
@@ -47,7 +48,7 @@ map.addLayer(freeDraw);
 
 By attaching `FreeDraw` to your map layer, an SVG node will be appended to the DOM, and mouse event listeners will be attached to the `map` instance for creating and managing the geospatial polygons.
 
-### Markers
+## Adding Markers
 
 When a user creates a polygon an event is fired on the `map` instance called `markers` which you can listen for by using the native Leaflet `on` function.
 
@@ -59,7 +60,7 @@ freeDraw.on('markers', event => {
 
 Once you have received the latitude and longitude values the next step would likely be to perform any necessary geospatial queries, and then render the relevant markers onto the map &ndash; for this you *could* use `L.Marker` and the native `addTo` method for [placing markers](http://leafletjs.com/reference-1.0.2.html#marker) on the map &ndash; however the important take-away is that `FreeDraw` doesn't concern itself with marker placement, as this is sufficiently covered by Leaflet.
 
-### Modes
+## Setting Modes
 
 By default the mode is `ALL` which means all actions can be performed on the `FreeDraw` layer &mdash; create, edit, delete, and append &mdash; you're able to modify the mode at any time by using the `mode` method, or upon instantiation by passing an object as the first argument.
 
@@ -88,13 +89,13 @@ freeDraw.mode(NONE);
 
 > Note: Invoking `mode` without passing a mode simply returns the current mode.
 
-### Options
+## Passing Options
 
 All of the following options can be passed in when instantiating `FreeDraw` in the same way that we pass `mode` in the previous examples.
 
 | Option                 | Default      | Result                               |
 | ---------------------- |------------- | ------------------------------------ |
-| `mode`                 | `ALL`        | Modifies the default [mode](#modes). |
+| `mode`                 | `ALL`        | Modifies the default [mode](#setting-modes). |
 | `smoothFactor`         | `0.3`        | By how much to [smooth](http://leafletjs.com/reference-1.0.2.html#polyline-smoothfactor) the polygons.  |
 | `elbowDistance`        | `10`         | Factor to determine when to delete or when to append an edge.  |
 | `simplifyFactor`       | `1.1`        | By how much to [simplify](https://sourceforge.net/p/jsclipper/wiki/documentation/#clipperlibclippercleanpolygon) the polygon.  |
@@ -108,7 +109,7 @@ All of the following options can be passed in when instantiating `FreeDraw` in t
 
 By using the options above we can tweak how `FreeDraw` functions &ndash; whilst some of the options have obvious effects, others are much more *tweak and see* based on your expected outcome &ndash; such as the subjective `simplifyFactor` and `elbowDistance` options.
 
-### Classes
+## Classes
 
 Depending on the current modes active on the map instance, the relevant classes are applied to the `map` container that you instantiated `L.Map` with &ndash; by using these class names it allows you to tailor the UX to the current mode, such as changing the `cursor` to `crosshair` when the user is allowed to create polygons.
 
@@ -128,7 +129,7 @@ Depending on the current modes active on the map instance, the relevant classes 
 
 From the above example if the current mode is `CREATE | EDIT | APPEND` then the **three** class names that will be present on the `map` node will be `mode-create`, `mode-edit` and `mode-append`, allowing you to provide a better UX from within your attached stylesheet.
 
-### Methods
+### Bundled Methods
 
 With the instance of `freeDraw` there are certain methods for manipulating `FreeDraw` directly, such as creating polygon from a set of latitude and longitude values.
 
@@ -137,7 +138,7 @@ With the instance of `freeDraw` there are certain methods for manipulating `Free
 | `create`            | `Array`      | Creates a polygon by passing an array of `LatLng`s             |
 | `remove`            | `void`       | Removes a polygon that is yielded from `create`                |
 | `clear`             | `void`       | Clears all polygons from the current instance                  |
-| `mode`              | `Number`     | Sets and retrieves the current [`mode`](#modes).               |
+| `mode`              | `Number`     | Sets and retrieves the current [`mode`](#setting-modes).               |
 | `cancel`            | `void`       | Cancels the current create action &ndash; such as on escape.   |
 | `size`              | `Number`     | Yields the number of polygons on the map layer.                |
 | `all`               | `Array`      | Enumerate all of the current polygons for the current layer    |
@@ -177,4 +178,17 @@ document.addEventListener('keydown', event => {
     event.key === 'Escape' && freeDraw.cancel();
 
 });
+```
+
+## Predefined Polygons
+
+You can add polygons to the map layer at any point by using the `create` method. You **must** remember to [setup `FreeDraw` through Leaflet](#getting-started), rather than instantiating `FreeDraw` without tying it to a Leaflet map instance.
+
+```javascript
+freeDraw.create([
+    new L.LatLng(51.50046151184328, -0.08771896362304689),
+    new L.LatLng(51.50067523261736, -0.09175300598144533),
+    new L.LatLng(51.50329323076107, -0.09106636047363283),
+    new L.LatLng(51.50409462869737, -0.08763313293457033)
+]);
 ```
