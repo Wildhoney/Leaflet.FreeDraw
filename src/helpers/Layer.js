@@ -5,9 +5,10 @@ import { NONE, CREATE, EDIT, DELETE, APPEND } from './Flags';
 /**
  * @method updateFor
  * @param {Object} map
+ * @param {String} eventType
  * @return {void}
  */
-export const updateFor = map => {
+export const updateFor = (map, eventType) => {
 
     const latLngs = Array.from(polygons.get(map)).map(polygon => {
 
@@ -18,7 +19,7 @@ export const updateFor = map => {
     });
 
     // Fire the current set of lat lngs.
-    map[instanceKey].fire('markers', { latLngs });
+    map[instanceKey].fire('markers', { latLngs, eventType });
 
 };
 

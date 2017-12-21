@@ -153,7 +153,7 @@ export default class FreeDraw extends FeatureGroup {
      */
     clear() {
         clearFor(this.map);
-        updateFor(this.map);
+        updateFor(this.map, 'clear');
     }
 
     /**
@@ -277,7 +277,7 @@ export default class FreeDraw extends FeatureGroup {
                     latLngs.size && createFor(map, Array.from(latLngs), options);
 
                     // Finally invoke the callback for the polygon regions.
-                    updateFor(map);
+                    updateFor(map, 'create');
 
                     // Exit the `CREATE` mode if the options permit it.
                     options.leaveModeAfterCreate && this.mode(this.mode() ^ CREATE);

@@ -118,9 +118,9 @@ export default function createEdges(map, polygon, options) {
                 options.notifyAfterEditExit ? (() => {
 
                     // Deferred function that will be invoked by `modeFor` when the `EDIT` mode is exited.
-                    map[notifyDeferredKey] = () => updateFor(map);
+                    map[notifyDeferredKey] = () => updateFor(map, 'edit');
 
-                })() : updateFor(map);
+                })() : updateFor(map, 'edit');
 
             }
 
