@@ -195,7 +195,7 @@ export default (map, polygon, options) => {
         }
 
         // Trigger the event for having deleted a polygon or appended an edge.
-        (isDelete || isAppend) && updateFor(map, isDelete ? 'delete' : 'append');
+        (isDelete || isAppend) && updateFor(map, isDelete ? 'remove' : 'append');
 
     };
 
