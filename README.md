@@ -58,6 +58,8 @@ freeDraw.on('markers', event => {
 });
 ```
 
+**Note:** You can obtain the event type through the `event.eventType` field &ndash; such as `create`, `edit`, etc...
+
 Once you have received the latitude and longitude values the next step would likely be to perform any necessary geospatial queries, and then render the relevant markers onto the map &ndash; for this you *could* use `L.Marker` and the native `addTo` method for [placing markers](http://leafletjs.com/reference-1.0.2.html#marker) on the map &ndash; however the important take-away is that `FreeDraw` doesn't concern itself with marker placement, as this is sufficiently covered by Leaflet.
 
 ## Setting Modes
