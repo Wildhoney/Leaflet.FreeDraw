@@ -148,10 +148,10 @@ test('It should be able to trigger events on the map instance;', t => {
     const [firstPolygon] = freeDraw.create(polygon, true);
 
     // Ensure the `fire` method has been invoked with the correct parameters.
-    updateFor(map);
+    updateFor(map, 'create');
 
     const closedPolygon = [...firstPolygon.getLatLngs()[0], firstPolygon.getLatLngs()[0][0]];
-    t.truthy(freeDraw.fire.calledWith('markers', { latLngs: [closedPolygon] }));
+    t.truthy(freeDraw.fire.calledWith('markers', { latLngs: [closedPolygon], eventType: 'create' }));
 
 });
 
