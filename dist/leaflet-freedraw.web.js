@@ -2645,7 +2645,7 @@ exports.default = function (map, polygon, options) {
         }
 
         // Trigger the event for having deleted a polygon or appended an edge.
-        (isDelete || isAppend) && (0, _Layer.updateFor)(map, isDelete ? 'delete' : 'append');
+        (isDelete || isAppend) && (0, _Layer.updateFor)(map, isDelete ? 'remove' : 'append');
     };
 };
 
