@@ -1860,7 +1860,7 @@ var FreeDraw = function (_FeatureGroup) {
     key: 'clear',
     value: function clear() {
       (0, _Polygon.clearFor)(this.map);
-      (0, _Layer.updateFor)(this.map);
+      (0, _Layer.updateFor)(this.map, 'clear');
     }
 
     /**
@@ -2000,7 +2000,7 @@ var FreeDraw = function (_FeatureGroup) {
             latLngs.size && (0, _Polygon.createFor)(map, Array.from(latLngs), options);
 
             // Finally invoke the callback for the polygon regions.
-            (0, _Layer.updateFor)(map);
+            (0, _Layer.updateFor)(map, 'create');
 
             // Exit the `CREATE` mode if the options permit it.
             options.leaveModeAfterCreate && _this2.mode(_this2.mode() ^ _Flags.CREATE);
@@ -2358,9 +2358,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 /**
  * @method updateFor
  * @param {Object} map
+ * @param {String} eventType
  * @return {void}
  */
-var updateFor = exports.updateFor = function updateFor(map) {
+var updateFor = exports.updateFor = function updateFor(map, eventType) {
 
     var latLngs = Array.from(_FreeDraw.polygons.get(map)).map(function (polygon) {
 
@@ -2370,7 +2371,7 @@ var updateFor = exports.updateFor = function updateFor(map) {
     });
 
     // Fire the current set of lat lngs.
-    map[_FreeDraw.instanceKey].fire('markers', { latLngs: latLngs });
+    map[_FreeDraw.instanceKey].fire('markers', { latLngs: latLngs, eventType: eventType });
 };
 
 /**
@@ -2516,6 +2517,7 @@ var createFor = exports.createFor = function createFor(map, latLngs) {
         _leaflet.DomEvent.disableClickPropagation(polygon);
 
         // Yield the click handler to the `handlePolygonClick` function.
+        polygon.off('click');
         polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
 
         return polygon;
@@ -2643,7 +2645,7 @@ exports.default = function (map, polygon, options) {
         }
 
         // Trigger the event for having deleted a polygon or appended an edge.
-        (isDelete || isAppend) && (0, _Layer.updateFor)(map);
+        (isDelete || isAppend) && (0, _Layer.updateFor)(map, isDelete ? 'delete' : 'append');
     };
 };
 
@@ -13497,9 +13499,9 @@ function createEdges(map, polygon, options) {
 
                     // Deferred function that will be invoked by `modeFor` when the `EDIT` mode is exited.
                     map[_FreeDraw.notifyDeferredKey] = function () {
-                        return (0, _Layer.updateFor)(map);
+                        return (0, _Layer.updateFor)(map, 'edit');
                     };
-                }() : (0, _Layer.updateFor)(map);
+                }() : (0, _Layer.updateFor)(map, 'edit');
             }
 
             // Cleanup the mouse events when the user releases the mouse button.
