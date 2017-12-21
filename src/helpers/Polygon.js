@@ -81,6 +81,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
         DomEvent.disableClickPropagation(polygon);
 
         // Yield the click handler to the `handlePolygonClick` function.
+        polygon.off('click');
         polygon.on('click', handlePolygonClick(map, polygon, options));
 
         return polygon;
