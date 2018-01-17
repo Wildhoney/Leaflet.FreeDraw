@@ -33,8 +33,10 @@
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "dependencies": {
     "clipper-lib": "~6.2.1",
-    "leaflet": "~1.0.1",
     "ramda": "~0.22.1"
+  },
+  "peerDependencies": {
+    "leaflet": "^1.2.0"
   },
   "devDependencies": {
     "angular": "^1.6.0-rc.1",
@@ -55,6 +57,7 @@
     "es6-weak-map": "^2.0.1",
     "express": "^4.14.0",
     "jsdom": "^9.8.3",
+    "leaflet": "^1.2.0",
     "mocha": "^3.1.2",
     "nightmare": "^2.8.1",
     "opener": "^1.4.2",
