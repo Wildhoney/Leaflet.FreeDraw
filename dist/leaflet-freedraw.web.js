@@ -2605,7 +2605,7 @@ exports.default = function (map, polygon, options) {
 
             // Otherwise we'll simply yield the previous accumulator.
             return accumulator;
-        }, { lowestDistance: Infinity, startPoint: new _leaflet.Point(), endPoint: (0, _leaflet.Point)() }),
+        }, { lowestDistance: Infinity, startPoint: new _leaflet.Point(), endPoint: new _leaflet.Point() }),
             startPoint = _parts$reduce.startPoint,
             endPoint = _parts$reduce.endPoint,
             lowestDistance = _parts$reduce.lowestDistance;
