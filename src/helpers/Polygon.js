@@ -164,7 +164,7 @@ export default (map, polygon, options) => {
             // Otherwise we'll simply yield the previous accumulator.
             return accumulator;
 
-        }, { lowestDistance: Infinity, startPoint: new Point(), endPoint: Point() });
+        }, { lowestDistance: Infinity, startPoint: new Point(), endPoint: new Point() });
 
         // Setup the conditions for the switch statement to make the cases clearer.
         const mode = map[modesKey];
