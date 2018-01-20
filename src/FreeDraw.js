@@ -225,7 +225,6 @@ export default class FreeDraw extends FeatureGroup {
             // Create the line iterator and move it to its first `yield` point, passing in the start point
             // from the mouse down event.
             const lineIterator = this.createPath(map, svg, map.latLngToContainerPoint(event.latlng), options.strokeWidth);
-            lineIterator.next();
 
             /**
              * @method mouseMove
@@ -241,7 +240,7 @@ export default class FreeDraw extends FeatureGroup {
                 latLngs.add(map.containerPointToLatLng(point));
 
                 // Invoke the generator by passing in the starting point for the path.
-                lineIterator.next(new Point(point.x, point.y));
+                lineIterator(new Point(point.x, point.y));
 
             };
 
@@ -266,9 +265,6 @@ export default class FreeDraw extends FeatureGroup {
 
                 // Clear the SVG canvas.
                 svg.selectAll('*').remove();
-
-                // Stop the iterator.
-                lineIterator.return();
 
                 if (create) {
 
@@ -307,24 +303,17 @@ export default class FreeDraw extends FeatureGroup {
      * @param {Number} strokeWidth
      * @return {void}
      */
-    * createPath(map, svg, fromPoint, strokeWidth) {
-
-        // Define the line function to be used for the hand-drawn lines.
+    createPath(map, svg, fromPoint, strokeWidth) {
         const lineFunction = line().curve(curveMonotoneX).x(d => d.x).y(d => d.y);
-
-        // Wait for the iterator to be invoked by passing in the next point.
-        const toPoint = yield fromPoint;
-
-        // Line data that is fed into the D3 line function we defined earlier.
-        const lineData = [fromPoint, toPoint];
-
-        // Draw SVG line based on the last movement of the mouse's position.
-        svg.append('path').classed('leaflet-line', true).attr('d', lineFunction(lineData)).attr('fill', 'none')
-                                                        .attr('stroke', 'black').attr('stroke-width', strokeWidth);
-
-        // Recursively invoke the generator function, passing in the current to point as the from point.
-        yield * this.createPath(map, svg, toPoint, strokeWidth);
-
+        let lastPoint = fromPoint;
+        return toPoint => {
+            const lineData = [ lastPoint, toPoint ];
+            lastPoint = toPoint;
+            // Draw SVG line based on the last movement of the mouse's position.
+            svg.append('path').classed('leaflet-line', true)
+                .attr('d', lineFunction(lineData)).attr('fill', 'none')
+                .attr('stroke', 'black').attr('stroke-width', strokeWidth);
+        };
     }
 
 }

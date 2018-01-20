@@ -207,19 +207,15 @@ test('It should be able to create a path;', t => {
     const { freeDraw, map, svg } = t.context;
     freeDraw.onAdd(map);
 
-    // Initiate the generator and move it to the first `yield`.
-    const iterator = freeDraw.createPath(map, svg, new Point(20, 20));
-    iterator.next();
+    // Initiate the path gene
+    const cb = freeDraw.createPath(map, svg, new Point(20, 20));
 
-    // Draw a couple of lines and ensure the returns are correct.
-    const firstLine = iterator.next(new Point(40, 40));
-    t.deepEqual(firstLine, { value: { x: 40, y: 40 }, done: false });
+    // Draw a couple of lines
+    cb(new Point(40, 40));
     t.is(svg.selectAll('path').size(), 1);
-    const secondLine = iterator.next(new Point(60, 60));
-    t.deepEqual(secondLine, { value: { x: 60, y: 60 }, done: false });
+    cb(new Point(60, 60));
     t.is(svg.selectAll('path').size(), 2);
-    const thirdLine = iterator.next(new Point(120, 120));
-    t.deepEqual(thirdLine, { value: { x: 120, y: 120 }, done: false });
+    cb(new Point(120, 120));
     t.is(svg.selectAll('path').size(), 3);
 
 });
