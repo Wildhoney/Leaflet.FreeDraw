@@ -33,7 +33,7 @@ export function fillPolygon(map, polygon, options) {
  * @return {Array}
  */
 function latLngsToTuple(latLngs) {
-    return latLngs.map(model => ([model.lat, model.lng]));
+    return latLngs.map(model => [model.lat, model.lng]);
 }
 
 /**
