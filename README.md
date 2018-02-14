@@ -104,7 +104,6 @@ All of the following options can be passed in when instantiating `FreeDraw` in t
 | `mergePolygons`        | `true`       | Whether to attempt merging of polygons that intersect.  |
 | `concavePolygon`       | `true`       | Whether to apply the [concaving algorithm](http://ubicomp.algoritmi.uminho.pt/local/concavehull.html) to the polygons.  |
 | `maximumPolygons`      | `Infinity`   | Maximum number of polygons to be added to the map layer.  |
-| `recreateAfterEdit`    | `false`      | Whether to recreate the polygons subsequent to them being modified.  |
 | `notifyAfterEditExit`  | `false`      | Whether to defer `markers` event until after exiting `EDIT` mode.  |
 | `leaveModeAfterCreate` | `false`      | Whether to exit `CREATE` mode after each polygon creation.  |
 | `strokeWidth`          | `2`          | Size of the stroke when drawing. |

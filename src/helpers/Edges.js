@@ -92,7 +92,7 @@ export default function createEdges(map, polygon, options) {
                 map.off('mousemove', mouseMove);
 
                 // Attempt to simplify the polygon to prevent voids in the polygon.
-                console.log(fillPolygon(map, polygon, options));
+                fillPolygon(map, polygon, options);
 
                 // Merge the polygons if the options allow using a two-pass approach as this yields the better results.
                 const merge = () => mergePolygons(map, Array.from(polygons.get(map)), options);
