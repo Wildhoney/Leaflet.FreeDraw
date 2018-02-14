@@ -1,6 +1,8 @@
 import { Point } from 'leaflet';
-import { flatten, identical, complement } from 'ramda';
+import { flatten, identical, complement, compose, head } from 'ramda';
 import { Clipper, PolyFillType } from 'clipper-lib';
+import createPolygon from 'turf-polygon';
+import isIntersecting from 'turf-intersect';
 import { createFor, removeFor } from './Polygon';
 import { latLngsToClipperPoints } from './Simplify';
 
@@ -26,6 +28,15 @@ export function fillPolygon(map, polygon, options) {
 }
 
 /**
+ * @method latLngsToTuple
+ * @param {Array} latLngs
+ * @return {Array}
+ */
+function latLngsToTuple(latLngs) {
+    return latLngs.map(model => ([model.lat, model.lng]));
+}
+
+/**
  * @param {Object} map
  * @param {Array} polygons
  * @param {Object} options
@@ -33,15 +44,18 @@ export function fillPolygon(map, polygon, options) {
  */
 export default (map, polygons, options) => {
 
+    // Transform a L.LatLng object into a GeoJSON polygon that TurfJS expects to receive.
+    const toTurfPolygon = compose(createPolygon, x => [x], x => [...x, head(x)], latLngsToTuple);
+
     const analysis = polygons.reduce((accum, polygon) => {
 
         const latLngs = polygon.getLatLngs()[0];
         const points = latLngsToClipperPoints(map, polygon.getLatLngs()[0]);
-        const bounds = polygon.getBounds();
+        const turfPolygon = toTurfPolygon(latLngs);
 
         // Determine if the current polygon intersects any of the other polygons currently on the map.
         const intersects = polygons.filter(complement(identical(polygon))).some(polygon => {
-            return bounds.intersects(polygon.getBounds());
+            return Boolean(isIntersecting(turfPolygon, toTurfPolygon(polygon.getLatLngs()[0])));
         });
 
         const key = intersects ? 'intersecting' : 'rest';

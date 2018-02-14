@@ -33,7 +33,9 @@
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "dependencies": {
     "clipper-lib": "~6.2.1",
-    "ramda": "~0.22.1"
+    "ramda": "~0.22.1",
+    "turf-intersect": "~3.0.12",
+    "turf-polygon": "~1.0.3"
   },
   "peerDependencies": {
     "leaflet": "^1.2.0"
