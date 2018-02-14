@@ -419,7 +419,6 @@ var defaultOptions = exports.defaultOptions = {
   mergePolygons: true,
   concavePolygon: true,
   maximumPolygons: Infinity,
-  recreateAfterEdit: false,
   notifyAfterEditExit: false,
   leaveModeAfterCreate: false,
   strokeWidth: 2
@@ -3504,7 +3503,7 @@ function createEdges(map, polygon, options) {
                 map.off('mousemove', mouseMove);
 
                 // Attempt to simplify the polygon to prevent voids in the polygon.
-                console.log((0, _Merge.fillPolygon)(map, polygon, options));
+                (0, _Merge.fillPolygon)(map, polygon, options);
 
                 // Merge the polygons if the options allow using a two-pass approach as this yields the better results.
                 var merge = function merge() {
