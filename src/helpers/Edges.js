@@ -1,9 +1,8 @@
 import { DivIcon, Marker, DomEvent } from 'leaflet';
 import { polygons, modesKey, notifyDeferredKey } from '../FreeDraw';
-import { createFor } from './Polygon';
 import { updateFor } from './Layer';
 import { CREATE, EDIT } from './Flags';
-import mergePolygons from './Merge';
+import mergePolygons, { fillPolygon } from './Merge';
 
 /**
  * @method createEdges
@@ -92,22 +91,8 @@ export default function createEdges(map, polygon, options) {
                 map.off('mousedown', mouseDown);
                 map.off('mousemove', mouseMove);
 
-                // We can optionally recreate the polygon after modifying its shape, as sometimes edges/
-                // become "detached" and thus if we choose to re-render the polygon afterwards, those edges
-                // will disappear, otherwise they will remain and look somewhat detached, yet still active.
-                if (options.recreateAfterEdit) {
-
-                    // Remove all of the existing markers for the current polygon.
-                    markers.forEach(marker => map.removeLayer(marker));
-
-                    // As well as the polygon itself.
-                    map.removeLayer(polygon);
-
-                    // ...And then recreate the polygon using the updated lat longs.
-                    const latLngs = markers.map(marker => marker.getLatLng());
-                    createFor(map, latLngs, options);
-
-                }
+                // Attempt to simplify the polygon to prevent voids in the polygon.
+                console.log(fillPolygon(map, polygon, options));
 
                 // Merge the polygons if the options allow using a two-pass approach as this yields the better results.
                 const merge = () => mergePolygons(map, Array.from(polygons.get(map)), options);
