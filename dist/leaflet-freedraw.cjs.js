@@ -74,35 +74,35 @@ module.exports =
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return root; });
 /* harmony export (immutable) */ __webpack_exports__["b"] = Selection;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__select__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__selectAll__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__filter__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__data__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__select__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__selectAll__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__filter__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__data__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__enter__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__exit__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__merge__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__order__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__sort__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__call__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__nodes__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__node__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__size__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__empty__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__each__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__attr__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__exit__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__merge__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__order__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__sort__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__call__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__nodes__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__node__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__size__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__empty__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__each__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__attr__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__style__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__property__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__classed__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__text__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__html__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__raise__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lower__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__append__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__insert__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__remove__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__datum__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__property__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__classed__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__text__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__html__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__raise__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lower__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__append__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__insert__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__remove__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__datum__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__on__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__dispatch__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__dispatch__ = __webpack_require__(88);
 
 
 
@@ -213,7 +213,7 @@ module.exports = function (fn) {
 "use strict";
 
 
-module.exports = __webpack_require__(167)() ? Symbol : __webpack_require__(169);
+module.exports = __webpack_require__(166)() ? Symbol : __webpack_require__(168);
 
 
 /***/ }),
@@ -225,7 +225,7 @@ module.exports = __webpack_require__(167)() ? Symbol : __webpack_require__(169);
 
 var assign        = __webpack_require__(34)
   , normalizeOpts = __webpack_require__(61)
-  , isCallable    = __webpack_require__(151)
+  , isCallable    = __webpack_require__(150)
   , contains      = __webpack_require__(35)
 
   , d;
@@ -369,15 +369,15 @@ Object.defineProperty(exports, 'ALL', {
 
 var _leaflet = __webpack_require__(5);
 
-var _d3Selection = __webpack_require__(69);
+var _d3Selection = __webpack_require__(68);
 
-var _d3Shape = __webpack_require__(70);
+var _d3Shape = __webpack_require__(69);
 
-var _es6Set = __webpack_require__(71);
+var _es6Set = __webpack_require__(70);
 
 var _es6Set2 = _interopRequireDefault(_es6Set);
 
-var _es6WeakMap = __webpack_require__(72);
+var _es6WeakMap = __webpack_require__(71);
 
 var _es6WeakMap2 = _interopRequireDefault(_es6WeakMap);
 
@@ -387,7 +387,7 @@ var _es6Symbol2 = _interopRequireDefault(_es6Symbol);
 
 var _Layer = __webpack_require__(14);
 
-var _Polygon = __webpack_require__(15);
+var _Polygon = __webpack_require__(22);
 
 var _Simplify = __webpack_require__(37);
 
@@ -810,7 +810,7 @@ if (typeof window !== 'undefined') {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_path__ = __webpack_require__(77);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_path__ = __webpack_require__(76);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__src_path__["a"]; });
 
 
@@ -1064,250 +1064,23 @@ var classesFor = exports.classesFor = function classesFor(map, mode) {
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(node, event) {
+  var svg = node.ownerSVGElement || node;
 
+  if (svg.createSVGPoint) {
+    var point = svg.createSVGPoint();
+    point.x = event.clientX, point.y = event.clientY;
+    point = point.matrixTransform(node.getScreenCTM().inverse());
+    return [point.x, point.y];
+  }
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
+  var rect = node.getBoundingClientRect();
+  return [event.clientX - rect.left - node.clientLeft, event.clientY - rect.top - node.clientTop];
 });
-exports.clearFor = exports.removeFor = exports.createFor = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _leaflet = __webpack_require__(5);
-
-var _FreeDraw = __webpack_require__(7);
-
-var _Layer = __webpack_require__(14);
-
-var _Edges = __webpack_require__(74);
-
-var _Edges2 = _interopRequireDefault(_Edges);
-
-var _Flags = __webpack_require__(13);
-
-var _Polygon = __webpack_require__(15);
-
-var _Polygon2 = _interopRequireDefault(_Polygon);
-
-var _Concave = __webpack_require__(73);
-
-var _Concave2 = _interopRequireDefault(_Concave);
-
-var _Merge = __webpack_require__(38);
-
-var _Merge2 = _interopRequireDefault(_Merge);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-/**
- * @method appendEdgeFor
- * @param {Object} map
- * @param {Object} polygon
- * @param {Object} options
- * @param {Array} parts
- * @param {Object} newPoint
- * @param {Object} startPoint
- * @param {Object} endPoint
- * @return {void}
- */
-var appendEdgeFor = function appendEdgeFor(map, polygon, options, _ref) {
-    var parts = _ref.parts,
-        newPoint = _ref.newPoint,
-        startPoint = _ref.startPoint,
-        endPoint = _ref.endPoint;
-
-
-    var latLngs = parts.reduce(function (accumulator, point, index) {
-
-        var nextPoint = parts[index + 1] || parts[0];
-
-        if (point === startPoint && nextPoint === endPoint) {
-
-            return [].concat(_toConsumableArray(accumulator), [map.containerPointToLatLng(point), map.containerPointToLatLng(newPoint)]);
-        }
-
-        return [].concat(_toConsumableArray(accumulator), [map.containerPointToLatLng(point)]);
-    }, []);
-
-    // Update the lat longs with the newly inserted edge.
-    polygon.setLatLngs(latLngs);
-
-    // Remove the current set of edges for the polygon, and then recreate them, assigning the
-    // new set of edges back into the polygon.
-    polygon[_FreeDraw.edgesKey].map(function (edge) {
-        return map.removeLayer(edge);
-    });
-    polygon[_FreeDraw.edgesKey] = (0, _Edges2.default)(map, polygon, options);
-};
-
-/**
- * @method createFor
- * @param {Object} map
- * @param {Array} latLngs
- * @param {Object} [options = defaultOptions]
- * @param {Boolean} [preventMutations = false]
- * @return {Array|Boolean}
- */
-var createFor = exports.createFor = function createFor(map, latLngs) {
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _FreeDraw.defaultOptions;
-    var preventMutations = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-
-    // Determine whether we've reached the maximum polygons.
-    var limitReached = _FreeDraw.polygons.get(map).size === options.maximumPolygons;
-
-    // Apply the concave hull algorithm to the created polygon if the options allow.
-    var concavedLatLngs = !preventMutations && options.concavePolygon ? (0, _Concave2.default)(map, latLngs) : latLngs;
-
-    // Simplify the polygon before adding it to the map.
-    var addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(function (latLngs) {
-
-        var polygon = new _leaflet.Polygon(latLngs, _extends({}, _FreeDraw.defaultOptions, options, { className: 'leaflet-polygon'
-        })).addTo(map);
-
-        // Attach the edges to the polygon.
-        polygon[_FreeDraw.edgesKey] = (0, _Edges2.default)(map, polygon, options);
-
-        // Disable the propagation when you click on the marker.
-        _leaflet.DomEvent.disableClickPropagation(polygon);
-
-        // Yield the click handler to the `handlePolygonClick` function.
-        polygon.off('click');
-        polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
-
-        return polygon;
-    });
-
-    // Append the current polygon to the master set.
-    addedPolygons.forEach(function (polygon) {
-        return _FreeDraw.polygons.get(map).add(polygon);
-    });
-
-    if (!limitReached && !preventMutations && _FreeDraw.polygons.get(map).size > 1 && options.mergePolygons) {
-
-        // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
-        var addedMergedPolygons = (0, _Merge2.default)(map, Array.from(_FreeDraw.polygons.get(map)), options);
-
-        // Clear the set, and added all of the merged polygons into the master set.
-        _FreeDraw.polygons.get(map).clear();
-        addedMergedPolygons.forEach(function (polygon) {
-            return _FreeDraw.polygons.get(map).add(polygon);
-        });
-
-        return addedMergedPolygons;
-    }
-
-    return addedPolygons;
-};
-
-/**
- * @method removeFor
- * @param {Object} map
- * @param {Object} polygon
- * @return {void}
- */
-var removeFor = exports.removeFor = function removeFor(map, polygon) {
-
-    // Remove polygon and all of its associated edges.
-    map.removeLayer(polygon);
-    _FreeDraw.edgesKey in polygon && polygon[_FreeDraw.edgesKey].map(function (edge) {
-        return map.removeLayer(edge);
-    });
-
-    // Remove polygon from the master set.
-    _FreeDraw.polygons.get(map).delete(polygon);
-};
-
-/**
- * @method clearFor
- * @param {Object} map
- * @return {void}
- */
-var clearFor = exports.clearFor = function clearFor(map) {
-    Array.from(_FreeDraw.polygons.get(map).values()).forEach(function (polygon) {
-        return removeFor(map, polygon);
-    });
-};
-
-/**
- * @param {Object} map
- * @param {Object} polygon
- * @param {Object} options
- * @return {Function}
- */
-
-exports.default = function (map, polygon, options) {
-
-    return function (event) {
-
-        // Gather all of the points from the lat longs of the current polygon.
-        var newPoint = map.mouseEventToContainerPoint('originalEvent' in event ? event.originalEvent : event);
-        var parts = polygon.getLatLngs()[0].map(function (latLng) {
-            return map.latLngToContainerPoint(latLng);
-        });
-
-        var _parts$reduce = parts.reduce(function (accumulator, point, index) {
-
-            var startPoint = point;
-            var endPoint = parts[index + 1] || parts[0];
-            var distance = _leaflet.LineUtil.pointToSegmentDistance(newPoint, startPoint, endPoint);
-
-            if (distance < accumulator.lowestDistance) {
-
-                // If the distance is less than the previous then we'll update the accumulator.
-                return { lowestDistance: distance, startPoint: startPoint, endPoint: endPoint };
-            }
-
-            // Otherwise we'll simply yield the previous accumulator.
-            return accumulator;
-        }, { lowestDistance: Infinity, startPoint: new _leaflet.Point(), endPoint: new _leaflet.Point() }),
-            startPoint = _parts$reduce.startPoint,
-            endPoint = _parts$reduce.endPoint,
-            lowestDistance = _parts$reduce.lowestDistance;
-
-        // Setup the conditions for the switch statement to make the cases clearer.
-
-
-        var mode = map[_FreeDraw.modesKey];
-        var isDelete = Boolean(mode & _Flags.DELETE);
-        var isAppend = Boolean(mode & _Flags.APPEND);
-        var isDeleteAndAppend = Boolean(mode & _Flags.DELETE && mode & _Flags.APPEND);
-
-        // Partially apply the remove and append functions.
-        var removePolygon = function removePolygon() {
-            return removeFor(map, polygon);
-        };
-        var appendEdge = function appendEdge() {
-            return appendEdgeFor(map, polygon, options, { parts: parts, newPoint: newPoint, startPoint: startPoint, endPoint: endPoint });
-        };
-
-        switch (true) {
-
-            // If both modes DELETE and APPEND are active then we need to do a little work to determine
-            // which action to take based on where the user clicked on the polygon.
-            case isDeleteAndAppend:
-                lowestDistance > options.elbowDistance ? removePolygon() : appendEdge();
-                break;
-
-            case isDelete:
-                removePolygon();
-                break;
-
-            case isAppend:
-                appendEdge();
-                break;
-
-        }
-
-        // Trigger the event for having deleted a polygon or appended an edge.
-        (isDelete || isAppend) && (0, _Layer.updateFor)(map, isDelete ? 'remove' : 'append');
-    };
-};
 
 /***/ }),
 /* 16 */
@@ -1518,11 +1291,258 @@ module.exports = function (x) {
 
 /***/ }),
 /* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.clearFor = exports.removeFor = exports.createFor = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _leaflet = __webpack_require__(5);
+
+var _FreeDraw = __webpack_require__(7);
+
+var _Layer = __webpack_require__(14);
+
+var _Edges = __webpack_require__(73);
+
+var _Edges2 = _interopRequireDefault(_Edges);
+
+var _Flags = __webpack_require__(13);
+
+var _Polygon = __webpack_require__(22);
+
+var _Polygon2 = _interopRequireDefault(_Polygon);
+
+var _Concave = __webpack_require__(72);
+
+var _Concave2 = _interopRequireDefault(_Concave);
+
+var _Merge = __webpack_require__(38);
+
+var _Merge2 = _interopRequireDefault(_Merge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/**
+ * @method appendEdgeFor
+ * @param {Object} map
+ * @param {Object} polygon
+ * @param {Object} options
+ * @param {Array} parts
+ * @param {Object} newPoint
+ * @param {Object} startPoint
+ * @param {Object} endPoint
+ * @return {void}
+ */
+var appendEdgeFor = function appendEdgeFor(map, polygon, options, _ref) {
+    var parts = _ref.parts,
+        newPoint = _ref.newPoint,
+        startPoint = _ref.startPoint,
+        endPoint = _ref.endPoint;
+
+
+    var latLngs = parts.reduce(function (accumulator, point, index) {
+
+        var nextPoint = parts[index + 1] || parts[0];
+
+        if (point === startPoint && nextPoint === endPoint) {
+
+            return [].concat(_toConsumableArray(accumulator), [map.containerPointToLatLng(point), map.containerPointToLatLng(newPoint)]);
+        }
+
+        return [].concat(_toConsumableArray(accumulator), [map.containerPointToLatLng(point)]);
+    }, []);
+
+    // Update the lat longs with the newly inserted edge.
+    polygon.setLatLngs(latLngs);
+
+    // Remove the current set of edges for the polygon, and then recreate them, assigning the
+    // new set of edges back into the polygon.
+    polygon[_FreeDraw.edgesKey].map(function (edge) {
+        return map.removeLayer(edge);
+    });
+    polygon[_FreeDraw.edgesKey] = (0, _Edges2.default)(map, polygon, options);
+};
+
+/**
+ * @method createFor
+ * @param {Object} map
+ * @param {Array} latLngs
+ * @param {Object} [options = defaultOptions]
+ * @param {Boolean} [preventMutations = false]
+ * @return {Array|Boolean}
+ */
+var createFor = exports.createFor = function createFor(map, latLngs) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _FreeDraw.defaultOptions;
+    var preventMutations = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+
+    // Determine whether we've reached the maximum polygons.
+    var limitReached = _FreeDraw.polygons.get(map).size === options.maximumPolygons;
+
+    // Apply the concave hull algorithm to the created polygon if the options allow.
+    var concavedLatLngs = !preventMutations && options.concavePolygon ? (0, _Concave2.default)(map, latLngs) : latLngs;
+
+    // Simplify the polygon before adding it to the map.
+    var addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(function (latLngs) {
+
+        var polygon = new _leaflet.Polygon(latLngs, _extends({}, _FreeDraw.defaultOptions, options, { className: 'leaflet-polygon'
+        })).addTo(map);
+
+        // Attach the edges to the polygon.
+        polygon[_FreeDraw.edgesKey] = (0, _Edges2.default)(map, polygon, options);
+
+        // Disable the propagation when you click on the marker.
+        _leaflet.DomEvent.disableClickPropagation(polygon);
+
+        // Yield the click handler to the `handlePolygonClick` function.
+        polygon.off('click');
+        polygon.on('click', (0, _Polygon2.default)(map, polygon, options));
+
+        return polygon;
+    });
+
+    // Append the current polygon to the master set.
+    addedPolygons.forEach(function (polygon) {
+        return _FreeDraw.polygons.get(map).add(polygon);
+    });
+
+    if (!limitReached && !preventMutations && _FreeDraw.polygons.get(map).size > 1 && options.mergePolygons) {
+
+        // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
+        var addedMergedPolygons = (0, _Merge2.default)(map, Array.from(_FreeDraw.polygons.get(map)), options);
+
+        // Clear the set, and added all of the merged polygons into the master set.
+        // polygons.get(map).clear();
+        addedMergedPolygons.forEach(function (polygon) {
+            return _FreeDraw.polygons.get(map).add(polygon);
+        });
+
+        return addedMergedPolygons;
+    }
+
+    return addedPolygons;
+};
+
+/**
+ * @method removeFor
+ * @param {Object} map
+ * @param {Object} polygon
+ * @return {void}
+ */
+var removeFor = exports.removeFor = function removeFor(map, polygon) {
+
+    // Remove polygon and all of its associated edges.
+    map.removeLayer(polygon);
+    _FreeDraw.edgesKey in polygon && polygon[_FreeDraw.edgesKey].map(function (edge) {
+        return map.removeLayer(edge);
+    });
+
+    // Remove polygon from the master set.
+    _FreeDraw.polygons.get(map).delete(polygon);
+};
+
+/**
+ * @method clearFor
+ * @param {Object} map
+ * @return {void}
+ */
+var clearFor = exports.clearFor = function clearFor(map) {
+    Array.from(_FreeDraw.polygons.get(map).values()).forEach(function (polygon) {
+        return removeFor(map, polygon);
+    });
+};
+
+/**
+ * @param {Object} map
+ * @param {Object} polygon
+ * @param {Object} options
+ * @return {Function}
+ */
+
+exports.default = function (map, polygon, options) {
+
+    return function (event) {
+
+        // Gather all of the points from the lat longs of the current polygon.
+        var newPoint = map.mouseEventToContainerPoint('originalEvent' in event ? event.originalEvent : event);
+        var parts = polygon.getLatLngs()[0].map(function (latLng) {
+            return map.latLngToContainerPoint(latLng);
+        });
+
+        var _parts$reduce = parts.reduce(function (accumulator, point, index) {
+
+            var startPoint = point;
+            var endPoint = parts[index + 1] || parts[0];
+            var distance = _leaflet.LineUtil.pointToSegmentDistance(newPoint, startPoint, endPoint);
+
+            if (distance < accumulator.lowestDistance) {
+
+                // If the distance is less than the previous then we'll update the accumulator.
+                return { lowestDistance: distance, startPoint: startPoint, endPoint: endPoint };
+            }
+
+            // Otherwise we'll simply yield the previous accumulator.
+            return accumulator;
+        }, { lowestDistance: Infinity, startPoint: new _leaflet.Point(), endPoint: new _leaflet.Point() }),
+            startPoint = _parts$reduce.startPoint,
+            endPoint = _parts$reduce.endPoint,
+            lowestDistance = _parts$reduce.lowestDistance;
+
+        // Setup the conditions for the switch statement to make the cases clearer.
+
+
+        var mode = map[_FreeDraw.modesKey];
+        var isDelete = Boolean(mode & _Flags.DELETE);
+        var isAppend = Boolean(mode & _Flags.APPEND);
+        var isDeleteAndAppend = Boolean(mode & _Flags.DELETE && mode & _Flags.APPEND);
+
+        // Partially apply the remove and append functions.
+        var removePolygon = function removePolygon() {
+            return removeFor(map, polygon);
+        };
+        var appendEdge = function appendEdge() {
+            return appendEdgeFor(map, polygon, options, { parts: parts, newPoint: newPoint, startPoint: startPoint, endPoint: endPoint });
+        };
+
+        switch (true) {
+
+            // If both modes DELETE and APPEND are active then we need to do a little work to determine
+            // which action to take based on where the user clicked on the polygon.
+            case isDeleteAndAppend:
+                lowestDistance > options.elbowDistance ? removePolygon() : appendEdge();
+                break;
+
+            case isDelete:
+                removePolygon();
+                break;
+
+            case isAppend:
+                appendEdge();
+                break;
+
+        }
+
+        // Trigger the event for having deleted a polygon or appended an edge.
+        (isDelete || isAppend) && (0, _Layer.updateFor)(map, isDelete ? 'remove' : 'append');
+    };
+};
+
+/***/ }),
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__namespace__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__namespaces__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__namespace__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__namespaces__ = __webpack_require__(25);
 
 
 
@@ -1551,11 +1571,11 @@ function creatorFixed(fullname) {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__namespaces__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__namespaces__ = __webpack_require__(25);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function(name) {
@@ -1566,7 +1586,7 @@ function creatorFixed(fullname) {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1579,26 +1599,6 @@ var xhtml = "http://www.w3.org/1999/xhtml";
   xlink: "http://www.w3.org/1999/xlink",
   xml: "http://www.w3.org/XML/1998/namespace",
   xmlns: "http://www.w3.org/2000/xmlns/"
-});
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(node, event) {
-  var svg = node.ownerSVGElement || node;
-
-  if (svg.createSVGPoint) {
-    var point = svg.createSVGPoint();
-    point.x = event.clientX, point.y = event.clientY;
-    point = point.matrixTransform(node.getScreenCTM().inverse());
-    return [point.x, point.y];
-  }
-
-  var rect = node.getBoundingClientRect();
-  return [event.clientX - rect.left - node.clientLeft, event.clientY - rect.top - node.clientTop];
 });
 
 
@@ -1967,9 +1967,9 @@ function y(p) {
 "use strict";
 
 
-module.exports = __webpack_require__(146)()
+module.exports = __webpack_require__(145)()
 	? Object.assign
-	: __webpack_require__(147);
+	: __webpack_require__(146);
 
 
 /***/ }),
@@ -1979,9 +1979,9 @@ module.exports = __webpack_require__(146)()
 "use strict";
 
 
-module.exports = __webpack_require__(157)()
+module.exports = __webpack_require__(156)()
 	? String.prototype.contains
-	: __webpack_require__(158);
+	: __webpack_require__(157);
 
 
 /***/ }),
@@ -1996,7 +1996,7 @@ var clear    = __webpack_require__(58)
   , callable = __webpack_require__(2)
   , value    = __webpack_require__(1)
   , d        = __webpack_require__(4)
-  , autoBind = __webpack_require__(76)
+  , autoBind = __webpack_require__(75)
   , Symbol   = __webpack_require__(3)
 
   , defineProperty = Object.defineProperty
@@ -2095,7 +2095,7 @@ exports.latLngsToClipperPoints = undefined;
 
 var _leaflet = __webpack_require__(5);
 
-var _clipperLib = __webpack_require__(68);
+var _clipperLib = __webpack_require__(67);
 
 /**
  * @method latLngsToClipperPoints
@@ -2154,19 +2154,44 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.fillPolygon = fillPolygon;
+
 var _leaflet = __webpack_require__(5);
 
-var _flatten = __webpack_require__(175);
+var _ramda = __webpack_require__(174);
 
-var _flatten2 = _interopRequireDefault(_flatten);
+var _clipperLib = __webpack_require__(67);
 
-var _clipperLib = __webpack_require__(68);
-
-var _Polygon = __webpack_require__(15);
+var _Polygon = __webpack_require__(22);
 
 var _Simplify = __webpack_require__(37);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/**
+ * @method fillPolygon
+ * @param {Object} map
+ * @param {Array} polygons
+ * @param {Object} options
+ * @return {Array}
+ */
+function fillPolygon(map, polygon, options) {
+
+    // Simplify the polygon which prevents voids in its shape.
+    var points = (0, _Simplify.latLngsToClipperPoints)(map, polygon.getLatLngs()[0]);
+    _clipperLib.Clipper.SimplifyPolygon(points, _clipperLib.PolyFillType.pftNonZero);
+    (0, _Polygon.removeFor)(map, polygon);
+
+    var latLngs = points.map(function (model) {
+        return map.layerPointToLatLng(new _leaflet.Point(model.X, model.Y));
+    });
+
+    (0, _Polygon.createFor)(map, latLngs, options, true);
+}
 
 /**
  * @param {Object} map
@@ -2174,23 +2199,36 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {Object} options
  * @return {Array}
  */
+
 exports.default = function (map, polygons, options) {
 
-    // Transform all of the polygon lat longs into Clipper point models.
-    var points = polygons.map(function (polygon) {
-        return (0, _Simplify.latLngsToClipperPoints)(map, polygon.getLatLngs()[0]);
-    });
+    var analysis = polygons.reduce(function (accum, polygon) {
+        var _extends2;
+
+        var latLngs = polygon.getLatLngs()[0];
+        var points = (0, _Simplify.latLngsToClipperPoints)(map, polygon.getLatLngs()[0]);
+        var bounds = polygon.getBounds();
+
+        var intersects = polygons.filter((0, _ramda.complement)((0, _ramda.identical)(polygon))).some(function (polygon) {
+            return bounds.intersects(polygon.getBounds());
+        });
+
+        var key = intersects ? 'intersecting' : 'rest';
+
+        return _extends({}, accum, (_extends2 = {}, _defineProperty(_extends2, key, [].concat(_toConsumableArray(accum[key]), [intersects ? points : latLngs])), _defineProperty(_extends2, 'intersectingPolygons', intersects ? [].concat(_toConsumableArray(accum.intersectingPolygons), [polygon]) : accum.intersectingPolygons), _extends2));
+    }, { intersecting: [], rest: [], intersectingPolygons: [] });
 
     // Merge all of the polygons.
-    var mergePolygons = _clipperLib.Clipper.SimplifyPolygons(points, _clipperLib.PolyFillType.pftNonZero);
+    var mergePolygons = _clipperLib.Clipper.SimplifyPolygons(analysis.intersecting, _clipperLib.PolyFillType.pftNonZero);
 
-    // Remove all of the existing polygons on the map.
-    polygons.forEach(function (polygon) {
+    // Remove all of the existing polygons that are intersecting another polygon.
+    analysis.intersectingPolygons.forEach(function (polygon) {
         return (0, _Polygon.removeFor)(map, polygon);
     });
 
-    return (0, _flatten2.default)(mergePolygons.map(function (polygon) {
+    return (0, _ramda.flatten)(mergePolygons.map(function (polygon) {
 
+        // Determine if it's an intersecting polygon or not.
         var latLngs = polygon.map(function (model) {
             return map.layerPointToLatLng(new _leaflet.Point(model.X, model.Y));
         });
@@ -2862,7 +2900,7 @@ module.exports = function () {
 "use strict";
 
 
-var toInteger = __webpack_require__(144)
+var toInteger = __webpack_require__(143)
 
   , max = Math.max;
 
@@ -3002,7 +3040,7 @@ module.exports = (function (status) {
 	return false;
 }())));
 
-__webpack_require__(149);
+__webpack_require__(148);
 
 
 /***/ }),
@@ -3067,8 +3105,8 @@ module.exports = function (iterable, cb/*, thisArg*/) {
 
 var isArguments    = __webpack_require__(20)
   , isString       = __webpack_require__(21)
-  , ArrayIterator  = __webpack_require__(160)
-  , StringIterator = __webpack_require__(162)
+  , ArrayIterator  = __webpack_require__(159)
+  , StringIterator = __webpack_require__(161)
   , iterable       = __webpack_require__(66)
   , iteratorSymbol = __webpack_require__(3).iterator;
 
@@ -3087,7 +3125,7 @@ module.exports = function (obj) {
 "use strict";
 
 
-var isIterable = __webpack_require__(161);
+var isIterable = __webpack_require__(160);
 
 module.exports = function (value) {
 	if (!isIterable(value)) throw new TypeError(value + " is not iterable");
@@ -3097,35 +3135,69 @@ module.exports = function (value) {
 
 /***/ }),
 /* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _isPlaceholder = __webpack_require__(177);
-
-
-/**
- * Optimized internal one-arity curry function.
- *
- * @private
- * @category Function
- * @param {Function} fn The function to curry.
- * @return {Function} The curried function.
- */
-module.exports = function _curry1(fn) {
-  return function f1(a) {
-    if (arguments.length === 0 || _isPlaceholder(a)) {
-      return f1;
-    } else {
-      return fn.apply(this, arguments);
-    }
-  };
-};
-
-
-/***/ }),
-/* 68 */
 /***/ (function(module, exports) {
 
 module.exports = require("clipper-lib");
+
+/***/ }),
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_creator__ = __webpack_require__(23);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "creator", function() { return __WEBPACK_IMPORTED_MODULE_0__src_creator__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_local__ = __webpack_require__(78);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "local", function() { return __WEBPACK_IMPORTED_MODULE_1__src_local__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_matcher__ = __webpack_require__(39);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "matcher", function() { return __WEBPACK_IMPORTED_MODULE_2__src_matcher__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_mouse__ = __webpack_require__(79);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "mouse", function() { return __WEBPACK_IMPORTED_MODULE_3__src_mouse__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_namespace__ = __webpack_require__(24);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "namespace", function() { return __WEBPACK_IMPORTED_MODULE_4__src_namespace__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_namespaces__ = __webpack_require__(25);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "namespaces", function() { return __WEBPACK_IMPORTED_MODULE_5__src_namespaces__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_point__ = __webpack_require__(15);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "clientPoint", function() { return __WEBPACK_IMPORTED_MODULE_6__src_point__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_select__ = __webpack_require__(80);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "select", function() { return __WEBPACK_IMPORTED_MODULE_7__src_select__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_selectAll__ = __webpack_require__(81);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "selectAll", function() { return __WEBPACK_IMPORTED_MODULE_8__src_selectAll__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_selection_index__ = __webpack_require__(0);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "selection", function() { return __WEBPACK_IMPORTED_MODULE_9__src_selection_index__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_selector__ = __webpack_require__(27);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "selector", function() { return __WEBPACK_IMPORTED_MODULE_10__src_selector__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_selectorAll__ = __webpack_require__(43);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "selectorAll", function() { return __WEBPACK_IMPORTED_MODULE_11__src_selectorAll__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_selection_style__ = __webpack_require__(42);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "style", function() { return __WEBPACK_IMPORTED_MODULE_12__src_selection_style__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_touch__ = __webpack_require__(108);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "touch", function() { return __WEBPACK_IMPORTED_MODULE_13__src_touch__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_touches__ = __webpack_require__(109);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "touches", function() { return __WEBPACK_IMPORTED_MODULE_14__src_touches__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_window__ = __webpack_require__(29);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "window", function() { return __WEBPACK_IMPORTED_MODULE_15__src_window__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_selection_on__ = __webpack_require__(26);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "event", function() { return __WEBPACK_IMPORTED_MODULE_16__src_selection_on__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "customEvent", function() { return __WEBPACK_IMPORTED_MODULE_16__src_selection_on__["b"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /***/ }),
 /* 69 */
@@ -3133,72 +3205,15 @@ module.exports = require("clipper-lib");
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_creator__ = __webpack_require__(22);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "creator", function() { return __WEBPACK_IMPORTED_MODULE_0__src_creator__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_local__ = __webpack_require__(79);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "local", function() { return __WEBPACK_IMPORTED_MODULE_1__src_local__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_matcher__ = __webpack_require__(39);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "matcher", function() { return __WEBPACK_IMPORTED_MODULE_2__src_matcher__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_mouse__ = __webpack_require__(80);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "mouse", function() { return __WEBPACK_IMPORTED_MODULE_3__src_mouse__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_namespace__ = __webpack_require__(23);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "namespace", function() { return __WEBPACK_IMPORTED_MODULE_4__src_namespace__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_namespaces__ = __webpack_require__(24);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "namespaces", function() { return __WEBPACK_IMPORTED_MODULE_5__src_namespaces__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_select__ = __webpack_require__(81);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "select", function() { return __WEBPACK_IMPORTED_MODULE_6__src_select__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_selectAll__ = __webpack_require__(82);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "selectAll", function() { return __WEBPACK_IMPORTED_MODULE_7__src_selectAll__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_selection_index__ = __webpack_require__(0);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "selection", function() { return __WEBPACK_IMPORTED_MODULE_8__src_selection_index__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_selector__ = __webpack_require__(27);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "selector", function() { return __WEBPACK_IMPORTED_MODULE_9__src_selector__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_selectorAll__ = __webpack_require__(43);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "selectorAll", function() { return __WEBPACK_IMPORTED_MODULE_10__src_selectorAll__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_selection_style__ = __webpack_require__(42);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "style", function() { return __WEBPACK_IMPORTED_MODULE_11__src_selection_style__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_touch__ = __webpack_require__(109);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "touch", function() { return __WEBPACK_IMPORTED_MODULE_12__src_touch__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_touches__ = __webpack_require__(110);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "touches", function() { return __WEBPACK_IMPORTED_MODULE_13__src_touches__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_window__ = __webpack_require__(29);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "window", function() { return __WEBPACK_IMPORTED_MODULE_14__src_window__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_selection_on__ = __webpack_require__(26);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "event", function() { return __WEBPACK_IMPORTED_MODULE_15__src_selection_on__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "customEvent", function() { return __WEBPACK_IMPORTED_MODULE_15__src_selection_on__["b"]; });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***/ }),
-/* 70 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_arc__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_arc__ = __webpack_require__(110);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "arc", function() { return __WEBPACK_IMPORTED_MODULE_0__src_arc__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_area__ = __webpack_require__(44);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "area", function() { return __WEBPACK_IMPORTED_MODULE_1__src_area__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_line__ = __webpack_require__(31);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "line", function() { return __WEBPACK_IMPORTED_MODULE_2__src_line__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_pie__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_pie__ = __webpack_require__(131);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "pie", function() { return __WEBPACK_IMPORTED_MODULE_3__src_pie__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_areaRadial__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_areaRadial__ = __webpack_require__(111);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "areaRadial", function() { return __WEBPACK_IMPORTED_MODULE_4__src_areaRadial__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "radialArea", function() { return __WEBPACK_IMPORTED_MODULE_4__src_areaRadial__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_lineRadial__ = __webpack_require__(49);
@@ -3206,11 +3221,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "radialLine", function() { return __WEBPACK_IMPORTED_MODULE_5__src_lineRadial__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_pointRadial__ = __webpack_require__(50);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "pointRadial", function() { return __WEBPACK_IMPORTED_MODULE_6__src_pointRadial__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_link_index__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_link_index__ = __webpack_require__(123);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "linkHorizontal", function() { return __WEBPACK_IMPORTED_MODULE_7__src_link_index__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "linkVertical", function() { return __WEBPACK_IMPORTED_MODULE_7__src_link_index__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "linkRadial", function() { return __WEBPACK_IMPORTED_MODULE_7__src_link_index__["c"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_symbol__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_symbol__ = __webpack_require__(133);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "symbol", function() { return __WEBPACK_IMPORTED_MODULE_8__src_symbol__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "symbols", function() { return __WEBPACK_IMPORTED_MODULE_8__src_symbol__["b"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_symbol_circle__ = __webpack_require__(51);
@@ -3227,13 +3242,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "symbolTriangle", function() { return __WEBPACK_IMPORTED_MODULE_14__src_symbol_triangle__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_symbol_wye__ = __webpack_require__(57);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "symbolWye", function() { return __WEBPACK_IMPORTED_MODULE_15__src_symbol_wye__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_curve_basisClosed__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_curve_basisClosed__ = __webpack_require__(112);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveBasisClosed", function() { return __WEBPACK_IMPORTED_MODULE_16__src_curve_basisClosed__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_curve_basisOpen__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__src_curve_basisOpen__ = __webpack_require__(113);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveBasisOpen", function() { return __WEBPACK_IMPORTED_MODULE_17__src_curve_basisOpen__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__src_curve_basis__ = __webpack_require__(16);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveBasis", function() { return __WEBPACK_IMPORTED_MODULE_18__src_curve_basis__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__src_curve_bundle__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__src_curve_bundle__ = __webpack_require__(114);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveBundle", function() { return __WEBPACK_IMPORTED_MODULE_19__src_curve_bundle__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__src_curve_cardinalClosed__ = __webpack_require__(46);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveCardinalClosed", function() { return __WEBPACK_IMPORTED_MODULE_20__src_curve_cardinalClosed__["a"]; });
@@ -3241,46 +3256,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveCardinalOpen", function() { return __WEBPACK_IMPORTED_MODULE_21__src_curve_cardinalOpen__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__src_curve_cardinal__ = __webpack_require__(17);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveCardinal", function() { return __WEBPACK_IMPORTED_MODULE_22__src_curve_cardinal__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__src_curve_catmullRomClosed__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__src_curve_catmullRomClosed__ = __webpack_require__(115);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveCatmullRomClosed", function() { return __WEBPACK_IMPORTED_MODULE_23__src_curve_catmullRomClosed__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__src_curve_catmullRomOpen__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__src_curve_catmullRomOpen__ = __webpack_require__(116);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveCatmullRomOpen", function() { return __WEBPACK_IMPORTED_MODULE_24__src_curve_catmullRomOpen__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__src_curve_catmullRom__ = __webpack_require__(30);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveCatmullRom", function() { return __WEBPACK_IMPORTED_MODULE_25__src_curve_catmullRom__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__src_curve_linearClosed__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__src_curve_linearClosed__ = __webpack_require__(117);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveLinearClosed", function() { return __WEBPACK_IMPORTED_MODULE_26__src_curve_linearClosed__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__src_curve_linear__ = __webpack_require__(18);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveLinear", function() { return __WEBPACK_IMPORTED_MODULE_27__src_curve_linear__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__src_curve_monotone__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__src_curve_monotone__ = __webpack_require__(118);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveMonotoneX", function() { return __WEBPACK_IMPORTED_MODULE_28__src_curve_monotone__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveMonotoneY", function() { return __WEBPACK_IMPORTED_MODULE_28__src_curve_monotone__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__src_curve_natural__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__src_curve_natural__ = __webpack_require__(119);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveNatural", function() { return __WEBPACK_IMPORTED_MODULE_29__src_curve_natural__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__src_curve_step__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__src_curve_step__ = __webpack_require__(120);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveStep", function() { return __WEBPACK_IMPORTED_MODULE_30__src_curve_step__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveStepAfter", function() { return __WEBPACK_IMPORTED_MODULE_30__src_curve_step__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "curveStepBefore", function() { return __WEBPACK_IMPORTED_MODULE_30__src_curve_step__["c"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__src_stack__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__src_stack__ = __webpack_require__(132);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stack", function() { return __WEBPACK_IMPORTED_MODULE_31__src_stack__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__src_offset_expand__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__src_offset_expand__ = __webpack_require__(125);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOffsetExpand", function() { return __WEBPACK_IMPORTED_MODULE_32__src_offset_expand__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__src_offset_diverging__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__src_offset_diverging__ = __webpack_require__(124);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOffsetDiverging", function() { return __WEBPACK_IMPORTED_MODULE_33__src_offset_diverging__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__src_offset_none__ = __webpack_require__(10);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOffsetNone", function() { return __WEBPACK_IMPORTED_MODULE_34__src_offset_none__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__src_offset_silhouette__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__src_offset_silhouette__ = __webpack_require__(126);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOffsetSilhouette", function() { return __WEBPACK_IMPORTED_MODULE_35__src_offset_silhouette__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__src_offset_wiggle__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__src_offset_wiggle__ = __webpack_require__(127);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOffsetWiggle", function() { return __WEBPACK_IMPORTED_MODULE_36__src_offset_wiggle__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__src_order_ascending__ = __webpack_require__(32);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOrderAscending", function() { return __WEBPACK_IMPORTED_MODULE_37__src_order_ascending__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__src_order_descending__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__src_order_descending__ = __webpack_require__(128);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOrderDescending", function() { return __WEBPACK_IMPORTED_MODULE_38__src_order_descending__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__src_order_insideOut__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__src_order_insideOut__ = __webpack_require__(129);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOrderInsideOut", function() { return __WEBPACK_IMPORTED_MODULE_39__src_order_insideOut__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__src_order_none__ = __webpack_require__(11);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOrderNone", function() { return __WEBPACK_IMPORTED_MODULE_40__src_order_none__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__src_order_reverse__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__src_order_reverse__ = __webpack_require__(130);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "stackOrderReverse", function() { return __WEBPACK_IMPORTED_MODULE_41__src_order_reverse__["a"]; });
 
 
@@ -3330,13 +3345,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(162)() ? Set : __webpack_require__(165);
+
+
+/***/ }),
 /* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(163)() ? Set : __webpack_require__(166);
+module.exports = __webpack_require__(170)() ? WeakMap : __webpack_require__(172);
 
 
 /***/ }),
@@ -3346,21 +3371,11 @@ module.exports = __webpack_require__(163)() ? Set : __webpack_require__(166);
 "use strict";
 
 
-module.exports = __webpack_require__(171)() ? WeakMap : __webpack_require__(173);
-
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _concavehull = __webpack_require__(75);
+var _concavehull = __webpack_require__(74);
 
 var _concavehull2 = _interopRequireDefault(_concavehull);
 
@@ -3378,7 +3393,7 @@ exports.default = function (map, latLngs) {
 };
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3392,8 +3407,6 @@ exports.default = createEdges;
 var _leaflet = __webpack_require__(5);
 
 var _FreeDraw = __webpack_require__(7);
-
-var _Polygon = __webpack_require__(15);
 
 var _Layer = __webpack_require__(14);
 
@@ -3490,25 +3503,8 @@ function createEdges(map, polygon, options) {
                 map.off('mousedown', mouseDown);
                 map.off('mousemove', mouseMove);
 
-                // We can optionally recreate the polygon after modifying its shape, as sometimes edges/
-                // become "detached" and thus if we choose to re-render the polygon afterwards, those edges
-                // will disappear, otherwise they will remain and look somewhat detached, yet still active.
-                if (options.recreateAfterEdit) {
-
-                    // Remove all of the existing markers for the current polygon.
-                    markers.forEach(function (marker) {
-                        return map.removeLayer(marker);
-                    });
-
-                    // As well as the polygon itself.
-                    map.removeLayer(polygon);
-
-                    // ...And then recreate the polygon using the updated lat longs.
-                    var latLngs = markers.map(function (marker) {
-                        return marker.getLatLng();
-                    });
-                    (0, _Polygon.createFor)(map, latLngs, options);
-                }
+                // Attempt to simplify the polygon to prevent voids in the polygon.
+                console.log((0, _Merge.fillPolygon)(map, polygon, options));
 
                 // Merge the polygons if the options allow using a two-pass approach as this yields the better results.
                 var merge = function merge() {
@@ -3541,7 +3537,7 @@ function createEdges(map, polygon, options) {
 }
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*! concavehull by Adam Timberlake <adam.timberlake@gmail.com> created on 2015-01-23 */
@@ -3549,16 +3545,16 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*! concavehull by Adam Timberlake <adam.timbe
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):void(window.ConcaveHull=b)}()}(Math);
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var copy             = __webpack_require__(148)
+var copy             = __webpack_require__(147)
   , normalizeOptions = __webpack_require__(61)
   , ensureCallable   = __webpack_require__(2)
-  , map              = __webpack_require__(155)
+  , map              = __webpack_require__(154)
   , callable         = __webpack_require__(2)
   , validValue       = __webpack_require__(1)
 
@@ -3588,7 +3584,7 @@ module.exports = function (props/*, options*/) {
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3725,7 +3721,7 @@ Path.prototype = path.prototype = {
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3737,7 +3733,7 @@ Path.prototype = path.prototype = {
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3772,12 +3768,12 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sourceEvent__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__point__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__point__ = __webpack_require__(15);
 
 
 
@@ -3789,7 +3785,7 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3804,7 +3800,7 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3819,11 +3815,11 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__creator__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__creator__ = __webpack_require__(23);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function(name) {
@@ -3835,11 +3831,11 @@ Local.prototype = local.prototype = {
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__namespace__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__namespace__ = __webpack_require__(24);
 
 
 function attrRemove(name) {
@@ -3900,7 +3896,7 @@ function attrFunctionNS(fullname, value) {
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3913,7 +3909,7 @@ function attrFunctionNS(fullname, value) {
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3995,13 +3991,13 @@ function classedFunction(names, value) {
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__enter__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(77);
 
 
 
@@ -4123,7 +4119,7 @@ function bindKey(parent, group, enter, update, exit, data, key) {
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4135,7 +4131,7 @@ function bindKey(parent, group, enter, update, exit, data, key) {
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4177,7 +4173,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4194,7 +4190,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4204,7 +4200,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4219,7 +4215,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4244,7 +4240,7 @@ function dispatchFunction(type, params) {
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4276,11 +4272,11 @@ function htmlFunction(value) {
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__creator__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__creator__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__selector__ = __webpack_require__(27);
 
 
@@ -4299,7 +4295,7 @@ function constantNull() {
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4313,7 +4309,7 @@ function lower() {
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4339,7 +4335,7 @@ function lower() {
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4357,7 +4353,7 @@ function lower() {
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4369,7 +4365,7 @@ function lower() {
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4389,7 +4385,7 @@ function lower() {
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4424,7 +4420,7 @@ function propertyFunction(name, value) {
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4438,7 +4434,7 @@ function raise() {
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4453,7 +4449,7 @@ function remove() {
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4479,7 +4475,7 @@ function remove() {
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4505,7 +4501,7 @@ function remove() {
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4517,7 +4513,7 @@ function remove() {
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4549,7 +4545,7 @@ function ascending(a, b) {
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4581,12 +4577,12 @@ function textFunction(value) {
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sourceEvent__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__point__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__point__ = __webpack_require__(15);
 
 
 
@@ -4604,12 +4600,12 @@ function textFunction(value) {
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sourceEvent__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__point__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__point__ = __webpack_require__(15);
 
 
 
@@ -4625,7 +4621,7 @@ function textFunction(value) {
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4894,7 +4890,7 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4933,7 +4929,7 @@ function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4994,7 +4990,7 @@ BasisClosed.prototype = {
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5041,7 +5037,7 @@ BasisOpen.prototype = {
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5105,7 +5101,7 @@ Bundle.prototype = {
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5189,7 +5185,7 @@ CatmullRomClosed.prototype = {
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5260,7 +5256,7 @@ CatmullRomOpen.prototype = {
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5293,7 +5289,7 @@ LinearClosed.prototype = {
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5406,7 +5402,7 @@ function monotoneY(context) {
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5478,7 +5474,7 @@ function controlPoints(x) {
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5540,7 +5536,7 @@ function stepAfter(context) {
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5550,7 +5546,7 @@ function stepAfter(context) {
 
 
 /***/ }),
-/* 123 */
+/* 122 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5560,7 +5556,7 @@ function stepAfter(context) {
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5659,7 +5655,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5680,7 +5676,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5698,7 +5694,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5716,7 +5712,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5748,7 +5744,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5761,7 +5757,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5797,7 +5793,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5810,13 +5806,13 @@ function linkRadial() {
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constant__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__descending__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__identity__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__descending__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__identity__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__math__ = __webpack_require__(9);
 
 
@@ -5900,7 +5896,7 @@ function linkRadial() {
 
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5968,7 +5964,7 @@ function stackValue(d, key) {
 
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6031,7 +6027,7 @@ var symbols = [
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6067,19 +6063,19 @@ module.exports = function (searchElement/*, fromIndex*/) {
 
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(137)()
+module.exports = __webpack_require__(136)()
 	? Array.from
-	: __webpack_require__(138);
+	: __webpack_require__(137);
 
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6095,7 +6091,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6103,7 +6099,7 @@ module.exports = function () {
 
 var iteratorSymbol = __webpack_require__(3).iterator
   , isArguments    = __webpack_require__(20)
-  , isFunction     = __webpack_require__(139)
+  , isFunction     = __webpack_require__(138)
   , toPosInt       = __webpack_require__(59)
   , callable       = __webpack_require__(2)
   , validValue     = __webpack_require__(1)
@@ -6208,7 +6204,7 @@ module.exports = function (arrayLike/*, mapFn, thisArg*/) {
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6216,7 +6212,7 @@ module.exports = function (arrayLike/*, mapFn, thisArg*/) {
 
 var toString = Object.prototype.toString
 
-  , id = toString.call(__webpack_require__(140));
+  , id = toString.call(__webpack_require__(139));
 
 module.exports = function (f) {
 	return (typeof f === "function") && (toString.call(f) === id);
@@ -6224,7 +6220,7 @@ module.exports = function (f) {
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6234,19 +6230,19 @@ module.exports = function () {};
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(142)()
+module.exports = __webpack_require__(141)()
 	? Math.sign
-	: __webpack_require__(143);
+	: __webpack_require__(142);
 
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6260,7 +6256,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6274,13 +6270,13 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var sign = __webpack_require__(141)
+var sign = __webpack_require__(140)
 
   , abs = Math.abs, floor = Math.floor;
 
@@ -6293,7 +6289,7 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6329,7 +6325,7 @@ module.exports = function (method, defVal) {
 
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6345,13 +6341,13 @@ module.exports = function () {
 
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var keys  = __webpack_require__(152)
+var keys  = __webpack_require__(151)
   , value = __webpack_require__(1)
 
   , max = Math.max;
@@ -6374,13 +6370,13 @@ module.exports = function (dest, src/*, …srcn*/) {
 
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var aFrom  = __webpack_require__(136)
+var aFrom  = __webpack_require__(135)
   , assign = __webpack_require__(34)
   , value  = __webpack_require__(1);
 
@@ -6400,7 +6396,7 @@ module.exports = function (obj/*, propertyNames, options*/) {
 
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6443,17 +6439,17 @@ module.exports = (function () {
 
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(145)('forEach');
+module.exports = __webpack_require__(144)('forEach');
 
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6465,19 +6461,19 @@ module.exports = function (obj) { return typeof obj === 'function'; };
 
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(153)()
+module.exports = __webpack_require__(152)()
 	? Object.keys
-	: __webpack_require__(154);
+	: __webpack_require__(153);
 
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6492,7 +6488,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6506,14 +6502,14 @@ module.exports = function (object) {
 
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var callable = __webpack_require__(2)
-  , forEach  = __webpack_require__(150)
+  , forEach  = __webpack_require__(149)
 
   , call = Function.prototype.call;
 
@@ -6528,7 +6524,7 @@ module.exports = function (obj, cb/*, thisArg*/) {
 
 
 /***/ }),
-/* 156 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6543,7 +6539,7 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 157 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6558,7 +6554,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6572,7 +6568,7 @@ module.exports = function (searchString/*, position*/) {
 
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6590,7 +6586,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6627,7 +6623,7 @@ ArrayIterator.prototype = Object.create(Iterator.prototype, {
 
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6649,7 +6645,7 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6693,7 +6689,7 @@ StringIterator.prototype = Object.create(Iterator.prototype, {
 
 
 /***/ }),
-/* 163 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6724,7 +6720,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6740,7 +6736,7 @@ module.exports = (function () {
 
 
 /***/ }),
-/* 165 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6777,23 +6773,23 @@ defineProperty(SetIterator.prototype, toStringTagSymbol, d('c', 'Set Iterator'))
 
 
 /***/ }),
-/* 166 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var clear          = __webpack_require__(58)
-  , eIndexOf       = __webpack_require__(135)
+  , eIndexOf       = __webpack_require__(134)
   , setPrototypeOf = __webpack_require__(12)
   , callable       = __webpack_require__(2)
   , d              = __webpack_require__(4)
-  , ee             = __webpack_require__(174)
+  , ee             = __webpack_require__(173)
   , Symbol         = __webpack_require__(3)
   , iterator       = __webpack_require__(66)
   , forOf          = __webpack_require__(64)
-  , Iterator       = __webpack_require__(165)
-  , isNative       = __webpack_require__(164)
+  , Iterator       = __webpack_require__(164)
+  , isNative       = __webpack_require__(163)
 
   , call = Function.prototype.call
   , defineProperty = Object.defineProperty, getPrototypeOf = Object.getPrototypeOf
@@ -6864,7 +6860,7 @@ defineProperty(SetPoly.prototype, Symbol.toStringTag, d('c', 'Set'));
 
 
 /***/ }),
-/* 167 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6888,7 +6884,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 168 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6904,7 +6900,7 @@ module.exports = function (x) {
 
 
 /***/ }),
-/* 169 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6913,7 +6909,7 @@ module.exports = function (x) {
 
 
 var d              = __webpack_require__(4)
-  , validateSymbol = __webpack_require__(170)
+  , validateSymbol = __webpack_require__(169)
 
   , create = Object.create, defineProperties = Object.defineProperties
   , defineProperty = Object.defineProperty, objPrototype = Object.prototype
@@ -7029,13 +7025,13 @@ defineProperty(HiddenSymbol.prototype, SymbolPolyfill.toPrimitive,
 
 
 /***/ }),
-/* 170 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isSymbol = __webpack_require__(168);
+var isSymbol = __webpack_require__(167);
 
 module.exports = function (value) {
 	if (!isSymbol(value)) throw new TypeError(value + " is not a symbol");
@@ -7044,7 +7040,7 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 171 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7071,7 +7067,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 172 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7086,21 +7082,21 @@ module.exports = (function () {
 
 
 /***/ }),
-/* 173 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var setPrototypeOf    = __webpack_require__(12)
-  , object            = __webpack_require__(156)
+  , object            = __webpack_require__(155)
   , value             = __webpack_require__(1)
-  , randomUniq        = __webpack_require__(159)
+  , randomUniq        = __webpack_require__(158)
   , d                 = __webpack_require__(4)
   , getIterator       = __webpack_require__(65)
   , forOf             = __webpack_require__(64)
   , toStringTagSymbol = __webpack_require__(3).toStringTag
-  , isNative          = __webpack_require__(172)
+  , isNative          = __webpack_require__(171)
 
   , isArray = Array.isArray, defineProperty = Object.defineProperty
   , hasOwnProperty = Object.prototype.hasOwnProperty, getPrototypeOf = Object.getPrototypeOf
@@ -7159,7 +7155,7 @@ defineProperty(WeakMapPoly.prototype, toStringTagSymbol, d('c', 'WeakMap'));
 
 
 /***/ }),
-/* 174 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7298,156 +7294,10 @@ exports.methods = methods;
 
 
 /***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = __webpack_require__(67);
-var _makeFlat = __webpack_require__(179);
-
-
-/**
- * Returns a new list by pulling every item out of it (and all its sub-arrays)
- * and putting them in a new array, depth-first.
- *
- * @func
- * @memberOf R
- * @since v0.1.0
- * @category List
- * @sig [a] -> [b]
- * @param {Array} list The array to consider.
- * @return {Array} The flattened list.
- * @see R.unnest
- * @example
- *
- *      R.flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
- *      //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
- */
-module.exports = _curry1(_makeFlat(true));
-
-
-/***/ }),
-/* 176 */
+/* 174 */
 /***/ (function(module, exports) {
 
-/**
- * Tests whether or not an object is an array.
- *
- * @private
- * @param {*} val The object to test.
- * @return {Boolean} `true` if `val` is an array, `false` otherwise.
- * @example
- *
- *      _isArray([]); //=> true
- *      _isArray(null); //=> false
- *      _isArray({}); //=> false
- */
-module.exports = Array.isArray || function _isArray(val) {
-  return (val != null &&
-          val.length >= 0 &&
-          Object.prototype.toString.call(val) === '[object Array]');
-};
-
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports) {
-
-module.exports = function _isPlaceholder(a) {
-  return a != null &&
-         typeof a === 'object' &&
-         a['@@functional/placeholder'] === true;
-};
-
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports) {
-
-module.exports = function _isString(x) {
-  return Object.prototype.toString.call(x) === '[object String]';
-};
-
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isArrayLike = __webpack_require__(180);
-
-
-/**
- * `_makeFlat` is a helper function that returns a one-level or fully recursive
- * function based on the flag passed in.
- *
- * @private
- */
-module.exports = function _makeFlat(recursive) {
-  return function flatt(list) {
-    var value, jlen, j;
-    var result = [];
-    var idx = 0;
-    var ilen = list.length;
-
-    while (idx < ilen) {
-      if (isArrayLike(list[idx])) {
-        value = recursive ? flatt(list[idx]) : list[idx];
-        j = 0;
-        jlen = value.length;
-        while (j < jlen) {
-          result[result.length] = value[j];
-          j += 1;
-        }
-      } else {
-        result[result.length] = list[idx];
-      }
-      idx += 1;
-    }
-    return result;
-  };
-};
-
-
-/***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = __webpack_require__(67);
-var _isArray = __webpack_require__(176);
-var _isString = __webpack_require__(178);
-
-
-/**
- * Tests whether or not an object is similar to an array.
- *
- * @func
- * @memberOf R
- * @since v0.5.0
- * @category Type
- * @category List
- * @sig * -> Boolean
- * @param {*} x The object to test.
- * @return {Boolean} `true` if `x` has a numeric length property and extreme indices defined; `false` otherwise.
- * @example
- *
- *      R.isArrayLike([]); //=> true
- *      R.isArrayLike(true); //=> false
- *      R.isArrayLike({}); //=> false
- *      R.isArrayLike({length: 10}); //=> false
- *      R.isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=> true
- */
-module.exports = _curry1(function isArrayLike(x) {
-  if (_isArray(x)) { return true; }
-  if (!x) { return false; }
-  if (typeof x !== 'object') { return false; }
-  if (_isString(x)) { return false; }
-  if (x.nodeType === 1) { return !!x.length; }
-  if (x.length === 0) { return true; }
-  if (x.length > 0) {
-    return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
-  }
-  return false;
-});
-
+module.exports = require("ramda");
 
 /***/ })
 /******/ ]);
