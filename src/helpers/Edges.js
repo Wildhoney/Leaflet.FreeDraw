@@ -60,7 +60,7 @@ export default function createEdges(map, polygon, options) {
                 const containerPoint = map.latLngToContainerPoint(event.latlng);
                 const latLng = map.containerPointToLatLng(containerPoint);
 
-                // Update the marker with the new lat long.
+                // Update the marker with the new lat/lng.
                 marker.setLatLng(latLng);
 
                 // ...And finally update the polygon to match the current markers.

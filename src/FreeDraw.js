@@ -236,7 +236,7 @@ export default class FreeDraw extends FeatureGroup {
                 // Resolve the pixel point to the latitudinal and longitudinal equivalent.
                 const point = map.mouseEventToContainerPoint(event.originalEvent);
 
-                // Push each lat long value into the points set.
+                // Push each lat/lng value into the points set.
                 latLngs.add(map.containerPointToLatLng(point));
 
                 // Invoke the generator by passing in the starting point for the path.
@@ -271,7 +271,7 @@ export default class FreeDraw extends FeatureGroup {
 
                 if (create) {
 
-                    // ...And finally if we have any lat longs in our set then we can attempt to
+                    // ...And finally if we have any lat/lngs in our set then we can attempt to
                     // create the polygon.
                     latLngs.size && createFor(map, Array.from(latLngs), options);
 

@@ -41,7 +41,7 @@ const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, end
 
     }, []);
 
-    // Update the lat longs with the newly inserted edge.
+    // Update the lat/lngs with the newly inserted edge.
     polygon.setLatLngs(latLngs);
 
     // Remove the current set of edges for the polygon, and then recreate them, assigning the
@@ -97,7 +97,6 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
         const addedMergedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);
 
         // Clear the set, and added all of the merged polygons into the master set.
-        // polygons.get(map).clear();
         addedMergedPolygons.forEach(polygon => polygons.get(map).add(polygon));
 
         return addedMergedPolygons;
@@ -144,7 +143,7 @@ export default (map, polygon, options) => {
 
     return event => {
 
-        // Gather all of the points from the lat longs of the current polygon.
+        // Gather all of the points from the lat/lngs of the current polygon.
         const newPoint = map.mouseEventToContainerPoint('originalEvent' in event ? event.originalEvent : event);
         const parts = polygon.getLatLngs()[0].map(latLng => map.latLngToContainerPoint(latLng));
 

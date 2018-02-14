@@ -18,9 +18,8 @@ export function fillPolygon(map, polygon, options) {
     Clipper.SimplifyPolygon(points, PolyFillType.pftNonZero);
     removeFor(map, polygon);
 
-    const latLngs = points.map(model => {
-        return map.layerPointToLatLng(new Point(model.X, model.Y));
-    });
+    // Convert the Clipper points back into lat/lng pairs.
+    const latLngs = points.map(model => map.layerPointToLatLng(new Point(model.X, model.Y)));
 
     createFor(map, latLngs, options, true);
 
@@ -40,6 +39,7 @@ export default (map, polygons, options) => {
         const points = latLngsToClipperPoints(map, polygon.getLatLngs()[0]);
         const bounds = polygon.getBounds();
 
+        // Determine if the current polygon intersects any of the other polygons currently on the map.
         const intersects = polygons.filter(complement(identical(polygon))).some(polygon => {
             return bounds.intersects(polygon.getBounds());
         });
