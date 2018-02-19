@@ -1895,7 +1895,9 @@ var FreeDraw = function (_FeatureGroup) {
   }, {
     key: 'create',
     value: function create(latLngs) {
-      return (0, _Polygon.createFor)(this.map, latLngs, this.options);
+      var created = (0, _Polygon.createFor)(this.map, latLngs, this.options);
+      (0, _Layer.updateFor)(this.map, 'create');
+      return created;
     }
 
     /**
@@ -1908,6 +1910,7 @@ var FreeDraw = function (_FeatureGroup) {
     key: 'remove',
     value: function remove(polygon) {
       polygon ? (0, _Polygon.removeFor)(this.map, polygon) : _get(FreeDraw.prototype.__proto__ || Object.getPrototypeOf(FreeDraw.prototype), 'remove', this).call(this);
+      (0, _Layer.updateFor)(this.map, 'remove');
     }
 
     /**
