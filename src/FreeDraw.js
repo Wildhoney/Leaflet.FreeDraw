@@ -134,7 +134,9 @@ export default class FreeDraw extends FeatureGroup {
      * @return {Object}
      */
     create(latLngs) {
-        return createFor(this.map, latLngs, this.options);
+        const created = createFor(this.map, latLngs, this.options);
+        updateFor(this.map, 'create');
+        return created;
     }
 
     /**
@@ -144,6 +146,7 @@ export default class FreeDraw extends FeatureGroup {
      */
     remove(polygon) {
         polygon ? removeFor(this.map, polygon) : super.remove();
+        updateFor(this.map, 'remove');
     }
 
     /**
