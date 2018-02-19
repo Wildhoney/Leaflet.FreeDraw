@@ -1889,13 +1889,16 @@ var FreeDraw = function (_FeatureGroup) {
     /**
      * @method create
      * @param {LatLng[]} latLngs
+     * @param {Object} [options = { concavePolygon: false }]
      * @return {Object}
      */
 
   }, {
     key: 'create',
     value: function create(latLngs) {
-      var created = (0, _Polygon.createFor)(this.map, latLngs, this.options);
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { concavePolygon: false };
+
+      var created = (0, _Polygon.createFor)(this.map, latLngs, _extends({}, this.options, options));
       (0, _Layer.updateFor)(this.map, 'create');
       return created;
     }
