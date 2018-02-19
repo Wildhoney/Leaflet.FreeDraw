@@ -131,10 +131,11 @@ export default class FreeDraw extends FeatureGroup {
     /**
      * @method create
      * @param {LatLng[]} latLngs
+     * @param {Object} [options = { concavePolygon: false }]
      * @return {Object}
      */
-    create(latLngs) {
-        const created = createFor(this.map, latLngs, this.options);
+    create(latLngs, options = { concavePolygon: false }) {
+        const created = createFor(this.map, latLngs, { ...this.options, ...options });
         updateFor(this.map, 'create');
         return created;
     }
