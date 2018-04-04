@@ -1064,6 +1064,7 @@ var classesFor = exports.classesFor = function classesFor(map, mode) {
 
         // Apply the class names to the node container depending on whether the mode is active.
         isModeActive && _leaflet.DomUtil.addClass(map._container, className);
+        mode === 0 && _leaflet.DomUtil.addClass(map._container, modeMap[_Flags.NONE]);
     });
 };
 
