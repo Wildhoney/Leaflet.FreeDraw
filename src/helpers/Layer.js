@@ -53,6 +53,7 @@ export const classesFor = (map, mode) => {
 
         // Apply the class names to the node container depending on whether the mode is active.
         isModeActive && DomUtil.addClass(map._container, className);
+        mode === 0 && DomUtil.addClass(map._container, modeMap[NONE]);
 
     });
 
