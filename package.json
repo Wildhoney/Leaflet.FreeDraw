@@ -42,7 +42,7 @@
   },
   "peerDependencies": {
     "leaflet": "^1.2.0",
-    "ramda": "~0.22.1"
+    "ramda": "^0.22.1"
   },
   "devDependencies": {
     "angular": "~1.6.8",
