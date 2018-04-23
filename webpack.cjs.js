@@ -5,9 +5,9 @@ module.exports = {
         libraryTarget: 'commonjs2'
     },
     externals: {
-        leaflet: 'leaflet',
-        'clipper-lib': 'clipper-lib',
-        ramda: 'ramda'
+        'clipper-lib': true,
+        leaflet: true,
+        ramda: true
     },
     module: {
         loaders: [

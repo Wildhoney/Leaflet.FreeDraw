@@ -5,7 +5,8 @@ module.exports = {
         libraryTarget: 'var'
     },
     externals: {
-        leaflet: 'L'
+        leaflet: 'L',
+        ramda: 'R'
     },
     module: {
         loaders: [

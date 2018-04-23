@@ -23,7 +23,11 @@
     "freedraw",
     "polygon",
     "drawing",
-    "freehand"
+    "freehand",
+    "zoopla",
+    "geospatial",
+    "search",
+    "area"
   ],
   "author": "Adam Timberlake <adam.timberlake@gmail.com>",
   "license": "MIT",
@@ -33,12 +37,12 @@
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "dependencies": {
     "clipper-lib": "~6.2.1",
-    "ramda": "~0.22.1",
     "turf-intersect": "~3.0.12",
     "turf-polygon": "~1.0.3"
   },
   "peerDependencies": {
-    "leaflet": "^1.2.0"
+    "leaflet": "^1.2.0",
+    "ramda": "~0.22.1"
   },
   "devDependencies": {
     "angular": "~1.6.8",
