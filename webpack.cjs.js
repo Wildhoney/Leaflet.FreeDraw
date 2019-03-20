@@ -1,7 +1,11 @@
+const path = require('path');
+
 module.exports = {
-    entry: './src/FreeDraw.js',
+    entry: ['core-js', '@babel/polyfill', path.resolve('./src/FreeDraw.js')],
+    mode: process.env.NODE_ENV || 'production',
     output: {
-        filename: './dist/leaflet-freedraw.cjs.js',
+        filename: 'leaflet-freedraw.cjs.js',
+        path: path.resolve('./dist'),
         libraryTarget: 'commonjs2'
     },
     externals: {
@@ -10,11 +14,13 @@ module.exports = {
         ramda: true
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/i
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader'
+                }
             }
         ]
     }

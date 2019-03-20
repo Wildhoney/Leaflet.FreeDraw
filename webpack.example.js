@@ -1,15 +1,22 @@
+const path = require('path');
+
 module.exports = {
-    entry: ['babel-polyfill', './example/js/default.js'],
+    entry: ['core-js', '@babel/polyfill', path.resolve('./example/js/default.js')],
+    mode: process.env.NODE_ENV || 'production',
     output: {
-        filename: './example/js/build.js',
+        filename: 'build.js',
+        path: path.resolve('./example/js'),
         libraryTarget: 'var'
     },
+    
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/i
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader'
+                }
             }
         ]
     }
