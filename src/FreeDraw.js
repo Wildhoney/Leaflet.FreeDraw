@@ -227,7 +227,7 @@ export default class FreeDraw extends FeatureGroup {
 
             // Create the line iterator and move it to its first `yield` point, passing in the start point
             // from the mouse down event.
-            const lineIterator = this.createPath(map, svg, map.latLngToContainerPoint(event.latlng), options.strokeWidth);
+            const lineIterator = this.createPath(svg, map.latLngToContainerPoint(event.latlng), options.strokeWidth);
 
             /**
              * @method mouseMove
@@ -252,11 +252,10 @@ export default class FreeDraw extends FeatureGroup {
 
             /**
              * @method mouseUp
-             * @param {Object} event
              * @param {Boolean} [create = true]
              * @return {Function}
              */
-            const mouseUp = (event, create = true) => {
+            const mouseUp = (_, create = true) => {
 
                 // Remove the ability to invoke `cancel`.
                 map[cancelKey] = () => {};
@@ -300,15 +299,16 @@ export default class FreeDraw extends FeatureGroup {
 
     /**
      * @method createPath
-     * @param {Object} map
      * @param {Object} svg
      * @param {Point} fromPoint
      * @param {Number} strokeWidth
      * @return {void}
      */
-    createPath(map, svg, fromPoint, strokeWidth) {
-        const lineFunction = line().curve(curveMonotoneX).x(d => d.x).y(d => d.y);
+    createPath(svg, fromPoint, strokeWidth) {
         let lastPoint = fromPoint;
+
+        const lineFunction = line().curve(curveMonotoneX).x(d => d.x).y(d => d.y);
+
         return toPoint => {
             const lineData = [ lastPoint, toPoint ];
             lastPoint = toPoint;
