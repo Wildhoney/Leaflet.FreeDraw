@@ -12,17 +12,15 @@ before_deploy:
 
 sudo: false
 
-deploy:
-  provider: heroku
-  all_branches: true
-  skip_cleanup: true
-  api_key:
-    secure: QYdYWMdWGZKckMKG413BpuEwkltoeTea7eR0peYitwkePPnclLDY3xKV6WoNIhAlJ/QzgpqsJL6bcd0BnJA449YtcHwqykeGb8JvYfwTo7hmcCVUie1AwZoXCmszVdEfE/4IiOX38Vx3Egvj81mfNopgEkdyb+0uAth35ow/1hw=
-  app: freedraw
-  on:
-    repo: Wildhoney/Leaflet.FreeDraw
-
 addons:
   apt:
     packages:
       - xvfb
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: K973JhR57s624f0zC7GrFMElDGE9p3/iEDf+cZTmx/ZhcSC/JYoU4rID51wgTUwKh+0LoD/aKc8G/D347r4QjpO1MW7ekNlNIohyv8DToTx3CeWDAAd5r+WoX/0VSmtxR72f7EMvuq07rH1l8ck+Ot9Gzk5Rtss3W2LSWc0xYBQ=
+  app: freedraw
+  on:
+    repo: Wildhoney/Leaflet.FreeDraw
