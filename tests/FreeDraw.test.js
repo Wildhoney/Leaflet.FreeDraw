@@ -208,7 +208,7 @@ test('It should be able to create a path;', t => {
     freeDraw.onAdd(map);
 
     // Initiate the path gene
-    const cb = freeDraw.createPath(map, svg, new Point(20, 20));
+    const cb = freeDraw.createPath(svg, new Point(20, 20));
 
     // Draw a couple of lines
     cb(new Point(40, 40));

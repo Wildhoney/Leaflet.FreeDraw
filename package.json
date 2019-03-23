@@ -10,7 +10,7 @@
     "start": "npm i && npm run example && node --experimental-modules example/server/default.mjs",
     "css": "cp node_modules/leaflet/dist/leaflet.css ./example/css",
     "test": "npm run lint && npm run spec",
-    "spec": "ava && npm run example && mocha tests/functional/FreeDraw.test.js --compilers js:babel-register",
+    "spec": "ava && npm run example && mocha tests/functional/FreeDraw.test.js --compilers js:@babel/register",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules"
   },
@@ -50,8 +50,9 @@
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "~7.4.0",
     "angular": "~1.6.10",
-    "ava": "^0.17.0",
+    "ava": "^1.3.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "~8.0.5",
     "chai": "^3.5.0",
@@ -81,10 +82,16 @@
       "tests/**/*.test.js",
       "!tests/functional/*.test.js"
     ],
-    "babel": "inherit",
+    "babel": {
+      "testOptions": {
+        "presets": [
+          "@babel/preset-env"
+        ]
+      }
+    },
     "require": [
-      "babel-polyfill",
-      "babel-register",
+      "@babel/register",
+      "@babel/polyfill",
       "./tests/helpers/BrowserEnv.js"
     ]
   },
