@@ -19,6 +19,7 @@ addons:
 
 deploy:
   provider: heroku
+  skip_cleanup: true
   api_key:
     secure: K973JhR57s624f0zC7GrFMElDGE9p3/iEDf+cZTmx/ZhcSC/JYoU4rID51wgTUwKh+0LoD/aKc8G/D347r4QjpO1MW7ekNlNIohyv8DToTx3CeWDAAd5r+WoX/0VSmtxR72f7EMvuq07rH1l8ck+Ot9Gzk5Rtss3W2LSWc0xYBQ=
   app: freedraw
