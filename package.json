@@ -3,6 +3,7 @@
   "version": "2.10.0",
   "description": "Zoopla inspired freehand polygon creation using Leaflet.js.",
   "main": "dist/leaflet-freedraw.cjs.js",
+  "browser": "dist/leaflet-freedraw.web.js",
   "scripts": {
     "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js",
     "example": "webpack --config webpack.example.js && npm run css",
