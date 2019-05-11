@@ -1,6 +1,6 @@
 import L from 'leaflet';
-import FreeDraw, { NONE, CREATE, EDIT, DELETE, APPEND, ALL, polygons } from '../../src/FreeDraw';
 import { module } from 'angular';
+import FreeDraw, { NONE, CREATE, EDIT, DELETE, APPEND, ALL, polygons } from '../../src/FreeDraw';
 
 module('leafletApp', []).controller('MapController', $scope => {
 
