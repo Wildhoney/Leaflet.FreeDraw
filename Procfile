@@ -1,1 +1,1 @@
-web: babel example/server/default.js | node
+web: node --experimental-modules example/server/default.mjs
