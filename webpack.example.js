@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     entry: ['core-js', '@babel/polyfill', path.resolve('./example/js/default.js')],
-    mode: process.env.NODE_ENV || 'production',
+    mode: 'development',
     output: {
         filename: 'build.js',
         path: path.resolve('./example/js'),
