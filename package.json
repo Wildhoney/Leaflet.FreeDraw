@@ -5,7 +5,7 @@
   "main": "dist/leaflet-freedraw.cjs.js",
   "browser": "dist/leaflet-freedraw.web.js",
   "scripts": {
-    "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js",
+    "build": "webpack --config webpack.web.js --watch",
     "example": "webpack --config webpack.example.js && npm run css",
     "watch": "npm run css && webpack --watch --config webpack.example.js",
     "start": "npm i && npm run example && node --experimental-modules example/server/default.mjs",
