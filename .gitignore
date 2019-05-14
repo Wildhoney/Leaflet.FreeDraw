@@ -12,4 +12,6 @@ example/css/leaflet.css
 
 # editor
 .vscode/
+
+# dist folder
 dist/
