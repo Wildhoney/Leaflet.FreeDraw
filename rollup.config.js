@@ -22,10 +22,17 @@ module.exports = {
     },
     {
       file: 'dist/leaflet-freedraw.web.js',
-      format: 'iife',
+      format: 'cjs',
       sourcemap: true,
       exports: 'named',
+      external: ['ramda', 'leaflet'],
+    },
+    {
+      file: 'dist/leaflet-freedraw.iife.js',
+      format: 'iife',
+      sourcemap: true,
       name: 'LeafletFreeDraw',
+      exports: 'named',
       external: ['ramda', 'leaflet'],
     }
   ],
