@@ -1,3 +1,6 @@
+import 'core-js';
+import 'regenerator-runtime/runtime';
+
 import { FeatureGroup, Point } from 'leaflet';
 import { select } from 'd3-selection';
 import { line, curveMonotoneX } from 'd3-shape';

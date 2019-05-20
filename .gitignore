@@ -9,3 +9,9 @@ npm-debug.log
 # build
 example/js/build.js
 example/css/leaflet.css
+
+# editor
+.vscode/
+
+# dist folder
+dist/

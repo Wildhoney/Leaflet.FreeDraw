@@ -2,10 +2,16 @@
   "name": "leaflet-freedraw",
   "version": "2.10.0",
   "description": "Zoopla inspired freehand polygon creation using Leaflet.js.",
+  "source": "src/FreeDraw.js",
   "main": "dist/leaflet-freedraw.cjs.js",
+  "module": "dist/leaflet-freedraw.esm.js",
   "browser": "dist/leaflet-freedraw.web.js",
+  "unpkg": "dist/leaflet-freedraw.iife.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js",
+    "build": "rollup -c",
     "example": "webpack --config webpack.example.js && npm run css",
     "watch": "npm run css && webpack --watch --config webpack.example.js",
     "start": "npm i && npm run example && node --experimental-modules example/server/default.mjs",
@@ -38,6 +44,7 @@
   "homepage": "https://github.com/Wildhoney/Leaflet.FreeDraw",
   "dependencies": {
     "clipper-lib": "~6.2.1",
+    "regenerator-runtime": "^0.13.2",
     "turf-intersect": "~3.0.12",
     "turf-polygon": "~1.0.3"
   },
@@ -72,6 +79,11 @@
     "nightmare": "~3.0.1",
     "ramda": "^0.22.1",
     "rimraf": "~2.6.2",
+    "rollup": "^1.11.3",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-resolve": "^4.2.4",
+    "rollup-plugin-terser": "^4.0.4",
     "sinon": "^1.17.6",
     "webpack": "~4.29.6",
     "webpack-cli": "~3.3.0",
