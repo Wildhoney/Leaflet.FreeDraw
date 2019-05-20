@@ -19,7 +19,8 @@
     "test": "npm run lint && npm run spec",
     "spec": "ava && npm run example && mocha tests/functional/FreeDraw.test.js --compilers js:@babel/register",
     "lint": "xo src/*.js src/**/*.js",
-    "cleanup": "rimraf node_modules"
+    "cleanup": "rimraf node_modules",
+    "publish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",
