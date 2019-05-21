@@ -6,34 +6,44 @@ export const actionTypes = {
   'remove_polygon': 'remove_polygon',
 }
 export default function UndoRedo() {
-  const operations = [];
-  let top = -1;
-  let length = 0;
+  const undoStack = [];
+  const redoStack = [];
+
+  const _popUndo = () => undoStack.pop();
+  const _popRedo = () => redoStack.pop();
+  const _pushUndo = data => undoStack.push(data);
+  const _pushRedo = data => redoStack.push(data);
   
   const undo = () => {
-    if (operations.length) return operations.pop()
+    if (undoStack.length) {
+      const action = _popUndo();
+      _pushRedo(action);
+      return action;
+    }
   };
 
   const redo = () => {
-    if (operations.length) return operations.pop()
+    if (redoStack.length) return _popRedo();
   }
 
   const undoHandler = (action, map) => {
-    console.log('undo processing', action, operations, top, length);
+    if (!action) return;
     switch(action.type) {
       case actionTypes.add_polygon: {
         removeFor(map, action.polygon);
+        _popUndo();
         return;
       };
       case actionTypes.remove_polygon: {
         createFor(map, action.polygon[rawLatLngKey], action.polygon._options);
+        _popUndo();
         return;;
       }
     }
   }
 
   const redoHandler = (action, map) => {
-    console.log('redo processing', action, operations, top, length);
+    if (!action) return;
     switch(action.type) {
       case actionTypes.add_polygon: {
         createFor.apply(this, action.args);
@@ -49,7 +59,7 @@ export default function UndoRedo() {
 
   return {
     do(data) { 
-      operations.push(data);
+      _pushUndo(data);
       return data;
     },
     redo,
