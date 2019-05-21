@@ -11,6 +11,9 @@ import { updateFor } from './helpers/Layer';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
 import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Flags';
 import simplifyPolygon from './helpers/Simplify';
+import UndoRedo from './helpers/UndoRedo';
+
+export const history = UndoRedo();
 
 /**
  * @constant polygons
@@ -58,6 +61,7 @@ export const notifyDeferredKey = Symbol('freedraw/notify-deferred');
  * @type {Symbol}
  */
 export const edgesKey = Symbol('freedraw/edges');
+export const rawLatLngKey = Symbol('freedraw/rawLatLngs');
 
 /**
  * @constant cancelKey
@@ -107,6 +111,7 @@ export default class FreeDraw extends FeatureGroup {
                                  .style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
 
         // Set the mouse events.
+        history.attachListeners(map);
         this.listenForEvents(map, svg, this.options);
 
     }

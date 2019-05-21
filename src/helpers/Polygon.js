@@ -1,11 +1,12 @@
 import { LineUtil, Point, Polygon, DomEvent } from 'leaflet';
-import { defaultOptions, edgesKey, modesKey, polygons } from '../FreeDraw';
+import { defaultOptions, edgesKey, modesKey, polygons, history, rawLatLngKey } from '../FreeDraw';
 import { updateFor } from './Layer';
 import createEdges from './Edges';
 import { DELETE, APPEND } from './Flags';
 import handlePolygonClick from './Polygon';
 import concavePolygon from './Concave';
 import mergePolygons from './Merge';
+import { actionTypes } from './UndoRedo';
 
 /**
  * @method appendEdgeFor
@@ -60,7 +61,6 @@ const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, end
  * @return {Array|Boolean}
  */
 export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false) => {
-
     // Determine whether we've reached the maximum polygons.
     const limitReached = polygons.get(map).size === options.maximumPolygons;
 
@@ -76,6 +76,12 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 
         // Attach the edges to the polygon.
         polygon[edgesKey] = createEdges(map, polygon, options);
+        polygon[rawLatLngKey] = latLngs;
+        history.do({
+            type: actionTypes.add_polygon,
+            polygon,
+            args: [map, latLngs, options, preventMutations]
+        })
 
         // Disable the propagation when you click on the marker.
         DomEvent.disableClickPropagation(polygon);
@@ -116,6 +122,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 export const removeFor = (map, polygon) => {
 
     // Remove polygon and all of its associated edges.
+    history.do({ type: actionTypes.remove_polygon, polygon })
     map.removeLayer(polygon);
     edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge));
 
