@@ -6,32 +6,27 @@ export const actionTypes = {
   'add_polygon': 'add_polygon',
   'remove_polygon': 'remove_polygon',
 }
-export default function UndoRedo() {
-  let undoStack = Stack();
-  let redoStack = Stack();
-  
-  const undo = () => {
-    if (undoStack.length()) {
-      const action = undoStack.pop();
-      redoStack.push(action);
-      return action;
-    }
-  };
 
-  const redo = () => {
-    if (redoStack.length()) return redoStack.pop();
-  }
+export default function UndoRedo() {
+  const undoStack = Stack();
+  const redoStack = Stack();
+
+  let inProgress = '';
   
+  const undo = () => undoStack.length() && undoStack.pop();
+  const redo = () => redoStack.length() && redoStack.pop();
+
   const handler = (action, map, opType) => {
     if (!action) return;
+    inProgress = opType;
     const actions = {
       [actionTypes.add_polygon]: {
-        undo: () => removeFor(map, action.polygon),
-        redo: () => createFor.apply(this, action.args)
+        undo: (a) => removeFor(map, action.polygon),
+        redo: (a) => removeFor(map, action.polygon),
       },
       [actionTypes.remove_polygon]: {
-        undo: () => createFor(map, action.polygon[rawLatLngKey], action.polygon._options),
-        redo: () => removeFor(map, action.polygon)
+        undo: (a) => createFor(map, action.polygon[rawLatLngKey], action.polygon._options),
+        redo: (a) => createFor(map, action.polygon[rawLatLngKey], action.polygon._options),
       }
     };
     // perform
@@ -40,8 +35,22 @@ export default function UndoRedo() {
 
   return {
     do(data) {
-      undoStack.push(data);
-      return data;
+      if (inProgress) {
+        switch(inProgress) {
+          case 'undo':
+            redoStack.push(data);
+            break;
+          case 'redo':
+            undoStack.push(data);
+            break;
+        }
+        inProgress = '';
+      } else {
+        redoStack.clear();
+        undoStack.push(data);
+      }
+      undoStack.log('undo: ')
+      redoStack.log('redo: ')
     },
     redo,
     undo,

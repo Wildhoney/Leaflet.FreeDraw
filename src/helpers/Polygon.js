@@ -128,7 +128,6 @@ export const removeFor = (map, polygon) => {
 
     // Remove polygon from the master set.
     polygons.get(map).delete(polygon);
-
 };
 
 /**

@@ -12,6 +12,9 @@ export default function Stack() {
     },
     length() {
       return stack.length;
+    },
+    log(str) {
+      console.log(str, stack.map(s => s.type))
     }
   }
 }
