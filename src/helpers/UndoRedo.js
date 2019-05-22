@@ -21,34 +21,21 @@ export default function UndoRedo() {
   const redo = () => {
     if (redoStack.length()) return redoStack.pop();
   }
-
-  const undoHandler = (action, map) => {
+  
+  const handler = (action, map, opType) => {
     if (!action) return;
-    switch(action.type) {
-      case actionTypes.add_polygon: {
-        removeFor(map, action.polygon);
-        return;
-      };
-      case actionTypes.remove_polygon: {
-        createFor(map, action.polygon[rawLatLngKey], action.polygon._options);
-        return;
+    const actions = {
+      [actionTypes.add_polygon]: {
+        undo: () => removeFor(map, action.polygon),
+        redo: () => createFor.apply(this, action.args)
+      },
+      [actionTypes.remove_polygon]: {
+        undo: () => createFor(map, action.polygon[rawLatLngKey], action.polygon._options),
+        redo: () => removeFor(map, action.polygon)
       }
-    }
-  }
-
-  const redoHandler = (action, map) => {
-    if (!action) return;
-    switch(action.type) {
-      case actionTypes.add_polygon: {
-        createFor.apply(this, action.args);
-        return;
-      }
-
-      case actionTypes.remove_polygon: {
-        removeFor(map, action.polygon);
-        return;
-      }
-    }
+    };
+    // perform
+    actions[action.type][opType]();
   }
 
   return {
@@ -61,10 +48,10 @@ export default function UndoRedo() {
     attachListeners(map) {
       document.addEventListener('keydown', e => {
         if (e.key === 'z' && e.metaKey && !e.shiftKey) {
-          undoHandler(undo(), map);
+          handler(undo(), map, 'undo');
         }
         if (e.key === 'z' && e.metaKey && e.shiftKey) {
-          redoHandler(redo());
+          handler(redo(), map, 'redo');
         }
       })
     }
