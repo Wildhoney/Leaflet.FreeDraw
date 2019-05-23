@@ -53,8 +53,6 @@ export default function UndoRedo() {
         
         undoStack.push(data);
       }
-      undoStack.log('undo: ')
-      redoStack.log('redo: ')
     },
     redo,
     undo,

@@ -77,11 +77,6 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
         // Attach the edges to the polygon.
         polygon[edgesKey] = createEdges(map, polygon, options);
         polygon[rawLatLngKey] = latLngs;
-        history.do({
-            type: actionTypes.add_polygon,
-            polygon,
-            args: [map, latLngs, options, preventMutations]
-        })
 
         // Disable the propagation when you click on the marker.
         DomEvent.disableClickPropagation(polygon);
@@ -96,6 +91,15 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 
     // Append the current polygon to the master set.
     addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
+    
+    // make undo redo aware of the new polygons
+    addedPolygons.forEach(p => {
+        history.do({
+            type: actionTypes.add_polygon,
+            polygon: p,
+            args: [map, p[rawLatLngKey], options, preventMutations]
+        })
+    });
 
     if (!limitReached && !preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
 
@@ -104,11 +108,10 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 
         // Clear the set, and added all of the merged polygons into the master set.
         addedMergedPolygons.forEach(polygon => polygons.get(map).add(polygon));
-
         return addedMergedPolygons;
 
     }
-
+    
     return addedPolygons;
 
 };
@@ -120,7 +123,6 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
  * @return {void}
  */
 export const removeFor = (map, polygon) => {
-
     // Remove polygon and all of its associated edges.
     history.do({ type: actionTypes.remove_polygon, polygon })
     map.removeLayer(polygon);

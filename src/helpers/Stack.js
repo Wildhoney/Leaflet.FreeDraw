@@ -13,11 +13,12 @@ export default function Stack() {
     length() {
       return stack.length;
     },
-    log(str) {
-      console.log(str, stack.map(s => s.type))
-    },
     filter(fn) {
       stack = stack.filter(fn);
-    }
+    },
+    log(str) {
+      // for debugging, printing etc
+      console.log(str, stack.map(s => s.type))
+    },
   }
 }
