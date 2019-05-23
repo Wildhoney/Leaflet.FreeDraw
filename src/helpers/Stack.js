@@ -15,6 +15,9 @@ export default function Stack() {
     },
     log(str) {
       console.log(str, stack.map(s => s.type))
+    },
+    filter(fn) {
+      stack = stack.filter(fn);
     }
   }
 }

@@ -47,6 +47,10 @@ export default function UndoRedo() {
         inProgress = '';
       } else {
         redoStack.clear();
+
+        // clear all actions which had the the same instance of polygon
+        undoStack.filter(d => !(d.polygon === data.polygon))
+        
         undoStack.push(data);
       }
       undoStack.log('undo: ')
