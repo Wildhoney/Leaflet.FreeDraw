@@ -9,7 +9,6 @@ npm-debug.log
 # build
 example/js/build.js
 example/css/leaflet.css
-dist
 
 # editor
 .vscode/
