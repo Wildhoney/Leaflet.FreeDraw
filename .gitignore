@@ -14,5 +14,3 @@ dist
 # editor
 .vscode/
 
-# dist folder
-dist/
