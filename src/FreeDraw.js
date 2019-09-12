@@ -11,6 +11,10 @@ import { updateFor } from './helpers/Layer';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
 import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Flags';
 import simplifyPolygon from './helpers/Simplify';
+import UndoRedoDS from './helpers/UndoRedoDS';
+
+// export const history = UndoRedo();
+export const historyDS = UndoRedoDS();
 
 /**
  * @constant polygons
@@ -32,7 +36,7 @@ export const defaultOptions = {
     maximumPolygons: Infinity,
     notifyAfterEditExit: false,
     leaveModeAfterCreate: false,
-    strokeWidth: 2
+    strokeWidth: 2,
 };
 
 /**
@@ -58,7 +62,8 @@ export const notifyDeferredKey = Symbol('freedraw/notify-deferred');
  * @type {Symbol}
  */
 export const edgesKey = Symbol('freedraw/edges');
-
+export const rawLatLngKey = Symbol('freedraw/rawLatLngs');
+export const polygonID = Symbol('freedraw/polygonID');
 /**
  * @constant cancelKey
  * @type {Symbol}
@@ -74,7 +79,7 @@ export default class FreeDraw extends FeatureGroup {
      */
     constructor(options = defaultOptions) {
         super();
-        this.options = { ...defaultOptions, ...options };
+        this.options = { ...defaultOptions, ...options};
     }
 
     /**
@@ -107,6 +112,7 @@ export default class FreeDraw extends FeatureGroup {
                                  .style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
 
         // Set the mouse events.
+        historyDS.attachListeners(map);
         this.listenForEvents(map, svg, this.options);
 
     }
@@ -273,6 +279,7 @@ export default class FreeDraw extends FeatureGroup {
 
                 if (create) {
 
+                    
                     // ...And finally if we have any lat/lngs in our set then we can attempt to
                     // create the polygon.
                     latLngs.size && createFor(map, Array.from(latLngs), options);

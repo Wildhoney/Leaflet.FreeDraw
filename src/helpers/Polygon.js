@@ -1,11 +1,13 @@
 import { LineUtil, Point, Polygon, DomEvent } from 'leaflet';
-import { defaultOptions, edgesKey, modesKey, polygons } from '../FreeDraw';
+import { defaultOptions, edgesKey, modesKey, polygons, historyDS, rawLatLngKey, polygonID } from '../FreeDraw';
 import { updateFor } from './Layer';
 import createEdges from './Edges';
 import { DELETE, APPEND } from './Flags';
 import handlePolygonClick from './Polygon';
 import concavePolygon from './Concave';
 import mergePolygons from './Merge';
+import { mainStack, stackObject } from './UndoRedoDS';
+import Stack from './Stack';
 
 /**
  * @method appendEdgeFor
@@ -59,13 +61,22 @@ const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, end
  * @param {Boolean} [preventMutations = false]
  * @return {Array|Boolean}
  */
-export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false) => {
+export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false, pid = 0, fromUndo = 1) => {
 
+    if(!pid) {
+        if(createFor.count === undefined){
+            createFor.count = 1;
+        }
+        else{
+            createFor.count ++;
+        }
+    }
     // Determine whether we've reached the maximum polygons.
     const limitReached = polygons.get(map).size === options.maximumPolygons;
 
     // Apply the concave hull algorithm to the created polygon if the options allow.
     const concavedLatLngs = !preventMutations && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
+  
 
     // Simplify the polygon before adding it to the map.
     const addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
@@ -76,7 +87,13 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 
         // Attach the edges to the polygon.
         polygon[edgesKey] = createEdges(map, polygon, options);
-
+        polygon[rawLatLngKey] = latLngs;
+        if(pid) { // from edit or from undo
+            polygon[polygonID] = pid ;
+        }
+        else {
+            polygon[polygonID] = createFor.count;
+        }
         // Disable the propagation when you click on the marker.
         DomEvent.disableClickPropagation(polygon);
 
@@ -91,6 +108,30 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
     // Append the current polygon to the master set.
     addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
 
+    // make undo redo aware of the new polygons
+    // comes in edit mode and does not merges/ self-intersects AND add to main Stack .
+   if(pid && addedPolygons.length === 1 && fromUndo === 0){
+       mainStack.push(pid);
+       stackObject[pid].push(addedPolygons[0]);
+   }
+   else if(pid && addedPolygons.length === 1 && fromUndo === 1) {  // comes in Undo Listener and does not merges/ self-intersects .
+    stackObject[pid].push(addedPolygons[0]);
+    console.log("MAIN STACK2 : " + mainStack.show());
+   }
+   else {
+        addedPolygons.forEach(p => {
+            // historyDS.do({
+            //     polygon: p,
+            //     args: [map, p[rawLatLngKey], options, preventMutations]
+            // })
+        
+            console.log("count : " , createFor.count);
+            stackObject[createFor.count] = Stack(); 
+            stackObject[createFor.count].push(p);
+            mainStack.push(createFor.count);
+        });
+   }
+   console.log(mainStack.show());
     if (!limitReached && !preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
 
         // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
@@ -116,13 +157,22 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 export const removeFor = (map, polygon) => {
 
     // Remove polygon and all of its associated edges.
+    historyDS.do()
     map.removeLayer(polygon);
-    edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge));
+    edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge)); // REMOVING ALL EDGES WHICH ARE MARKERS .  
 
     // Remove polygon from the master set.
     polygons.get(map).delete(polygon);
 
 };
+
+// export const createForPolygon = (map, polygon) => {
+//     map.addLayer(polygon);
+//     edgesKey in polygon && polygon[edgesKey].map(edge => map.addLayer(edge)); // ADDING ALL EDGES WHICH ARE MARKERS .  
+
+//     // ADD polygon from the master set.
+//     polygons.get(map).add(polygon);
+// }
 
 /**
  * @method clearFor

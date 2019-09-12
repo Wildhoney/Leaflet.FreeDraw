@@ -5,6 +5,7 @@ import createPolygon from 'turf-polygon';
 import isIntersecting from 'turf-intersect';
 import { createFor, removeFor } from './Polygon';
 import { latLngsToClipperPoints } from './Simplify';
+import { polygonID } from '../FreeDraw';
 
 /**
  * @method fillPolygon
@@ -18,12 +19,13 @@ export function fillPolygon(map, polygon, options) {
     // Simplify the polygon which prevents voids in its shape.
     const points = latLngsToClipperPoints(map, polygon.getLatLngs()[0]);
     Clipper.SimplifyPolygon(points, PolyFillType.pftNonZero);
+    const pid = polygon[polygonID];
     removeFor(map, polygon);
 
     // Convert the Clipper points back into lat/lng pairs.
     const latLngs = points.map(model => map.layerPointToLatLng(new Point(model.X, model.Y)));
 
-    createFor(map, latLngs, options, true);
+    createFor(map, latLngs, options, true, pid , 0);
 
 }
 
@@ -72,7 +74,7 @@ export default (map, polygons, options) => {
     const mergePolygons = Clipper.SimplifyPolygons(analysis.intersecting, PolyFillType.pftNonZero);
 
     // Remove all of the existing polygons that are intersecting another polygon.
-    analysis.intersectingPolygons.forEach(polygon => removeFor(map, polygon));
+    analysis.intersectingPolygons.forEach(polygon => removeFor(map, polygon)); // ALL THE INTERSECTING POLYGONS .
 
     return flatten(mergePolygons.map(polygon => {
 
