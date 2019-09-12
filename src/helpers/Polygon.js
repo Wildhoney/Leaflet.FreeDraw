@@ -6,7 +6,7 @@ import { DELETE, APPEND } from './Flags';
 import handlePolygonClick from './Polygon';
 import concavePolygon from './Concave';
 import mergePolygons from './Merge';
-import { mainStack, stackObject } from './UndoRedoDS';
+import { mainStack, stackObject, redoMainStack, redoStackObject } from './UndoRedoDS';
 import Stack from './Stack';
 
 /**
@@ -108,30 +108,27 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
     // Append the current polygon to the master set.
     addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
 
-    // make undo redo aware of the new polygons
     // comes in edit mode and does not merges/ self-intersects AND add to main Stack .
    if(pid && addedPolygons.length === 1 && fromUndo === 0){
        mainStack.push(pid);
        stackObject[pid].push(addedPolygons[0]);
    }
    else if(pid && addedPolygons.length === 1 && fromUndo === 1) {  // comes in Undo Listener and does not merges/ self-intersects .
-    stackObject[pid].push(addedPolygons[0]);
-    console.log("MAIN STACK2 : " + mainStack.show());
+       stackObject[pid].push(addedPolygons[0]);
    }
    else {
+        redoMainStack.clear();
+        redoStackObject.clear();
         addedPolygons.forEach(p => {
-            // historyDS.do({
-            //     polygon: p,
-            //     args: [map, p[rawLatLngKey], options, preventMutations]
-            // })
-        
-            console.log("count : " , createFor.count);
+            console.log("new polygon count : " , createFor.count);
             stackObject[createFor.count] = Stack(); 
             stackObject[createFor.count].push(p);
             mainStack.push(createFor.count);
         });
    }
-   console.log(mainStack.show());
+   console.log("UNDO Stack : " + mainStack.show());
+   console.log("REDO Stack : " + redoMainStack.show());
+
     if (!limitReached && !preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
 
         // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
