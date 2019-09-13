@@ -38,18 +38,11 @@ function latLngsToTuple(latLngs) {
     return latLngs.map(model => [model.lat, model.lng]);
 }
 
-/**
- * @param {Object} map
- * @param {Array} polygons
- * @param {Object} options
- * @return {Array}
- */
-export default (map, polygons, options) => {
+function returnIntersections(map, polygons) {
+   // Transform a L.LatLng object into a GeoJSON polygon that TurfJS expects to receive.
+   const toTurfPolygon = compose(createPolygon, x => [x], x => [...x, head(x)], latLngsToTuple);
 
-    // Transform a L.LatLng object into a GeoJSON polygon that TurfJS expects to receive.
-    const toTurfPolygon = compose(createPolygon, x => [x], x => [...x, head(x)], latLngsToTuple);
-
-    const analysis = polygons.reduce((accum, polygon) => {
+   const analysis = polygons.reduce((accum, polygon) => {
 
         const latLngs = polygon.getLatLngs()[0];
         const points = latLngsToClipperPoints(map, polygon.getLatLngs()[0]);
@@ -60,16 +53,36 @@ export default (map, polygons, options) => {
             return Boolean(isIntersecting(turfPolygon, toTurfPolygon(polygon.getLatLngs()[0])));
         });
 
-        const key = intersects ? 'intersecting' : 'rest';
+        const key = intersects ? 'intersecting' : 'rest'; 
 
         return {
             ...accum,
-            [key]: [...accum[key], intersects ? points : latLngs],
+            [key]: [...accum[key], intersects ? points : latLngs], // if 'intersecting': we are storing Clipper points else in 'rest': we are storing latLngs .
             intersectingPolygons: intersects ? [...accum.intersectingPolygons, polygon] : accum.intersectingPolygons
         };
 
     }, { intersecting: [], rest: [], intersectingPolygons: [] });
 
+    return analysis;
+}
+
+export function isIntersectingPolygon(map, polygons) {
+    const analysis = returnIntersections(map, polygons);
+    if(analysis.intersectingPolygons.length){
+        return true;
+    }
+    return false;
+}
+
+/**
+ * @param {Object} map
+ * @param {Array} polygons
+ * @param {Object} options
+ * @return {Array}
+ */
+export default (map, polygons, options) => {
+
+    const analysis = returnIntersections(map, polygons);
     // Merge all of the polygons.
     const mergePolygons = Clipper.SimplifyPolygons(analysis.intersecting, PolyFillType.pftNonZero);
 
@@ -85,7 +98,12 @@ export default (map, polygons, options) => {
 
         // Create the polygon, but this time prevent any merging, otherwise we'll find ourselves
         // in an infinite loop.
-        return createFor(map, latLngs, options, true);
+        options.mergedFromPolygons = analysis.intersectingPolygons;
+        options.currentOverlappingPolygon && (options.mergedFromPolygons = options.mergedFromPolygons.filter(polygon => 
+            polygon[polygonID] !== options.currentOverlappingPolygon[polygonID]
+        ));
+
+        return createFor(map, latLngs, options, true, 0, 2);
 
     }));
 

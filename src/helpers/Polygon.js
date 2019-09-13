@@ -5,8 +5,9 @@ import createEdges from './Edges';
 import { DELETE, APPEND } from './Flags';
 import handlePolygonClick from './Polygon';
 import concavePolygon from './Concave';
+import {isIntersectingPolygon} from './Merge';
 import mergePolygons from './Merge';
-import { mainStack, stackObject, redoMainStack, redoStackObject } from './UndoRedoDS';
+import { mainStack, stackObject, redoMainStack, redoStackObject, mergedPolygonsMap } from './UndoRedoDS';
 import Stack from './Stack';
 
 /**
@@ -61,9 +62,16 @@ const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, end
  * @param {Boolean} [preventMutations = false]
  * @return {Array|Boolean}
  */
-export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false, pid = 0, fromUndo = 1) => {
 
-    if(!pid) {
+/*
+from = 0 : When existing polygon is edited -> comes from Polyfill() in Merge.js
+from = 1 : When Undo operation is performed -> comes from UndoRedoDS.js
+from = 2 : When new Polygon is created AND it is intersecting -> comes from Merge() in Merge.js
+from = 3 : When Undo operation is performed on a Merged polygon -> comes from UndoRedo.js
+*/
+export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false, pid = 0, from = 1) => {
+
+    if(!pid) { 
         if(createFor.count === undefined){
             createFor.count = 1;
         }
@@ -71,15 +79,15 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
             createFor.count ++;
         }
     }
+    console.log("new polygon count : " , createFor.count);
     // Determine whether we've reached the maximum polygons.
     const limitReached = polygons.get(map).size === options.maximumPolygons;
 
     // Apply the concave hull algorithm to the created polygon if the options allow.
     const concavedLatLngs = !preventMutations && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
   
-
     // Simplify the polygon before adding it to the map.
-    const addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
+    let addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
         const polygon = new Polygon(latLngs, {
             ...defaultOptions, ...options, className: 'leaflet-polygon'
@@ -108,37 +116,68 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
     // Append the current polygon to the master set.
     addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
 
-    // comes in edit mode and does not merges/ self-intersects AND add to main Stack .
-   if(pid && addedPolygons.length === 1 && fromUndo === 0){
-       mainStack.push(pid);
-       stackObject[pid].push(addedPolygons[0]);
-   }
-   else if(pid && addedPolygons.length === 1 && fromUndo === 1) {  // comes in Undo Listener and does not merges/ self-intersects .
-       stackObject[pid].push(addedPolygons[0]);
-   }
-   else {
+    // if new Polygon is created and it is intersecting -> do not add to Undo Stack .    
+    const isIntersecting = isIntersectingPolygon(map, Array.from(polygons.get(map)));
+    if(isIntersecting && !limitReached && !preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
         redoMainStack.clear();
         redoStackObject.clear();
-        addedPolygons.forEach(p => {
-            console.log("new polygon count : " , createFor.count);
-            stackObject[createFor.count] = Stack(); 
-            stackObject[createFor.count].push(p);
-            mainStack.push(createFor.count);
-        });
-   }
+    } 
+    else if(from === 2){ // The current Polygon is merged Polygon .
+            // Add the merged polygon in Undo Stack which is mapped to [intersectingPolygons - current Polygon]
+        mainStack.push(createFor.count);
+        stackObject[createFor.count] = Stack()
+        stackObject[createFor.count].push(addedPolygons[0]);
+ 
+        options.mergedFromPolygons && (mergedPolygonsMap[createFor.count] = options.mergedFromPolygons) ;
+    }
+    else if(from === 3) {  // the current polygon came from Undo . (special Case)
+        // Remove from stackObject the latest state of pid .
+        stackObject[pid] && stackObject[pid].pop();
+        // Add the new Polygon which has now listeners attached to mainStack .
+        stackObject[pid].push(addedPolygons[0]);
+    }
+    else if(from === 4){ // The current Polygon is merged Polygon .
+        // Add the merged polygon in Undo Stack which is mapped to [intersectingPolygons - current Polygon]
+        mainStack.push(pid);
+        stackObject[pid] = Stack()
+        stackObject[pid].push(addedPolygons[0]);
+
+        options.mergedFromPolygons && (mergedPolygonsMap[pid] = options.mergedFromPolygons) ;
+    }
+    else {
+            // comes in edit mode and does not merges/ self-intersects AND add to main Stack .
+        if(pid && addedPolygons.length === 1 && from === 0){
+            mainStack.push(pid);
+            stackObject[pid].push(addedPolygons[0]);
+        }
+        else if(pid && addedPolygons.length === 1 && from === 1) {  // comes in Undo Listener and does not merges/ self-intersects .
+            stackObject[pid].push(addedPolygons[0]);
+        }
+        else { // new Polygon is created -> Clear REDO Stack .
+                redoMainStack.clear();
+                redoStackObject.clear();
+                addedPolygons.forEach(p => {
+                    stackObject[createFor.count] = Stack(); 
+                    stackObject[createFor.count].push(p);
+                    mainStack.push(createFor.count);
+                });
+        }
+    }
+
    console.log("UNDO Stack : " + mainStack.show());
    console.log("REDO Stack : " + redoMainStack.show());
 
-    if (!limitReached && !preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
+
+    // Only called when new Polygon is created (Not called when existing's edge is merged with other polygon)
+    if (isIntersecting && !limitReached && !preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
+        // Add current Polygon to options so that we can subtract that polygon in Merge() in Merge.js 
+        options.currentOverlappingPolygon = addedPolygons[0];   // does not handles if more than 1 Polygon returned from Simplify function .
 
         // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
-        const addedMergedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);
+        addedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);
 
         // Clear the set, and added all of the merged polygons into the master set.
-        addedMergedPolygons.forEach(polygon => polygons.get(map).add(polygon));
-
-        return addedMergedPolygons;
-
+        addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
     }
 
     return addedPolygons;
