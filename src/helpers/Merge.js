@@ -42,7 +42,7 @@ function returnIntersections(map, polygons) {
    // Transform a L.LatLng object into a GeoJSON polygon that TurfJS expects to receive.
    const toTurfPolygon = compose(createPolygon, x => [x], x => [...x, head(x)], latLngsToTuple);
 
-   const analysis = polygons.reduce((accum, polygon) => {
+    const analysis = polygons.reduce((accum, polygon) => {
 
         const latLngs = polygon.getLatLngs()[0];
         const points = latLngsToClipperPoints(map, polygon.getLatLngs()[0]);
@@ -53,7 +53,7 @@ function returnIntersections(map, polygons) {
             return Boolean(isIntersecting(turfPolygon, toTurfPolygon(polygon.getLatLngs()[0])));
         });
 
-        const key = intersects ? 'intersecting' : 'rest'; 
+        const key = intersects ? 'intersecting' : 'rest';
 
         return {
             ...accum,
@@ -87,7 +87,7 @@ export default (map, polygons, options) => {
     const mergePolygons = Clipper.SimplifyPolygons(analysis.intersecting, PolyFillType.pftNonZero);
 
     // Remove all of the existing polygons that are intersecting another polygon.
-    analysis.intersectingPolygons.forEach(polygon => removeFor(map, polygon)); // ALL THE INTERSECTING POLYGONS .
+    analysis.intersectingPolygons.forEach(polygon => removeFor(map, polygon));
 
     return flatten(mergePolygons.map(polygon => {
 

@@ -91,16 +91,11 @@ export default function createEdges(map, polygon, options) {
                 map.off('mousedown', mouseDown);
                 map.off('mousemove', mouseMove);
 
-          
-            
-                  // Attempt to simplify the polygon to prevent voids in the polygon.
-                  fillPolygon(map, polygon, options);
+                // Attempt to simplify the polygon to prevent voids in the polygon.
+                fillPolygon(map, polygon, options);
                 
-
                 // Merge the polygons if the options allow using a two-pass approach as this yields the better results.
-                const merge = () => {
-                    mergePolygons(map, Array.from(polygons.get(map)), options);
-                }
+                const merge = () => mergePolygons(map, Array.from(polygons.get(map)), options);
                 options.mergePolygons && merge(); // && merge(); // CALLS createFor 2 times !
 
                 // Trigger the event for having modified the edges of a polygon, unless the `notifyAfterEditExit`

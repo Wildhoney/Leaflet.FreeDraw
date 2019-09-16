@@ -76,7 +76,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 
     // Apply the concave hull algorithm to the created polygon if the options allow.
     const concavedLatLngs = !preventMutations && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
-  
+
     // Simplify the polygon before adding it to the map.
     const addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
@@ -120,13 +120,14 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 
         // Clear the set, and added all of the merged polygons into the master set.
         addedMergedPolygons.forEach(polygon => polygons.get(map).add(polygon));
+     
         return addedMergedPolygons;
+    
     }
 
     return addedPolygons;
 
 };
-
 
 /**
  * @method removeFor
@@ -138,7 +139,7 @@ export const removeFor = (map, polygon) => {
 
     // Remove polygon and all of its associated edges.
     map.removeLayer(polygon);
-    edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge)); // REMOVING ALL EDGES WHICH ARE MARKERS .  
+    edgesKey in polygon && polygon[edgesKey].map(edge => map.removeLayer(edge));
 
     // Remove polygon from the master set.
     polygons.get(map).delete(polygon);
