@@ -10,7 +10,6 @@ export const redoStackObject = new Map();
 
 export const mergedPolygonsMap = new Map(); // Map which holds the Polygons to made when Undo operation is perfromed on Merged Polygon .
 
-
 /*
 from = 0 : When existing polygon is edited -> comes from Polyfill() in Merge.js
 from = 1 : When Undo operation is performed -> comes from UndoRedoDS.js

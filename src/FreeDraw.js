@@ -13,7 +13,6 @@ import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from '.
 import simplifyPolygon from './helpers/Simplify';
 import UndoRedoDS from './helpers/UndoRedoDS';
 
-// export const history = UndoRedo();
 export const historyDS = UndoRedoDS();
 
 /**
@@ -279,7 +278,6 @@ export default class FreeDraw extends FeatureGroup {
 
                 if (create) {
 
-                    
                     // ...And finally if we have any lat/lngs in our set then we can attempt to
                     // create the polygon.
                     latLngs.size && createFor(map, Array.from(latLngs), options);

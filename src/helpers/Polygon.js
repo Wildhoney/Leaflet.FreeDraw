@@ -78,7 +78,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
     const concavedLatLngs = !preventMutations && options.concavePolygon ? concavePolygon(map, latLngs) : latLngs;
   
     // Simplify the polygon before adding it to the map.
-    let addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
+    const addedPolygons = limitReached ? [] : map.simplifyPolygon(map, concavedLatLngs, options).map(latLngs => {
 
         const polygon = new Polygon(latLngs, {
             ...defaultOptions, ...options, className: 'leaflet-polygon'
@@ -144,14 +144,6 @@ export const removeFor = (map, polygon) => {
     polygons.get(map).delete(polygon);
 
 };
-
-// export const createForPolygon = (map, polygon) => {
-//     map.addLayer(polygon);
-//     edgesKey in polygon && polygon[edgesKey].map(edge => map.addLayer(edge)); // ADDING ALL EDGES WHICH ARE MARKERS .  
-
-//     // ADD polygon from the master set.
-//     polygons.get(map).add(polygon);
-// }
 
 /**
  * @method clearFor
