@@ -57,7 +57,7 @@ function returnIntersections(map, polygons) {
 
         return {
             ...accum,
-            [key]: [...accum[key], intersects ? points : latLngs], // if 'intersecting': we are storing Clipper points else in 'rest': we are storing latLngs .
+            [key]: [...accum[key], intersects ? points : latLngs],
             intersectingPolygons: intersects ? [...accum.intersectingPolygons, polygon] : accum.intersectingPolygons
         };
 

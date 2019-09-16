@@ -120,9 +120,9 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
 
         // Clear the set, and added all of the merged polygons into the master set.
         addedMergedPolygons.forEach(polygon => polygons.get(map).add(polygon));
-     
+
         return addedMergedPolygons;
-    
+
     }
 
     return addedPolygons;

@@ -35,7 +35,7 @@ export const defaultOptions = {
     maximumPolygons: Infinity,
     notifyAfterEditExit: false,
     leaveModeAfterCreate: false,
-    strokeWidth: 2,
+    strokeWidth: 2
 };
 
 /**
@@ -78,7 +78,7 @@ export default class FreeDraw extends FeatureGroup {
      */
     constructor(options = defaultOptions) {
         super();
-        this.options = { ...defaultOptions, ...options};
+        this.options = { ...defaultOptions, ...options };
     }
 
     /**
