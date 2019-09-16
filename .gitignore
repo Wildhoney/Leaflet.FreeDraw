@@ -13,3 +13,7 @@ example/css/leaflet.css
 # editor
 .vscode/
 
+.DS_Store
+src/.DS_Store
+yarn.lock
+

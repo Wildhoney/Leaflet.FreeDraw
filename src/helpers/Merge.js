@@ -68,7 +68,6 @@ function returnIntersections(map, polygons) {
 
 export function isIntersectingPolygon(map, polygons) {
     const analysis = returnIntersections(map, polygons);
-    console.log("ANALYSIS : " , analysis);
     if(analysis.intersectingPolygons.length){
         return true;
     }
@@ -100,7 +99,6 @@ export default (map, polygons, options) => {
         // Create the polygon, but this time prevent any merging, otherwise we'll find ourselves
         // in an infinite loop.
         options.mergedFromPolygons = analysis.intersectingPolygons;
-        console.log("options.currentOverlappingPolygon : " , options.currentOverlappingPolygon );
         options.currentOverlappingPolygon && (options.mergedFromPolygons = options.mergedFromPolygons.filter(polygon => 
             polygon[polygonID] !== options.currentOverlappingPolygon[polygonID]
         ));

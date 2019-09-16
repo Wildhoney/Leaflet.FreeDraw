@@ -86,9 +86,7 @@ export default function UndoRedoDS() {
         createFor(map, revertedToPoly[rawLatLngKey], revertedToPoly._options, true, id , 1);
     }
     else if(mergedPolygonsMap[id] && mergedPolygonsMap[id].length){
-        console.log("elements :");
         mergedPolygonsMap[id].forEach(element => {
-            console.log(element);
             createFor(map, element[rawLatLngKey], element._options, true, element[polygonID] , 3); // Should not Update undoStack State .
         });
     }
@@ -105,7 +103,6 @@ export default function UndoRedoDS() {
       redoPoppedEl && createFor(map, redoPoppedEl[rawLatLngKey], redoPoppedEl._options, true, id , 0);    // change options
     }
     else if(mergedPolygonsMap[id] && mergedPolygonsMap[id].length) { // It is a special Merged polygon -> Remove from 'mergedPolygonsMap' and then draw Redo Polygon .
-      console.log("I am special");  
       mergedPolygonsMap[id].forEach(element => {
           removeFor(map, stackObject[element[polygonID]].top());
       });
