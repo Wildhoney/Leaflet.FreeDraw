@@ -6,7 +6,7 @@ import { DELETE, APPEND } from './Flags';
 import handlePolygonClick from './Polygon';
 import concavePolygon from './Concave';
 import mergePolygons, {isIntersectingPolygon}  from './Merge';
-import { maintainStackStates} from './UndoRedoDS';
+import { maintainStackStates} from './UndoRedo';
 
 /**
  * @method appendEdgeFor
@@ -60,8 +60,9 @@ const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, end
  * @param {Boolean} [preventMutations = false]
  * @return {Array|Boolean}
  */
-export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false, pid = 0, from = 1) => {
+export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false, pid = 0, from = 1, updateStackState = true) => {
 
+    // when new Polygon is created, then pid = 0.
     if(!pid) { 
         if(createFor.count === undefined){
             createFor.count = 1;
@@ -70,7 +71,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
             createFor.count ++;
         }
     }
-    console.log("new polygon count : " , createFor.count);
+
     // Determine whether we've reached the maximum polygons.
     const limitReached = polygons.get(map).size === options.maximumPolygons;
 
@@ -108,12 +109,16 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
     addedPolygons.forEach(polygon => polygons.get(map).add(polygon));
     
     const isIntersecting = isIntersectingPolygon(map, Array.from(polygons.get(map)));
-    maintainStackStates(map, addedPolygons, options, preventMutations, isIntersecting, createFor.count, pid, from);
+
+    if(addedPolygons.length === 1 && updateStackState){
+      maintainStackStates(map, addedPolygons, options, preventMutations, isIntersecting, createFor.count, pid, from);
+    }
 
     // Only called when new Polygon is created (Not called when existing's edge is merged with other polygon)
     if (isIntersecting && !limitReached && !preventMutations && polygons.get(map).size > 1 && options.mergePolygons) {
+       
         // Add current Polygon to options so that we can subtract that polygon in Merge() in Merge.js 
-        options.currentOverlappingPolygon = addedPolygons[0];   // does not handles if more than 1 Polygon returned from Simplify function .
+        options.currentOverlappingPolygon = addedPolygons[0];
 
         // Attempt a merge of all the polygons if the options allow, and the polygon count is above one.
         const addedMergedPolygons = mergePolygons(map, Array.from(polygons.get(map)), options);

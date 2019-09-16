@@ -16,10 +16,6 @@ export default function Stack() {
       filter(fn) {
         stack = stack.filter(fn);
       },
-      log(str) {
-        // for debugging, printing etc
-        console.log(str, stack.map(s => s.type))
-      },
       empty(){
           if(stack.length) return false;
           return true;

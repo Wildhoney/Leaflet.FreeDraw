@@ -6,6 +6,7 @@ import isIntersecting from 'turf-intersect';
 import { createFor, removeFor } from './Polygon';
 import { latLngsToClipperPoints } from './Simplify';
 import { polygonID } from '../FreeDraw';
+import { clearAllStacks } from './UndoRedo'
 
 /**
  * @method fillPolygon
@@ -85,7 +86,13 @@ export default (map, polygons, options) => {
     const analysis = returnIntersections(map, polygons);
     // Merge all of the polygons.
     const mergePolygons = Clipper.SimplifyPolygons(analysis.intersecting, PolyFillType.pftNonZero);
+    
+    // Not handling Self-Intersecting case .
+    const updateStackState = mergePolygons.length > 1 ? false : true;
 
+    // Also if Self-intersecting case found, clear all Stacks and Undo-Redo feature will not work until we have removed all Self-intersections.
+    !updateStackState && clearAllStacks();
+    
     // Remove all of the existing polygons that are intersecting another polygon.
     analysis.intersectingPolygons.forEach(polygon => removeFor(map, polygon));
 
@@ -103,7 +110,7 @@ export default (map, polygons, options) => {
             polygon[polygonID] !== options.currentOverlappingPolygon[polygonID]
         ));
 
-        return createFor(map, latLngs, options, true, 0, 2);  // pid = 0 bcoz to create new Polygon 
+        return createFor(map, latLngs, options, true, 0, 2, updateStackState);  // pid = 0 bcoz to create new Polygon 
 
     }));
 
