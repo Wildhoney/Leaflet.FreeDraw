@@ -86,7 +86,7 @@ test('It should be able to create polygons;', t => {
 
     // Ensure the expected functions are invoked.
     t.truthy(map.addLayer.called);
-    t.is(map.latLngToLayerPoint.callCount, polygon.length - 1);
+    t.is(map.latLngToLayerPoint.callCount, 2*(polygon.length - 1));
 
     // Ensure it's correctly added to the `polygons` set.
     t.is(polygons.get(map).size, 1);
