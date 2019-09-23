@@ -1,6 +1,6 @@
 import { DomUtil } from 'leaflet';
 import { polygons, instanceKey } from '../FreeDraw';
-import { NONE, CREATE, EDIT, DELETE, APPEND } from './Flags';
+import { NONE, CREATE, EDIT, DELETE, APPEND, DELETEMARKERS, DELETEPOINT } from './Flags';
 
 /**
  * @method updateFor
@@ -40,7 +40,9 @@ export const classesFor = (map, mode) => {
         [CREATE]: 'mode-create',
         [EDIT]: 'mode-edit',
         [DELETE]: 'mode-delete',
-        [APPEND]: 'mode-append'
+        [APPEND]: 'mode-append',
+        [DELETEMARKERS]: 'mode-edit',
+        [DELETEPOINT]: 'mode-edit',
     };
 
     Object.keys(modeMap).forEach(key => {

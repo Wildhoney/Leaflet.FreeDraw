@@ -33,6 +33,18 @@ export const DELETE = 4;
 export const APPEND = 8;
 
 /**
+ * @constant DELETEMARKERS
+ * @type {Number}
+ */
+export const DELETEMARKERS = 16;
+
+/**
+ * @constant DELETEPOINT
+ * @type {Number}
+ */
+export const DELETEPOINT = 32;
+
+/**
  * @constant EDIT_APPEND
  * @type {Number}
  */
@@ -42,7 +54,7 @@ export const EDIT_APPEND = EDIT | APPEND;
  * @constant ALL
  * @type {number}
  */
-export const ALL = CREATE | EDIT | DELETE | APPEND;
+export const ALL = CREATE | EDIT | DELETE | APPEND | DELETEMARKERS | DELETEPOINT;
 
 /**
  * @method modeFor
@@ -60,14 +72,23 @@ export const modeFor = (map, mode, options) => {
     map[instanceKey].fire('mode', { mode });
 
     // Disable the map if the `CREATE` mode is a default flag.
-    mode & CREATE ? map.dragging.disable() : map.dragging.enable();
+    mode & CREATE ?  (map.dragging.disable(),
+    map.touchZoom.enable(),
+    map.doubleClickZoom.enable(),
+    map.scrollWheelZoom.enable()) : (mode & DELETEMARKERS ? (map.dragging.disable(),
+    map.touchZoom.disable(),
+    map.doubleClickZoom.disable(),
+    map.scrollWheelZoom.disable()) : (map.dragging.enable(),
+    map.touchZoom.enable(),
+    map.doubleClickZoom.enable(),
+    map.scrollWheelZoom.enable()));
 
     Array.from(polygons.get(map)).forEach(polygon => {
 
         polygon[edgesKey].forEach(edge => {
 
             // Modify the edge class names based on whether edit mode is enabled.
-            mode & EDIT ? DomUtil.removeClass(edge._icon, 'disabled') : DomUtil.addClass(edge._icon, 'disabled');
+            ((mode & DELETEPOINT) || (mode & EDIT)) ? DomUtil.removeClass(edge._icon, 'disabled') : DomUtil.addClass(edge._icon, 'disabled');
 
         });
 

@@ -46,7 +46,9 @@
     "clipper-lib": "~6.2.1",
     "regenerator-runtime": "^0.13.2",
     "turf-intersect": "~3.0.12",
-    "turf-polygon": "~1.0.3"
+    "turf-polygon": "~1.0.3",
+    "@turf/points-within-polygon": "5.1.5",
+    "@turf/helpers": "6.1.4"
   },
   "peerDependencies": {
     "leaflet": "^1.2.0",
