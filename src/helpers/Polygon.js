@@ -6,7 +6,7 @@ import { DELETE, APPEND } from './Flags';
 import handlePolygonClick from './Polygon';
 import concavePolygon from './Concave';
 import mergePolygons, { isIntersectingPolygon } from './Merge';
-import { maintainStackStates } from './UndoRedo';
+import { pubSub } from './PubSub';
 
 /**
  * @method appendEdgeFor
@@ -19,6 +19,7 @@ import { maintainStackStates } from './UndoRedo';
  * @param {Object} endPoint
  * @return {void}
  */
+
 const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, endPoint }) => {
 
     const latLngs = parts.reduce((accumulator, point, index) => {
@@ -108,7 +109,9 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
     const isIntersecting = isIntersectingPolygon(map, Array.from(polygons.get(map)));
 
     if (addedPolygons.length === 1 && updateStackState) {
-        maintainStackStates(map, addedPolygons, options, preventMutations, isIntersecting, createFor.count, pid, from);
+        const count = createFor.count;
+        const data = {map, addedPolygons, options, preventMutations, isIntersecting, count, pid, from};
+        pubSub.publish('Add_Undo_Redo', data);
     }
 
     // Only called when new Polygon is created (Not called when existing's edge is merged with other polygon)
