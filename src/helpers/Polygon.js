@@ -61,7 +61,6 @@ const appendEdgeFor = (map, polygon, options, { parts, newPoint, startPoint, end
  * @return {Array|Boolean}
  */
 export const createFor = (map, latLngs, options = defaultOptions, preventMutations = false, pid = 0, from = 1, updateStackState = true) => {
-
     // when new Polygon is created, then pid = 0.
     if (!pid) {
         if (createFor.count === undefined) {
@@ -83,7 +82,7 @@ export const createFor = (map, latLngs, options = defaultOptions, preventMutatio
         const polygon = new Polygon(latLngs, {
             ...defaultOptions, ...options, className: 'leaflet-polygon'
         }).addTo(map);
-
+      
         // Attach the edges to the polygon.
         polygon[edgesKey] = createEdges(map, polygon, options);
         polygon[rawLatLngKey] = latLngs;

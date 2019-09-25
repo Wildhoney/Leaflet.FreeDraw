@@ -1,8 +1,10 @@
-import { DivIcon, Marker, DomEvent } from 'leaflet';
-import { polygons, modesKey, notifyDeferredKey } from '../FreeDraw';
+import { DivIcon, Marker, DomEvent, Point } from 'leaflet';
+import { polygons, modesKey, notifyDeferredKey, polygonID } from '../FreeDraw';
 import { updateFor } from './Layer';
-import { CREATE, EDIT } from './Flags';
+import { CREATE, EDIT, DELETEPOINT } from './Flags';
 import mergePolygons, { fillPolygon } from './Merge';
+import { latLngsToClipperPoints } from './Simplify';
+import { createFor, removeFor } from './Polygon';
 
 /**
  * @method createEdges
@@ -29,14 +31,36 @@ export default function createEdges(map, polygon, options) {
     const markers = fetchLayerPoints(polygon).map(point => {
 
         const mode = map[modesKey];
-        const icon = new DivIcon({ className: `leaflet-edge ${mode & EDIT ? '' : 'disabled'}`.trim() });
+        const icon = new DivIcon({ className: `leaflet-edge ${((mode & EDIT) || (mode & DELETEPOINT)) ? '' : 'disabled'}`.trim() });
         const latLng = map.layerPointToLatLng(point);
         const marker = new Marker(latLng, { icon }).addTo(map);
+
+        marker.on('contextmenu', () => {
+
+            if (map[modesKey] & DELETEPOINT) {
+                const newMarkers = markers.filter(m => (m !== marker));
+                const latLngArr = newMarkers.map(m => [m.getLatLng().lat, m.getLatLng().lng]);
+               
+                removeFor(map, polygon);
+             
+                polygon.setLatLngs(latLngArr);
+                const points = latLngsToClipperPoints(map, polygon.getLatLngs()[0]);
+
+                const newLatLngs = points.map(model => map.layerPointToLatLng(new Point(model.X, model.Y)));
+              
+                createFor(map, newLatLngs, options, true, polygon[polygonID], 0);
+                
+            }
+        });
 
         // Disable the propagation when you click on the marker.
         DomEvent.disableClickPropagation(marker);
 
-        marker.on('mousedown', function mouseDown() {
+        marker.on('mousedown', function mouseDown(e) {
+
+            if (e.originalEvent.which === 3 && (map[modesKey] & DELETEPOINT)) {
+                return;
+            }
 
             if (!(map[modesKey] & EDIT)) {
 
@@ -78,6 +102,10 @@ export default function createEdges(map, polygon, options) {
              * @return {void}
              */
             function mouseUp() {
+                
+                if (e.originalEvent.which === 3 && (map[modesKey] & DELETEPOINT)) {
+                    return;
+                }
 
                 if (!(map[modesKey] & CREATE)) {
 
@@ -94,9 +122,9 @@ export default function createEdges(map, polygon, options) {
                 // Attempt to simplify the polygon to prevent voids in the polygon.
                 fillPolygon(map, polygon, options);
 
-                // Merge the polygons if the options.
+                // Merge the polygons if the options allow using a two-pass approach as this yields the better results.
                 const merge = () => mergePolygons(map, Array.from(polygons.get(map)), options);
-                options.mergePolygons && merge();
+                options.mergePolygons && merge() && merge();
 
                 // Trigger the event for having modified the edges of a polygon, unless the `notifyAfterEditExit`
                 // option is equal to `true`, in which case we'll defer the notification.

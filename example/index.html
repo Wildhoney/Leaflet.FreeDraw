@@ -52,6 +52,14 @@
                     <a ng-click="toggleMode(MODES.DELETE)">Delete</a>
                     <span class="only" ng-click="setModeOnly(MODES.DELETE)">only</span>
                 </li>
+                <li ng-class="{ disabled: isDisabled(MODES.DELETEMARKERS) }">
+                    <a ng-click="toggleMode(MODES.DELETEMARKERS)">Delete Markers</a>
+                    <span class="only" ng-click="setModeOnly(MODES.DELETEMARKERS)">only</span>
+                </li>
+                <li ng-class="{ disabled: isDisabled(MODES.DELETEPOINT) }">
+                    <a ng-click="toggleMode(MODES.DELETEPOINT)">Delete Point</a>
+                    <span class="only" ng-click="setModeOnly(MODES.DELETEPOINT)">only</span>
+                </li>
             </ul>
 
             <section class="git-hub">

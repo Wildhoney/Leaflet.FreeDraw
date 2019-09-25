@@ -123,6 +123,10 @@ section.map.mode-create {
     cursor: crosshair;
 }
 
+section.map.mode-delete-markers {
+    cursor: crosshair;
+}
+
 path.leaflet-line {
     stroke: #50622b;
     stroke-width: 2;
