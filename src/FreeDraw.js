@@ -19,6 +19,7 @@ import pointsWithinPolygon from '@turf/points-within-polygon'
 import { latLngsToClipperPoints } from './helpers/Simplify';
 import { pubSub } from './helpers/PubSub';
 import { maintainStackStates } from './helpers/UndoRedo';
+import { customControl } from './helpers/toolbar';
 
 
 /**
@@ -111,6 +112,8 @@ export default class FreeDraw extends FeatureGroup {
 
         // Set the initial mode.
         modeFor(map, this.options.mode, this.options);
+        console.log("MODES in OnADD");
+        console.log(this.options.mode);
 
         // Instantiate the SVG layer that sits on top of the map.
         const svg = this.svg = select(map._container).append('svg')
@@ -126,6 +129,8 @@ export default class FreeDraw extends FeatureGroup {
             history.attachListeners(map);
             pubSub.subscribe('Add_Undo_Redo', maintainStackStates)
         }
+
+        map.addControl(new customControl(this.options));
 
     }
 
@@ -232,6 +237,9 @@ export default class FreeDraw extends FeatureGroup {
          * @return {void}
          */
         const mouseDown = event => {
+
+            console.log("MODES");
+            console.log(this.options.mode);
 
             if((map[modesKey] & DELETEMARKERS)) {
                 

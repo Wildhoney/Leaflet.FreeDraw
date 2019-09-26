@@ -8,9 +8,13 @@
 
     <link rel="stylesheet" href="css/default.css" />
     <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="../src/UnifiedDraw.css" />
 
     <script type="text/javascript" src="js/build.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+<script src="../node_modules/leaflet-toolbar/dist/leaflet.toolbar.js"></script>
+<link rel="stylesheet" href="../node_modules/leaflet-toolbar/dist/leaflet.toolbar.css"/>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -35,32 +39,7 @@
             <label class="toggle-modes">Let's toggle some modes:</label>
             <span class="current-mode"><strong>Developers</strong>: Current bitwise mode is {{mode}}.</span>
 
-            <ul class="controls">
-                <li ng-class="{ disabled: isDisabled(MODES.CREATE) }">
-                    <a ng-click="toggleMode(MODES.CREATE)">Create</a>
-                    <span class="only" ng-click="setModeOnly(MODES.CREATE)">only</span>
-                </li>
-                <li ng-class="{ disabled: isDisabled(MODES.EDIT) }">
-                    <a ng-click="toggleMode(MODES.EDIT)">Edit Polygons</a>
-                    <span class="only" ng-click="setModeOnly(MODES.EDIT)">only</span>
-                </li>
-                <li ng-class="{ disabled: isDisabled(MODES.APPEND) }">
-                    <a ng-click="toggleMode(MODES.APPEND)">Attach Elbows</a>
-                    <span class="only" ng-click="setModeOnly(MODES.APPEND)">only</span>
-                </li>
-                <li ng-class="{ disabled: isDisabled(MODES.DELETE) }">
-                    <a ng-click="toggleMode(MODES.DELETE)">Delete</a>
-                    <span class="only" ng-click="setModeOnly(MODES.DELETE)">only</span>
-                </li>
-                <li ng-class="{ disabled: isDisabled(MODES.DELETEMARKERS) }">
-                    <a ng-click="toggleMode(MODES.DELETEMARKERS)">Delete Markers</a>
-                    <span class="only" ng-click="setModeOnly(MODES.DELETEMARKERS)">only</span>
-                </li>
-                <li ng-class="{ disabled: isDisabled(MODES.DELETEPOINT) }">
-                    <a ng-click="toggleMode(MODES.DELETEPOINT)">Delete Point</a>
-                    <span class="only" ng-click="setModeOnly(MODES.DELETEPOINT)">only</span>
-                </li>
-            </ul>
+           
 
             <section class="git-hub">
                 <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png" />

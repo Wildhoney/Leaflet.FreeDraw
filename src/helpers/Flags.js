@@ -68,6 +68,10 @@ export const modeFor = (map, mode, options) => {
     // Update the mode.
     map[modesKey] = mode;
 
+    console.log(" map[modesKey]");
+    console.log(map[modesKey]);
+    console.log(options);
+
     // Fire the updated mode.
     map[instanceKey].fire('mode', { mode });
 
@@ -99,7 +103,7 @@ export const modeFor = (map, mode, options) => {
 
     // Fire the event for having manipulated the polygons if the `hasManipulated` is `true` and the
     // `notifyAfterEditExit` option is equal to `true`, and then reset the `notifyDeferredKey`.
-    options.notifyAfterEditExit && map[notifyDeferredKey]();
+    options && options.notifyAfterEditExit && map[notifyDeferredKey]();
     map[notifyDeferredKey] = () => {};
 
     return mode;
