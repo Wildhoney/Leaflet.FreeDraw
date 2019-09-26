@@ -3,9 +3,6 @@ import {modeFor} from './Flags'
 
     const SCOPE_MODES = { CREATE, EDIT, DELETE, APPEND, NONE, DELETEMARKERS, DELETEPOINT };
 
-
-    //let ScopeMode = ALL^DELETEMARKERS;
-
     const isDisabled = (mode, ScopeMode) => !(mode & ScopeMode);
 
     const stopPropagation = event => event.stopPropagation();
@@ -22,7 +19,6 @@ import {modeFor} from './Flags'
             // disable Delete Markers
             ScopeMode = ScopeMode & 47;
         }
-
 
         console.log("IIIII");
         console.log(mode);

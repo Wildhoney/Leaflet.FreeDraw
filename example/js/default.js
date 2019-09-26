@@ -3,64 +3,7 @@ import { module } from 'angular';
 import FreeDraw, { NONE, CREATE, EDIT, DELETE, DELETEMARKERS, DELETEPOINT, APPEND, ALL, polygons } from '../../src/FreeDraw';
 
 module('leafletApp', []).controller('MapController', $scope => {
-
-    // /**
-    //  * @constant MODES
-    //  * @type {Object}
-    //  */
-    // $scope.MODES = { CREATE, EDIT, DELETE, APPEND, NONE, DELETEMARKERS, DELETEPOINT };
-
-    // /**
-    //  * @property mode
-    //  * @type {Number}
-    //  */
-    // $scope.mode = ALL^DELETEMARKERS;
-
-    // /**
-    //  * @method isDisabled
-    //  * @param mode {Number}
-    //  * @returns {Boolean}
-    //  */
-    // $scope.isDisabled = mode => !(mode & $scope.mode);
-
-    // /**
-    //  * @method stopPropagation
-    //  * @param {Object} event
-    //  * @return {void}
-    //  */
-    // $scope.stopPropagation = event => event.stopPropagation();
-
-    // /**
-    //  * @method toggleMode
-    //  * @param mode {Number}
-    //  * @return {void}
-    //  */
-    // $scope.toggleMode = mode => {
-
-    //     //console.log(mode);
-
-    //     if(mode != DELETEMARKERS){
-    //         // disable Delete Markers
-    //         $scope.mode = $scope.mode & 47;
-    //     }
-
-    //     if ($scope.isDisabled(mode)) {
-
-    //         // Enabled the mode.
-    //         $scope.mode = $scope.mode | mode;
-    //         if(mode === DELETEMARKERS) {
-    //             // disable all others
-    //             $scope.mode = $scope.MODES.NONE | mode;
-    //         }
-    //         return;
-
-    //     }
-
-    //     // Otherwise disable it.
-    //     $scope.mode = $scope.mode ^ mode;
-
-   // };
-
+    
     /**
      * @method setModeOnly
      * @param mode {Number}

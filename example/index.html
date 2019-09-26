@@ -8,7 +8,6 @@
 
     <link rel="stylesheet" href="css/default.css" />
     <link rel="stylesheet" href="css/leaflet.css" />
-    <link rel="stylesheet" href="../src/UnifiedDraw.css" />
 
     <script type="text/javascript" src="js/build.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
@@ -22,32 +21,6 @@
 <body ng-app="leafletApp" ng-controller="MapController">
 
     <section class="map" data-mode="mode">
-
-        <section class="overlay"></section>
-
-        <section class="information" ng-mousedown="stopPropagation($event)">
-
-            <img src="media/logo.png" alt="FreeDraw">
-
-            <h2>Plugin by <a href="https://github.com/Wildhoney">Adam Timberlake</a>.</h2>
-
-            <p class="description">FreeDraw allows you to draw a freehand polygon on the map &ndash; which is then converted to a normalised polygon which can be manipulated.</p>
-
-            <h3 class="modes">Modes</h3>
-            <p class="description">Since FreeDraw uses bitwise operators to determine the current mode, you are able to combine modes &ndash; such as <strong>only</strong> allowing a user to create, or allowing a combination of both edit and delete &ndash; or all modes at once!</p>
-
-            <label class="toggle-modes">Let's toggle some modes:</label>
-            <span class="current-mode"><strong>Developers</strong>: Current bitwise mode is {{mode}}.</span>
-
-           
-
-            <section class="git-hub">
-                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png" />
-                <p class="description">As with <a href="https://github.com/Wildhoney?tab=repositories">all of my open-source projects</a> &ndash; <a href="https://github.com/Wildhoney/Leaflet.FreeDraw">FreeDraw is on GitHub.com</a>. See you there!</p>
-            </section>
-
-        </section>
-
     </section>
 
 </body>

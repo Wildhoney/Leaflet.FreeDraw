@@ -58,11 +58,12 @@ export const customControl =  L.Control.extend({
         this.addButton(container, DELETE, map, this.mapOptions, "url(https://cdn4.iconfinder.com/data/icons/generic-interaction/143/close-x-cross-multiply-delete-cancel-modal-error-no-512.png)");
         this.addButton(container, APPEND, map, this.mapOptions, "url(https://cdn4.iconfinder.com/data/icons/generic-interaction/143/close-x-cross-multiply-delete-cancel-modal-error-no-512.png)");
         this.addButton(container, DELETEMARKERS, map, this.mapOptions, "url(https://cdn1.iconfinder.com/data/icons/map-objects/154/map-object-cancel-exit-close-delete-point-512.png)");
+        this.addButton(container, DELETEPOINT, map, this.mapOptions, "url(https://cdn4.iconfinder.com/data/icons/lucid-location/24/remove_delete_address_location_point-512.png)");
 
         
         return container;
         }
   });
 
-    // map.addControl(new customControl());
+  
   
