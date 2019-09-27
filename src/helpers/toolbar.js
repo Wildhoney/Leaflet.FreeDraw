@@ -11,14 +11,14 @@ export const customControl =  L.Control.extend({
         this.mapOptions = options;
     },
 
-    addButton: function (container, mode, map, mapOptions, type) {
+    addButton: function (container, mode, map, mapOptions, type, toolTip="") {
 
-        var child = L.DomUtil.create('div' ,'edit-mode-button' , container);
+        var child = L.DomUtil.create('div' ,'edit-mode-button ' , container);
         child.style.backgroundColor = 'white';
+        child.title = toolTip;
 
         var icon = L.DomUtil.create('i' ,'material-icons' , child);
         icon.innerHTML = type;
-
 
         if(mode === DELETEMARKERS){
             icon.style.opacity = 0.3;
@@ -52,12 +52,12 @@ export const customControl =  L.Control.extend({
 
         var container = L.DomUtil.create('div', 'edit-mode-buttons-container');
 
-        this.addButton(container, CREATE, map, this.mapOptions, "create");
-        this.addButton(container, EDIT, map, this.mapOptions, "gesture");
-        this.addButton(container, DELETE, map, this.mapOptions, "delete_forever");
-        this.addButton(container, APPEND, map, this.mapOptions, "add");
-        this.addButton(container, DELETEPOINT, map, this.mapOptions, "remove");
-        this.addButton(container, DELETEMARKERS, map, this.mapOptions, "delete_sweep");
+        this.addButton(container, CREATE, map, this.mapOptions, "create", "Create Polygon");
+        this.addButton(container, EDIT, map, this.mapOptions, "gesture", "Edit Polygon");
+        this.addButton(container, DELETE, map, this.mapOptions, "delete_forever", "Delete Polygon");
+        this.addButton(container, APPEND, map, this.mapOptions, "add", "Add Marker");
+        this.addButton(container, DELETEPOINT, map, this.mapOptions, "remove", "Delete Marker");
+        this.addButton(container, DELETEMARKERS, map, this.mapOptions, "delete_sweep", "Delete Multiple Markers");
         
         return container;
         }
