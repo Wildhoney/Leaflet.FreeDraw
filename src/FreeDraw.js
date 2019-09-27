@@ -19,6 +19,7 @@ import pointsWithinPolygon from '@turf/points-within-polygon'
 import { latLngsToClipperPoints } from './helpers/Simplify';
 import { pubSub } from './helpers/PubSub';
 import { maintainStackStates } from './helpers/UndoRedo';
+import { customControl } from './helpers/toolbar';
 
 
 /**
@@ -126,6 +127,8 @@ export default class FreeDraw extends FeatureGroup {
             history.attachListeners(map);
             pubSub.subscribe('Add_Undo_Redo', maintainStackStates)
         }
+
+        map.addControl(new customControl(this.options));
 
     }
 
