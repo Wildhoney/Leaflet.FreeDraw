@@ -34,6 +34,9 @@ export const customControl =  L.Control.extend({
                      container.childNodes.forEach(element => {
                         element.firstChild.style.opacity = 0.3;
                      });
+                }
+                else {
+                    container.childNodes[5].firstChild.style.opacity = 0.3;
                 }    
                 icon.style.opacity = 1;
             } else {
