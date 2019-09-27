@@ -3,7 +3,6 @@ import { module } from 'angular';
 import FreeDraw, { NONE, CREATE, EDIT, DELETE, DELETEMARKERS, DELETEPOINT, APPEND, ALL, polygons } from '../../src/FreeDraw';
 
 module('leafletApp', []).controller('MapController', $scope => {
-    
     /**
      * @method setModeOnly
      * @param mode {Number}

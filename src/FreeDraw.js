@@ -112,8 +112,6 @@ export default class FreeDraw extends FeatureGroup {
 
         // Set the initial mode.
         modeFor(map, this.options.mode, this.options);
-        console.log("MODES in OnADD");
-        console.log(this.options.mode);
 
         // Instantiate the SVG layer that sits on top of the map.
         const svg = this.svg = select(map._container).append('svg')
@@ -237,9 +235,6 @@ export default class FreeDraw extends FeatureGroup {
          * @return {void}
          */
         const mouseDown = event => {
-
-            console.log("MODES");
-            console.log(this.options.mode);
 
             if((map[modesKey] & DELETEMARKERS)) {
                 
