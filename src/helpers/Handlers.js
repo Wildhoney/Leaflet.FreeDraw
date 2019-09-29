@@ -2,6 +2,7 @@ import { rawLatLngKey, polygonID, polygons } from '../FreeDraw';
 import { removeFor, createFor } from './Polygon';
 import Stack from './Stack';
 import {undoMainStack, undoStackObject, redoMainStack, redoStackObject, mergedPolygonsMap} from './UndoRedo';
+import { pubSub } from './PubSub'; 
 
 
 // The current Polygon is merged Polygon .
@@ -105,6 +106,8 @@ export const undoHandler = map => {
                 createFor(map, element[rawLatLngKey], element._options, true, element[polygonID], 3); // Should not Update undoStack State .
             });
         }
+
+        pubSub.publish('Stack_State_Updated', {map, undoMainStack, redoMainStack});
     };
 
     export const redoHandler = map => {
@@ -133,5 +136,5 @@ export const undoHandler = map => {
         // If Polygon has no State in UNDO STACK -> Simply draw REDO polygon
             redoPoppedEl && createFor(map, redoPoppedEl[rawLatLngKey], redoPoppedEl._options, true, id, 0);
         }
-
+        pubSub.publish('Stack_State_Updated', {map, undoMainStack, redoMainStack});
     };

@@ -20,6 +20,7 @@ import { latLngsToClipperPoints } from './helpers/Simplify';
 import { pubSub } from './helpers/PubSub';
 import { maintainStackStates } from './helpers/UndoRedo';
 import { customControl } from './helpers/toolbar';
+import { undoRedoControl } from './helpers/UndoRedoToolbar';
 
 
 /**
@@ -129,6 +130,7 @@ export default class FreeDraw extends FeatureGroup {
         }
 
         map.addControl(new customControl(this.options));
+        map.addControl(new undoRedoControl(this.options));
 
     }
 

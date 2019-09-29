@@ -5,7 +5,7 @@ import {modeFor} from './Flags'
 
     export const isDisabled = (mode, ScopeMode) => !(mode & ScopeMode);
 
-    const stopPropagation = event => event.stopPropagation();
+    export const stopPropagation = event => event.stopPropagation();
 
     export const toggleMode = (mode, map = false, options) => {
         
