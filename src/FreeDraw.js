@@ -1,7 +1,7 @@
 import 'core-js';
 import 'regenerator-runtime/runtime';
 
-import { FeatureGroup, Point } from 'leaflet';
+import { noConflict, FeatureGroup, Point } from 'leaflet';
 import { select } from 'd3-selection';
 import { line, curveMonotoneX } from 'd3-shape';
 import Set from 'es6-set';
@@ -11,6 +11,9 @@ import { updateFor } from './helpers/Layer';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
 import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Flags';
 import simplifyPolygon from './helpers/Simplify';
+
+// Preventing binding to the `window`.
+noConflict();
 
 /**
  * @constant polygons
