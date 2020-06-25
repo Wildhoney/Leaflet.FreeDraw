@@ -100,6 +100,7 @@ module('leafletApp', []).controller('MapController', $scope => {
          * @return {void}
          */
         link(scope, element) {
+            const LAT_LNG = [51.505, -0.09];
 
             // Instantiate L.Map and the FreeDraw layer, passing in the default mode.
             const map = new L.Map(element[0], { doubleClickZoom: false }).setView([51.505, -0.09], 14);
@@ -108,6 +109,18 @@ module('leafletApp', []).controller('MapController', $scope => {
             // Add the tile layer and the FreeDraw layer.
             L.tileLayer(scope.TILE_URL).addTo(map);
             map.addLayer(freeDraw);
+
+            console.log(L);
+
+            const sensor = new L.circle(LAT_LNG, {
+                color: 'red',
+                fillColor: 'red',
+                fillOpacity: 1,
+                radius: 150,
+                id: 1, // sensor's id
+              }).addTo(map);
+              
+              sensor.bindPopup('This is the sensor ' + sensor.options.id + '.');
 
             freeDraw.on('mode', event => {
 

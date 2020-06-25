@@ -7,9 +7,6 @@
   "module": "dist/leaflet-freedraw.esm.js",
   "browser": "dist/leaflet-freedraw.web.js",
   "unpkg": "dist/leaflet-freedraw.iife.js",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "rollup -c",
     "example": "webpack --config webpack.example.js && npm run css",
