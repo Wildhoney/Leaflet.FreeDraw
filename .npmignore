@@ -1,0 +1,10 @@
+.history/
+example/
+tests/
+
+.babelrc
+.travis.yml
+bower.json
+Procfile
+rollup.config.js
+webpack.example.js
