@@ -10,7 +10,7 @@ import { NONE, CREATE, EDIT, DELETE, APPEND } from './Flags';
  */
 export const updateFor = (map, eventType) => {
 
-    const latLngs = Array.from(polygons.get(map)).map(polygon => {
+    const latLngs = Array.from(polygons.get(map) || []).map(polygon => {
 
         // Ensure the polygon has been closed.
         const latLngs = polygon.getLatLngs();
