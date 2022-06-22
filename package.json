@@ -70,7 +70,7 @@
     "es6-symbol": "^3.1.0",
     "es6-weak-map": "^2.0.1",
     "express": "~4.16.3",
-    "jsdom": "^9.8.3",
+    "jsdom": "^16.5.0",
     "leaflet": "~1.6.0",
     "mocha": "~3.5.3",
     "nightmare": "~3.0.1",
