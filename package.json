@@ -71,7 +71,7 @@
     "es6-weak-map": "^2.0.1",
     "express": "~4.16.3",
     "jsdom": "^9.8.3",
-    "leaflet": "~1.6.0",
+    "leaflet": "^1.7.1",
     "mocha": "~3.5.3",
     "nightmare": "~3.0.1",
     "ramda": "^0.22.1",

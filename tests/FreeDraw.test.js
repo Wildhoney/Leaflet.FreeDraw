@@ -1,7 +1,7 @@
 import test from 'ava';
 import { select } from 'd3-selection';
 import { LatLng, Point } from 'leaflet';
-import { spy } from 'sinon';
+import { spy, stub } from 'sinon';
 import FreeDraw, { polygons, edgesKey } from '../src/FreeDraw';
 import { updateFor } from '../src/helpers/Layer';
 import { NONE, CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, ALL } from '../src/helpers/Flags';
@@ -30,10 +30,12 @@ const polygon = [new LatLng(51.50249181873096, -0.08634567260742189),
 test.beforeEach(t => {
 
     const node = t.context.node = document.createElement('div');
+    const mapContainer = document.createElement('div');
 
     t.context.map = {
         on: spy(),
         fire: spy(),
+        getContainer: stub().returns(mapContainer),
         dragging: {
             disable: spy(),
             enable: spy()
@@ -43,6 +45,7 @@ test.beforeEach(t => {
         layerPointToLatLng: spy(({ x, y }) => ({ lat: x, lng: y }))
     };
 
+    t.context.mapContainer = mapContainer;
     t.context.svg = select(node).append('svg');
     t.context.polygon = [...polygon];
     t.context.freeDraw = new FreeDraw({ mergePolygons: false, concavePolygon: false });
@@ -199,6 +202,19 @@ test('It should be able to set the mode on the map;', t => {
     t.truthy(node.classList.contains('mode-edit'));
     t.falsy(node.classList.contains('mode-delete'));
     t.falsy(node.classList.contains('mode-append'));
+
+});
+
+test('It should set map touch actions on and off when adding and removing the layer', async t => {
+
+    const { freeDraw, map, mapContainer } = t.context;
+    freeDraw.onAdd(map);
+
+    t.is(mapContainer.style.touchAction, 'none');
+
+    freeDraw.onRemove(map);
+
+    t.is(mapContainer.style.touchAction, '');
 
 });
 

@@ -1,13 +1,14 @@
 import 'core-js';
 import 'regenerator-runtime/runtime';
 
-import { noConflict, FeatureGroup, Point } from 'leaflet';
+import { noConflict, FeatureGroup, DomEvent } from 'leaflet';
 import { select } from 'd3-selection';
 import { line, curveMonotoneX } from 'd3-shape';
 import Set from 'es6-set';
 import WeakMap from 'es6-weak-map';
 import Symbol from 'es6-symbol';
 import { updateFor } from './helpers/Layer';
+import { touchEventToContainerPoint } from './helpers/Map';
 import { createFor, removeFor, clearFor } from './helpers/Polygon';
 import { CREATE, EDIT, DELETE, APPEND, EDIT_APPEND, NONE, ALL, modeFor } from './helpers/Flags';
 import simplifyPolygon from './helpers/Simplify';
@@ -109,6 +110,8 @@ export default class FreeDraw extends FeatureGroup {
                                  .classed('free-draw', true).attr('width', '100%').attr('height', '100%')
                                  .style('pointer-events', 'none').style('z-index', '1001').style('position', 'relative');
 
+        // Required for pointer events to trigger
+        map.getContainer().style.setProperty('touch-action', 'none');
         // Set the mouse events.
         this.listenForEvents(map, svg, this.options);
 
@@ -132,6 +135,7 @@ export default class FreeDraw extends FeatureGroup {
         delete map[instanceKey];
         delete map.simplifyPolygon;
 
+        map.getContainer().style.removeProperty('touch-action');
     }
 
     /**
@@ -213,11 +217,10 @@ export default class FreeDraw extends FeatureGroup {
 
         /**
          * @method mouseDown
-         * @param {Object} event
+         * @param {TouchEvent} event
          * @return {void}
          */
         const mouseDown = event => {
-
             if (!(map[modesKey] & CREATE)) {
 
                 // Polygons can only be created when the mode includes create.
@@ -233,28 +236,28 @@ export default class FreeDraw extends FeatureGroup {
 
             // Create the line iterator and move it to its first `yield` point, passing in the start point
             // from the mouse down event.
-            const lineIterator = this.createPath(svg, map.latLngToContainerPoint(event.latlng), options.strokeWidth);
+            const lineIterator = this.createPath(svg, touchEventToContainerPoint(event, map.getContainer()), options.strokeWidth);
 
             /**
              * @method mouseMove
-             * @param {Object} event
+             * @param {TouchEvent} event
              * @return {void}
              */
             const mouseMove = event => {
-
                 // Resolve the pixel point to the latitudinal and longitudinal equivalent.
-                const point = map.mouseEventToContainerPoint(event.originalEvent);
+                const point = touchEventToContainerPoint(event, map.getContainer());
 
                 // Push each lat/lng value into the points set.
-                latLngs.add(map.containerPointToLatLng(point));
+                const value = map.containerPointToLatLng(point);
+                latLngs.add(value);
 
                 // Invoke the generator by passing in the starting point for the path.
-                lineIterator(new Point(point.x, point.y));
+                lineIterator(point);
 
             };
 
             // Create the path when the user moves their cursor.
-            map.on('mousemove touchmove', mouseMove);
+            DomEvent.on(map.getContainer(), 'touchmove', mouseMove);
 
             /**
              * @method mouseUp
@@ -262,14 +265,13 @@ export default class FreeDraw extends FeatureGroup {
              * @return {Function}
              */
             const mouseUp = (_, create = true) => {
-
                 // Remove the ability to invoke `cancel`.
                 map[cancelKey] = () => {};
 
                 // Stop listening to the events.
-                map.off('mouseup', mouseUp);
-                map.off('mousemove', mouseMove);
-                'body' in document && document.body.removeEventListener('mouseleave', mouseUp);
+                DomEvent.off(map.getContainer(), 'touchend', mouseUp);
+                DomEvent.off(map.getContainer(), 'touchmove', mouseMove);
+                'body' in document && document.body.removeEventListener('touchcancel', mouseUp);
 
                 // Clear the SVG canvas.
                 svg.selectAll('*').remove();
@@ -291,15 +293,15 @@ export default class FreeDraw extends FeatureGroup {
             };
 
             // Clear up the events when the user releases the mouse.
-            map.on('mouseup touchend', mouseUp);
-            'body' in document && document.body.addEventListener('mouseleave', mouseUp);
+            DomEvent.on(map.getContainer(), 'touchend', mouseUp);
+            'body' in document && document.body.addEventListener('touchcancel', mouseUp);
 
             // Setup the function to invoke when `cancel` has been invoked.
             map[cancelKey] = () => mouseUp({}, false);
 
         };
 
-        map.on('mousedown touchstart', mouseDown);
+        DomEvent.on(map.getContainer(), 'touchstart', mouseDown);
 
     }
 
@@ -308,7 +310,7 @@ export default class FreeDraw extends FeatureGroup {
      * @param {Object} svg
      * @param {Point} fromPoint
      * @param {Number} strokeWidth
-     * @return {void}
+     * @return {(point: L.Point) => void}
      */
     createPath(svg, fromPoint, strokeWidth) {
         let lastPoint = fromPoint;
