@@ -1,4 +1,4 @@
-import { point } from 'leaflet';
+import { Point } from 'leaflet';
 
 /**
  * {@link https://github.com/Leaflet/Leaflet/issues/1542#issuecomment-151679021}
@@ -13,5 +13,5 @@ export const touchEventToContainerPoint = (event, container) => {
     const lat = touch.clientX - rect.left - container.clientLeft;
     const lng = touch.clientY - rect.top - container.clientTop;
 
-    return point(lat, lng);
+    return new Point(lat, lng);
 };
