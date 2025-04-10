@@ -2,7 +2,7 @@ import { Point } from 'leaflet';
 import { flatten, identical, complement, compose, head } from 'ramda';
 import { Clipper, PolyFillType } from 'clipper-lib';
 import createPolygon from 'turf-polygon';
-import isIntersecting from 'turf-intersect';
+import intersect from '@turf/intersect';
 import { createFor, removeFor } from './Polygon';
 import { latLngsToClipperPoints } from './Simplify';
 
@@ -54,9 +54,25 @@ export default (map, polygons, options) => {
         const turfPolygon = toTurfPolygon(latLngs);
 
         // Determine if the current polygon intersects any of the other polygons currently on the map.
-        const intersects = polygons.filter(complement(identical(polygon))).some(polygon => {
-            return Boolean(isIntersecting(turfPolygon, toTurfPolygon(polygon.getLatLngs()[0])));
-        });
+        const intersects = polygons
+            .filter(complement(identical(polygon)))
+            .some(polygon => {
+                const otherTurfPolygon = toTurfPolygon(polygon.getLatLngs()[0]);
+
+                // Ensure both polygons are valid before checking intersection
+                if (!turfPolygon || !otherTurfPolygon) {
+                    return false;
+                }
+
+                // Construct a FeatureCollection with both polygons
+                const featureCollection = {
+                    type: 'FeatureCollection',
+                    features: [turfPolygon, otherTurfPolygon]
+                };
+
+                // Check for intersection
+                return Boolean(intersect(featureCollection));
+            });
 
         const key = intersects ? 'intersecting' : 'rest';
 

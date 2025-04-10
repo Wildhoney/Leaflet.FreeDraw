@@ -38,6 +38,10 @@ module.exports = {
   ],
   plugins: [
     resolve(),
+    babel({
+      exclude: [/node_modules\/(?!(polyclip-ts|@turf|splaytree-ts))/],
+      presets: ["@babel/preset-env"],
+    }),
     commonjs({
       namedExports: {
         "node_modules/leaflet/dist/leaflet-src.js": [
@@ -60,9 +64,6 @@ module.exports = {
           "identical"
         ]
       }
-    }),
-    babel({
-      exclude: "node_modules/**"
     }),
     terser()
   ]
